@@ -2,7 +2,6 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong/latlong.dart';
-import 'package:stadtnavi_app/theme.dart';
 import 'package:trufi_core/trufi_app.dart';
 import 'package:trufi_core/trufi_configuration.dart';
 
@@ -87,7 +86,7 @@ Future<void> main() async {
   trufiCfg.map.onlineMaxZoom = 19.0;
   trufiCfg.map.onlineZoom = 13.0;
   trufiCfg.map.chooseLocationZoom = 16.0;
-  trufiCfg.map.center = LatLng(-17.39000, -66.15400);
+  trufiCfg.map.center = LatLng(48.5950, 8.8672);
   trufiCfg.map.southWest = LatLng(-17.79300, -66.75000);
   trufiCfg.map.northEast = LatLng(-16.90400, -65.67400);
 
