@@ -2,8 +2,9 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong/latlong.dart';
-import 'package:trufi_core/trufi_app.dart';
 import 'package:trufi_core/trufi_configuration.dart';
+
+import 'screens/HomeScreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -121,17 +122,16 @@ Future<void> main() async {
   trufiCfg.url.share = globalCfg.getValue<String>("urlShare");
 
   _setupCustomTrufiLocalization();
-
   // Colors
   final theme = ThemeData(
-    primaryColor: const Color(0xff263238),
+    primaryColor: const Color(0xff9fc727),
     primaryColorLight: const Color(0xffeceff1),
     accentColor: const Color(0xffd81b60),
     backgroundColor: Colors.white,
   );
 
   // Run app
-  runApp(TrufiApp(theme: theme));
+  runApp(StadtnaviApp(theme: theme));
 }
 
 /// This is an example on how to customize your application
@@ -144,4 +144,22 @@ void _setupCustomTrufiLocalization() {
       const Locale("de"): "Herrenberg",
       const Locale("en"): "Herrenberg"
     };
+}
+
+class StadtnaviApp extends StatelessWidget {
+  const StadtnaviApp({@required this.theme, Key key}) : super(key: key);
+
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Stadtnavi App',
+      theme: theme,
+      home: HomeScreen(
+        key: UniqueKey(),
+      ),
+    );
+  }
 }
