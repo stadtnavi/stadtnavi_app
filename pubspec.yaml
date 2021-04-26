@@ -1,0 +1,39 @@
+name: stadtnavi_app
+description: A Flutter Application for the Stadtnavi Herrenberg
+repository: https://github.com/stadtnavi/stadtnavi-app
+homepage: https://stadtnavi.de/
+issue_tracker: https://github.com/stadtnavi/stadtnavi-app/issues
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  cupertino_icons: ^1.0.2
+
+  flutter:
+    sdk: flutter
+
+  global_configuration: ^2.0.0-nullsafety.1
+  lint: ^1.5.3
+
+  trufi_core:
+    git:
+      url: https://github.com/trufi-association/trufi-core.git
+      ref: master
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/cfg/
+    - assets/data/
+    - assets/images/
