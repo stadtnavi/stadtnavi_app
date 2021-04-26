@@ -2,6 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong/latlong.dart';
+import 'package:stadtnavi_app/theme.dart';
 import 'package:trufi_core/trufi_app.dart';
 import 'package:trufi_core/trufi_configuration.dart';
 
@@ -122,16 +123,8 @@ Future<void> main() async {
 
   _setupCustomTrufiLocalization();
 
-  // Colors
-  final theme = ThemeData(
-    primaryColor: const Color(0xff263238),
-    primaryColorLight: const Color(0xffeceff1),
-    accentColor: const Color(0xffd81b60),
-    backgroundColor: Colors.white,
-  );
-
   // Run app
-  runApp(TrufiApp(theme: theme));
+  runApp(TrufiApp(theme: stadtnaviThemeDark));
 }
 
 /// This is an example on how to customize your application
