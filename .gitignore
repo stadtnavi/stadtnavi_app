@@ -50,3 +50,4 @@ android/upload-keystore.jks
 ios/fastlane/report.xml
 ios/Runner.app.dSYM.zip
 ios/Runner.ipa
+ios/fastlane/README.md
