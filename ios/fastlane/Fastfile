@@ -20,11 +20,5 @@ platform :ios do
   lane :beta do
     build_app(workspace: "Runner.xcworkspace", scheme: "Runner")
     upload_to_testflight
-    # TODO: connect with some custom hooks
-    # slack(
-    #   message: 'Successfully distributed a new beta build to TestFlight',
-    #   success: true,
-    #   slack_url: "https://hooks.slack.com/services/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"
-    # )
   end
 end
