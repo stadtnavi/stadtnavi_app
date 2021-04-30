@@ -124,7 +124,7 @@ Future<void> main() async {
   _setupCustomTrufiLocalization();
 
   // Run app
-  runApp(TrufiApp(theme: stadtnaviThemeDark));
+  runApp(TrufiApp(theme: stadtnaviTheme));
 }
 
 /// This is an example on how to customize your application
