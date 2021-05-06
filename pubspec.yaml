@@ -25,7 +25,7 @@ dependencies:
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
-      ref: 0178768e768ad8a0025e8e9c2b55fed2b4ad70db
+      ref: 39249d0bd80d20dcc8df20600ab7709ba06ee069
 
 
 dev_dependencies:
