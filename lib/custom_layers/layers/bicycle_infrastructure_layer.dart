@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:trufi_core/models/custom_layers/custom_layer.dart';
+import 'package:trufi_core/models/custom_layer.dart';
 
 import '../custom_marker_ model.dart';
 import '../markers_from_assets.dart';
