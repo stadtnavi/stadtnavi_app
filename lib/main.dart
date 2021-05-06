@@ -6,6 +6,12 @@ import 'package:stadtnavi_app/theme.dart';
 import 'package:trufi_core/trufi_app.dart';
 import 'package:trufi_core/trufi_configuration.dart';
 
+import 'custom_layers/layers/bicycle_infrastructure_layer.dart';
+import 'custom_layers/layers/bicycle_parking_layer.dart';
+import 'custom_layers/layers/charging_layer.dart';
+import 'custom_layers/layers/lorawan_gateways.dart';
+import 'custom_layers/layers/public_toilets_layer.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -77,12 +83,12 @@ Future<void> main() async {
   // Map
   trufiCfg.map.satelliteMapTypeEnabled = true;
   trufiCfg.map.terrainMapTypeEnabled = true;
-  trufiCfg.map.defaultZoom = 12.0;
+  trufiCfg.map.defaultZoom = 13.0;
   trufiCfg.map.offlineMinZoom = 8.0;
   trufiCfg.map.offlineMaxZoom = 14.0;
   trufiCfg.map.offlineZoom = 13.0;
   trufiCfg.map.onlineMinZoom = 1.0;
-  trufiCfg.map.onlineMaxZoom = 19.0;
+  trufiCfg.map.onlineMaxZoom = 18;
   trufiCfg.map.onlineZoom = 13.0;
   trufiCfg.map.chooseLocationZoom = 16.0;
   trufiCfg.map.center = LatLng(48.5950, 8.8672);
@@ -124,7 +130,16 @@ Future<void> main() async {
   _setupCustomTrufiLocalization();
 
   // Run app
-  runApp(TrufiApp(theme: stadtnaviTheme));
+  runApp(TrufiApp(
+    theme: stadtnaviTheme,
+    customLayers: [
+      PublicToiletsLayer(),
+      ChargingLayer(),
+      BicycleParkingLayer(),
+      BicycleInfrastructureLayer(),
+      LorawanGatewaysLayer(),
+    ],
+  ));
 }
 
 /// This is an example on how to customize your application
