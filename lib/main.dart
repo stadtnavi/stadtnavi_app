@@ -2,15 +2,10 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong/latlong.dart';
+import 'package:stadtnavi_app/custom_layers/layer.dart';
 import 'package:stadtnavi_app/theme.dart';
 import 'package:trufi_core/trufi_app.dart';
 import 'package:trufi_core/trufi_configuration.dart';
-
-import 'custom_layers/layers/bicycle_infrastructure_layer.dart';
-import 'custom_layers/layers/bicycle_parking_layer.dart';
-import 'custom_layers/layers/charging_layer.dart';
-import 'custom_layers/layers/lorawan_gateways.dart';
-import 'custom_layers/layers/public_toilets_layer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -133,11 +128,11 @@ Future<void> main() async {
   runApp(TrufiApp(
     theme: stadtnaviTheme,
     customLayers: [
-      PublicToiletsLayer(),
-      ChargingLayer(),
-      BicycleParkingLayer(),
-      BicycleInfrastructureLayer(),
-      LorawanGatewaysLayer(),
+      Layer(LayerIds.publicToilets),
+      Layer(LayerIds.charging),
+      Layer(LayerIds.bicycleParking),
+      Layer(LayerIds.bicycleInfrastructure),
+      Layer(LayerIds.lorawanGateways)
     ],
   ));
 }
