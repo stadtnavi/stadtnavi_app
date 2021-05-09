@@ -39,8 +39,7 @@ Map<LayerIds, String> layerFileNames = {
 };
 
 class Layer extends CustomLayer {
-  List<Marker> markers = [];
-
+  List<CustomMarker> customMarkers = [];
   Layer(LayerIds layerId) : super(layerId.enumToString()) {
     load();
   }
@@ -50,74 +49,103 @@ class Layer extends CustomLayer {
         .firstWhere((element) => element.key.enumToString() == id)
         .value;
 
-    final List<CustomMarker> customMarkers =
-        await markersFromAssets("assets/data/hb-layers/$fileName");
+    customMarkers = await markersFromAssets("assets/data/hb-layers/$fileName");
 
-    markers = customMarkers
-        .map((element) => Marker(
-              height: 20,
-              width: 20,
-              point: element.position,
-              anchorPos: AnchorPos.align(AnchorAlign.center),
-              builder: (context) => GestureDetector(
-                onTap: () {
-                  return showDialog<void>(
-                    context: context,
-                    builder: (BuildContext dialogContext) {
-                      final localization = TrufiLocalization.of(context);
-                      final theme = Theme.of(dialogContext);
-                      final localeName = localization.localeName;
-                      String title;
-                      String body;
-                      if (localeName == "en") {
-                        title = element.nameEn ?? element.name ?? "";
-                        body = element.popupContentEn ??
-                            element.popupContent ??
-                            "";
-                      } else {
-                        title = element.nameDe ?? element.name ?? "";
-                        body = element.popupContentDe ??
-                            element.popupContent ??
-                            "";
-                      }
-                      // apply format to the popup content
-                      body = body.replaceAll(";", "\n").replaceAll(",", "\n\n");
-                      return AlertDialog(
-                        title: Text(
-                          title ?? "",
-                          style: TextStyle(color: theme.primaryColor),
-                        ),
-                        content: SingleChildScrollView(
-                          child: ListBody(
-                            children: <Widget>[
-                              Text(
-                                body,
-                                style: TextStyle(
-                                  color: theme.textTheme.bodyText1.color,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(dialogContext).pop();
-                            },
-                            child: Text(localization.commonOK),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-                child: SvgPicture.string(element.image),
-              ),
-            ))
-        .toList();
     refresh();
   }
 
   @override
-  LayerOptions get layerOptions => MarkerLayerOptions(markers: markers);
+  LayerOptions buildLayerOptions(int zoom) {
+    double markerSize;
+    switch (zoom) {
+      case 13:
+        markerSize = 5;
+        break;
+      case 14:
+        markerSize = 10;
+        break;
+      case 15:
+        markerSize = 15;
+        break;
+      case 16:
+        markerSize = 20;
+        break;
+      case 17:
+        markerSize = 25;
+        break;
+      case 18:
+        markerSize = 30;
+        break;
+      default:
+        markerSize = zoom > 18 ? 35 : null;
+    }
+    return MarkerLayerOptions(
+      markers: markerSize != null
+          ? customMarkers
+              .map((element) => Marker(
+                    height: markerSize,
+                    width: markerSize,
+                    point: element.position,
+                    anchorPos: AnchorPos.align(AnchorAlign.center),
+                    builder: (context) => GestureDetector(
+                      onTap: () {
+                        return showDialog<void>(
+                          context: context,
+                          builder: (BuildContext dialogContext) {
+                            final localization = TrufiLocalization.of(context);
+                            final theme = Theme.of(dialogContext);
+                            final localeName = localization.localeName;
+                            String title;
+                            String body;
+                            if (localeName == "en") {
+                              title = element.nameEn ?? element.name ?? "";
+                              body = element.popupContentEn ??
+                                  element.popupContent ??
+                                  "";
+                            } else {
+                              title = element.nameDe ?? element.name ?? "";
+                              body = element.popupContentDe ??
+                                  element.popupContent ??
+                                  "";
+                            }
+                            // apply format to the popup content
+                            body = body
+                                .replaceAll(";", "\n")
+                                .replaceAll(",", "\n\n");
+                            return AlertDialog(
+                              title: Text(
+                                title ?? "",
+                                style: TextStyle(color: theme.primaryColor),
+                              ),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: <Widget>[
+                                    Text(
+                                      body,
+                                      style: TextStyle(
+                                        color: theme.textTheme.bodyText1.color,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(dialogContext).pop();
+                                  },
+                                  child: Text(localization.commonOK),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: SvgPicture.string(element.image),
+                    ),
+                  ))
+              .toList()
+          : [],
+    );
+  }
 }
