@@ -77,7 +77,7 @@ class Layer extends CustomLayer {
         markerSize = 30;
         break;
       default:
-        markerSize = zoom > 18 ? 35 : null;
+        markerSize = zoom != null && zoom > 18 ? 35 : null;
     }
     return MarkerLayerOptions(
       markers: markerSize != null
