@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:stadtnavi_app/custom_layers/custom_marker_model.dart';
 import 'package:stadtnavi_app/custom_layers/markers_from_assets.dart';
+import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
 enum LayerIds {
@@ -12,8 +13,7 @@ enum LayerIds {
   bicycleParking,
   charging,
   lorawanGateways,
-  publicToilets,
-  unknown
+  publicToilets
 }
 
 extension LayerIdsToString on LayerIds {
@@ -23,8 +23,7 @@ extension LayerIdsToString on LayerIds {
       LayerIds.bicycleParking: "Bicycle Parking",
       LayerIds.charging: "Charging",
       LayerIds.lorawanGateways: "Lorawan Gateways",
-      LayerIds.publicToilets: "Public Toilets",
-      LayerIds.unknown: "Unknown"
+      LayerIds.publicToilets: "Public Toilets"
     };
 
     return enumStrings[this];
@@ -56,11 +55,62 @@ class Layer extends CustomLayer {
 
     markers = customMarkers
         .map((element) => Marker(
-              height: 15,
-              width: 15,
+              height: 20,
+              width: 20,
               point: element.position,
               anchorPos: AnchorPos.align(AnchorAlign.center),
               builder: (context) => GestureDetector(
+                onTap: () {
+                  return showDialog<void>(
+                    context: context,
+                    builder: (BuildContext dialogContext) {
+                      final localization = TrufiLocalization.of(context);
+                      final theme = Theme.of(dialogContext);
+                      final localeName = localization.localeName;
+                      String title;
+                      String body;
+                      if (localeName == "en") {
+                        title = element.nameEn ?? element.name ?? "";
+                        body = element.popupContentEn ??
+                            element.popupContent ??
+                            "";
+                      } else {
+                        title = element.nameDe ?? element.name ?? "";
+                        body = element.popupContentDe ??
+                            element.popupContent ??
+                            "";
+                      }
+                      // apply format to the popup content
+                      body = body.replaceAll(";", "\n").replaceAll(",", "\n\n");
+                      return AlertDialog(
+                        title: Text(
+                          title ?? "",
+                          style: TextStyle(color: theme.primaryColor),
+                        ),
+                        content: SingleChildScrollView(
+                          child: ListBody(
+                            children: <Widget>[
+                              Text(
+                                body,
+                                style: TextStyle(
+                                  color: theme.textTheme.bodyText1.color,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(dialogContext).pop();
+                            },
+                            child: Text(localization.commonOK),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
                 child: SvgPicture.string(element.image),
               ),
             ))
