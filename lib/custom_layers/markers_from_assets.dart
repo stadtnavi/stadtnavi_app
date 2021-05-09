@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:latlong/latlong.dart';
 import 'package:flutter/services.dart';
 
-import 'custom_marker_ model.dart';
+import 'custom_marker_model.dart';
 
 Future<List<CustomMarker>> markersFromAssets(String path) async {
   final List<CustomMarker> markers = [];
