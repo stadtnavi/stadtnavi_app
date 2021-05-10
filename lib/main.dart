@@ -1,4 +1,5 @@
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong/latlong.dart';
@@ -6,6 +7,8 @@ import 'package:stadtnavi_app/custom_layers/layer.dart';
 import 'package:stadtnavi_app/theme.dart';
 import 'package:trufi_core/trufi_app.dart';
 import 'package:trufi_core/trufi_configuration.dart';
+
+import 'package:url_launcher/url_launcher.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -89,6 +92,45 @@ Future<void> main() async {
   trufiCfg.map.center = LatLng(48.5950, 8.8672);
   trufiCfg.map.southWest = LatLng(-17.79300, -66.75000);
   trufiCfg.map.northEast = LatLng(-16.90400, -65.67400);
+  trufiCfg.map.buildMapAttribution = (context) {
+    final theme = Theme.of(context);
+    return RichText(
+      text: TextSpan(
+        children: [
+          TextSpan(
+            style: theme.textTheme.caption.copyWith(
+              color: Colors.black,
+            ),
+            text: "© OpenStreetMap Mitwirkende\n",
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                launch("https://www.openstreetmap.org/copyright");
+              },
+          ),
+          TextSpan(
+            style: theme.textTheme.caption.copyWith(
+              color: Colors.black,
+            ),
+            text: "Datensätze der NVBW GmbH\n",
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                launch("https://www.nvbw.de/open-data");
+              },
+          ),
+          TextSpan(
+            style: theme.textTheme.caption.copyWith(
+              color: Colors.black,
+            ),
+            text: "VVS GmbH",
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                launch("https://www.openvvs.de/dataset/gtfs-daten");
+              },
+          ),
+        ],
+      ),
+    );
+  };
 
   // Languages
   trufiCfg.languages.addAll([
