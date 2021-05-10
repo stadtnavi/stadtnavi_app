@@ -178,7 +178,7 @@ packages:
       name: flutter_svg
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.21.0+1"
+    version: "0.22.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -583,8 +583,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "0178768e768ad8a0025e8e9c2b55fed2b4ad70db"
-      resolved-ref: "0178768e768ad8a0025e8e9c2b55fed2b4ad70db"
+      ref: "39249d0bd80d20dcc8df20600ab7709ba06ee069"
+      resolved-ref: "39249d0bd80d20dcc8df20600ab7709ba06ee069"
       url: "https://github.com/trufi-association/trufi-core.git"
     source: git
     version: "2.0.0"

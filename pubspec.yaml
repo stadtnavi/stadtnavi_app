@@ -6,7 +6,7 @@ issue_tracker: https://github.com/stadtnavi/stadtnavi-app/issues
 
 publish_to: 'none'
 
-version: 1.0.1+8
+version: 1.0.2+9
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -25,7 +25,7 @@ dependencies:
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
-      ref: 0178768e768ad8a0025e8e9c2b55fed2b4ad70db
+      ref: 39249d0bd80d20dcc8df20600ab7709ba06ee069
 
 
 dev_dependencies:
@@ -38,4 +38,5 @@ flutter:
   assets:
     - assets/cfg/
     - assets/data/
+    - assets/data/hb-layers/
     - assets/images/
