@@ -6,7 +6,7 @@ issue_tracker: https://github.com/stadtnavi/stadtnavi-app/issues
 
 publish_to: 'none'
 
-version: 1.0.2+9
+version: 1.0.3+10
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -25,7 +25,7 @@ dependencies:
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
-      ref: 39249d0bd80d20dcc8df20600ab7709ba06ee069
+      ref: 8c891e6dd54989c19ad4a1ec6b9678fd5804d3e9
 
 
 dev_dependencies:
