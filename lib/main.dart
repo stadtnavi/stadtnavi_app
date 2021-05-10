@@ -5,6 +5,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong/latlong.dart';
 import 'package:stadtnavi_app/custom_layers/layer.dart';
 import 'package:stadtnavi_app/theme.dart';
+import 'package:trufi_core/models/definition_feedback.dart';
 import 'package:trufi_core/trufi_app.dart';
 import 'package:trufi_core/trufi_configuration.dart';
 
@@ -176,6 +177,10 @@ Future<void> main() async {
       Layer(LayerIds.bicycleInfrastructure),
       Layer(LayerIds.lorawanGateways)
     ],
+    feedBack: DefinitionFeedBack(
+      FeedBackType.url,
+      "https://stadtnavi.de/feedback/",
+    ),
   ));
 }
 
