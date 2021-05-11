@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong/latlong.dart';
 import 'package:stadtnavi_app/custom_layers/layer.dart';
+import 'package:stadtnavi_app/map_layers/map_leyers.dart';
 import 'package:stadtnavi_app/theme.dart';
 import 'package:trufi_core/models/definition_feedback.dart';
 import 'package:trufi_core/trufi_app.dart';
@@ -80,8 +81,6 @@ Future<void> main() async {
   trufiCfg.image.drawerBackground = "assets/images/drawer-bg.jpg";
 
   // Map
-  trufiCfg.map.satelliteMapTypeEnabled = true;
-  trufiCfg.map.terrainMapTypeEnabled = true;
   trufiCfg.map.defaultZoom = 13.0;
   trufiCfg.map.offlineMinZoom = 8.0;
   trufiCfg.map.offlineMaxZoom = 14.0;
@@ -150,12 +149,6 @@ Future<void> main() async {
 
   // Url
   trufiCfg.url.otpEndpoint = globalCfg.getValue<String>("urlOtpEndpoint");
-  trufiCfg.url.tilesStreetsEndpoint =
-      globalCfg.getValue<String>("urlTilesStreetsEndpoint");
-  trufiCfg.url.tilesSatelliteEndpoint =
-      globalCfg.getValue<String>("urlTilesSatelliteEndpoint");
-  trufiCfg.url.tilesTerrainEndpoint =
-      globalCfg.getValue<String>("urlTilesTerrainEndpoint");
   trufiCfg.url.adsEndpoint = globalCfg.getValue<String>("urlAdsEndpoint");
   trufiCfg.url.routeFeedback = globalCfg.getValue<String>("urlRouteFeedback");
   trufiCfg.url.donate = globalCfg.getValue<String>("urlDonate");
@@ -166,7 +159,8 @@ Future<void> main() async {
   trufiCfg.url.share = globalCfg.getValue<String>("urlShare");
   trufiCfg.generalConfiguration.serverType = ServerType.graphQLServer;
   _setupCustomTrufiLocalization();
-
+  // TODO: improve load map tile key
+  final String mapTilerKey = globalCfg.getValue<String>("mapTilerKey");
   // Run app
   runApp(TrufiApp(
     theme: stadtnaviTheme,
@@ -176,6 +170,20 @@ Future<void> main() async {
       Layer(LayerIds.bicycleParking),
       Layer(LayerIds.bicycleInfrastructure),
       Layer(LayerIds.lorawanGateways)
+    ],
+    mapTileProviders: [
+      MapLayer(
+        MapLayerIds.streets,
+        mapTilerKey,
+      ),
+      MapLayer(
+        MapLayerIds.satellite,
+        mapTilerKey,
+      ),
+      MapLayer(
+        MapLayerIds.bike,
+        mapTilerKey,
+      ),
     ],
     feedBack: DefinitionFeedBack(
       FeedBackType.url,
