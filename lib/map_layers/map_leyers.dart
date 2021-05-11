@@ -20,13 +20,32 @@ extension LayerIdsToString on MapLayerIds {
   }
 }
 
-Map<MapLayerIds, String> mapLayerUrl = {
-  MapLayerIds.streets:
-      "https://api.maptiler.com/maps/streets/{z}/{x}/{y}@2x.png?key={key}",
-  MapLayerIds.satellite:
-      "https://api.maptiler.com/maps/basic/{z}/{x}/{y}@2x.png?key={key}",
-  MapLayerIds.bike:
-      "https://a.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
+Map<MapLayerIds, List<LayerOptions>> mapLayerOptions = {
+  MapLayerIds.streets: [
+    TileLayerOptions(
+      tileProvider: NetworkTileProvider(),
+      urlTemplate: "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
+    ),
+  ],
+  MapLayerIds.satellite: [
+    TileLayerOptions(
+      tileProvider: NetworkTileProvider(),
+      urlTemplate: "https://api.stadtnavi.de/tiles/orthophoto/{z}/{x}/{y}.jpg",
+    ),
+    TileLayerOptions(
+      tileProvider: NetworkTileProvider(),
+      backgroundColor: Colors.transparent,
+      urlTemplate:
+          "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
+    ),
+  ],
+  MapLayerIds.bike: [
+    TileLayerOptions(
+      urlTemplate:
+          "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
+      subdomains: ["a", "b", "c"],
+    ),
+  ],
 };
 Map<MapLayerIds, String> layerImage = {
   MapLayerIds.streets: "assets/images/maptype-streets.png",
@@ -41,13 +60,8 @@ class MapLayer extends MapTileProvider {
   MapLayer(this.mapLayerId, this.mapKey) : super();
 
   @override
-  TileLayerOptions buildTileLayerOptions() {
-    return TileLayerOptions(
-      urlTemplate: mapLayerUrl[mapLayerId],
-      additionalOptions: {
-        'key': mapKey,
-      },
-    );
+  List<LayerOptions> buildTileLayerOptions() {
+    return mapLayerOptions[mapLayerId];
   }
 
   @override
@@ -58,4 +72,15 @@ class MapLayer extends MapTileProvider {
         layerImage[mapLayerId],
         fit: BoxFit.cover,
       );
+}
+
+class NetworkTileProvider extends TileProvider {
+  Map<String, String> headers;
+  NetworkTileProvider({
+    this.headers = const {"Referer": "https://herrenberg.stadtnavi.de/"},
+  });
+  @override
+  ImageProvider getImage(Coords<num> coords, TileLayerOptions options) {
+    return NetworkImage(getTileUrl(coords, options), headers: headers);
+  }
 }
