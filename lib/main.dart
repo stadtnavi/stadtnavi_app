@@ -209,7 +209,7 @@ Future<void> main() async {
 /// the corresponding Map of Locale to TranslationString
 void _setupCustomTrufiLocalization() {
   TrufiConfiguration().customTranslations
-    ..title = {const Locale("de"): "stadtnavi", const Locale("en"): "stadtnavi"}
+    ..title = {const Locale("de"): "Stadtnavi", const Locale("en"): "Stadtnavi"}
     ..tagline = {
       const Locale("de"): "Herrenberg",
       const Locale("en"): "Herrenberg"
