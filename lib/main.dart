@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong/latlong.dart';
 import 'package:stadtnavi_app/custom_layers/layer.dart';
+import 'package:stadtnavi_app/custom_search_location/online_search_location.dart';
 import 'package:stadtnavi_app/custom_social_media/youtube_social_media.dart';
 import 'package:stadtnavi_app/map_layers/map_leyers.dart';
 import 'package:stadtnavi_app/theme.dart';
@@ -193,6 +194,7 @@ Future<void> main() async {
       FeedBackType.url,
       "https://stadtnavi.de/feedback/",
     ),
+    searchLocationManager: OnlineSearchLocation(),
     socialMediaItem: [
       FacebookSocialMedia("https://www.facebook.com/stadtnavi/"),
       InstagramSocialMedia("https://www.instagram.com/stadtnavi/"),
