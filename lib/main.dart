@@ -5,12 +5,16 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong/latlong.dart';
 import 'package:stadtnavi_app/custom_layers/layer.dart';
 import 'package:stadtnavi_app/custom_search_location/online_search_location.dart';
+import 'package:stadtnavi_app/custom_social_media/youtube_social_media.dart';
 import 'package:stadtnavi_app/map_layers/map_leyers.dart';
 import 'package:stadtnavi_app/theme.dart';
 import 'package:trufi_core/models/definition_feedback.dart';
 import 'package:trufi_core/trufi_app.dart';
 import 'package:trufi_core/trufi_configuration.dart';
 
+import 'package:trufi_core/models/social_media/facebook_social_media.dart';
+import 'package:trufi_core/models/social_media/instagram_social_media.dart';
+import 'package:trufi_core/models/social_media/twitter_social_media.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> main() async {
@@ -191,6 +195,14 @@ Future<void> main() async {
       "https://stadtnavi.de/feedback/",
     ),
     searchLocationManager: OnlineSearchLocation(),
+    socialMediaItem: [
+      FacebookSocialMedia("https://www.facebook.com/stadtnavi/"),
+      InstagramSocialMedia("https://www.instagram.com/stadtnavi/"),
+      TwitterSocialMedia("https://twitter.com/stadtnavi"),
+      YoutubeSocialMedia(
+        "https://www.youtube.com/channel/UCL_K2RPU0pxV5VYw0Aj_PUA",
+      ),
+    ],
   ));
 }
 
@@ -199,7 +211,7 @@ Future<void> main() async {
 /// the corresponding Map of Locale to TranslationString
 void _setupCustomTrufiLocalization() {
   TrufiConfiguration().customTranslations
-    ..title = {const Locale("de"): "stadtnavi", const Locale("en"): "stadtnavi"}
+    ..title = {const Locale("de"): "Stadtnavi", const Locale("en"): "Stadtnavi"}
     ..tagline = {
       const Locale("de"): "Herrenberg",
       const Locale("en"): "Herrenberg"
