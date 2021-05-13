@@ -6,7 +6,7 @@ issue_tracker: https://github.com/stadtnavi/stadtnavi-app/issues
 
 publish_to: 'none'
 
-version: 1.0.4+11
+version: 1.0.5+12
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -19,6 +19,7 @@ dependencies:
 
   global_configuration: ^2.0.0-nullsafety.1
   lint: ^1.5.3
+  vector_tile: ^0.1.6
 # TODO: improve the trufi_core dependency, e.g use tags instead commits
 # the ref should not be a branch because the `pub get` will not get the latest change
 # so the ref is refering to the latest commit

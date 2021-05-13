@@ -1,6 +1,13 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_app/map_layers/pbf_image_provider.dart';
 import 'package:trufi_core/models/map_tile_provider.dart';
+
+import 'package:http/http.dart' as http;
+import 'package:vector_tile/raw/raw_vector_tile.dart';
 
 enum MapLayerIds {
   streets,
@@ -26,6 +33,10 @@ Map<MapLayerIds, List<LayerOptions>> mapLayerOptions = {
       tileProvider: NetworkTileProvider(),
       urlTemplate: "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
     ),
+    TileLayerOptions(
+      tileProvider: PBFTileProvider(),
+      backgroundColor: Colors.transparent,
+    ),
   ],
   MapLayerIds.satellite: [
     TileLayerOptions(
@@ -37,6 +48,10 @@ Map<MapLayerIds, List<LayerOptions>> mapLayerOptions = {
       backgroundColor: Colors.transparent,
       urlTemplate:
           "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
+    ),
+    TileLayerOptions(
+      tileProvider: PBFTileProvider(),
+      backgroundColor: Colors.transparent,
     ),
   ],
   MapLayerIds.bike: [
