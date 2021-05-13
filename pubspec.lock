@@ -596,9 +596,11 @@ packages:
   trufi_core:
     dependency: "direct main"
     description:
-      path: "../trufi-core"
-      relative: true
-    source: path
+      path: "."
+      ref: d39f2dec8b33458a2d7aa538ec38ddc3113fbd40
+      resolved-ref: d39f2dec8b33458a2d7aa538ec38ddc3113fbd40
+      url: "https://github.com/trufi-association/trufi-core.git"
+    source: git
     version: "2.0.0"
   tuple:
     dependency: transitive
