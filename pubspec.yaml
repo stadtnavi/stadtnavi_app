@@ -17,11 +17,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  global_configuration: ^2.0.0-nullsafety.1
   lint: ^1.5.3
-# TODO: improve the trufi_core dependency, e.g use tags instead commits
-# the ref should not be a branch because the `pub get` will not get the latest change
-# so the ref is refering to the latest commit
+
+  # TODO: improve the trufi_core dependency, e.g use tags instead commits
+  # the ref should not be a branch because the `pub get` will not get the latest change
+  # so the ref is refering to the latest commit
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
