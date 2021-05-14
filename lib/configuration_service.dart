@@ -61,7 +61,7 @@ Configuration setupTrufiConfiguration() {
     routeFeedbackUrl:
         "https://trufifeedback.z15.web.core.windows.net/route.html",
     donationUrl: "http://www.trufi.app/donate-inapp",
-    openTripPlannerUrl: "https://api.stadtnavi.de/routing/v1/router",
+    openTripPlannerUrl: "https://api.dev.stadtnavi.eu/routing/v1/router/index/graphql",
     shareUrl: "https://appurl.io/BOPP7QnKX",
   );
 
