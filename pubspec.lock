@@ -91,7 +91,7 @@ packages:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   diff_match_patch:
     dependency: transitive
     description:
@@ -576,8 +576,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: d39f2dec8b33458a2d7aa538ec38ddc3113fbd40
-      resolved-ref: d39f2dec8b33458a2d7aa538ec38ddc3113fbd40
+      ref: "5ce524a8da13a38f86fee8ad356ad0a41c37355e"
+      resolved-ref: "5ce524a8da13a38f86fee8ad356ad0a41c37355e"
       url: "https://github.com/trufi-association/trufi-core.git"
     source: git
     version: "2.0.0"
