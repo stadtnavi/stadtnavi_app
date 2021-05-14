@@ -11,6 +11,7 @@ import 'package:trufi_core/models/social_media/twitter_social_media.dart';
 import 'package:trufi_core/trufi_app.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   // Run app
   runApp(
     TrufiApp(
