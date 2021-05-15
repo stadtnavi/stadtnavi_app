@@ -12,20 +12,20 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.3
 
   flutter:
     sdk: flutter
 
-  global_configuration: ^2.0.0-nullsafety.1
   lint: ^1.5.3
-# TODO: improve the trufi_core dependency, e.g use tags instead commits
-# the ref should not be a branch because the `pub get` will not get the latest change
-# so the ref is refering to the latest commit
+
+  # TODO: improve the trufi_core dependency, e.g use tags instead commits
+  # the ref should not be a branch because the `pub get` will not get the latest change
+  # so the ref is refering to the latest commit
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
-      ref: d39f2dec8b33458a2d7aa538ec38ddc3113fbd40
+      ref: 5ce524a8da13a38f86fee8ad356ad0a41c37355e
 
 
 dev_dependencies:
