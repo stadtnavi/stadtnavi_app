@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:stadtnavi_app/custom_layers/pbf_layer/pbf_stops_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/stop_map/pbf_stops_layer.dart';
 import 'package:trufi_core/models/map_tile_provider.dart';
 
 enum MapLayerIds {

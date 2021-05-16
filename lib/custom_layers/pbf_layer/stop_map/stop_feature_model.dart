@@ -3,7 +3,7 @@ import 'package:latlong/latlong.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
 import 'package:vector_tile/vector_tile.dart';
 
-class PointFeature {
+class StopFeature {
   final String code;
   final List<String> gtfsId;
   final String name;
@@ -13,7 +13,7 @@ class PointFeature {
   final PBFStopsLayerIds type;
 
   final LatLng position;
-  PointFeature({
+  StopFeature({
     @required this.code,
     @required this.gtfsId,
     @required this.name,
@@ -24,7 +24,7 @@ class PointFeature {
     @required this.position,
   });
   // ignore: prefer_constructors_over_static_methods
-  static PointFeature fromGeoJsonPoint(GeoJsonPoint geoJsonPoint) {
+  static StopFeature fromGeoJsonPoint(GeoJsonPoint geoJsonPoint) {
     String code;
     List<String> gtfsId;
     String name;
@@ -58,7 +58,7 @@ class PointFeature {
         default:
       }
     }
-    return PointFeature(
+    return StopFeature(
       code: code,
       gtfsId: gtfsId,
       name: name,

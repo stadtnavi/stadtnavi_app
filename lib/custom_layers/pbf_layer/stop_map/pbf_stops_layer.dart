@@ -2,7 +2,7 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:stadtnavi_app/custom_layers/pbf_layer/point_feature_model.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/stop_map/stop_feature_model.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
@@ -14,10 +14,10 @@ import 'pbf_stops_icon.dart';
 
 
 class PBFStopsLayer extends CustomLayer {
-  final Map<String, PointFeature> _pbfMarkers = {};
+  final Map<String, StopFeature> _pbfMarkers = {};
 
   PBFStopsLayer(PBFStopsLayerIds layerId) : super(layerId.enumToString());
-  void addMarker(PointFeature pointFeature, String gtfsId) {
+  void addMarker(StopFeature pointFeature, String gtfsId) {
     if (pointFeature.type != null) {
       final duplicatedPointFeature = _pbfMarkers.values.firstWhere(
         (element) =>
@@ -141,7 +141,7 @@ class PBFStopsLayer extends CustomLayer {
 
         if (feature.geometryType == GeometryType.Point) {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
-          final PointFeature pointFeature = PointFeature.fromGeoJsonPoint(geojson);
+          final StopFeature pointFeature = StopFeature.fromGeoJsonPoint(geojson);
           final gtfsId = pointFeature.gtfsId.first;
           final pbfLayer = pbfStopsLayers[pointFeature.type];
           pbfLayer?.addMarker(pointFeature, gtfsId);

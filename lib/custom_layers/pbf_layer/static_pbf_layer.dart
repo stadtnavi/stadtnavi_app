@@ -1,4 +1,4 @@
-import 'pbf_stops_layer.dart';
+import './stop_map/pbf_stops_layer.dart';
 
 enum PBFStopsLayerIds {
   bus,
