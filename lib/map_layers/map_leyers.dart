@@ -86,7 +86,7 @@ class CustomTileProvider extends TileProvider {
   @override
   ImageProvider getImage(Coords<num> coords, TileLayerOptions options) {
     // inject pbf map layer
-    PBFLayer.fetchPBF(
+    PBFStopsLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
       coords.y.toInt(),

@@ -19,7 +19,7 @@ void main() {
       theme: stadtnaviTheme,
       configuration: setupTrufiConfiguration(),
       customLayers: [
-        ...pbfLayers.values,
+        ...pbfStopsLayers.values,
         Layer(LayerIds.publicToilets),
         Layer(LayerIds.charging),
         Layer(LayerIds.bicycleParking),

@@ -1,33 +1,33 @@
 import 'pbf_layer.dart';
 
-enum PBFLayerIds {
+enum PBFStopsLayerIds {
   bus,
   carpool,
   rail,
 }
 
-extension LayerIdsToString on PBFLayerIds {
+extension PBFStopsLayerIdsToString on PBFStopsLayerIds {
   String enumToString() {
-    final Map<PBFLayerIds, String> enumStrings = {
-      PBFLayerIds.bus: "Bus stops",
-      PBFLayerIds.rail: "Train stations",
-      PBFLayerIds.carpool: "Carpool stops",
+    final Map<PBFStopsLayerIds, String> enumStrings = {
+      PBFStopsLayerIds.bus: "Bus stops",
+      PBFStopsLayerIds.rail: "Train stations",
+      PBFStopsLayerIds.carpool: "Carpool stops",
     };
     return enumStrings[this];
   }
 }
 
-PBFLayerIds pbfLayerIdsstringToEnum(String id) {
-  final Map<String, PBFLayerIds> enumStrings = {
-    "BUS": PBFLayerIds.bus,
-    "CARPOOL": PBFLayerIds.carpool,
-    "RAIL": PBFLayerIds.rail,
+PBFStopsLayerIds pbfStopsLayerIdsstringToEnum(String id) {
+  final Map<String, PBFStopsLayerIds> enumStrings = {
+    "BUS": PBFStopsLayerIds.bus,
+    "CARPOOL": PBFStopsLayerIds.carpool,
+    "RAIL": PBFStopsLayerIds.rail,
   };
   return enumStrings[id];
 }
 
-final Map<PBFLayerIds, PBFLayer> pbfLayers = {
-  PBFLayerIds.bus: PBFLayer(PBFLayerIds.bus),
-  PBFLayerIds.rail: PBFLayer(PBFLayerIds.rail),
-  PBFLayerIds.carpool: PBFLayer(PBFLayerIds.carpool),
+final Map<PBFStopsLayerIds, PBFStopsLayer> pbfStopsLayers = {
+  PBFStopsLayerIds.bus: PBFStopsLayer(PBFStopsLayerIds.bus),
+  PBFStopsLayerIds.rail: PBFStopsLayer(PBFStopsLayerIds.rail),
+  PBFStopsLayerIds.carpool: PBFStopsLayer(PBFStopsLayerIds.carpool),
 };

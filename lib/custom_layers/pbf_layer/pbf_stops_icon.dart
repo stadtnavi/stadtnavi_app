@@ -50,8 +50,8 @@ const String _rail = """
   </g>
 </svg>
 """;
-const Map<PBFLayerIds, String> markerIcons = {
-  PBFLayerIds.carpool: _carpool,
-  PBFLayerIds.bus: _bus,
-  PBFLayerIds.rail: _rail,
+const Map<PBFStopsLayerIds, String> markerIcons = {
+  PBFStopsLayerIds.carpool: _carpool,
+  PBFStopsLayerIds.bus: _bus,
+  PBFStopsLayerIds.rail: _rail,
 };

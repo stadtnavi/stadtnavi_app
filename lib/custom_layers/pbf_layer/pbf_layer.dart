@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
@@ -8,16 +7,16 @@ import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
-import 'package:latlong/latlong.dart';
 import 'package:http/http.dart' as http;
 import 'package:vector_tile/vector_tile.dart';
 
-import 'icon.dart';
+import 'pbf_stops_icon.dart';
 
-class PBFLayer extends CustomLayer {
+
+class PBFStopsLayer extends CustomLayer {
   final Map<String, PointFeature> _pbfMarkers = {};
 
-  PBFLayer(PBFLayerIds layerId) : super(layerId.enumToString());
+  PBFStopsLayer(PBFStopsLayerIds layerId) : super(layerId.enumToString());
   void addMarker(PointFeature pointFeature, String gtfsId) {
     if (pointFeature.type != null) {
       final duplicatedPointFeature = _pbfMarkers.values.firstWhere(
@@ -142,23 +141,9 @@ class PBFLayer extends CustomLayer {
 
         if (feature.geometryType == GeometryType.Point) {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
-          final gtfsId = geojson.properties[0].values.first.stringValue;
-          final PointFeature pointFeature = PointFeature(
-            code: geojson.properties[2].values.first.stringValue,
-            gtfsId: [gtfsId],
-            name: geojson.properties[1].values.first.stringValue,
-            parentStation: geojson.properties[4].values.first.stringValue,
-            patterns: geojson.properties[6].values.first.stringValue,
-            platform: geojson.properties[3].values.first.stringValue,
-            type: pbfLayerIdsstringToEnum(
-              geojson.properties[5].values.first.stringValue,
-            ),
-            position: LatLng(
-              geojson.geometry.coordinates[1],
-              geojson.geometry.coordinates[0],
-            ),
-          );
-          final pbfLayer = pbfLayers[pointFeature.type];
+          final PointFeature pointFeature = PointFeature.fromGeoJsonPoint(geojson);
+          final gtfsId = pointFeature.gtfsId.first;
+          final pbfLayer = pbfStopsLayers[pointFeature.type];
           pbfLayer?.addMarker(pointFeature, gtfsId);
         } else {
           throw Exception("Should never happened, Feature is not a point");
