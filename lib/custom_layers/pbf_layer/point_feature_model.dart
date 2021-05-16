@@ -5,7 +5,7 @@ import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
 
 class PointFeature {
   final String code;
-  final String gtfsId;
+  final List<String> gtfsId;
   final String name;
   final String parentStation;
   final String patterns;

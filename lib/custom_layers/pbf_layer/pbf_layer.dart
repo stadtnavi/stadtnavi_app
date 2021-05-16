@@ -18,10 +18,23 @@ class PBFLayer extends CustomLayer {
   final Map<String, PointFeature> _pbfMarkers = {};
 
   PBFLayer(PBFLayerIds layerId) : super(layerId.enumToString());
-  void addMarker(PointFeature pointFeature) {
+  void addMarker(PointFeature pointFeature, String gtfsId) {
     if (pointFeature.type != null) {
-      _pbfMarkers[pointFeature.gtfsId] = pointFeature;
-      refresh();
+      final duplicatedPointFeature = _pbfMarkers.values.firstWhere(
+        (element) =>
+            element.position.latitude == pointFeature.position.latitude &&
+            element.position.longitude == pointFeature.position.longitude,
+        orElse: () => null,
+      );
+      if (duplicatedPointFeature != null) {
+        if (!duplicatedPointFeature.gtfsId.contains(gtfsId)) {
+          duplicatedPointFeature.gtfsId.add(gtfsId);
+          refresh();
+        }
+      } else if (_pbfMarkers[gtfsId] == null) {
+        _pbfMarkers[gtfsId] = pointFeature;
+        refresh();
+      }
     }
   }
 
@@ -65,8 +78,6 @@ class PBFLayer extends CustomLayer {
                     anchorPos: AnchorPos.align(AnchorAlign.top),
                     builder: (context) => GestureDetector(
                       onTap: () {
-                        final patterns =
-                            jsonDecode(element.patterns ?? "[]") as List;
                         return showDialog<void>(
                           context: context,
                           builder: (BuildContext dialogContext) {
@@ -80,47 +91,17 @@ class PBFLayer extends CustomLayer {
                               content: SingleChildScrollView(
                                 child: ListBody(
                                   children: <Widget>[
-                                    Text(
-                                      "GTFS Id: ${element.gtfsId}",
-                                      style: TextStyle(
-                                        color: theme.textTheme.bodyText1.color,
-                                      ),
-                                    ),
                                     const SizedBox(
                                       height: 20,
                                     ),
-                                    ...patterns
-                                        .map(
-                                          (e) => Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              const Divider(),
-                                              Text(
-                                                "Headsign: ${e["headsign"]}",
-                                                style: TextStyle(
-                                                  color: theme.textTheme
-                                                      .bodyText1.color,
-                                                ),
+                                    ...element.gtfsId
+                                        .map((gtfsId) => Text(
+                                              "GTFS Id: $gtfsId",
+                                              style: TextStyle(
+                                                color: theme
+                                                    .textTheme.bodyText1.color,
                                               ),
-                                              Text(
-                                                "Short Name: ${e["shortName"]}",
-                                                style: TextStyle(
-                                                  color: theme.textTheme
-                                                      .bodyText1.color,
-                                                ),
-                                              ),
-                                              Text(
-                                                "type: ${e["type"]}",
-                                                style: TextStyle(
-                                                  color: theme.textTheme
-                                                      .bodyText1.color,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
+                                            ))
                                         .toList()
                                   ],
                                 ),
@@ -161,9 +142,10 @@ class PBFLayer extends CustomLayer {
 
         if (feature.geometryType == GeometryType.Point) {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
+          final gtfsId = geojson.properties[0].values.first.stringValue;
           final PointFeature pointFeature = PointFeature(
             code: geojson.properties[2].values.first.stringValue,
-            gtfsId: geojson.properties[0].values.first.stringValue,
+            gtfsId: [gtfsId],
             name: geojson.properties[1].values.first.stringValue,
             parentStation: geojson.properties[4].values.first.stringValue,
             patterns: geojson.properties[6].values.first.stringValue,
@@ -177,7 +159,7 @@ class PBFLayer extends CustomLayer {
             ),
           );
           final pbfLayer = pbfLayers[pointFeature.type];
-          pbfLayer?.addMarker(pointFeature);
+          pbfLayer?.addMarker(pointFeature, gtfsId);
         } else {
           throw Exception("Should never happened, Feature is not a point");
         }
