@@ -689,9 +689,11 @@ packages:
   vector_tile:
     dependency: "direct main"
     description:
-      name: vector_tile
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: fc916fd067cb4e64ab782e6249b4e296c7dba913
+      resolved-ref: fc916fd067cb4e64ab782e6249b4e296c7dba913
+      url: "https://github.com/trufi-association/dart-vector-tile.git"
+    source: git
     version: "0.1.6"
   win32:
     dependency: transitive

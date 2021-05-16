@@ -19,7 +19,7 @@ dependencies:
 
   global_configuration: ^2.0.0-nullsafety.1
   lint: ^1.5.3
-  vector_tile: ^0.1.6
+
 # TODO: improve the trufi_core dependency, e.g use tags instead commits
 # the ref should not be a branch because the `pub get` will not get the latest change
 # so the ref is refering to the latest commit
@@ -27,6 +27,11 @@ dependencies:
     git:
       url: https://github.com/trufi-association/trufi-core.git
       ref: d39f2dec8b33458a2d7aa538ec38ddc3113fbd40
+
+  vector_tile:
+    git:
+      url: https://github.com/trufi-association/dart-vector-tile.git
+      ref: fc916fd067cb4e64ab782e6249b4e296c7dba913
 
 
 dev_dependencies:

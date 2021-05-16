@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:latlong/latlong.dart';
 import 'package:stadtnavi_app/custom_layers/layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
 import 'package:stadtnavi_app/custom_search_location/online_search_location.dart';
 import 'package:stadtnavi_app/custom_social_media/youtube_social_media.dart';
 import 'package:stadtnavi_app/map_layers/map_leyers.dart';
@@ -170,6 +171,7 @@ Future<void> main() async {
   runApp(TrufiApp(
     theme: stadtnaviTheme,
     customLayers: [
+      ...pbfLayers.values,
       Layer(LayerIds.publicToilets),
       Layer(LayerIds.charging),
       Layer(LayerIds.bicycleParking),
