@@ -61,7 +61,7 @@ class MapLayer extends MapTileProvider {
   final MapLayerIds mapLayerId;
   final String mapKey;
 
-  MapLayer(this.mapLayerId, this.mapKey) : super();
+  MapLayer(this.mapLayerId, {this.mapKey}) : super();
 
   @override
   List<LayerOptions> buildTileLayerOptions() {
