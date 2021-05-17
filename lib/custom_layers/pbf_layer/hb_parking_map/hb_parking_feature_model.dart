@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:vector_tile/vector_tile.dart';
@@ -5,8 +6,12 @@ import 'package:vector_tile/vector_tile.dart';
 import 'pbf_stops_enum.dart';
 
 class ParkingFeature {
+  final String id;
   final String address;
   final String name;
+  final String feeHours;
+  final String openingHours;
+  final String free;
   final String forecast;
   final String state;
   final String coords;
@@ -18,8 +23,12 @@ class ParkingFeature {
 
   final LatLng position;
   ParkingFeature({
+    @required this.id,
     @required this.address,
     @required this.name,
+    @required this.feeHours,
+    @required this.openingHours,
+    @required this.free,
     @required this.forecast,
     @required this.state,
     @required this.coords,
@@ -31,8 +40,12 @@ class ParkingFeature {
   });
   // ignore: prefer_constructors_over_static_methods
   static ParkingFeature fromGeoJsonPoint(GeoJsonPoint geoJsonPoint) {
+    String id;
     String address;
     String name;
+    String feeHours;
+    String openingHours;
+    String free;
     String forecast;
     String state;
     String coords;
@@ -42,39 +55,56 @@ class ParkingFeature {
     PBFParkingLayerIds type;
     for (final element in geoJsonPoint.properties) {
       switch (element.keys.first) {
+        case "id":
+          id = element.values.first.dartStringValue;
+          break;
         case "lot_type":
-          type = pbfParkingLayerIdsstringToEnum(element.values.first.stringValue);
+          type = pbfParkingLayerIdsstringToEnum(
+              element.values.first.dartStringValue);
           break;
         case "address":
-          address = element.values.first.stringValue;
+          address = element.values.first.dartStringValue;
           break;
         case "name":
-          name = element.values.first.stringValue;
+          name = element.values.first.dartStringValue;
+          break;
+        case "fee_hours":
+          feeHours = element.values.first.dartStringValue;
+          break;
+        case "opening_hours":
+          openingHours = element.values.first.dartStringValue;
+          break;
+        case "free":
+          free = element.values.first.dartStringValue;
           break;
         case "forecast":
-          forecast = element.values.first.stringValue;
+          forecast = element.values.first.dartStringValue;
           break;
         case "state":
-          state = element.values.first.stringValue;
+          state = element.values.first.dartStringValue;
           break;
         case "coords":
-          coords = element.values.first.stringValue;
+          coords = element.values.first.dartStringValue;
           break;
         case "total":
-          total = element.values.first.stringValue;
+          total = element.values.first.dartIntValue?.toString();
           break;
         case "url":
-          url = element.values.first.stringValue;
+          url = element.values.first.dartStringValue;
           break;
         case "notes":
-          notes = element.values.first.stringValue;
+          notes = element.values.first.dartStringValue;
           break;
         default:
       }
     }
     return ParkingFeature(
+      id: id,
       address: address,
       name: name,
+      feeHours: feeHours,
+      openingHours: openingHours,
+      free: free,
       forecast: forecast,
       state: state,
       coords: coords,

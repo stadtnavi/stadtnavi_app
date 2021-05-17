@@ -79,54 +79,92 @@ class PBFParkingLayer extends CustomLayer {
                                     const SizedBox(
                                       height: 20,
                                     ),
+                                    if (element.id != null)
+                                      Text(
+                                        "id: ${element.id}",
+                                        style: TextStyle(
+                                          color:
+                                              theme.textTheme.bodyText1.color,
+                                        ),
+                                      ),
+                                    if (element.address != null)
                                     Text(
                                       "address: ${element.address}",
                                       style: TextStyle(
                                         color: theme.textTheme.bodyText1.color,
                                       ),
                                     ),
+                                    if (element.name != null)
                                     Text(
                                       "name: ${element.name}",
                                       style: TextStyle(
                                         color: theme.textTheme.bodyText1.color,
                                       ),
                                     ),
+                                    if (element.feeHours != null)
+                                    Text(
+                                      "feeHours: ${element.feeHours}",
+                                      style: TextStyle(
+                                        color: theme.textTheme.bodyText1.color,
+                                      ),
+                                    ),
+                                    if (element.openingHours != null)
+                                    Text(
+                                      "openingHours: ${element.openingHours}",
+                                      style: TextStyle(
+                                        color: theme.textTheme.bodyText1.color,
+                                      ),
+                                    ),
+                                    if (element.free != null)
+                                    Text(
+                                      "free: ${element.free}",
+                                      style: TextStyle(
+                                        color: theme.textTheme.bodyText1.color,
+                                      ),
+                                    ),
+                                    if (element.forecast != null)
                                     Text(
                                       "forecast: ${element.forecast}",
                                       style: TextStyle(
                                         color: theme.textTheme.bodyText1.color,
                                       ),
                                     ),
+                                    if (element.state != null)
                                     Text(
                                       "state: ${element.state}",
                                       style: TextStyle(
                                         color: theme.textTheme.bodyText1.color,
                                       ),
                                     ),
+                                    if (element.coords != null)
                                     Text(
                                       "coords: ${element.coords}",
                                       style: TextStyle(
                                         color: theme.textTheme.bodyText1.color,
                                       ),
                                     ),
+                                    if (element.total != null)
                                     Text(
                                       "total: ${element.total}",
                                       style: TextStyle(
                                         color: theme.textTheme.bodyText1.color,
                                       ),
                                     ),
+                                    if (element.url != null)
                                     Text(
                                       "url: ${element.url}",
                                       style: TextStyle(
                                         color: theme.textTheme.bodyText1.color,
                                       ),
                                     ),
+                                    if (element.notes != null)
                                     Text(
                                       "notes: ${element.notes}",
                                       style: TextStyle(
                                         color: theme.textTheme.bodyText1.color,
                                       ),
                                     ),
+                                    if (element.type != null)
                                     Text(
                                       "type: ${element.type}",
                                       style: TextStyle(
@@ -165,6 +203,11 @@ class PBFParkingLayer extends CustomLayer {
       path: "/map/v1/hb-parking-map/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);
+    if (response.statusCode != 200) {
+      throw Exception(
+        "Server Error on fetchPBF $uri with ${response.statusCode}",
+      );
+    }
     final bodyByte = response.bodyBytes;
     final tile = await VectorTile.fromByte(bytes: bodyByte);
 
