@@ -1,4 +1,3 @@
-
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -12,7 +11,6 @@ import 'package:vector_tile/vector_tile.dart';
 
 import 'pbf_stops_enum.dart';
 import 'pbf_stops_icon.dart';
-
 
 class PBFStopsLayer extends CustomLayer {
   final Map<String, StopFeature> _pbfMarkers = {};
@@ -133,6 +131,11 @@ class PBFStopsLayer extends CustomLayer {
       path: "/map/v1/stop-map/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);
+    if (response.statusCode != 200) {
+      throw Exception(
+        "Server Error on fetchPBF $uri with ${response.statusCode}",
+      );
+    }
     final bodyByte = response.bodyBytes;
     final tile = await VectorTile.fromByte(bytes: bodyByte);
 
@@ -142,7 +145,8 @@ class PBFStopsLayer extends CustomLayer {
 
         if (feature.geometryType == GeometryType.Point) {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
-          final StopFeature pointFeature = StopFeature.fromGeoJsonPoint(geojson);
+          final StopFeature pointFeature =
+              StopFeature.fromGeoJsonPoint(geojson);
           final gtfsId = pointFeature.gtfsId.first;
           final pbfLayer = pbfStopsLayers[pointFeature.type];
           pbfLayer?.addMarker(pointFeature, gtfsId);

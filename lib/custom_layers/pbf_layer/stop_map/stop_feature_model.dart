@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:vector_tile/vector_tile.dart';
@@ -36,25 +37,26 @@ class StopFeature {
     for (final element in geoJsonPoint.properties) {
       switch (element.keys.first) {
         case "code":
-          code = element.values.first.stringValue;
+          code = element.values.first.dartStringValue;
           break;
         case "gtfsId":
-          gtfsId = [element.values.first.stringValue];
+          gtfsId = [element.values.first.dartStringValue];
           break;
         case "name":
-          name = element.values.first.stringValue;
+          name = element.values.first.dartStringValue;
           break;
         case "parentStation":
-          parentStation = element.values.first.stringValue;
+          parentStation = element.values.first.dartStringValue;
           break;
         case "patterns":
-          patterns = element.values.first.stringValue;
+          patterns = element.values.first.dartStringValue;
           break;
         case "platform":
-          platform = element.values.first.stringValue;
+          platform = element.values.first.dartStringValue;
           break;
         case "type":
-          type = pbfStopsLayerIdsstringToEnum(element.values.first.stringValue);
+          type = pbfStopsLayerIdsstringToEnum(
+              element.values.first.dartStringValue);
           break;
         default:
       }
