@@ -20,6 +20,7 @@ void main() {
       configuration: setupTrufiConfiguration(),
       customLayers: [
         ...pbfStopsLayers.values,
+        ...pbfParkingLayers.values,
         Layer(LayerIds.publicToilets),
         Layer(LayerIds.charging),
         Layer(LayerIds.bicycleParking),
