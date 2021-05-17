@@ -10,6 +10,7 @@ import 'package:trufi_core/models/custom_layer.dart';
 import 'package:http/http.dart' as http;
 import 'package:vector_tile/vector_tile.dart';
 
+import 'pbf_stops_enum.dart';
 import 'pbf_stops_icon.dart';
 
 

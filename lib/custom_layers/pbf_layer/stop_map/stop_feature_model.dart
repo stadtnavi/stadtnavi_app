@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
-import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
 import 'package:vector_tile/vector_tile.dart';
+
+import 'pbf_stops_enum.dart';
 
 class StopFeature {
   final String code;

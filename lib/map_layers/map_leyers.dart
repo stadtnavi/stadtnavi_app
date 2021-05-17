@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/hb_parking_map/pbf_hb_parking_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/stop_map/pbf_stops_layer.dart';
 import 'package:trufi_core/models/map_tile_provider.dart';
 
@@ -93,6 +94,14 @@ class CustomTileProvider extends TileProvider {
     ).catchError((error) {
       log("$error");
     });
+    PBFParkingLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+
     return NetworkImage(getTileUrl(coords, options), headers: headers);
   }
 }

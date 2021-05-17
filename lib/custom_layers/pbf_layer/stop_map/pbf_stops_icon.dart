@@ -1,4 +1,5 @@
-import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
+
+import 'pbf_stops_enum.dart';
 
 const String _carpool = """
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="27" viewBox="0 0 16 22">
