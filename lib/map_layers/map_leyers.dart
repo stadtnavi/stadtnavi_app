@@ -2,8 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:stadtnavi_app/custom_layers/pbf_layer/hb_parking_map/pbf_hb_parking_layer.dart';
-import 'package:stadtnavi_app/custom_layers/pbf_layer/stop_map/pbf_stops_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/bike_parks/bike_parks_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/cifs/cifs_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parkings_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/stops_layer.dart';
 import 'package:trufi_core/models/map_tile_provider.dart';
 
 enum MapLayerIds {
@@ -87,21 +90,45 @@ class CustomTileProvider extends TileProvider {
   @override
   ImageProvider getImage(Coords<num> coords, TileLayerOptions options) {
     // inject pbf map layer
-    PBFStopsLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    PBFParkingLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-
+    _fetchPBF(coords);
     return NetworkImage(getTileUrl(coords, options), headers: headers);
+  }
+
+  Future<void> _fetchPBF(Coords<num> coords) async {
+    await StopsLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    await ParkingLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    await CityBikesLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    await BikeParkLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    await CifsLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
   }
 }
