@@ -21,6 +21,7 @@ void main() {
       customLayers: [
         cifsLayer,
         ...stopsLayers.values,
+        weatherLayer,
         parkingLayer,
         citybikeLayer,
         bikeParkLayer,

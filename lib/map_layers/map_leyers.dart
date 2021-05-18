@@ -7,6 +7,7 @@ import 'package:stadtnavi_app/custom_layers/pbf_layer/cifs/cifs_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parkings_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/stops_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_layer.dart';
 import 'package:trufi_core/models/map_tile_provider.dart';
 
 enum MapLayerIds {
@@ -132,5 +133,13 @@ class CustomTileProvider extends TileProvider {
     ).catchError((error) {
       log("$error");
     });
+    await WeatherLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    
   }
 }
