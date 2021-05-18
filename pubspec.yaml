@@ -6,7 +6,7 @@ issue_tracker: https://github.com/stadtnavi/stadtnavi-app/issues
 
 publish_to: 'none'
 
-version: 1.0.4+11
+version: 1.0.5+12
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -25,7 +25,12 @@ dependencies:
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
-      ref: 5ce524a8da13a38f86fee8ad356ad0a41c37355e
+      ref: f882b99a34f956941598a05aa101aff2da4b061d
+
+  vector_tile:
+    git:
+      url: https://github.com/trufi-association/dart-vector-tile.git
+      ref: fc916fd067cb4e64ab782e6249b4e296c7dba913
 
 
 dev_dependencies:
