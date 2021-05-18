@@ -11,6 +11,8 @@ import 'package:trufi_core/models/definition_feedback.dart';
 import 'package:trufi_core/models/enums/server_type.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'marker_configuration/custom_marker_configuration.dart';
+
 Configuration setupTrufiConfiguration() {
   // Abbreviations
   final abbreviations = {
@@ -61,7 +63,8 @@ Configuration setupTrufiConfiguration() {
     routeFeedbackUrl:
         "https://trufifeedback.z15.web.core.windows.net/route.html",
     donationUrl: "http://www.trufi.app/donate-inapp",
-    openTripPlannerUrl: "https://api.dev.stadtnavi.eu/routing/v1/router/index/graphql",
+    openTripPlannerUrl:
+        "https://api.dev.stadtnavi.eu/routing/v1/router/index/graphql",
     shareUrl: "https://appurl.io/BOPP7QnKX",
   );
 
@@ -102,6 +105,7 @@ Configuration setupTrufiConfiguration() {
     teamInformationEmail: "info@trufi.app",
     attribution: attribution,
     animations: AnimationConfiguration(),
+    markers: const CustomMarkerConfiguration(),
     map: map,
     urls: urls,
   );
