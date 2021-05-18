@@ -1,7 +1,7 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:stadtnavi_app/custom_layers/pbf_layer/stop_map/stop_feature_model.dart';
+// import 'package:stadtnavi_app/custom_layers/pbf_layer/stop_map/stop_feature_model.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
@@ -9,13 +9,14 @@ import 'package:trufi_core/models/custom_layer.dart';
 import 'package:http/http.dart' as http;
 import 'package:vector_tile/vector_tile.dart';
 
-import 'pbf_stops_enum.dart';
-import 'pbf_stops_icon.dart';
+import 'stop_feature_model.dart';
+import 'stops_enum.dart';
+import 'stops_icon.dart';
 
-class PBFStopsLayer extends CustomLayer {
+class StopsLayer extends CustomLayer {
   final Map<String, StopFeature> _pbfMarkers = {};
 
-  PBFStopsLayer(PBFStopsLayerIds layerId) : super(layerId.enumToString());
+  StopsLayer(StopsLayerIds layerId) : super(layerId.enumToString());
   void addMarker(StopFeature pointFeature, String gtfsId) {
     if (pointFeature.type != null) {
       final duplicatedPointFeature = _pbfMarkers.values.firstWhere(
@@ -116,19 +117,19 @@ class PBFStopsLayer extends CustomLayer {
                           },
                         );
                       },
-                      child: SvgPicture.string(markerIcons[element.type] ?? ""),
+                      child: SvgPicture.string(stopsIcons[element.type] ?? ""),
                     ),
                   ))
               .toList()
           : [],
     );
   }
-
+// https://api.dev.stadtnavi.eu/routing/v1/router/vectorTiles/stops/14/8595/5654.pbf
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: "api.stadtnavi.de",
-      path: "/map/v1/stop-map/$z/$x/$y.pbf",
+      host: "api.dev.stadtnavi.eu",      
+      path: "/routing/v1/router/vectorTiles/stops/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);
     if (response.statusCode != 200) {
@@ -148,7 +149,7 @@ class PBFStopsLayer extends CustomLayer {
           final StopFeature pointFeature =
               StopFeature.fromGeoJsonPoint(geojson);
           final gtfsId = pointFeature.gtfsId.first;
-          final pbfLayer = pbfStopsLayers[pointFeature.type];
+          final pbfLayer = stopsLayers[pointFeature.type];
           pbfLayer?.addMarker(pointFeature, gtfsId);
         } else {
           throw Exception("Should never happened, Feature is not a point");

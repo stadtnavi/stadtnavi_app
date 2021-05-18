@@ -1,5 +1,5 @@
 
-import 'pbf_stops_enum.dart';
+import 'stops_enum.dart';
 
 const String _carpool = """
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="27" viewBox="0 0 16 22">
@@ -51,8 +51,8 @@ const String _rail = """
   </g>
 </svg>
 """;
-const Map<PBFStopsLayerIds, String> markerIcons = {
-  PBFStopsLayerIds.carpool: _carpool,
-  PBFStopsLayerIds.bus: _bus,
-  PBFStopsLayerIds.rail: _rail,
+const Map<StopsLayerIds, String> stopsIcons = {
+  StopsLayerIds.carpool: _carpool,
+  StopsLayerIds.bus: _bus,
+  StopsLayerIds.rail: _rail,
 };

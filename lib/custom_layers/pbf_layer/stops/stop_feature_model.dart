@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:vector_tile/vector_tile.dart';
 
-import 'pbf_stops_enum.dart';
+import 'stops_enum.dart';
 
 class StopFeature {
   final String code;
@@ -12,7 +12,7 @@ class StopFeature {
   final String parentStation;
   final String patterns;
   final String platform;
-  final PBFStopsLayerIds type;
+  final StopsLayerIds type;
 
   final LatLng position;
   StopFeature({
@@ -33,7 +33,7 @@ class StopFeature {
     String parentStation;
     String patterns;
     String platform;
-    PBFStopsLayerIds type;
+    StopsLayerIds type;
     for (final element in geoJsonPoint.properties) {
       switch (element.keys.first) {
         case "code":
@@ -55,7 +55,7 @@ class StopFeature {
           platform = element.values.first.dartStringValue;
           break;
         case "type":
-          type = pbfStopsLayerIdsstringToEnum(
+          type = stopsLayerIdsstringToEnum(
               element.values.first.dartStringValue);
           break;
         default:
