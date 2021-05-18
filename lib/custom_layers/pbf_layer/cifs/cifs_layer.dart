@@ -114,7 +114,6 @@ class CifsLayer extends CustomLayer {
     );
   }
 
-// https://api.dev.stadtnavi.eu/map/v1/cifs/14/8595/5654.pbf
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",

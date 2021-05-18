@@ -77,11 +77,6 @@ class WeatherLayer extends CustomLayer {
                                     const SizedBox(
                                       height: 20,
                                     ),
-                                    //                                      final  String airTemperatureC;
-                                    //  final  String roadTemperatureC;
-                                    //  final  String precipitationType;
-                                    //  final  String roadCondition;
-                                    //  final  String updatedAt;
                                     if (element.airTemperatureC != null)
                                       Text(
                                         "airTemperatureC: ${element.airTemperatureC}",
@@ -147,7 +142,6 @@ class WeatherLayer extends CustomLayer {
     );
   }
 
-//https://api.dev.stadtnavi.eu/map/v1/weather-stations/15/17193/11311.pbf
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
@@ -171,7 +165,6 @@ class WeatherLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final WeatherFeature pointFeature =
               WeatherFeature.fromGeoJsonPoint(geojson);
-          // final pbfLayer = pbfParkingLayers[pointFeature.type];
           weatherLayer?.addMarker(pointFeature);
         } else {
           throw Exception("Should never happened, Feature is not a point");

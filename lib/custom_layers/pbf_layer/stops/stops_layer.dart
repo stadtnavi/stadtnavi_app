@@ -1,7 +1,6 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-// import 'package:stadtnavi_app/custom_layers/pbf_layer/stop_map/stop_feature_model.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
@@ -124,7 +123,7 @@ class StopsLayer extends CustomLayer {
           : [],
     );
   }
-// https://api.dev.stadtnavi.eu/routing/v1/router/vectorTiles/stops/14/8595/5654.pbf
+  
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",

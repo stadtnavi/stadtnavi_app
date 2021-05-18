@@ -1,7 +1,6 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-// import 'package:stadtnavi_app/custom_layers/pbf_layer/stop_map/stop_feature_model.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
@@ -113,7 +112,6 @@ class CityBikesLayer extends CustomLayer {
     );
   }
 
-// https://api.dev.stadtnavi.eu/routing/v1/router/vectorTiles/citybikes/14/8595/5654.pbf
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
@@ -137,7 +135,6 @@ class CityBikesLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final CityBikeFeature pointFeature =
               CityBikeFeature.fromGeoJsonPoint(geojson);
-          // final pbfLayer = stopsLayers[pointFeature.type];
           citybikeLayer?.addMarker(pointFeature);
         } else {
           throw Exception("Should never happened, Feature is not a point");

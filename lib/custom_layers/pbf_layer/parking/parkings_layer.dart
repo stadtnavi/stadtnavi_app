@@ -194,7 +194,7 @@ class ParkingLayer extends CustomLayer {
           : [],
     );
   }
-// https://api.dev.stadtnavi.eu/map/v1/hb-parking-map/14/8595/5654.pbf
+
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
@@ -218,7 +218,6 @@ class ParkingLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final ParkingFeature pointFeature =
               ParkingFeature.fromGeoJsonPoint(geojson);
-          // final pbfLayer = pbfParkingLayers[pointFeature.type];
           parkingLayer?.addMarker(pointFeature);
         } else {
           throw Exception("Should never happened, Feature is not a point");
