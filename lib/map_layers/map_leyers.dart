@@ -1,5 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/bike_parks/bike_parks_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/cifs/cifs_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parkings_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/stops_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_layer.dart';
 import 'package:trufi_core/models/map_tile_provider.dart';
 
 enum MapLayerIds {
@@ -23,17 +31,17 @@ extension LayerIdsToString on MapLayerIds {
 Map<MapLayerIds, List<LayerOptions>> mapLayerOptions = {
   MapLayerIds.streets: [
     TileLayerOptions(
-      tileProvider: NetworkTileProvider(),
+      tileProvider: CustomTileProvider(),
       urlTemplate: "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
     ),
   ],
   MapLayerIds.satellite: [
     TileLayerOptions(
-      tileProvider: NetworkTileProvider(),
+      tileProvider: CustomTileProvider(),
       urlTemplate: "https://api.stadtnavi.de/tiles/orthophoto/{z}/{x}/{y}.jpg",
     ),
     TileLayerOptions(
-      tileProvider: NetworkTileProvider(),
+      tileProvider: CustomTileProvider(),
       backgroundColor: Colors.transparent,
       urlTemplate:
           "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
@@ -41,6 +49,7 @@ Map<MapLayerIds, List<LayerOptions>> mapLayerOptions = {
   ],
   MapLayerIds.bike: [
     TileLayerOptions(
+      tileProvider: CustomTileProvider(),
       urlTemplate:
           "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
       subdomains: ["a", "b", "c"],
@@ -74,13 +83,63 @@ class MapLayer extends MapTileProvider {
       );
 }
 
-class NetworkTileProvider extends TileProvider {
+class CustomTileProvider extends TileProvider {
   Map<String, String> headers;
-  NetworkTileProvider({
+  CustomTileProvider({
     this.headers = const {"Referer": "https://herrenberg.stadtnavi.de/"},
   });
   @override
   ImageProvider getImage(Coords<num> coords, TileLayerOptions options) {
+    // inject pbf map layer only if zoom is greater than 12
+    if( coords.z.toInt()>12) {
+      _fetchPBF(coords);
+    }
     return NetworkImage(getTileUrl(coords, options), headers: headers);
+  }
+
+  Future<void> _fetchPBF(Coords<num> coords) async {
+    await StopsLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    await ParkingLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    await CityBikesLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    await BikeParkLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    await CifsLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    await WeatherLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    
   }
 }

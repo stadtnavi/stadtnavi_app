@@ -127,6 +127,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.0"
+  fixnum:
+    dependency: transitive
+    description:
+      name: fixnum
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.10.11"
   flare_flutter:
     dependency: transitive
     description:
@@ -434,6 +441,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
+  protobuf:
+    dependency: transitive
+    description:
+      name: protobuf
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.3"
   provider:
     dependency: transitive
     description:
@@ -576,8 +590,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "5ce524a8da13a38f86fee8ad356ad0a41c37355e"
-      resolved-ref: "5ce524a8da13a38f86fee8ad356ad0a41c37355e"
+      ref: f882b99a34f956941598a05aa101aff2da4b061d
+      resolved-ref: f882b99a34f956941598a05aa101aff2da4b061d
       url: "https://github.com/trufi-association/trufi-core.git"
     source: git
     version: "2.0.0"
@@ -665,6 +679,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  vector_tile:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: fc916fd067cb4e64ab782e6249b4e296c7dba913
+      resolved-ref: fc916fd067cb4e64ab782e6249b4e296c7dba913
+      url: "https://github.com/trufi-association/dart-vector-tile.git"
+    source: git
+    version: "0.1.6"
   win32:
     dependency: transitive
     description:
