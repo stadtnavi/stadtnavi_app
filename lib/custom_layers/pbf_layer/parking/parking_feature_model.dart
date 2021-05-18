@@ -1,9 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:vector_tile/vector_tile.dart';
 
-import 'pbf_stops_enum.dart';
+import 'parkings_enum.dart';
 
 class ParkingFeature {
   final String id;
@@ -19,7 +18,7 @@ class ParkingFeature {
   final String url;
   final String notes;
 
-  final PBFParkingLayerIds type;
+  final ParkingsLayerIds type;
 
   final LatLng position;
   ParkingFeature({
@@ -52,7 +51,7 @@ class ParkingFeature {
     String total;
     String url;
     String notes;
-    PBFParkingLayerIds type;
+    ParkingsLayerIds type;
     for (final element in geoJsonPoint.properties) {
       switch (element.keys.first) {
         case "id":
@@ -75,10 +74,10 @@ class ParkingFeature {
           openingHours = element.values.first.dartStringValue;
           break;
         case "free":
-          free = element.values.first.dartStringValue;
+          free = element.values.first.dartIntValue?.toString();
           break;
         case "forecast":
-          forecast = element.values.first.dartStringValue;
+          forecast = element.values.first.dartBoolValue?.toString();
           break;
         case "state":
           state = element.values.first.dartStringValue;
@@ -98,6 +97,7 @@ class ParkingFeature {
         default:
       }
     }
+
     return ParkingFeature(
       id: id,
       address: address,

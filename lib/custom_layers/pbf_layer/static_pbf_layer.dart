@@ -1,34 +1,12 @@
-import './stop_map/pbf_stops_layer.dart';
-import 'hb_parking_map/pbf_hb_parking_layer.dart';
-import 'hb_parking_map/pbf_stops_enum.dart';
-import 'stop_map/pbf_stops_enum.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/stops_layer.dart';
 
-final Map<PBFStopsLayerIds, PBFStopsLayer> pbfStopsLayers = {
-  PBFStopsLayerIds.bus: PBFStopsLayer(PBFStopsLayerIds.bus),
-  PBFStopsLayerIds.rail: PBFStopsLayer(PBFStopsLayerIds.rail),
-  PBFStopsLayerIds.carpool: PBFStopsLayer(PBFStopsLayerIds.carpool),
+import 'parking/parkings_layer.dart';
+import 'stops/stops_enum.dart';
+
+final Map<StopsLayerIds, StopsLayer> stopsLayers = {
+  StopsLayerIds.bus: StopsLayer(StopsLayerIds.bus),
+  StopsLayerIds.rail: StopsLayer(StopsLayerIds.rail),
+  StopsLayerIds.carpool: StopsLayer(StopsLayerIds.carpool),
 };
 
-final Map<PBFParkingLayerIds, PBFParkingLayer> pbfParkingLayers = {
-  PBFParkingLayerIds.parkingGarage: PBFParkingLayer(
-    PBFParkingLayerIds.parkingGarage,
-  ),
-  PBFParkingLayerIds.parkingSpot: PBFParkingLayer(
-    PBFParkingLayerIds.parkingSpot,
-  ),
-  PBFParkingLayerIds.rvParking: PBFParkingLayer(
-    PBFParkingLayerIds.rvParking,
-  ),
-  PBFParkingLayerIds.parkRide: PBFParkingLayer(
-    PBFParkingLayerIds.parkRide,
-  ),
-  PBFParkingLayerIds.undergroundCarPark: PBFParkingLayer(
-    PBFParkingLayerIds.undergroundCarPark,
-  ),
-  PBFParkingLayerIds.barrierFreeParkingSpace: PBFParkingLayer(
-    PBFParkingLayerIds.barrierFreeParkingSpace,
-  ),
-  PBFParkingLayerIds.parkCarpool: PBFParkingLayer(
-    PBFParkingLayerIds.parkCarpool,
-  ),
-};
+final ParkingLayer parkingLayer = ParkingLayer("Parking");

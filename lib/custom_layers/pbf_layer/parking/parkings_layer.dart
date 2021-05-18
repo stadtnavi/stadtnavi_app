@@ -8,14 +8,13 @@ import 'package:trufi_core/models/custom_layer.dart';
 import 'package:http/http.dart' as http;
 import 'package:vector_tile/vector_tile.dart';
 
-import 'hb_parking_feature_model.dart';
-import 'pbf_hb_parking_icon.dart';
-import 'pbf_stops_enum.dart';
+import 'parking_feature_model.dart';
+import 'parking_icons.dart';
 
-class PBFParkingLayer extends CustomLayer {
+class ParkingLayer extends CustomLayer {
   final Map<String, ParkingFeature> _pbfMarkers = {};
 
-  PBFParkingLayer(PBFParkingLayerIds layerId) : super(layerId.enumToString());
+  ParkingLayer(String id) : super(id);
   void addMarker(ParkingFeature pointFeature) {
     if (_pbfMarkers[pointFeature.name] == null) {
       _pbfMarkers[pointFeature.name] = pointFeature;
@@ -195,11 +194,11 @@ class PBFParkingLayer extends CustomLayer {
           : [],
     );
   }
-
+// https://api.dev.stadtnavi.eu/map/v1/hb-parking-map/14/8595/5654.pbf
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: "api.stadtnavi.de",
+      host: "api.dev.stadtnavi.eu",
       path: "/map/v1/hb-parking-map/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);
@@ -219,8 +218,8 @@ class PBFParkingLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final ParkingFeature pointFeature =
               ParkingFeature.fromGeoJsonPoint(geojson);
-          final pbfLayer = pbfParkingLayers[pointFeature.type];
-          pbfLayer?.addMarker(pointFeature);
+          // final pbfLayer = pbfParkingLayers[pointFeature.type];
+          parkingLayer?.addMarker(pointFeature);
         } else {
           throw Exception("Should never happened, Feature is not a point");
         }

@@ -1,4 +1,4 @@
-import 'pbf_stops_enum.dart';
+import 'parkings_enum.dart';
 
 const String _parking = """
 <svg xmlns="http://www.w3.org/2000/svg" width="22.857142857142854" height="22.857142857142854" viewBox="0 0 32.529998779296875 32.529998779296875">
@@ -54,12 +54,12 @@ const String _parkingCarpool = """
 </svg>
 """;
 
-const Map<PBFParkingLayerIds, String> parkingMarkerIcons = {
-  PBFParkingLayerIds.parkingGarage: _parkingGarage,
-  PBFParkingLayerIds.parkingSpot: _parking,
-  PBFParkingLayerIds.rvParking: _rvParking,
-  PBFParkingLayerIds.parkRide: _parkingRide,
-  PBFParkingLayerIds.undergroundCarPark: _parkingGarage,
-  PBFParkingLayerIds.barrierFreeParkingSpace: _parking,
-  PBFParkingLayerIds.parkCarpool: _parkingCarpool,
+const Map<ParkingsLayerIds, String> parkingMarkerIcons = {
+  ParkingsLayerIds.parkingGarage: _parkingGarage,
+  ParkingsLayerIds.parkingSpot: _parking,
+  ParkingsLayerIds.rvParking: _rvParking,
+  ParkingsLayerIds.parkRide: _parkingRide,
+  ParkingsLayerIds.undergroundCarPark: _parkingGarage,
+  ParkingsLayerIds.barrierFreeParkingSpace: _parking,
+  ParkingsLayerIds.parkCarpool: _parkingCarpool,
 };
