@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:vector_tile/vector_tile.dart';
@@ -55,11 +54,14 @@ class StopFeature {
           platform = element.values.first.dartStringValue;
           break;
         case "type":
-          type = stopsLayerIdsstringToEnum(
-              element.values.first.dartStringValue);
+          type =
+              stopsLayerIdsstringToEnum(element.values.first.dartStringValue);
           break;
         default:
       }
+    }
+    if (type == StopsLayerIds.carpool && !name.contains("P+M")) {
+      type = null;
     }
     return StopFeature(
       code: code,
