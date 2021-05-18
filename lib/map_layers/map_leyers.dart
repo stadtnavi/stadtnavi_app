@@ -89,8 +89,10 @@ class CustomTileProvider extends TileProvider {
   });
   @override
   ImageProvider getImage(Coords<num> coords, TileLayerOptions options) {
-    // inject pbf map layer
-    _fetchPBF(coords);
+    // inject pbf map layer only if zoom is greater than 12
+    if( coords.z.toInt()>12) {
+      _fetchPBF(coords);
+    }
     return NetworkImage(getTileUrl(coords, options), headers: headers);
   }
 
