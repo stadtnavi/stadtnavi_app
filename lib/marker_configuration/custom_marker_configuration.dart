@@ -23,8 +23,8 @@ class CustomMarkerConfiguration implements MarkerConfiguration {
   Marker buildFromMarker(LatLng point) {
     return Marker(
       point: point,
-      width: 26.0,
-      height: 26.0,
+      width: 28.0,
+      height: 28.0,
       anchorPos: AnchorPos.align(AnchorAlign.center),
       builder: (context) {
         return _buildMarker(fromMarker);
@@ -36,8 +36,8 @@ class CustomMarkerConfiguration implements MarkerConfiguration {
   Marker buildToMarker(LatLng point) {
     return Marker(
       point: point,
-      width: 26.0,
-      height: 26.0,
+      width: 28.0,
+      height: 28.0,
       anchorPos: AnchorPos.align(AnchorAlign.top),
       builder: (context) {
         return _buildMarker(toMarker);
