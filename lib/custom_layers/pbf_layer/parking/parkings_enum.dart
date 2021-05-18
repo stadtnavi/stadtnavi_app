@@ -9,20 +9,20 @@ enum ParkingsLayerIds {
   parkCarpool,
 }
 
-extension PBFParkingLayerIdsToString on ParkingsLayerIds {
-  String enumToString() {
-    final Map<ParkingsLayerIds, String> enumStrings = {
-      ParkingsLayerIds.parkingGarage: "Parking Garage",
-      ParkingsLayerIds.parkingSpot: "Parking Spot",
-      ParkingsLayerIds.rvParking: "RV Parking",
-      ParkingsLayerIds.parkRide: "Park Ride",
-      ParkingsLayerIds.undergroundCarPark: "Underground car park",
-      ParkingsLayerIds.barrierFreeParkingSpace: "Barrier-free parking space",
-      ParkingsLayerIds.parkCarpool: "Park Carpool",
-    };
-    return enumStrings[this];
-  }
-}
+// extension PBFParkingLayerIdsToString on ParkingsLayerIds {
+//   String enumToString() {
+//     final Map<ParkingsLayerIds, String> enumStrings = {
+//       ParkingsLayerIds.parkingGarage: "Parking Garage",
+//       ParkingsLayerIds.parkingSpot: "Parking Spot",
+//       ParkingsLayerIds.rvParking: "RV Parking",
+//       ParkingsLayerIds.parkRide: "Park Ride",
+//       ParkingsLayerIds.undergroundCarPark: "Underground car park",
+//       ParkingsLayerIds.barrierFreeParkingSpace: "Barrier-free parking space",
+//       ParkingsLayerIds.parkCarpool: "Park Carpool",
+//     };
+//     return enumStrings[this];
+//   }
+// }
 
 ParkingsLayerIds pbfParkingLayerIdsstringToEnum(String id) {
   final Map<String, ParkingsLayerIds> enumStrings = {
