@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stadtnavi_app/configuration_service.dart';
 import 'package:stadtnavi_app/custom_layers/layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
 import 'package:stadtnavi_app/custom_search_location/online_search_location.dart';
 import 'package:stadtnavi_app/custom_social_media/youtube_social_media.dart';
 import 'package:stadtnavi_app/map_layers/map_leyers.dart';
@@ -18,6 +19,12 @@ void main() {
       theme: stadtnaviTheme,
       configuration: setupTrufiConfiguration(),
       customLayers: [
+        cifsLayer,
+        ...stopsLayers.values,
+        weatherLayer,
+        parkingLayer,
+        citybikeLayer,
+        bikeParkLayer,
         Layer(LayerIds.publicToilets),
         Layer(LayerIds.charging),
         Layer(LayerIds.bicycleParking),
