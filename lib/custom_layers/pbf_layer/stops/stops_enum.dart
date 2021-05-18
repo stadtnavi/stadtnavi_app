@@ -2,6 +2,7 @@ enum StopsLayerIds {
   bus,
   carpool,
   rail,
+  subway,
 }
 
 extension StopsLayerIdsIdsToString on StopsLayerIds {
@@ -10,6 +11,7 @@ extension StopsLayerIdsIdsToString on StopsLayerIds {
       StopsLayerIds.bus: "Bus stops",
       StopsLayerIds.rail: "Train stations",
       StopsLayerIds.carpool: "Carpool stops",
+      StopsLayerIds.subway: "Metro Station",
     };
     return enumStrings[this];
   }
@@ -20,6 +22,7 @@ StopsLayerIds stopsLayerIdsstringToEnum(String id) {
     "BUS": StopsLayerIds.bus,
     "CARPOOL": StopsLayerIds.carpool,
     "RAIL": StopsLayerIds.rail,
+    "SUBWAY": StopsLayerIds.subway,
   };
   return enumStrings[id];
 }

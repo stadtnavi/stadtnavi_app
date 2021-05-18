@@ -11,6 +11,7 @@ final Map<StopsLayerIds, StopsLayer> stopsLayers = {
   StopsLayerIds.bus: StopsLayer(StopsLayerIds.bus),
   StopsLayerIds.rail: StopsLayer(StopsLayerIds.rail),
   StopsLayerIds.carpool: StopsLayer(StopsLayerIds.carpool),
+  StopsLayerIds.subway: StopsLayer(StopsLayerIds.subway),
 };
 
 final ParkingLayer parkingLayer = ParkingLayer("Parking");
