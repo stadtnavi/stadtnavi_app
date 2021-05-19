@@ -38,16 +38,14 @@ class Agency {
         phone: json['phone'].toString(),
         fareUrl: json['fareUrl'].toString(),
         routes: json['routes'] != null
-            ? List.generate(
-                (json['routes'] as List).length,
-                (index) => Route.fromJson(
-                    json['routes'][index] as Map<String, dynamic>))
+            ? List<Route>.from((json["routes"] as List<dynamic>).map(
+                (x) => Route.fromJson(x as Map<String, dynamic>),
+              ))
             : null,
         alerts: json['alerts'] != null
-            ? List.generate(
-                (json['alerts'] as List).length,
-                (index) => Alert.fromJson(
-                    json['alerts'][index] as Map<String, dynamic>))
+            ? List<Alert>.from((json["alerts"] as List<dynamic>).map(
+                (x) => Alert.fromJson(x as Map<String, dynamic>),
+              ))
             : null,
       );
 
