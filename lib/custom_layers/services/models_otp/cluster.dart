@@ -1,14 +1,14 @@
 import 'stop.dart';
 
 class Cluster {
-  String id;
-  String gtfsId;
-  String name;
-  double lat;
-  double lon;
-  List<Stop> stops;
+  final String id;
+  final String gtfsId;
+  final String name;
+  final double lat;
+  final double lon;
+  final List<Stop> stops;
 
-  Cluster({
+  const Cluster({
     this.id,
     this.gtfsId,
     this.name,

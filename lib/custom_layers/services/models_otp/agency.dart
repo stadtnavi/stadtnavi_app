@@ -4,18 +4,18 @@ import 'alert.dart';
 import 'route.dart';
 
 class Agency {
-  int id;
-  String gtfsId;
-  String name;
-  String url;
-  String timezone;
-  String lang;
-  String phone;
-  String fareUrl;
-  List<Route> routes;
-  List<Alert> alerts;
+  final int id;
+  final String gtfsId;
+  final String name;
+  final String url;
+  final String timezone;
+  final String lang;
+  final String phone;
+  final String fareUrl;
+  final List<Route> routes;
+  final List<Alert> alerts;
 
-  Agency({
+  const Agency({
     @required this.id,
     @required this.gtfsId,
     @required this.name,

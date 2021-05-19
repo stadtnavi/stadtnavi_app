@@ -1,11 +1,11 @@
 import 'place_interface.dart';
 
 class PlaceAtDistance {
-  String id;
-  PlaceInterface place;
-  int distance;
+  final String id;
+  final PlaceInterface place;
+  final int distance;
 
-  PlaceAtDistance({this.id, this.place, this.distance});
+  const PlaceAtDistance({this.id, this.place, this.distance});
 
   factory PlaceAtDistance.fromJson(Map<String, dynamic> json) =>
       PlaceAtDistance(

@@ -11,34 +11,35 @@ import 'stop.dart';
 import 'trip.dart';
 
 class Leg {
-  double startTime;
-  double endTime;
-  int departureDelay;
-  int arrivalDelay;
-  Mode mode;
-  double duration;
-  int generalizedCost;
-  Geometry legGeometry;
-  Agency agency;
-  bool realTime;
-  RealtimeState realtimeState;
-  double distance;
-  bool transitLeg;
-  bool rentedBike;
-  Place from;
-  Place to;
-  Route route;
-  Trip trip;
-  String serviceDate;
-  List<Stop> intermediateStops;
-  List<Place> intermediatePlaces;
-  bool intermediatePlace;
-  List<Step> steps;
-  PickupDropoffType pickupType;
-  PickupDropoffType dropoffType;
-  bool interlineWithPreviousLeg;
-  List<Alert> alerts;
-  Leg(
+  final double startTime;
+  final double endTime;
+  final int departureDelay;
+  final int arrivalDelay;
+  final Mode mode;
+  final double duration;
+  final int generalizedCost;
+  final Geometry legGeometry;
+  final Agency agency;
+  final bool realTime;
+  final RealtimeState realtimeState;
+  final double distance;
+  final bool transitLeg;
+  final bool rentedBike;
+  final Place from;
+  final Place to;
+  final Route route;
+  final Trip trip;
+  final String serviceDate;
+  final List<Stop> intermediateStops;
+  final List<Place> intermediatePlaces;
+  final bool intermediatePlace;
+  final List<Step> steps;
+  final PickupDropoffType pickupType;
+  final PickupDropoffType dropoffType;
+  final bool interlineWithPreviousLeg;
+  final List<Alert> alerts;
+
+  const Leg(
       {this.startTime,
       this.endTime,
       this.departureDelay,

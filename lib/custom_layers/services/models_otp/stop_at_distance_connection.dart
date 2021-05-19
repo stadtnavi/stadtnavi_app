@@ -2,10 +2,10 @@ import 'page_info.dart';
 import 'stop_at_distance_edge.dart';
 
 class StopAtDistanceConnection {
-  List<StopAtDistanceEdge> edges;
-  PageInfo pageInfo;
+  final List<StopAtDistanceEdge> edges;
+  final PageInfo pageInfo;
 
-  StopAtDistanceConnection({
+  const StopAtDistanceConnection({
     this.edges,
     this.pageInfo,
   });

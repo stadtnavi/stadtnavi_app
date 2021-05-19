@@ -1,8 +1,8 @@
 class ElevationProfileComponent {
-  double distance;
-  double elevation;
+  final double distance;
+  final double elevation;
 
-  ElevationProfileComponent({this.distance, this.elevation});
+  const ElevationProfileComponent({this.distance, this.elevation});
 
   factory ElevationProfileComponent.fromJson(Map<String, dynamic> json) =>
       ElevationProfileComponent(

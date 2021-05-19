@@ -6,33 +6,35 @@ import 'stop.dart';
 import 'trip.dart';
 
 class Pattern {
-  String id;
-  Route route;
-  int directionId;
-  String name;
-  String code;
-  String headsign;
-  List<Trip> trips;
-  List<Trip> tripsForDate;
-  List<Stop> stops;
-  List<Coordinates> geometry;
-  Geometry patternGeometry;
-  String semanticHash;
-  List<Alert> alerts;
-  Pattern(
-      {this.id,
-      this.route,
-      this.directionId,
-      this.name,
-      this.code,
-      this.headsign,
-      this.trips,
-      this.tripsForDate,
-      this.stops,
-      this.geometry,
-      this.patternGeometry,
-      this.semanticHash,
-      this.alerts});
+  final String id;
+  final Route route;
+  final int directionId;
+  final String name;
+  final String code;
+  final String headsign;
+  final List<Trip> trips;
+  final List<Trip> tripsForDate;
+  final List<Stop> stops;
+  final List<Coordinates> geometry;
+  final Geometry patternGeometry;
+  final String semanticHash;
+  final List<Alert> alerts;
+
+  const Pattern({
+    this.id,
+    this.route,
+    this.directionId,
+    this.name,
+    this.code,
+    this.headsign,
+    this.trips,
+    this.tripsForDate,
+    this.stops,
+    this.geometry,
+    this.patternGeometry,
+    this.semanticHash,
+    this.alerts,
+  });
 
   factory Pattern.fromJson(Map<String, dynamic> json) => Pattern(
         id: json['id'].toString(),

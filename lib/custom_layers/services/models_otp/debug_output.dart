@@ -1,11 +1,11 @@
 class DebugOutput {
-  double totalTime;
-  double pathCalculationTime;
-  double precalculationTime;
-  double renderingTime;
-  bool timedOut;
+  final double totalTime;
+  final double pathCalculationTime;
+  final double precalculationTime;
+  final double renderingTime;
+  final bool timedOut;
 
-  DebugOutput({
+  const DebugOutput({
     this.totalTime,
     this.pathCalculationTime,
     this.precalculationTime,

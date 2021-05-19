@@ -2,20 +2,20 @@ import 'fare.dart';
 import 'leg.dart';
 
 class Itinerary {
-  double startTime;
-  double endTime;
-  double duration;
-  int generalizedCost;
-  double waitingTime;
-  double walkTime;
-  double walkDistance;
-  List<Leg> legs;
-  List<Fare> fares;
-  double elevationGained;
-  double elevationLost;
-  bool arrivedAtDestinationWithRentedBicycle;
+  final double startTime;
+  final double endTime;
+  final double duration;
+  final int generalizedCost;
+  final double waitingTime;
+  final double walkTime;
+  final double walkDistance;
+  final List<Leg> legs;
+  final List<Fare> fares;
+  final double elevationGained;
+  final double elevationLost;
+  final bool arrivedAtDestinationWithRentedBicycle;
 
-  Itinerary({
+  const Itinerary({
     this.startTime,
     this.endTime,
     this.duration,

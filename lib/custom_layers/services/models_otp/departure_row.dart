@@ -3,14 +3,14 @@ import 'stop.dart';
 import 'stoptime.dart';
 
 class DepartureRow {
-  String id;
-  Stop stop;
-  double lat;
-  double lon;
-  Pattern pattern;
-  List<Stoptime> stoptimes;
+  final String id;
+  final Stop stop;
+  final double lat;
+  final double lon;
+  final Pattern pattern;
+  final List<Stoptime> stoptimes;
 
-  DepartureRow({
+  const DepartureRow({
     this.id,
     this.stop,
     this.lat,

@@ -1,19 +1,19 @@
 class BikeRentalStation {
-  String id;
-  String stationId;
-  String name;
-  int bikesAvailable;
-  int spacesAvailable;
-  String state;
-  bool realtime;
-  bool allowDropoff;
-  List<String> networks;
-  double lon;
-  double lat;
-  int capacity;
-  bool allowOverloading;
+  final String id;
+  final String stationId;
+  final String name;
+  final int bikesAvailable;
+  final int spacesAvailable;
+  final String state;
+  final bool realtime;
+  final bool allowDropoff;
+  final List<String> networks;
+  final double lon;
+  final double lat;
+  final int capacity;
+  final bool allowOverloading;
 
-  BikeRentalStation({
+  const BikeRentalStation({
     this.id,
     this.stationId,
     this.name,

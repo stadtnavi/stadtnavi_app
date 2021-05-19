@@ -1,12 +1,13 @@
 class BikePark {
-  String id;
-  String bikeParkId;
-  String name;
-  int spacesAvailable;
-  bool realtime;
-  double lon;
-  double lat;
-  BikePark({
+  final String id;
+  final String bikeParkId;
+  final String name;
+  final int spacesAvailable;
+  final bool realtime;
+  final double lon;
+  final double lat;
+
+  const BikePark({
     this.id,
     this.bikeParkId,
     this.name,

@@ -1,12 +1,12 @@
 import 'fare_component.dart';
 
 class Fare {
-  String type;
-  String currency;
-  int cents;
-  List<FareComponent> components;
+  final String type;
+  final String currency;
+  final int cents;
+  final List<FareComponent> components;
 
-  Fare({
+  const Fare({
     this.type,
     this.currency,
     this.cents,

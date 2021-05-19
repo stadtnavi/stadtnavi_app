@@ -3,18 +3,18 @@ import 'itinerary.dart';
 import 'place.dart';
 
 class Plan {
-  double date;
-  Place from;
-  Place to;
-  List<Itinerary> itineraries;
-  List<String> messageEnums;
-  List<String> messageStrings;
-  double prevDateTime;
-  double nextDateTime;
-  double searchWindowUsed;
-  DebugOutput debugOutput;
+  final double date;
+  final Place from;
+  final Place to;
+  final List<Itinerary> itineraries;
+  final List<String> messageEnums;
+  final List<String> messageStrings;
+  final double prevDateTime;
+  final double nextDateTime;
+  final double searchWindowUsed;
+  final DebugOutput debugOutput;
 
-  Plan({
+  const Plan({
     this.date,
     this.from,
     this.to,

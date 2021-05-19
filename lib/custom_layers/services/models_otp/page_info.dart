@@ -1,10 +1,10 @@
 class PageInfo {
-  bool hasNextPage;
-  bool hasPreviousPage;
-  String startCursor;
-  String endCursor;
+  final bool hasNextPage;
+  final bool hasPreviousPage;
+  final String startCursor;
+  final String endCursor;
 
-  PageInfo({
+  const PageInfo({
     this.hasNextPage,
     this.hasPreviousPage,
     this.startCursor,

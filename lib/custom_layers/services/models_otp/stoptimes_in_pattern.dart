@@ -2,10 +2,10 @@ import 'pattern.dart';
 import 'stoptime.dart';
 
 class StoptimesInPattern {
-  Pattern pattern;
-  List<Stoptime> stoptimes;
+  final Pattern pattern;
+  final List<Stoptime> stoptimes;
 
-  StoptimesInPattern({
+  const StoptimesInPattern({
     this.pattern,
     this.stoptimes,
   });

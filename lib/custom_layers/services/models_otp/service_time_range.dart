@@ -1,10 +1,12 @@
-class ServiceTimeRange {
-  int start;
-  int end;
+import 'package:meta/meta.dart';
 
-  ServiceTimeRange({
-    this.start,
-    this.end,
+class ServiceTimeRange {
+  final int start;
+  final int end;
+
+  const ServiceTimeRange({
+    @required this.start,
+    @required this.end,
   });
 
   factory ServiceTimeRange.fromJson(Map<String, dynamic> json) =>

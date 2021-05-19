@@ -8,31 +8,31 @@ import 'stop.dart';
 import 'stoptime.dart';
 
 class Trip {
-  String id;
-  String gtfsId;
-  Route route;
-  String serviceId;
-  List<String> activeDates;
-  String tripShortName;
-  String tripHeadsign;
-  String routeShortName;
-  String directionId;
-  String blockId;
-  String shapeId;
-  WheelchairBoarding wheelchairAccessible;
-  BikesAllowed bikesAllowed;
-  Pattern pattern;
-  List<Stop> stops;
-  String semanticHash;
-  List<Stoptime> stoptimes;
-  Stoptime departureStoptime;
-  Stoptime arrivalStoptime;
-  List<Stoptime> stoptimesForDate;
-  List<double> geometry;
-  Geometry tripGeometry;
-  List<Alert> alerts;
+  final String id;
+  final String gtfsId;
+  final Route route;
+  final String serviceId;
+  final List<String> activeDates;
+  final String tripShortName;
+  final String tripHeadsign;
+  final String routeShortName;
+  final String directionId;
+  final String blockId;
+  final String shapeId;
+  final WheelchairBoarding wheelchairAccessible;
+  final BikesAllowed bikesAllowed;
+  final Pattern pattern;
+  final List<Stop> stops;
+  final String semanticHash;
+  final List<Stoptime> stoptimes;
+  final Stoptime departureStoptime;
+  final Stoptime arrivalStoptime;
+  final List<Stoptime> stoptimesForDate;
+  final List<double> geometry;
+  final Geometry tripGeometry;
+  final List<Alert> alerts;
 
-  Trip({
+  const Trip({
     this.id,
     this.gtfsId,
     this.route,

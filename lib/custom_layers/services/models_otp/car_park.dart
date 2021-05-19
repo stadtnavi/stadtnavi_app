@@ -1,14 +1,14 @@
 class CarPark {
-  String id;
-  String carParkId;
-  String name;
-  int maxCapacity;
-  int spacesAvailable;
-  bool realtime;
-  double lon;
-  double lat;
+  final String id;
+  final String carParkId;
+  final String name;
+  final int maxCapacity;
+  final int spacesAvailable;
+  final bool realtime;
+  final double lon;
+  final double lat;
 
-  CarPark({
+  const CarPark({
     this.id,
     this.carParkId,
     this.name,

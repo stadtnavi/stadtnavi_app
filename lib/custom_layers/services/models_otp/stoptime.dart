@@ -4,23 +4,23 @@ import 'stop.dart';
 import 'trip.dart';
 
 class Stoptime {
-  Stop stop;
-  int scheduledArrival;
-  int realtimeArrival;
-  int arrivalDelay;
-  int scheduledDeparture;
-  int realtimeDeparture;
-  int departureDelay;
-  bool timepoint;
-  bool realtime;
-  RealtimeState realtimeState;
-  PickupDropoffType pickupType;
-  PickupDropoffType dropoffType;
-  double serviceDay;
-  Trip trip;
-  String headsign;
+  final Stop stop;
+  final int scheduledArrival;
+  final int realtimeArrival;
+  final int arrivalDelay;
+  final int scheduledDeparture;
+  final int realtimeDeparture;
+  final int departureDelay;
+  final bool timepoint;
+  final bool realtime;
+  final RealtimeState realtimeState;
+  final PickupDropoffType pickupType;
+  final PickupDropoffType dropoffType;
+  final double serviceDay;
+  final Trip trip;
+  final String headsign;
 
-  Stoptime({
+  const Stoptime({
     this.stop,
     this.scheduledArrival,
     this.realtimeArrival,

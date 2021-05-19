@@ -1,12 +1,12 @@
 import 'elevation_profile_component.dart';
 
 class Step {
-  double distance;
-  double lon;
-  double lat;
-  List<ElevationProfileComponent> elevationProfile;
+  final double distance;
+  final double lon;
+  final double lat;
+  final List<ElevationProfileComponent> elevationProfile;
 
-  Step({
+  const Step({
     this.distance,
     this.lon,
     this.lat,

@@ -1,9 +1,9 @@
 class PlaceInterface {
-  String id;
-  double lat;
-  double lon;
+  final String id;
+  final double lat;
+  final double lon;
 
-  PlaceInterface({
+  const PlaceInterface({
     this.id,
     this.lat,
     this.lon,

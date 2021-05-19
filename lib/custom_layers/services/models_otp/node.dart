@@ -1,6 +1,7 @@
 class Node {
-  String id;
-  Node({this.id});
+  final String id;
+
+  const Node({this.id});
 
   factory Node.fromJson(Map<String, dynamic> json) => Node(
         id: json['id'].toString(),

@@ -1,10 +1,10 @@
 import 'place_at_distance.dart';
 
 class PlaceAtDistanceEdge {
-  PlaceAtDistance node;
-  String cursor;
+  final PlaceAtDistance node;
+  final String cursor;
 
-  PlaceAtDistanceEdge({this.node, this.cursor});
+  const PlaceAtDistanceEdge({this.node, this.cursor});
 
   factory PlaceAtDistanceEdge.fromJson(Map<String, dynamic> json) =>
       PlaceAtDistanceEdge(

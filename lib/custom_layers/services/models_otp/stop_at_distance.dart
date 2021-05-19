@@ -1,11 +1,11 @@
 import 'stop.dart';
 
 class StopAtDistance {
-  String id;
-  Stop stop;
-  int distance;
+  final String id;
+  final Stop stop;
+  final int distance;
 
-  StopAtDistance({
+  const StopAtDistance({
     this.id,
     this.stop,
     this.distance,

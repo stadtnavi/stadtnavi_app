@@ -2,10 +2,10 @@ import 'page_info.dart';
 import 'place_at_distance_edge.dart';
 
 class PlaceAtDistanceConnection {
-  List<PlaceAtDistanceEdge> edges;
-  PageInfo pageInfo;
+  final List<PlaceAtDistanceEdge> edges;
+  final PageInfo pageInfo;
 
-  PlaceAtDistanceConnection({this.edges, this.pageInfo});
+  const PlaceAtDistanceConnection({this.edges, this.pageInfo});
 
   factory PlaceAtDistanceConnection.fromJson(Map<String, dynamic> json) =>
       PlaceAtDistanceConnection(

@@ -10,35 +10,35 @@ import 'stoptime.dart';
 import 'stoptimes_in_pattern.dart';
 
 class Stop {
-  String id;
-  List<Stoptime> stopTimesForPattern;
-  String gtfsId;
-  String name;
-  double lat;
-  double lon;
-  String code;
-  String desc;
-  String zoneId;
-  String url;
-  LocationType locationType;
-  Stop parentStation;
-  WheelchairBoarding wheelchairBoarding;
-  String direction;
-  String timezone;
-  int vehicleType;
-  Mode vehicleMode;
-  String platformCode;
-  Cluster cluster;
-  List<Stop> stops;
-  List<Route> routes;
-  List<Pattern> patterns;
-  List<StopAtDistance> transfers;
-  List<StoptimesInPattern> stoptimesForServiceDate;
-  List<StoptimesInPattern> stoptimesForPatterns;
-  List<Stoptime> stoptimesWithoutPatterns;
-  List<Alert> alerts;
+  final String id;
+  final List<Stoptime> stopTimesForPattern;
+  final String gtfsId;
+  final String name;
+  final double lat;
+  final double lon;
+  final String code;
+  final String desc;
+  final String zoneId;
+  final String url;
+  final LocationType locationType;
+  final Stop parentStation;
+  final WheelchairBoarding wheelchairBoarding;
+  final String direction;
+  final String timezone;
+  final int vehicleType;
+  final Mode vehicleMode;
+  final String platformCode;
+  final Cluster cluster;
+  final List<Stop> stops;
+  final List<Route> routes;
+  final List<Pattern> patterns;
+  final List<StopAtDistance> transfers;
+  final List<StoptimesInPattern> stoptimesForServiceDate;
+  final List<StoptimesInPattern> stoptimesForPatterns;
+  final List<Stoptime> stoptimesWithoutPatterns;
+  final List<Alert> alerts;
 
-  Stop({
+  const Stop({
     this.id,
     this.stopTimesForPattern,
     this.gtfsId,

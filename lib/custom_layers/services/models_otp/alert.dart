@@ -9,28 +9,28 @@ import 'translated_string.dart';
 import 'trip.dart';
 
 class Alert {
-  String id;
-  String alertId;
-  int alertHash;
-  String feed;
-  Agency agency;
-  Route route;
-  Trip trip;
-  Stop stop;
-  List<Pattern> patterns;
-  String alertHeaderText;
-  List<TranslatedString> alertHeaderTextTranslations;
-  String alertDescriptionText;
-  List<TranslatedString> alertDescriptionTextTranslations;
-  String alertUrl;
-  List<TranslatedString> alertUrlTranslations;
-  AlertEffectType alertEffect;
-  AlertCauseType alertCause;
-  AlertSeverityLevelType alertSeverityLevel;
-  double effectiveStartDate;
-  double effectiveEndDate;
+  final String id;
+  final String alertId;
+  final int alertHash;
+  final String feed;
+  final Agency agency;
+  final Route route;
+  final Trip trip;
+  final Stop stop;
+  final List<Pattern> patterns;
+  final String alertHeaderText;
+  final List<TranslatedString> alertHeaderTextTranslations;
+  final String alertDescriptionText;
+  final List<TranslatedString> alertDescriptionTextTranslations;
+  final String alertUrl;
+  final List<TranslatedString> alertUrlTranslations;
+  final AlertEffectType alertEffect;
+  final AlertCauseType alertCause;
+  final AlertSeverityLevelType alertSeverityLevel;
+  final double effectiveStartDate;
+  final double effectiveEndDate;
 
-  Alert({
+  const Alert({
     this.id,
     this.alertId,
     this.alertHash,

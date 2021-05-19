@@ -1,10 +1,10 @@
 import 'agency.dart';
 
 class Feed {
-  String feedId;
-  List<Agency> agencies;
+  final String feedId;
+  final List<Agency> agencies;
 
-  Feed({
+  const Feed({
     this.feedId,
     this.agencies,
   });

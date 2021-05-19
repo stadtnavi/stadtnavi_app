@@ -1,8 +1,8 @@
 class TranslatedString {
-  String text;
-  String language;
+  final String text;
+  final String language;
 
-  TranslatedString({
+  const TranslatedString({
     this.text,
     this.language,
   });

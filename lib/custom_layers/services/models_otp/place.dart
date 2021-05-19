@@ -5,18 +5,18 @@ import 'enums/place/vertex_type.dart';
 import 'stop.dart';
 
 class Place {
-  String name;
-  VertexType vertexType;
-  double lat;
-  double lon;
-  double arrivalTime;
-  double departureTime;
-  Stop stop;
-  BikeRentalStation bikeRentalStation;
-  BikePark bikePark;
-  CarPark carPark;
+  final String name;
+  final VertexType vertexType;
+  final double lat;
+  final double lon;
+  final double arrivalTime;
+  final double departureTime;
+  final Stop stop;
+  final BikeRentalStation bikeRentalStation;
+  final BikePark bikePark;
+  final CarPark carPark;
 
-  Place({
+  const Place({
     this.name,
     this.vertexType,
     this.lat,

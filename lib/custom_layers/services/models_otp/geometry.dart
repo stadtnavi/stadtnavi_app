@@ -1,8 +1,8 @@
 class Geometry {
-  int length;
-  String points;
+  final int length;
+  final String points;
 
-  Geometry({this.length, this.points});
+  const Geometry({this.length, this.points});
 
   factory Geometry.fromJson(Map<String, dynamic> json) => Geometry(
         length: int.tryParse(json['length'].toString()) ?? 0,

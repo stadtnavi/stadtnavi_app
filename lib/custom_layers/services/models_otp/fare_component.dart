@@ -1,12 +1,12 @@
 import 'route.dart';
 
 class FareComponent {
-  String fareId;
-  String currency;
-  int cents;
-  List<Route> routes;
+  final String fareId;
+  final String currency;
+  final int cents;
+  final List<Route> routes;
 
-  FareComponent({this.fareId, this.currency, this.cents, this.routes});
+  const FareComponent({this.fareId, this.currency, this.cents, this.routes});
 
   factory FareComponent.fromJson(Map<String, dynamic> json) => FareComponent(
         fareId: json['fareId'] as String,

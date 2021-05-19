@@ -7,24 +7,24 @@ import 'stop.dart';
 import 'trip.dart';
 
 class Route {
-  String id;
-  String gtfsId;
-  Agency agency;
-  String shortName;
-  String longName;
-  Mode mode;
-  int type;
-  String desc;
-  String url;
-  String color;
-  String textColor;
-  BikesAllowed bikesAllowed;
-  List<Pattern> patterns;
-  List<Stop> stops;
-  List<Trip> trips;
-  List<Alert> alerts;
+  final String id;
+  final String gtfsId;
+  final Agency agency;
+  final String shortName;
+  final String longName;
+  final Mode mode;
+  final int type;
+  final String desc;
+  final String url;
+  final String color;
+  final String textColor;
+  final BikesAllowed bikesAllowed;
+  final List<Pattern> patterns;
+  final List<Stop> stops;
+  final List<Trip> trips;
+  final List<Alert> alerts;
 
-  Route({
+  const Route({
     this.id,
     this.gtfsId,
     this.agency,
