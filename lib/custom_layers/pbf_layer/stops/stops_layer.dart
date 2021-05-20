@@ -2,13 +2,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
-import 'package:trufi_core/l10n/trufi_localization.dart';
+import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:vector_tile/vector_tile.dart';
 
 import 'stop_feature_model.dart';
+import 'stop_marker_modal.dart';
 import 'stops_enum.dart';
 import 'stops_icon.dart';
 
@@ -75,45 +76,12 @@ class StopsLayer extends CustomLayer {
                     point: element.position,
                     anchorPos: AnchorPos.align(AnchorAlign.top),
                     builder: (context) => GestureDetector(
-                      onTap: () {
-                        return showDialog<void>(
+                      onTap: () {                        
+                        showMarkerModal(
                           context: context,
-                          builder: (BuildContext dialogContext) {
-                            final localization = TrufiLocalization.of(context);
-                            final theme = Theme.of(dialogContext);
-                            return AlertDialog(
-                              title: Text(
-                                element.name,
-                                style: TextStyle(color: theme.primaryColor),
-                              ),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: <Widget>[
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    ...element.gtfsId
-                                        .map((gtfsId) => Text(
-                                              "GTFS Id: $gtfsId",
-                                              style: TextStyle(
-                                                color: theme
-                                                    .textTheme.bodyText1.color,
-                                              ),
-                                            ))
-                                        .toList()
-                                  ],
-                                ),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                  child: Text(localization.commonOK),
-                                ),
-                              ],
-                            );
-                          },
+                          builder: (BuildContext context) => StopMarkerModal(
+                            stopFeature: element,
+                          ),
                         );
                       },
                       child: SvgPicture.string(stopsIcons[element.type] ?? ""),
@@ -123,11 +91,11 @@ class StopsLayer extends CustomLayer {
           : [],
     );
   }
-  
+
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: "api.dev.stadtnavi.eu",      
+      host: "api.dev.stadtnavi.eu",
       path: "/routing/v1/router/vectorTiles/stops/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);
