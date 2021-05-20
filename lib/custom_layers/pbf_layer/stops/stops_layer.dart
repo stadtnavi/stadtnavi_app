@@ -17,23 +17,10 @@ class StopsLayer extends CustomLayer {
   final Map<String, StopFeature> _pbfMarkers = {};
 
   StopsLayer(StopsLayerIds layerId) : super(layerId.enumToString());
-  void addMarker(StopFeature pointFeature, String gtfsId) {
-    if (pointFeature.type != null) {
-      final duplicatedPointFeature = _pbfMarkers.values.firstWhere(
-        (element) =>
-            element.position.latitude == pointFeature.position.latitude &&
-            element.position.longitude == pointFeature.position.longitude,
-        orElse: () => null,
-      );
-      if (duplicatedPointFeature != null) {
-        if (!duplicatedPointFeature.gtfsId.contains(gtfsId)) {
-          duplicatedPointFeature.gtfsId.add(gtfsId);
-          refresh();
-        }
-      } else if (_pbfMarkers[gtfsId] == null) {
-        _pbfMarkers[gtfsId] = pointFeature;
-        refresh();
-      }
+  void addMarker(StopFeature pointFeature) {
+    if (_pbfMarkers[pointFeature.gtfsId] == null) {
+      _pbfMarkers[pointFeature.gtfsId] = pointFeature;
+      refresh();
     }
   }
 
@@ -76,7 +63,7 @@ class StopsLayer extends CustomLayer {
                     point: element.position,
                     anchorPos: AnchorPos.align(AnchorAlign.top),
                     builder: (context) => GestureDetector(
-                      onTap: () {                        
+                      onTap: () {
                         showMarkerModal(
                           context: context,
                           builder: (BuildContext context) => StopMarkerModal(
@@ -115,9 +102,8 @@ class StopsLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final StopFeature pointFeature =
               StopFeature.fromGeoJsonPoint(geojson);
-          final gtfsId = pointFeature.gtfsId.first;
           final pbfLayer = stopsLayers[pointFeature.type];
-          pbfLayer?.addMarker(pointFeature, gtfsId);
+          pbfLayer?.addMarker(pointFeature);
         } else {
           throw Exception("Should never happened, Feature is not a point");
         }
