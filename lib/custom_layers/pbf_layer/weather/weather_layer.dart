@@ -1,10 +1,11 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
+import 'package:stadtnavi_app/custom_layers/static_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_marker_modal.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_feature_model.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_icons.dart';
-import 'package:trufi_core/l10n/trufi_localization.dart';
+import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
 import 'package:http/http.dart' as http;
@@ -61,75 +62,11 @@ class WeatherLayer extends CustomLayer {
                     anchorPos: AnchorPos.align(AnchorAlign.center),
                     builder: (context) => GestureDetector(
                       onTap: () {
-                        return showDialog<void>(
+                        showBottomMarkerModal(
                           context: context,
-                          builder: (BuildContext dialogContext) {
-                            final localization = TrufiLocalization.of(context);
-                            final theme = Theme.of(dialogContext);
-                            return AlertDialog(
-                              title: Text(
-                                element.address,
-                                style: TextStyle(color: theme.primaryColor),
-                              ),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: <Widget>[
-                                    const SizedBox(
-                                      height: 20,
-                                    ),
-                                    if (element.airTemperatureC != null)
-                                      Text(
-                                        "airTemperatureC: ${element.airTemperatureC}",
-                                        style: TextStyle(
-                                          color:
-                                              theme.textTheme.bodyText1.color,
-                                        ),
-                                      ),
-                                    if (element.roadTemperatureC != null)
-                                      Text(
-                                        "roadTemperatureC: ${element.roadTemperatureC}",
-                                        style: TextStyle(
-                                          color:
-                                              theme.textTheme.bodyText1.color,
-                                        ),
-                                      ),
-                                    if (element.precipitationType != null)
-                                      Text(
-                                        "precipitationType: ${element.precipitationType}",
-                                        style: TextStyle(
-                                          color:
-                                              theme.textTheme.bodyText1.color,
-                                        ),
-                                      ),
-                                    if (element.roadCondition != null)
-                                      Text(
-                                        "roadCondition: ${element.roadCondition}",
-                                        style: TextStyle(
-                                          color:
-                                              theme.textTheme.bodyText1.color,
-                                        ),
-                                      ),
-                                    if (element.updatedAt != null)
-                                      Text(
-                                        "updatedAt: ${element.updatedAt}",
-                                        style: TextStyle(
-                                          color:
-                                              theme.textTheme.bodyText1.color,
-                                        ),
-                                      ),
-                                  ],
-                                ),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                  child: Text(localization.commonOK),
-                                ),
-                              ],
-                            );
-                          },
+                          builder: (BuildContext context) => ParkingMarkerModal(
+                            parkingFeature: element,
+                          ),
                         );
                       },
                       child: SvgPicture.string(

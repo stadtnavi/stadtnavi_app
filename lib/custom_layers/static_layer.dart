@@ -1,11 +1,11 @@
 import 'package:stadtnavi_app/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/stops_layer.dart';
 
-import 'bike_parks/bike_parks_layer.dart';
-import 'cifs/cifs_layer.dart';
-import 'parking/parkings_layer.dart';
-import 'stops/stops_enum.dart';
-import 'weather/weather_layer.dart';
+import 'pbf_layer/bike_parks/bike_parks_layer.dart';
+import 'pbf_layer/cifs/cifs_layer.dart';
+import 'pbf_layer/parking/parkings_layer.dart';
+import 'pbf_layer/stops/stops_enum.dart';
+import 'pbf_layer/weather/weather_layer.dart';
 
 final Map<StopsLayerIds, StopsLayer> stopsLayers = {
   StopsLayerIds.bus: StopsLayer(StopsLayerIds.bus),
