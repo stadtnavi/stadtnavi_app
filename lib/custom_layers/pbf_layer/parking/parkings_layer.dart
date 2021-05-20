@@ -2,9 +2,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
-import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
+import 'package:stadtnavi_app/custom_layers/static_layer.dart';
 import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
-import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
 import 'package:http/http.dart' as http;
