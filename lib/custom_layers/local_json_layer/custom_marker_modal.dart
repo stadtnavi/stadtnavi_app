@@ -31,6 +31,8 @@ class CustomMarkerModal extends StatelessWidget {
           child: Row(
             children: [
               Container(
+                height: 30,
+                width: 30,
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 child: SvgPicture.string(element.image),
               ),
