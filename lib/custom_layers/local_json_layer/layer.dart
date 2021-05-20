@@ -1,12 +1,13 @@
 import 'dart:async';
 
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_app/custom_layers/local_json_layer/markers_from_assets.dart';
-import 'package:trufi_core/l10n/trufi_localization.dart';
+import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
+import 'custom_marker_modal.dart';
 import 'custom_marker_model.dart';
 
 enum LayerIds {
@@ -90,56 +91,11 @@ class Layer extends CustomLayer {
                     anchorPos: AnchorPos.align(AnchorAlign.center),
                     builder: (context) => GestureDetector(
                       onTap: () {
-                        return showDialog<void>(
+                        showBottomMarkerModal(
                           context: context,
-                          builder: (BuildContext dialogContext) {
-                            final localization = TrufiLocalization.of(context);
-                            final theme = Theme.of(dialogContext);
-                            final localeName = localization.localeName;
-                            String title;
-                            String body;
-                            if (localeName == "en") {
-                              title = element.nameEn ?? element.name ?? "";
-                              body = element.popupContentEn ??
-                                  element.popupContent ??
-                                  "";
-                            } else {
-                              title = element.nameDe ?? element.name ?? "";
-                              body = element.popupContentDe ??
-                                  element.popupContent ??
-                                  "";
-                            }
-                            // apply format to the popup content
-                            body = body
-                                .replaceAll(";", "\n")
-                                .replaceAll(",", "\n\n");
-                            return AlertDialog(
-                              title: Text(
-                                title ?? "",
-                                style: TextStyle(color: theme.primaryColor),
-                              ),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: <Widget>[
-                                    Text(
-                                      body,
-                                      style: TextStyle(
-                                        color: theme.textTheme.bodyText1.color,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                  child: Text(localization.commonOK),
-                                ),
-                              ],
-                            );
-                          },
+                          builder: (BuildContext context) => CustomMarkerModal(
+                            element: element,
+                          ),
                         );
                       },
                       child: SvgPicture.string(element.image),
