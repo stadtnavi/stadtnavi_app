@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:stadtnavi_app/custom_layers/custom_marker_model.dart';
-import 'package:stadtnavi_app/custom_layers/markers_from_assets.dart';
+import 'package:stadtnavi_app/custom_layers/local_json_layer/markers_from_assets.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
+
+import 'custom_marker_model.dart';
 
 enum LayerIds {
   bicycleInfrastructure,
