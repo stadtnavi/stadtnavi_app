@@ -7,7 +7,7 @@ import 'trip.dart';
 
 class Pattern {
   final String id;
-  final Route route;
+  final RouteOtp route;
   final int directionId;
   final String name;
   final String code;
@@ -39,12 +39,12 @@ class Pattern {
   factory Pattern.fromJson(Map<String, dynamic> json) => Pattern(
         id: json['id'].toString(),
         route: json['route'] != null
-            ? Route.fromJson(json['route'] as Map<String, dynamic>)
+            ? RouteOtp.fromJson(json['route'] as Map<String, dynamic>)
             : null,
         directionId: int.tryParse(json['directionId'].toString()) ?? 0,
         name: json['name'].toString(),
         code: json['code'].toString(),
-        headsign: json['headsign'].toString(),
+        headsign: json['headsign'] as String,
         trips: json['trips'] != null
             ? List<Trip>.from((json["trips"] as List<dynamic>).map(
                 (x) => Trip.fromJson(x as Map<String, dynamic>),

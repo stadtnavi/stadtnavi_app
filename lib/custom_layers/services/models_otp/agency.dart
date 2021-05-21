@@ -12,7 +12,7 @@ class Agency {
   final String lang;
   final String phone;
   final String fareUrl;
-  final List<Route> routes;
+  final List<RouteOtp> routes;
   final List<Alert> alerts;
 
   const Agency({
@@ -38,8 +38,8 @@ class Agency {
         phone: json['phone'].toString(),
         fareUrl: json['fareUrl'].toString(),
         routes: json['routes'] != null
-            ? List<Route>.from((json["routes"] as List<dynamic>).map(
-                (x) => Route.fromJson(x as Map<String, dynamic>),
+            ? List<RouteOtp>.from((json["routes"] as List<dynamic>).map(
+                (x) => RouteOtp.fromJson(x as Map<String, dynamic>),
               ))
             : null,
         alerts: json['alerts'] != null

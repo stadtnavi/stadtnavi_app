@@ -6,7 +6,7 @@ import 'pattern.dart';
 import 'stop.dart';
 import 'trip.dart';
 
-class Route {
+class RouteOtp {
   final String id;
   final String gtfsId;
   final Agency agency;
@@ -24,7 +24,7 @@ class Route {
   final List<Trip> trips;
   final List<Alert> alerts;
 
-  const Route({
+  const RouteOtp({
     this.id,
     this.gtfsId,
     this.agency,
@@ -43,7 +43,7 @@ class Route {
     this.alerts,
   });
 
-  factory Route.fromJson(Map<String, dynamic> json) => Route(
+  factory RouteOtp.fromJson(Map<String, dynamic> json) => RouteOtp(
         id: json['id'].toString(),
         gtfsId: json['gtfsId'].toString(),
         agency: json['agency'] != null
@@ -98,4 +98,8 @@ class Route {
         'trips': List<dynamic>.from(trips.map((x) => x.toJson())),
         'alerts': List<dynamic>.from(alerts.map((x) => x.toJson())),
       };
+
+  String get headsignFromRouteLongName {
+    return longName ?? (longName ?? "");
+  }
 }

@@ -14,7 +14,7 @@ class Alert {
   final int alertHash;
   final String feed;
   final Agency agency;
-  final Route route;
+  final RouteOtp route;
   final Trip trip;
   final Stop stop;
   final List<Pattern> patterns;
@@ -62,7 +62,7 @@ class Alert {
             ? Agency.fromJson(json['agency'] as Map<String, dynamic>)
             : null,
         route: json['route'] != null
-            ? Route.fromJson(json['route'] as Map<String, dynamic>)
+            ? RouteOtp.fromJson(json['route'] as Map<String, dynamic>)
             : null,
         trip: json['trip'] != null
             ? Trip.fromJson(json['trip'] as Map<String, dynamic>)

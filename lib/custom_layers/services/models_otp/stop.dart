@@ -30,7 +30,7 @@ class Stop {
   final String platformCode;
   final Cluster cluster;
   final List<Stop> stops;
-  final List<Route> routes;
+  final List<RouteOtp> routes;
   final List<Pattern> patterns;
   final List<StopAtDistance> transfers;
   final List<StoptimesInPattern> stoptimesForServiceDate;
@@ -104,8 +104,8 @@ class Stop {
               ))
             : null,
         routes: json['routes'] != null
-            ? List<Route>.from((json["routes"] as List<dynamic>).map(
-                (x) => Route.fromJson(x as Map<String, dynamic>),
+            ? List<RouteOtp>.from((json["routes"] as List<dynamic>).map(
+                (x) => RouteOtp.fromJson(x as Map<String, dynamic>),
               ))
             : null,
         patterns: json['patterns'] != null
@@ -177,4 +177,13 @@ class Stop {
             List<dynamic>.from(stoptimesWithoutPatterns.map((x) => x.toJson())),
         'alerts': List<dynamic>.from(alerts.map((x) => x.toJson())),
       };
+
+  List<Stoptime> get stoptimesWithoutPatternsCurrent {
+    final now = DateTime.now();
+    return stoptimesWithoutPatterns
+        .where((element) => element.stopTime.isAfter(now))
+        .where((element) =>
+            element.stopTime.isBefore(now.add(const Duration(days: 1))))
+        .toList();
+  }
 }

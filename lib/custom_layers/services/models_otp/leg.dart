@@ -27,7 +27,7 @@ class Leg {
   final bool rentedBike;
   final Place from;
   final Place to;
-  final Route route;
+  final RouteOtp route;
   final Trip trip;
   final String serviceDate;
   final List<Stop> intermediateStops;
@@ -95,7 +95,7 @@ class Leg {
             ? Place.fromJson(json['to'] as Map<String, dynamic>)
             : null,
         route: json['route'] != null
-            ? Route.fromJson(json['route'] as Map<String, dynamic>)
+            ? RouteOtp.fromJson(json['route'] as Map<String, dynamic>)
             : null,
         trip: json['trip'] != null
             ? Trip.fromJson(json['trip'] as Map<String, dynamic>)

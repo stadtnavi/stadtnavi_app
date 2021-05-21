@@ -10,7 +10,7 @@ import 'stoptime.dart';
 class Trip {
   final String id;
   final String gtfsId;
-  final Route route;
+  final RouteOtp route;
   final String serviceId;
   final List<String> activeDates;
   final String tripShortName;
@@ -62,7 +62,7 @@ class Trip {
         id: json['id'].toString(),
         gtfsId: json['gtfsId'].toString(),
         route: json['route'] != null
-            ? Route.fromJson(json['route'] as Map<String, dynamic>)
+            ? RouteOtp.fromJson(json['route'] as Map<String, dynamic>)
             : null,
         serviceId: json['serviceId'].toString(),
         activeDates: json['activeDates'] != null
