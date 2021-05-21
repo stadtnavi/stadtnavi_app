@@ -14,9 +14,11 @@ import 'package:trufi_core/models/social_media/twitter_social_media.dart';
 import 'package:trufi_core/trufi_app.dart';
 
 import 'custom_layers/local_json_layer/layer.dart';
+import 'custom_layers/services/graphl_client/hive_init.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initHiveForFlutter();
   // Run app
   runApp(
     TrufiApp(

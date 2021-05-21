@@ -17,6 +17,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  graphql: ^4.0.1
   lint: ^1.5.3
   scrollable_panel: ^0.4.1
 
