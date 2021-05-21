@@ -1,3 +1,6 @@
+import 'package:meta/meta.dart';
+import 'package:intl/intl.dart';
+
 import 'enums/leg/pickup_dropoff_type.dart';
 import 'enums/leg/realtime_state.dart';
 import 'stop.dart';
@@ -62,7 +65,7 @@ class Stoptime {
         trip: json['trip'] != null
             ? Trip.fromJson(json['trip'] as Map<String, dynamic>)
             : null,
-        headsign: json['headsign'].toString(),
+        headsign: json['headsign'] as String,
       );
 
   Map<String, dynamic> toJson() => {
@@ -82,4 +85,53 @@ class Stoptime {
         'trip': trip?.toJson(),
         'headsign': headsign,
       };
+
+  bool get isArrival {
+    return pickupType == PickupDropoffType.none;
+  }
+
+  bool get canceled {
+    return realtimeState == RealtimeState.canceled;
+  }
+
+  String getHeadsing({@required bool isLastStop}) {
+    // TODO translate code strings
+    if (isArrival) {
+      if (isLastStop) return 'route-destination-endpoint';
+      return trip?.tripHeadsign ?? 'route-destination-arrives';
+    }
+    final String tempHeadsing = headsign ??
+        (trip.pattern.headsign ??
+            (trip?.tripHeadsign ??
+                trip.pattern.route.headsignFromRouteLongName));
+    if (tempHeadsing.endsWith(' via')) {
+      return tempHeadsing.substring(0, tempHeadsing.indexOf(' via'));
+    }
+    return tempHeadsing;
+  }
+
+  int get arrivalTime {
+    return (serviceDay + (canceled ? scheduledArrival : realtimeArrival))
+        .truncate();
+  }
+
+  int get departureTime {
+    return (serviceDay + (canceled ? scheduledDeparture : realtimeDeparture))
+        .truncate();
+  }
+
+  DateTime get stopTime {
+    final int timestamp = isArrival ? arrivalTime : departureTime;
+    return DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+  }
+
+  bool get isNextDay {
+    final now = DateTime.now();
+    final dateTemp = DateTime(now.year, now.month, now.day, 23, 59, 59);
+    return stopTime.isAfter(dateTemp);
+  }
+
+  String get stopTimeAsString {
+    return DateFormat('HH:mm').format(stopTime);
+  }
 }
