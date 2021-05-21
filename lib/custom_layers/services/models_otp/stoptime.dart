@@ -120,7 +120,7 @@ class Stoptime {
         .truncate();
   }
 
-  DateTime get stopTime {
+  DateTime get dateTime {
     final int timestamp = isArrival ? arrivalTime : departureTime;
     return DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
   }
@@ -128,10 +128,23 @@ class Stoptime {
   bool get isNextDay {
     final now = DateTime.now();
     final dateTemp = DateTime(now.year, now.month, now.day, 23, 59, 59);
-    return stopTime.isAfter(dateTemp);
+    return dateTime.isAfter(dateTemp);
+  }
+
+  String get timeDiffInMinutes {
+    String timeDiffInMinutes = '';
+    final diffMinutes = dateTime.difference(DateTime.now()).inMinutes;
+    if (diffMinutes <= 0) {
+      // TODO translate
+      timeDiffInMinutes = 'now';
+    } else if (diffMinutes < 10) {
+      // TODO translate min
+      timeDiffInMinutes = '${diffMinutes.toString()} min';
+    }
+    return timeDiffInMinutes;
   }
 
   String get stopTimeAsString {
-    return DateFormat('HH:mm').format(stopTime);
+    return DateFormat('HH:mm').format(dateTime);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stadtnavi_app/custom_layers/services/models_otp/enums/mode.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/stoptime.dart';
 
 class CustomStopTile extends StatelessWidget {
@@ -14,36 +15,81 @@ class CustomStopTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         ListTile(
-          leading: Container(
-            color: Color(int.tryParse("0xFF${stopTime.trip?.route?.color}") ??
-                0xFF000000),
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            width: 50,
-            child: Text(
-              stopTime.trip.route.shortName,
-              style: const TextStyle(
-                color: Colors.white,
+            leading: Container(
+              decoration: BoxDecoration(
+                color: Color(
+                    int.tryParse("0xFF${stopTime.trip?.route?.color}") ??
+                        stopTime.trip.route.mode.color.value),
+                borderRadius: BorderRadius.circular(4),
               ),
-              textAlign: TextAlign.center,
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              width: 50,
+              child: stopTime.trip.route.useIcon
+                  ? stopTime.trip.route.mode.image
+                  : Text(
+                      stopTime.trip.route.shortName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
             ),
-          ),
-          title: Text(
-            stopTime.getHeadsing(
-              isLastStop: isLastStop,
+            title: Text(
+              stopTime.getHeadsing(
+                isLastStop: isLastStop,
+              ),
+              style: const TextStyle(
+                color: Colors.black,
+              ),
             ),
-            style: const TextStyle(
-              color: Colors.black,
-            ),
-          ),
-          trailing: Text(
-            stopTime.stopTimeAsString,
-            style: const TextStyle(
-                color: Colors.black, fontWeight: FontWeight.w800),
-          ),
-        ),
+            subtitle: stopTime.isArrival && !isLastStop
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 5),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          color: const Color(0xffe5f2fa),
+                          padding: const EdgeInsets.all(5),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.info,
+                                color: theme.primaryColor,
+                                size: 17,
+                              ),
+                              const SizedBox(width: 5),
+                              // TODO translate code in web "route-destination-arrives"
+                              Text(
+                                "Drop-off only",
+                                style: theme.textTheme.bodyText1
+                                    .copyWith(fontSize: 13),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : null,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  '${stopTime.timeDiffInMinutes} ',
+                  style: const TextStyle(color: Colors.black),
+                ),
+                Text(
+                  '${stopTime.stopTimeAsString} ',
+                  style: const TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w800),
+                ),
+              ],
+            )),
         const Divider(
           height: 0,
           color: Colors.black87,

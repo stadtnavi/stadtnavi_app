@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
@@ -16,14 +17,19 @@ class LayersRepository {
   LayersRepository();
 
   Future<Stop> fetchStop(String idStop) async {
+    log(DateTime.now().millisecondsSinceEpoch.toString());
     final WatchQueryOptions listStopTimes = WatchQueryOptions(
       document: addFragments(parseString(stops_queries.stopDataQuery), [
         stops_fragments.fragmentStopCardHeaderContainerstop,
         stops_fragments.stopPageTabContainerStop,
         stops_fragments.departureListContainerStoptimes,
+        // stops_fragments.timetableContainerStop
       ]),
       variables: <String, dynamic>{
         'stopId': idStop,
+        "numberOfDepartures": 100,
+        "startTime": DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        "timeRange": 864000
       },
       pollInterval: const Duration(seconds: 4),
       fetchResults: true,

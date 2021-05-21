@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import 'alert.dart';
 import 'cluster.dart';
 import 'enums/mode.dart';
@@ -181,9 +183,30 @@ class Stop {
   List<Stoptime> get stoptimesWithoutPatternsCurrent {
     final now = DateTime.now();
     return stoptimesWithoutPatterns
-        .where((element) => element.stopTime.isAfter(now))
-        .where((element) =>
-            element.stopTime.isBefore(now.add(const Duration(days: 1))))
+        .where((element) => element.dateTime.isAfter(now))
+        .where((element) => element.dateTime.isBefore(now.add(const Duration(
+              days: 1,
+            ))))
+        // TODO Why do web devStadnavi do these filters
+        // .where((element) => !element.isArrival)
+        // .where((element) => element.realtime)
         .toList();
+  }
+
+  Map<String, List<Stoptime>> get stoptimesByDay {
+    final timesMap = <String, List<Stoptime>>{};
+    stoptimesWithoutPatternsCurrent.forEach((stoptime) {
+      final key = DateFormat('HH').format(stoptime.dateTime);
+      if (key != null) {
+        if (timesMap.containsKey(key)) {
+          final List<Stoptime> tempList = timesMap[key];
+          tempList.add(stoptime);
+          timesMap[key] = tempList;
+        } else {
+          timesMap[key] = [stoptime];
+        }
+      }
+    });
+    return timesMap;
   }
 }

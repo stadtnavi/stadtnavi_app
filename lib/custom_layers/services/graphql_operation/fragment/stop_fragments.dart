@@ -221,3 +221,35 @@ final departureListContainerStoptimes = gql(
 }
   ''',
 );
+final timetableContainerStop = gql(
+  r'''
+    fragment TimetableContainer_stop_19b1FI on Stop {
+      url
+      locationType
+      stoptimesForServiceDate(date: $date, omitCanceled: false) {
+        pattern {
+          headsign
+          code
+          route {
+            id
+            shortName
+            longName
+            mode
+            agency {
+              id
+              name
+            }
+          }
+          id
+        }
+        stoptimes {
+          realtimeState
+          scheduledDeparture
+          serviceDay
+          headsign
+          pickupType
+        }
+      }
+    }
+  ''',
+);

@@ -44,19 +44,19 @@ class RouteOtp {
   });
 
   factory RouteOtp.fromJson(Map<String, dynamic> json) => RouteOtp(
-        id: json['id'].toString(),
-        gtfsId: json['gtfsId'].toString(),
+        id: json['id'] as String,
+        gtfsId: json['gtfsId'] as String,
         agency: json['agency'] != null
             ? Agency.fromJson(json['agency'] as Map<String, dynamic>)
             : null,
-        shortName: json['shortName'].toString(),
-        longName: json['longName'].toString(),
-        mode: getModeByString(json[' mode'].toString()),
+        shortName: json['shortName'] as String,
+        longName: json['longName'] as String,
+        mode: getModeByString(json['mode'].toString()),
         type: int.tryParse(json['type'].toString()) ?? 0,
-        desc: json['desc'].toString(),
-        url: json['url'].toString(),
-        color: json['color'].toString(),
-        textColor: json['textColor'].toString(),
+        desc: json['desc'] as String,
+        url: json['url'] as String,
+        color: json['color'] as String,
+        textColor: json['textColor'] as String,
         bikesAllowed: getBikesAllowedByString(json['bikesAllowed'].toString()),
         patterns: json['patterns'] != null
             ? List<Pattern>.from((json["patterns"] as List<dynamic>).map(
@@ -101,5 +101,9 @@ class RouteOtp {
 
   String get headsignFromRouteLongName {
     return longName ?? (longName ?? "");
+  }
+
+  bool get useIcon {
+    return shortName == null || shortName.length > 6;
   }
 }

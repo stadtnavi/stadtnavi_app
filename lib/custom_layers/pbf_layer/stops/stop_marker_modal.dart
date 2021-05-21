@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -100,15 +101,7 @@ class _StopMarkerModalState extends State<StopMarkerModal> {
                               _RightNowScreen(
                                   stoptimes:
                                       stops.stoptimesWithoutPatternsCurrent),
-                              Container(
-                                color: Colors.greenAccent,
-                                child: const Center(
-                                  child: Text(
-                                    'Timetable',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ),
+                              _TimeTable(stoptimesByDay: stops.stoptimesByDay),
                               Container(
                                 color: Colors.blueAccent,
                                 child: const Center(
@@ -151,35 +144,135 @@ class _RightNowScreen extends StatelessWidget {
         final Stoptime stopTime = stoptimes[index];
         return Column(
           children: [
+            if (indexNextDay == index)
+              _TitleDay(
+                stoptime: stoptimes[index + 1],
+              ),
             CustomStopTile(
               stopTime: stopTime,
               isLastStop: stoptimes.length - 1 == index,
             ),
             if (indexNextDay - 1 == index)
-              Column(
-                children: [
-                  ListTile(
-                    title: Text(
-                      DateFormat('EEEE  dd.MM.yyyy')
-                          .format(stoptimes[index + 1].stopTime),
-                      style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                  const Divider(
-                    height: 0,
-                    color: Colors.black87,
-                    indent: 16,
-                    endIndent: 20,
-                  ),
-                ],
-              )
+              _TitleDay(
+                stoptime: stoptimes[index + 1],
+              ),
           ],
         );
       },
+    );
+  }
+}
+
+class _TimeTable extends StatelessWidget {
+  const _TimeTable({
+    Key key,
+    @required this.stoptimesByDay,
+  }) : super(key: key);
+
+  final Map<String, List<Stoptime>> stoptimesByDay;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return ListView.builder(
+      itemCount: stoptimesByDay.length,
+      itemBuilder: (contextBuilde, index) {
+        final stopTimeKey = (stoptimesByDay.keys.toList())[index];
+        final now = DateTime.now();
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (index == 0)
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        "Departures by hour (minutes/route)",
+                        style: theme.textTheme.bodyText1.copyWith(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 100,
+                      child: CupertinoDatePicker(
+                        onDateTimeChanged: (picked) {
+                          // tempDateConf = tempDateConf.copyWith(date: picked);
+                        },
+                        use24hFormat: true,
+                        mode: CupertinoDatePickerMode.date,
+                        initialDateTime: now,
+                        minimumDate: now,
+                        maximumDate: now.add(const Duration(days: 30)),
+                        // minuteInterval: 15,
+                      ),
+                    ),
+                  ],
+                ),
+              Text(
+                stopTimeKey,
+                style: theme.textTheme.bodyText1
+                    .copyWith(fontSize: 20, fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(height: 5),
+              Wrap(
+                children: [
+                  ...stoptimesByDay[stopTimeKey]
+                      .map((e) => Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: Text(
+                              "${DateFormat('mm').format(e.dateTime)}/${e.trip.route.shortName}",
+                              style: theme.textTheme.bodyText1.copyWith(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _TitleDay extends StatelessWidget {
+  const _TitleDay({
+    Key key,
+    @required this.stoptime,
+  })  : assert(stoptime != null),
+        super(key: key);
+
+  final Stoptime stoptime;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ListTile(
+          title: Text(
+            DateFormat('EEEE  dd.MM.yyyy').format(stoptime.dateTime),
+            style: const TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+        const Divider(
+          height: 0,
+          color: Colors.black87,
+          indent: 16,
+          endIndent: 20,
+        ),
+      ],
     );
   }
 }

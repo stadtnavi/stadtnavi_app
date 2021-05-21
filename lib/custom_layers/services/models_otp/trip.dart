@@ -59,24 +59,24 @@ class Trip {
   });
 
   factory Trip.fromJson(Map<String, dynamic> json) => Trip(
-        id: json['id'].toString(),
-        gtfsId: json['gtfsId'].toString(),
+        id: json['id'] as String,
+        gtfsId: json['gtfsId'] as String,
         route: json['route'] != null
             ? RouteOtp.fromJson(json['route'] as Map<String, dynamic>)
             : null,
-        serviceId: json['serviceId'].toString(),
+        serviceId: json['serviceId'] as String,
         activeDates: json['activeDates'] != null
             ? (json['activeDates'] as List<String>)
             : null,
-        tripShortName: json['tripShortName'].toString(),
-        tripHeadsign: json['tripHeadsign'].toString(),
-        routeShortName: json['routeShortName'].toString(),
-        directionId: json['directionId'].toString(),
-        blockId: json['blockId'].toString(),
-        shapeId: json['shapeId'].toString(),
+        tripShortName: json['tripShortName'] as String,
+        tripHeadsign: json['tripHeadsign'] as String,
+        routeShortName: json['routeShortName'] as String,
+        directionId: json['directionId'] as String,
+        blockId: json['blockId'] as String,
+        shapeId: json['shapeId'] as String,
         wheelchairAccessible: getWheelchairBoardingByString(
             json['wheelchairAccessible'].toString()),
-        bikesAllowed: getBikesAllowedByString(json['bikesAllowed'].toString()),
+        bikesAllowed: getBikesAllowedByString(json['bikesAllowed'] as String),
         pattern: json['pattern'] != null
             ? Pattern.fromJson(json['pattern'] as Map<String, dynamic>)
             : null,
@@ -85,7 +85,7 @@ class Trip {
                 (x) => Stop.fromJson(x as Map<String, dynamic>),
               ))
             : null,
-        semanticHash: json['semanticHash'].toString(),
+        semanticHash: json['semanticHash'] as String,
         stoptimes: json['stoptimes'] != null
             ? List<Stoptime>.from((json["stoptimes"] as List<dynamic>).map(
                 (x) => Stoptime.fromJson(x as Map<String, dynamic>),
