@@ -30,7 +30,8 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   final TrufiMapController _trufiMapController = TrufiMapController();
   final _cropButtonKey = GlobalKey<CropButtonState>();
   PatternOtp patternOtp;
-  List<LatLng> currentMap = [];
+  List<LatLng> stopsLocations = [];
+  List<LatLng> routePoints = [];
 
   bool loading = true;
   String fetchError;
@@ -70,7 +71,9 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
       if (mounted) {
         setState(() {
           patternOtp = value;
-          currentMap = patternOtp.stops.map((e) {
+          routePoints =
+              patternOtp.geometry.map((e) => LatLng(e.lat, e.lon)).toList();
+          stopsLocations = patternOtp.stops.map((e) {
             final point = LatLng(e.lat, e.lon);
             _selectedBounds.extend(point);
             return point;
@@ -130,7 +133,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                             PolylineLayerOptions(
                               polylines: [
                                 Polyline(
-                                  points: currentMap,
+                                  points: routePoints,
                                   color: Color(
                                     int.tryParse(
                                             "0xFF${patternOtp.route?.color}") ??
@@ -142,7 +145,8 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                             ),
                             MarkerLayerOptions(
                               markers: [
-                                ...currentMap.map((e) => buildTransferMarker(e))
+                                ...stopsLocations
+                                    .map((e) => buildTransferMarker(e))
                               ],
                             ),
                           ],

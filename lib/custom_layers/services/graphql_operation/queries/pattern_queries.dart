@@ -5,6 +5,7 @@ query RouteStopListContainerQuery(
 ) {
   pattern(id: $patternId) {
     ...RouteStopListContainer_pattern_1WWfn2
+    ...RoutePageMap_pattern
     id
   }
 }

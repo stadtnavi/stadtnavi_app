@@ -44,3 +44,77 @@ fragment RouteStopListContainer_pattern_1WWfn2 on Pattern {
 }
   ''',
 );
+
+final routeLinePattern = gql('''
+fragment RouteLine_pattern on Pattern {
+  code
+  geometry {
+    lat
+    lon
+  }
+  route {
+    mode
+    color
+    id
+  }
+  stops {
+    lat
+    lon
+    name
+    gtfsId
+    platformCode
+    code
+    ...StopCardHeaderContainer_stop
+    id
+  }
+}
+ ''');
+final routePageMapPattern = gql('''
+fragment RoutePageMap_pattern on Pattern {
+  code
+  directionId
+  headsign
+  geometry {
+    lat
+    lon
+  }
+  stops {
+    lat
+    lon
+    name
+    gtfsId
+    ...StopCardHeaderContainer_stop
+    id
+  }
+  activeDates: trips {
+    day: activeDates
+    id
+  }
+  ...RouteLine_pattern
+}
+''');
+
+final stopCardHeaderContainerStop = gql(
+  '''
+  fragment StopCardHeaderContainer_stop on Stop {
+  gtfsId
+  name
+  code
+  desc
+  zoneId
+  alerts {
+    alertSeverityLevel
+    effectiveEndDate
+    effectiveStartDate
+    id
+  }
+  lat
+  lon
+  stops {
+    name
+    desc
+    id
+  }
+}
+''',
+);

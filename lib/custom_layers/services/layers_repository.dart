@@ -74,9 +74,15 @@ class LayersRepository {
 
   Future<PatternOtp> fetchStopsRoute(String patternId) async {
     final WatchQueryOptions patternQuery = WatchQueryOptions(
-      document: addFragments(
-          parseString(pattern_queries.routeStopListContainer),
-          [pattern_fragments.timetableContainerStop]),
+      document:
+          addFragments(parseString(pattern_queries.routeStopListContainer), [
+        pattern_fragments.timetableContainerStop,
+        addFragments(pattern_fragments.routePageMapPattern, [
+          addFragments(pattern_fragments.routeLinePattern,
+              [pattern_fragments.stopCardHeaderContainerStop]),
+          pattern_fragments.stopCardHeaderContainerStop,
+        ])
+      ]),
       variables: <String, dynamic>{
         "currentTime": DateTime.now().millisecondsSinceEpoch ~/ 1000,
         "patternId": patternId
