@@ -5,11 +5,13 @@ import 'package:vector_tile/vector_tile.dart';
 import 'citybikes_enum.dart';
 
 class CityBikeFeature {
+  final GeoJsonPoint geoJsonPoint;
   final String id;
   final CityBikeLayerIds type;
 
   final LatLng position;
   CityBikeFeature({
+    @required this.geoJsonPoint,
     @required this.id,
     @required this.type,
     @required this.position,
@@ -32,6 +34,7 @@ class CityBikeFeature {
       }
     }
     return CityBikeFeature(
+      geoJsonPoint: geoJsonPoint,
       id: id,
       type: type,
       position: LatLng(
