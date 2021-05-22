@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong/latlong.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/route_stops_screen/bottom_stops_detail.dart';
 
@@ -8,6 +9,7 @@ import 'package:stadtnavi_app/custom_layers/services/models_otp/enums/mode.dart'
 import 'package:stadtnavi_app/custom_layers/services/models_otp/pattern.dart';
 
 import 'package:stadtnavi_app/custom_layers/services/models_otp/stoptime.dart';
+import 'package:trufi_core/blocs/configuration/configuration_cubit.dart';
 import 'package:trufi_core/widgets/map/buttons/crop_button.dart';
 import 'package:trufi_core/widgets/map/buttons/your_location_button.dart';
 import 'package:trufi_core/widgets/map/trufi_map.dart';
@@ -102,6 +104,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
         needsCameraUpdate = false;
       }
     }
+    final trufiConfiguration = context.read<ConfigurationCubit>().state;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -149,6 +152,12 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                                     .map((e) => buildTransferMarker(e))
                               ],
                             ),
+                            MarkerLayerOptions(markers: [
+                              trufiConfiguration.markers
+                                  .buildFromMarker(stopsLocations[0]),
+                              trufiConfiguration.markers.buildToMarker(
+                                  stopsLocations[stopsLocations.length - 1]),
+                            ]),
                           ],
                         ),
                         Positioned(
