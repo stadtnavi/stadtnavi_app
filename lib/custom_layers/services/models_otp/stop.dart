@@ -33,7 +33,7 @@ class Stop {
   final Cluster cluster;
   final List<Stop> stops;
   final List<RouteOtp> routes;
-  final List<Pattern> patterns;
+  final List<PatternOtp> patterns;
   final List<StopAtDistance> transfers;
   final List<StoptimesInPattern> stoptimesForServiceDate;
   final List<StoptimesInPattern> stoptimesForPatterns;
@@ -111,8 +111,8 @@ class Stop {
               ))
             : null,
         patterns: json['patterns'] != null
-            ? List<Pattern>.from((json["patterns"] as List<dynamic>).map(
-                (x) => Pattern.fromJson(x as Map<String, dynamic>),
+            ? List<PatternOtp>.from((json["patterns"] as List<dynamic>).map(
+                (x) => PatternOtp.fromJson(x as Map<String, dynamic>),
               ))
             : null,
         transfers: json['transfers'] != null
@@ -195,7 +195,7 @@ class Stop {
 
   Map<String, List<Stoptime>> get stoptimesByDay {
     final timesMap = <String, List<Stoptime>>{};
-    stoptimesWithoutPatternsCurrent.forEach((stoptime) {
+    stoptimesForServiceDate[0].stoptimes.forEach((stoptime) {
       final key = DateFormat('HH').format(stoptime.dateTime);
       if (key != null) {
         if (timesMap.containsKey(key)) {

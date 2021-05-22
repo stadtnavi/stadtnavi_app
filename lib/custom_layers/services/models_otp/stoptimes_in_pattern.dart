@@ -2,7 +2,7 @@ import 'pattern.dart';
 import 'stoptime.dart';
 
 class StoptimesInPattern {
-  final Pattern pattern;
+  final PatternOtp pattern;
   final List<Stoptime> stoptimes;
 
   const StoptimesInPattern({
@@ -13,7 +13,7 @@ class StoptimesInPattern {
   factory StoptimesInPattern.fromJson(Map<String, dynamic> json) =>
       StoptimesInPattern(
         pattern: json['pattern'] != null
-            ? Pattern.fromJson(json['pattern'] as Map<String, dynamic>)
+            ? PatternOtp.fromJson(json['pattern'] as Map<String, dynamic>)
             : null,
         stoptimes: json['stoptimes'] != null
             ? List<Stoptime>.from((json["stoptimes"] as List<dynamic>).map(

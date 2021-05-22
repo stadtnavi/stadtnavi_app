@@ -21,7 +21,7 @@ class Trip {
   final String shapeId;
   final WheelchairBoarding wheelchairAccessible;
   final BikesAllowed bikesAllowed;
-  final Pattern pattern;
+  final PatternOtp pattern;
   final List<Stop> stops;
   final String semanticHash;
   final List<Stoptime> stoptimes;
@@ -78,7 +78,7 @@ class Trip {
             json['wheelchairAccessible'].toString()),
         bikesAllowed: getBikesAllowedByString(json['bikesAllowed'] as String),
         pattern: json['pattern'] != null
-            ? Pattern.fromJson(json['pattern'] as Map<String, dynamic>)
+            ? PatternOtp.fromJson(json['pattern'] as Map<String, dynamic>)
             : null,
         stops: json['stops'] != null
             ? List<Stop>.from((json["stops"] as List<dynamic>).map(

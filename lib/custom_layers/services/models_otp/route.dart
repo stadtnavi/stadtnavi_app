@@ -19,7 +19,7 @@ class RouteOtp {
   final String color;
   final String textColor;
   final BikesAllowed bikesAllowed;
-  final List<Pattern> patterns;
+  final List<PatternOtp> patterns;
   final List<Stop> stops;
   final List<Trip> trips;
   final List<Alert> alerts;
@@ -59,18 +59,18 @@ class RouteOtp {
         textColor: json['textColor'] as String,
         bikesAllowed: getBikesAllowedByString(json['bikesAllowed'].toString()),
         patterns: json['patterns'] != null
-            ? List<Pattern>.from((json["patterns"] as List<dynamic>).map(
-                (x) => Pattern.fromJson(x as Map<String, dynamic>),
+            ? List<PatternOtp>.from((json["patterns"] as List<dynamic>).map(
+                (x) => PatternOtp.fromJson(x as Map<String, dynamic>),
               ))
             : null,
         stops: json['stops'] != null
             ? List<Stop>.from((json["stops"] as List<dynamic>).map(
-                (x) => Pattern.fromJson(x as Map<String, dynamic>),
+                (x) => PatternOtp.fromJson(x as Map<String, dynamic>),
               ))
             : null,
         trips: json['trips'] != null
             ? List<Trip>.from((json["trips"] as List<dynamic>).map(
-                (x) => Pattern.fromJson(x as Map<String, dynamic>),
+                (x) => PatternOtp.fromJson(x as Map<String, dynamic>),
               ))
             : null,
         alerts: json['alerts'] != null

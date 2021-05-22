@@ -5,7 +5,7 @@ import 'route.dart';
 import 'stop.dart';
 import 'trip.dart';
 
-class Pattern {
+class PatternOtp {
   final String id;
   final RouteOtp route;
   final int directionId;
@@ -20,7 +20,7 @@ class Pattern {
   final String semanticHash;
   final List<Alert> alerts;
 
-  const Pattern({
+  const PatternOtp({
     this.id,
     this.route,
     this.directionId,
@@ -36,7 +36,7 @@ class Pattern {
     this.alerts,
   });
 
-  factory Pattern.fromJson(Map<String, dynamic> json) => Pattern(
+  factory PatternOtp.fromJson(Map<String, dynamic> json) => PatternOtp(
         id: json['id'].toString(),
         route: json['route'] != null
             ? RouteOtp.fromJson(json['route'] as Map<String, dynamic>)

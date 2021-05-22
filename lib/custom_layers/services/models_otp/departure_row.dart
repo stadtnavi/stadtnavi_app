@@ -7,7 +7,7 @@ class DepartureRow {
   final Stop stop;
   final double lat;
   final double lon;
-  final Pattern pattern;
+  final PatternOtp pattern;
   final List<Stoptime> stoptimes;
 
   const DepartureRow({
@@ -27,7 +27,7 @@ class DepartureRow {
         lat: double.tryParse(json['lat'].toString()) ?? 0,
         lon: double.tryParse(json['lon'].toString()) ?? 0,
         pattern: json['pattern'] != null
-            ? Pattern.fromJson(json['pattern'] as Map<String, dynamic>)
+            ? PatternOtp.fromJson(json['pattern'] as Map<String, dynamic>)
             : null,
         stoptimes: json['stoptimes'] != null
             ? List<Stoptime>.from((json["stoptimes"] as List<dynamic>).map(

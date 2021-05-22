@@ -17,7 +17,7 @@ class Alert {
   final RouteOtp route;
   final Trip trip;
   final Stop stop;
-  final List<Pattern> patterns;
+  final List<PatternOtp> patterns;
   final String alertHeaderText;
   final List<TranslatedString> alertHeaderTextTranslations;
   final String alertDescriptionText;
@@ -71,8 +71,8 @@ class Alert {
             ? Stop.fromJson(json['stop'] as Map<String, dynamic>)
             : null,
         patterns: json['patterns'] != null
-            ? List<Pattern>.from((json["patterns"] as List<dynamic>).map(
-                (x) => Pattern.fromJson(x as Map<String, dynamic>),
+            ? List<PatternOtp>.from((json["patterns"] as List<dynamic>).map(
+                (x) => PatternOtp.fromJson(x as Map<String, dynamic>),
               ))
             : null,
         alertHeaderText: json['alertHeaderText'].toString(),

@@ -1,5 +1,6 @@
 import 'package:graphql/client.dart';
 
+// Query generate basicData
 final fragmentStopCardHeaderContainerstop = gql(
   '''
       fragment StopCardHeaderContainer_stop on Stop {
@@ -16,6 +17,7 @@ final fragmentStopCardHeaderContainerstop = gql(
       }
   ''',
 );
+// Query generate stoptime
 final stopPageTabContainerStop = gql(
   '''
 fragment StopPageTabContainer_stop on Stop {
@@ -221,6 +223,8 @@ final departureListContainerStoptimes = gql(
 }
   ''',
 );
+
+// Query generate TimeTable
 final timetableContainerStop = gql(
   r'''
     fragment TimetableContainer_stop_19b1FI on Stop {

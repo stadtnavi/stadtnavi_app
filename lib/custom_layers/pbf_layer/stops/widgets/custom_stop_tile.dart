@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:latlong/latlong.dart';
+
 import 'package:stadtnavi_app/custom_layers/services/models_otp/enums/mode.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/stoptime.dart';
+import 'package:trufi_core/pages/choose_location.dart';
 
 class CustomStopTile extends StatelessWidget {
   final Stoptime stopTime;
@@ -19,6 +22,10 @@ class CustomStopTile extends StatelessWidget {
     return Column(
       children: [
         ListTile(
+            onTap: () async {
+              final LatLng mapLocation =
+                  await ChooseLocationPage.selectPosition(context);
+            },
             leading: Container(
               decoration: BoxDecoration(
                 color: Color(

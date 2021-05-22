@@ -9,3 +9,10 @@ const String stopDataQuery = r'''
         }
       }
 ''';
+const String timeTableQuery = r'''
+  query stopRoutes_StopPageHeaderContainer_Query($stopId: String!, $date: String!) {
+        stop(id: $stopId) {
+          ...TimetableContainer_stop_19b1FI
+        }
+      }
+''';
