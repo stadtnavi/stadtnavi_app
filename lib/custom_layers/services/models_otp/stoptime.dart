@@ -134,7 +134,10 @@ class Stoptime {
   String get timeDiffInMinutes {
     String timeDiffInMinutes = '';
     final diffMinutes = dateTime.difference(DateTime.now()).inMinutes;
-    if (diffMinutes <= 0) {
+    if (diffMinutes < 0) {
+      // TODO translate
+      timeDiffInMinutes = '';
+    } else if (diffMinutes == 0) {
       // TODO translate
       timeDiffInMinutes = 'now';
     } else if (diffMinutes < 10) {

@@ -5,8 +5,8 @@ import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/stop_feature_model.d
 import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/stops_icon.dart';
 import 'package:flutter_svg/svg.dart';
 
-import 'widgets/right_now_screen.dart';
-import 'widgets/time_table_screen.dart';
+import 'right_now_tab/right_now_screen.dart';
+import 'time_table_tab/time_table_screen.dart';
 
 class StopMarkerModal extends StatelessWidget {
   final StopFeature stopFeature;

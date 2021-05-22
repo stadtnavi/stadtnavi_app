@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/route_stops_screen/route_stops_screen.dart';
 
 import 'package:stadtnavi_app/custom_layers/services/models_otp/enums/mode.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/stoptime.dart';
@@ -21,7 +22,11 @@ class CustomStopTile extends StatelessWidget {
       children: [
         ListTile(
             onTap: () async {
-              // TODO: show route
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RoutesStopScreen(stopTime: stopTime)),
+              );
             },
             leading: Container(
               decoration: BoxDecoration(
