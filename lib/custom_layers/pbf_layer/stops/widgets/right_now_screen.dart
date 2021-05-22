@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stadtnavi_app/custom_layers/services/layers_repository.dart';
@@ -30,7 +29,6 @@ class _RightNowScreenState extends State<RightNowScreen>
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((duration) {
       _fetchStopData();
     });
@@ -75,7 +73,7 @@ class _RightNowScreenState extends State<RightNowScreen>
                 final Stoptime stopTime = stoptimes[index];
                 return Column(
                   children: [
-                    if (indexNextDay == index)
+                    if (indexNextDay == index && index == 0)
                       _TitleDay(
                         stoptime: stoptimes[index + 1],
                       ),
