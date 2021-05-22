@@ -223,7 +223,7 @@ class Stop {
 
   Map<String, List<TimeTableStop>> get stoptimesByDay {
     final timesMap = <String, List<TimeTableStop>>{};
-    timeTableStops.forEach((timeTableStop) {
+    for (final timeTableStop in timeTableStops) {
       final key = timeTableStop.dayTime + timeTableStop.hourTime;
       if (key != null) {
         if (timesMap.containsKey(key)) {
@@ -234,7 +234,7 @@ class Stop {
           timesMap[key] = [timeTableStop];
         }
       }
-    });
+    }
     return timesMap;
   }
 }
