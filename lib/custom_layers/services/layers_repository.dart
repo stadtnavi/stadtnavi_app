@@ -16,8 +16,36 @@ class LayersRepository {
 
   LayersRepository();
 
+  Future<Stop> fetchStopCached(String idStop) async {
+    return _fetchStopByTIme(idStop, 0);
+  }
+
   Future<Stop> fetchStop(String idStop) async {
-    final now = DateTime.now();
+    return _fetchStopByTIme(
+        idStop, DateTime.now().millisecondsSinceEpoch ~/ 1000);
+  }
+
+  Future<Stop> fetchTimeTable(String idStop, {DateTime date}) async {
+    final WatchQueryOptions listStopTimes = WatchQueryOptions(
+      document: addFragments(parseString(stops_queries.timeTableQuery),
+          [stops_fragments.timetableContainerStop]),
+      variables: <String, dynamic>{
+        'stopId': idStop,
+        "date": DateFormat('yyyyMMdd').format(date ?? DateTime.now()),
+      },
+      fetchResults: true,
+    );
+    final dataStopsTimes = await client.query(listStopTimes);
+    if (dataStopsTimes.hasException && dataStopsTimes.data == null) {
+      throw Exception("Bad request");
+    }
+    final stopData =
+        Stop.fromJson(dataStopsTimes.data['stop'] as Map<String, dynamic>);
+
+    return stopData;
+  }
+
+  Future<Stop> _fetchStopByTIme(String idStop, int startTime) async {
     final WatchQueryOptions listStopTimes = WatchQueryOptions(
       document: addFragments(parseString(stops_queries.stopDataQuery), [
         stops_fragments.fragmentStopCardHeaderContainerstop,
@@ -27,31 +55,15 @@ class LayersRepository {
       variables: <String, dynamic>{
         'stopId': idStop,
         "numberOfDepartures": 100,
-        "startTime": now.millisecondsSinceEpoch ~/ 1000,
+        "startTime": startTime,
         "timeRange": 864000
       },
       fetchResults: true,
     );
     final dataStopsTimes = await client.query(listStopTimes);
-    if (dataStopsTimes.hasException) throw Exception("Bad request");
-    final stopData =
-        Stop.fromJson(dataStopsTimes.data['stop'] as Map<String, dynamic>);
-
-    return stopData;
-  }
-
-  Future<Stop> fetchTimeTable(String idStop) async {
-    final WatchQueryOptions listStopTimes = WatchQueryOptions(
-      document: addFragments(parseString(stops_queries.timeTableQuery),
-          [stops_fragments.timetableContainerStop]),
-      variables: <String, dynamic>{
-        'stopId': idStop,
-        "date": DateFormat('yyyyMMdd').format(DateTime.now()),
-      },
-      fetchResults: true,
-    );
-    final dataStopsTimes = await client.query(listStopTimes);
-    if (dataStopsTimes.hasException) throw Exception("Bad request");
+    if (dataStopsTimes.hasException && dataStopsTimes.data == null) {
+      throw Exception("Bad request");
+    }
     final stopData =
         Stop.fromJson(dataStopsTimes.data['stop'] as Map<String, dynamic>);
 

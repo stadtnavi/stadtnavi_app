@@ -1,4 +1,4 @@
-import 'package:intl/intl.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/widgets/time_table_screen.dart';
 
 import 'alert.dart';
 import 'cluster.dart';
@@ -193,17 +193,45 @@ class Stop {
         .toList();
   }
 
-  Map<String, List<Stoptime>> get stoptimesByDay {
-    final timesMap = <String, List<Stoptime>>{};
-    stoptimesForServiceDate[0].stoptimes.forEach((stoptime) {
-      final key = DateFormat('HH').format(stoptime.dateTime);
+  List<TimeTableStop> get timeTableStops {
+    final tempList = stoptimesForServiceDate
+        .map((stopTimePattern) => stopTimePattern.stoptimes
+            .where((stopTime) => !stopTime.isArrival)
+            .map((stopTime) => TimeTableStop(
+                  id: stopTimePattern.pattern.code,
+                  name: stopTimePattern.pattern.route.shortName ??
+                      stopTimePattern.pattern.headsign,
+                  scheduledDeparture: stopTime.scheduledDeparture,
+                  serviceDay: stopTime.serviceDay,
+                  headsign: stopTimePattern.pattern.headsign,
+                  longName: stopTimePattern.pattern.route.longName,
+                  isCanceled: stopTime.canceled,
+                  mode: stopTimePattern.pattern.route.mode,
+                ))
+            .toList())
+        .toList()
+        .reduce(
+      (value, element) {
+        value.addAll(element);
+        return value;
+      },
+    );
+    tempList.sort((a, b) => a.dateTime.microsecondsSinceEpoch
+        .compareTo(b.dateTime.microsecondsSinceEpoch));
+    return tempList;
+  }
+
+  Map<String, List<TimeTableStop>> get stoptimesByDay {
+    final timesMap = <String, List<TimeTableStop>>{};
+    timeTableStops.forEach((timeTableStop) {
+      final key = timeTableStop.dayTime + timeTableStop.hourTime;
       if (key != null) {
         if (timesMap.containsKey(key)) {
-          final List<Stoptime> tempList = timesMap[key];
-          tempList.add(stoptime);
+          final List<TimeTableStop> tempList = timesMap[key];
+          tempList.add(timeTableStop);
           timesMap[key] = tempList;
         } else {
-          timesMap[key] = [stoptime];
+          timesMap[key] = [timeTableStop];
         }
       }
     });
