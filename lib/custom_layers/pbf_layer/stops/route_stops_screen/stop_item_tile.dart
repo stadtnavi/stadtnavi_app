@@ -49,8 +49,9 @@ class StopItemTile extends StatelessWidget {
                   ? CrossAxisAlignment.center
                   : CrossAxisAlignment.start,
               children: [
-                Text(stop.name, style: theme.textTheme.bodyText1),
-                const Spacer(),
+                Expanded(
+                  child: Text(stop.name, style: theme.textTheme.bodyText1),
+                ),
                 Text(
                   '${stop.stopTimesForPattern[0].timeDiffInMinutes} ',
                   style: theme.textTheme.bodyText1,

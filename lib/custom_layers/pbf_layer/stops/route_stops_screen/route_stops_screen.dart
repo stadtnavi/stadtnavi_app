@@ -104,7 +104,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
         title: Row(
           children: [
             Text(widget.stopTime.trip.route.mode.name),
-            Text(' - ${widget.stopTime.trip.route.shortName}'),
+            Text(' - ${widget.stopTime.trip.route.shortName ?? ''}'),
           ],
         ),
       ),

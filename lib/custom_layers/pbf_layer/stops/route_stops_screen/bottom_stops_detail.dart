@@ -48,7 +48,7 @@ class BottomStopsDetails extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  ' - ${routeOtp.shortName}',
+                  ' - ${routeOtp.shortName ?? ''}',
                   style: theme.textTheme.bodyText2.copyWith(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
