@@ -37,7 +37,7 @@ class StopMarkerModal extends StatelessWidget {
         ),
         Expanded(
           child: DefaultTabController(
-            length: 3,
+            length: 2,
             child: Material(
               color: Colors.white,
               child: Column(
@@ -47,7 +47,6 @@ class StopMarkerModal extends StatelessWidget {
                     tabs: [
                       Tab(text: "Right now"),
                       Tab(text: "Timetable"),
-                      Tab(text: "Disruptions"),
                     ],
                   ),
                   Expanded(
@@ -57,15 +56,6 @@ class StopMarkerModal extends StatelessWidget {
                       ),
                       TimeTableScreen(
                         stopFeature: stopFeature,
-                      ),
-                      Container(
-                        color: Colors.blueAccent,
-                        child: const Center(
-                          child: Text(
-                            'Disruptions',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
                       ),
                     ]),
                   ),

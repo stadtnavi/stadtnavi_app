@@ -75,8 +75,8 @@ class _TimeTableScreenState extends State<TimeTableScreen>
           LinearProgressIndicator(
             valueColor:
                 AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
-          ),
-        if (stoptimesByDay != null)
+          )
+        else if (stoptimesByDay != null)
           Expanded(
             child: ListView.builder(
               itemCount: stoptimesByDay.length,
@@ -156,11 +156,6 @@ class _TimeTableScreenState extends State<TimeTableScreen>
                 );
               },
             ),
-          )
-        else if (loading)
-          LinearProgressIndicator(
-            valueColor:
-                AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
           )
         else
           Text(
