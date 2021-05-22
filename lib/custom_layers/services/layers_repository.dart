@@ -30,10 +30,10 @@ class LayersRepository {
         "startTime": now.millisecondsSinceEpoch ~/ 1000,
         "timeRange": 864000
       },
-      pollInterval: const Duration(seconds: 4),
       fetchResults: true,
     );
     final dataStopsTimes = await client.query(listStopTimes);
+    if (dataStopsTimes.hasException) throw Exception("Bad request");
     final stopData =
         Stop.fromJson(dataStopsTimes.data['stop'] as Map<String, dynamic>);
 
@@ -48,10 +48,10 @@ class LayersRepository {
         'stopId': idStop,
         "date": DateFormat('yyyyMMdd').format(DateTime.now()),
       },
-      pollInterval: const Duration(seconds: 4),
       fetchResults: true,
     );
     final dataStopsTimes = await client.query(listStopTimes);
+    if (dataStopsTimes.hasException) throw Exception("Bad request");
     final stopData =
         Stop.fromJson(dataStopsTimes.data['stop'] as Map<String, dynamic>);
 
