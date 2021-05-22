@@ -5,6 +5,7 @@ import 'package:vector_tile/vector_tile.dart';
 import 'bike_parks_enum.dart';
 
 class CifsFeature {
+  final GeoJsonLineString geoJsonPoint;
   final String id;
   final String locationStreet;
   final String locationDirection;
@@ -16,10 +17,12 @@ class CifsFeature {
   final List<LatLng> polyline;
   final LatLng startPoint;
   final LatLng endPoint;
+  final String url;
 
   final CifsTypeIds type;
   final CifsSubTypeIds subType;
   CifsFeature({
+    @required this.geoJsonPoint,
     @required this.id,
     @required this.locationStreet,
     @required this.locationDirection,
@@ -28,6 +31,7 @@ class CifsFeature {
     @required this.description,
     @required this.reference,
     @required this.mode,
+    @required this.url,
     @required this.polyline,
     @required this.type,
     @required this.subType,
@@ -44,6 +48,7 @@ class CifsFeature {
     String description;
     String reference;
     String mode;
+    String url;
     CifsTypeIds type;
     CifsSubTypeIds subType;
     for (final element in geoJsonPoint.properties) {
@@ -75,6 +80,9 @@ class CifsFeature {
         case "mode":
           mode = element.values.first.dartStringValue;
           break;
+        case "details_url":
+          url = element.values.first.dartStringValue;
+          break;
         case "type":
           type = cifsTypeIdsStringToEnum(element.values.first.dartStringValue);
           break;
@@ -97,6 +105,7 @@ class CifsFeature {
     }
 
     return CifsFeature(
+      geoJsonPoint: geoJsonPoint,
       id: id,
       locationStreet: locationStreet,
       locationDirection: locationDirection,
@@ -105,6 +114,7 @@ class CifsFeature {
       description: description,
       reference: reference,
       mode: mode,
+      url: url,
       polyline: polyline,
       type: type,
       subType: subType,

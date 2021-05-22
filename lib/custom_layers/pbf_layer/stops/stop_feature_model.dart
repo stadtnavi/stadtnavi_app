@@ -6,7 +6,7 @@ import 'stops_enum.dart';
 
 class StopFeature {
   final String code;
-  final List<String> gtfsId;
+  final String gtfsId;
   final String name;
   final String parentStation;
   final String patterns;
@@ -27,7 +27,7 @@ class StopFeature {
   // ignore: prefer_constructors_over_static_methods
   static StopFeature fromGeoJsonPoint(GeoJsonPoint geoJsonPoint) {
     String code;
-    List<String> gtfsId;
+    String gtfsId;
     String name;
     String parentStation;
     String patterns;
@@ -39,7 +39,7 @@ class StopFeature {
           code = element.values.first.dartStringValue;
           break;
         case "gtfsId":
-          gtfsId = [element.values.first.dartStringValue];
+          gtfsId = element.values.first.dartStringValue;
           break;
         case "name":
           name = element.values.first.dartStringValue;

@@ -1,8 +1,8 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
-import 'package:trufi_core/l10n/trufi_localization.dart';
+import 'package:stadtnavi_app/custom_layers/static_layer.dart';
+import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
 import 'package:http/http.dart' as http;
@@ -10,6 +10,7 @@ import 'package:vector_tile/vector_tile.dart';
 
 import 'cifs_feature_model.dart';
 import 'cifs_icons.dart';
+import 'cifs_marker_modal.dart';
 
 class CifsLayer extends CustomLayer {
   final Map<String, CifsFeature> _pbfMarkers = {};
@@ -157,84 +158,11 @@ class _CifsFeatureMarker extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        return showDialog<void>(
+        showBottomMarkerModal(
           context: context,
-          builder: (BuildContext dialogContext) {
-            final localization = TrufiLocalization.of(context);
-            final theme = Theme.of(dialogContext);
-            return AlertDialog(
-              title: Text(
-                element.id ?? "",
-                style: TextStyle(color: theme.primaryColor),
-              ),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    if (element.starttime != null)
-                      Text(
-                        "starttime: ${element.starttime}",
-                        style: TextStyle(
-                          color: theme.textTheme.bodyText1.color,
-                        ),
-                      ),
-                    if (element.endtime != null)
-                      Text(
-                        "endtime: ${element.endtime}",
-                        style: TextStyle(
-                          color: theme.textTheme.bodyText1.color,
-                        ),
-                      ),
-                    if (element.id != null)
-                      Text(
-                        "id: ${element.id}",
-                        style: TextStyle(
-                          color: theme.textTheme.bodyText1.color,
-                        ),
-                      ),
-                    if (element.description != null)
-                      Text(
-                        "description: ${element.description}",
-                        style: TextStyle(
-                          color: theme.textTheme.bodyText1.color,
-                        ),
-                      ),
-                    if (element.mode != null)
-                      Text(
-                        "mode: ${element.mode}",
-                        style: TextStyle(
-                          color: theme.textTheme.bodyText1.color,
-                        ),
-                      ),
-                    if (element.type != null)
-                      Text(
-                        "type: ${element.type}",
-                        style: TextStyle(
-                          color: theme.textTheme.bodyText1.color,
-                        ),
-                      ),
-                    if (element.subType != null)
-                      Text(
-                        "subType: ${element.subType}",
-                        style: TextStyle(
-                          color: theme.textTheme.bodyText1.color,
-                        ),
-                      ),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(dialogContext).pop();
-                  },
-                  child: Text(localization.commonOK),
-                ),
-              ],
-            );
-          },
+          builder: (BuildContext context) => CifsMarkerModal(
+            element: element,
+          ),
         );
       },
       child: cifsIcons[element.type] != null

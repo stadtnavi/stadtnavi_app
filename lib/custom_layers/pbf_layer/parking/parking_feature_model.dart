@@ -5,6 +5,7 @@ import 'package:vector_tile/vector_tile.dart';
 import 'parkings_enum.dart';
 
 class ParkingFeature {
+  final GeoJsonPoint geoJsonPoint;
   final String id;
   final String address;
   final String name;
@@ -17,11 +18,14 @@ class ParkingFeature {
   final String total;
   final String url;
   final String notes;
+  final String freeDisabled;
+  final String totalDisabled;
 
   final ParkingsLayerIds type;
 
   final LatLng position;
   ParkingFeature({
+    @required this.geoJsonPoint,
     @required this.id,
     @required this.address,
     @required this.name,
@@ -36,6 +40,8 @@ class ParkingFeature {
     @required this.notes,
     @required this.type,
     @required this.position,
+    @required this.freeDisabled,
+    @required this.totalDisabled,
   });
   // ignore: prefer_constructors_over_static_methods
   static ParkingFeature fromGeoJsonPoint(GeoJsonPoint geoJsonPoint) {
@@ -51,6 +57,9 @@ class ParkingFeature {
     String total;
     String url;
     String notes;
+    String freeDisabled;
+    String totalDisabled;
+
     ParkingsLayerIds type;
     for (final element in geoJsonPoint.properties) {
       switch (element.keys.first) {
@@ -94,11 +103,18 @@ class ParkingFeature {
         case "notes":
           notes = element.values.first.dartStringValue;
           break;
+        case "free:disabled":
+          freeDisabled = element.values.first.dartIntValue?.toString();
+          break;
+        case "total:disabled":
+          totalDisabled = element.values.first.dartIntValue?.toString();
+          break;
         default:
       }
     }
 
     return ParkingFeature(
+      geoJsonPoint: geoJsonPoint,
       id: id,
       address: address,
       name: name,
@@ -111,6 +127,8 @@ class ParkingFeature {
       total: total,
       url: url,
       notes: notes,
+      freeDisabled: freeDisabled,
+      totalDisabled: totalDisabled,
       type: type,
       position: LatLng(
         geoJsonPoint.geometry.coordinates[1],

@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:stadtnavi_app/configuration_service.dart';
 import 'package:stadtnavi_app/custom_between_fab/report_defects_button.dart';
-import 'package:stadtnavi_app/custom_layers/layer.dart';
-import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
+import 'package:stadtnavi_app/custom_layers/map_layers/map_leyers.dart';
+import 'package:stadtnavi_app/custom_layers/static_layer.dart';
 import 'package:stadtnavi_app/custom_search_location/online_search_location.dart';
 import 'package:stadtnavi_app/custom_social_media/youtube_social_media.dart';
-import 'package:stadtnavi_app/map_layers/map_leyers.dart';
 import 'package:stadtnavi_app/theme.dart';
 
 import 'package:trufi_core/models/social_media/facebook_social_media.dart';
@@ -14,8 +13,12 @@ import 'package:trufi_core/models/social_media/instagram_social_media.dart';
 import 'package:trufi_core/models/social_media/twitter_social_media.dart';
 import 'package:trufi_core/trufi_app.dart';
 
-void main() {
+import 'custom_layers/local_json_layer/layer.dart';
+import 'custom_layers/services/graphl_client/hive_init.dart';
+
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initHiveForFlutter();
   // Run app
   runApp(
     TrufiApp(

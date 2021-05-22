@@ -1,14 +1,15 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:stadtnavi_app/custom_layers/pbf_layer/static_pbf_layer.dart';
-import 'package:trufi_core/l10n/trufi_localization.dart';
+import 'package:stadtnavi_app/custom_layers/static_layer.dart';
+import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:vector_tile/vector_tile.dart';
 
 import 'citybike_feature_model.dart';
+import 'citybike_marker_modal.dart';
 import 'citybikes_icon.dart';
 
 class CityBikesLayer extends CustomLayer {
@@ -62,44 +63,12 @@ class CityBikesLayer extends CustomLayer {
                     anchorPos: AnchorPos.align(AnchorAlign.top),
                     builder: (context) => GestureDetector(
                       onTap: () {
-                        return showDialog<void>(
+                        showBottomMarkerModal(
                           context: context,
-                          builder: (BuildContext dialogContext) {
-                            final localization = TrufiLocalization.of(context);
-                            final theme = Theme.of(dialogContext);
-                            return AlertDialog(
-                              title: Text(
-                                element.id,
-                                style: TextStyle(color: theme.primaryColor),
-                              ),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: <Widget>[
-                                    Text(
-                                      "id: ${element.id}",
-                                      style: TextStyle(
-                                        color: theme.textTheme.bodyText1.color,
-                                      ),
-                                    ),
-                                    Text(
-                                      "type: ${element.type}",
-                                      style: TextStyle(
-                                        color: theme.textTheme.bodyText1.color,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(dialogContext).pop();
-                                  },
-                                  child: Text(localization.commonOK),
-                                ),
-                              ],
-                            );
-                          },
+                          builder: (BuildContext context) =>
+                              CitybikeMarkerModal(
+                            element: element,
+                          ),
                         );
                       },
                       child: SvgPicture.string(

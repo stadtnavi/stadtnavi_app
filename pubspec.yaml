@@ -17,7 +17,9 @@ dependencies:
   flutter:
     sdk: flutter
 
+  graphql: ^4.0.1
   lint: ^1.5.3
+  scrollable_panel: ^0.4.1
 
   # TODO: improve the trufi_core dependency, e.g use tags instead commits
   # the ref should not be a branch because the `pub get` will not get the latest change
