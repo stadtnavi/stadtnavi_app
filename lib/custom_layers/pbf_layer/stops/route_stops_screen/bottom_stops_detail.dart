@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
-
 import 'package:stadtnavi_app/custom_layers/services/models_otp/enums/mode.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/route.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/stop.dart';
@@ -11,7 +10,6 @@ class BottomStopsDetails extends StatelessWidget {
   final RouteOtp routeOtp;
   final List<Stop> stops;
   final Function(LatLng) moveTo;
-
   const BottomStopsDetails({
     Key key,
     @required this.routeOtp,
@@ -25,9 +23,7 @@ class BottomStopsDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Container(
-      height: 300,
-      color: theme.backgroundColor,
+    return Card(
       child: Column(
         children: [
           Container(
@@ -57,6 +53,7 @@ class BottomStopsDetails extends StatelessWidget {
               ],
             ),
           ),
+          const Divider(),
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 20),

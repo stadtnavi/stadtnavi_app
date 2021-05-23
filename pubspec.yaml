@@ -25,9 +25,7 @@ dependencies:
   # the ref should not be a branch because the `pub get` will not get the latest change
   # so the ref is refering to the latest commit
   trufi_core:
-    git:
-      url: https://github.com/trufi-association/trufi-core.git
-      ref: 26c01896223fbab126cf4353c9836525f73f67ba
+    path: ../trufi-core
 
   vector_tile:
     git:
