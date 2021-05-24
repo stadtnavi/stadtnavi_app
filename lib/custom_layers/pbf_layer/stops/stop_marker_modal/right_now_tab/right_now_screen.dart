@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stadtnavi_app/custom_layers/services/layers_repository.dart';
 
 import 'package:stadtnavi_app/custom_layers/services/models_otp/stoptime.dart';
 
-import '../stop_feature_model.dart';
+import '../../stop_feature_model.dart';
 import 'custom_stop_tile.dart';
 
 class RightNowScreen extends StatefulWidget {
@@ -30,7 +29,6 @@ class _RightNowScreenState extends State<RightNowScreen>
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((duration) {
       _fetchStopData();
     });
@@ -75,7 +73,7 @@ class _RightNowScreenState extends State<RightNowScreen>
                 final Stoptime stopTime = stoptimes[index];
                 return Column(
                   children: [
-                    if (indexNextDay == index)
+                    if (indexNextDay == index && index == 0)
                       _TitleDay(
                         stoptime: stoptimes[index + 1],
                       ),

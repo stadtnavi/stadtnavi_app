@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:vector_tile/vector_tile.dart';
 
 import 'stop_feature_model.dart';
-import 'stop_marker_modal.dart';
+import 'stop_marker_modal/stop_marker_modal.dart';
 import 'stops_enum.dart';
 import 'stops_icon.dart';
 

@@ -1,4 +1,4 @@
-import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/widgets/time_table_screen.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/stop_marker_modal/time_table_tab/time_table_screen.dart';
 
 import 'alert.dart';
 import 'cluster.dart';

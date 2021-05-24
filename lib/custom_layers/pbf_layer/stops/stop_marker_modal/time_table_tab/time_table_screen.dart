@@ -7,7 +7,7 @@ import 'package:stadtnavi_app/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/enums/mode.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/pattern.dart';
 
-import '../stop_feature_model.dart';
+import '../../stop_feature_model.dart';
 import 'date_day_picker.dart';
 
 class TimeTableScreen extends StatefulWidget {
