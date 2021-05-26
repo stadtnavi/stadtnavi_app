@@ -1,3 +1,4 @@
+import 'package:stadtnavi_app/custom_layers/pbf_layer/charging/charging_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/stops_layer.dart';
 
@@ -19,3 +20,4 @@ final CityBikesLayer citybikeLayer = CityBikesLayer("Sharing");
 final BikeParkLayer bikeParkLayer = BikeParkLayer("Bike Parking Space");
 final CifsLayer cifsLayer = CifsLayer("Roadworks");
 final WeatherLayer weatherLayer = WeatherLayer("Road Weather");
+final ChargingLayer chargingLayer = ChargingLayer("Charging");
