@@ -15,6 +15,7 @@ import 'package:trufi_core/trufi_app.dart';
 
 import 'custom_layers/local_json_layer/layer.dart';
 import 'custom_layers/services/graphl_client/hive_init.dart';
+import 'custom_social_media/impressum.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -51,6 +52,7 @@ Future<void> main() async {
         YoutubeSocialMedia(
           "https://www.youtube.com/channel/UCL_K2RPU0pxV5VYw0Aj_PUA",
         ),
+        ImpressumMedia("https://www.herrenberg.de/impressum"),
       ],
       customBetweenFabBuilder: (contexts) {
         return Column(
