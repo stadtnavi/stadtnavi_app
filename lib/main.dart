@@ -23,6 +23,7 @@ Future<void> main() async {
   runApp(
     TrufiApp(
       theme: stadtnaviTheme,
+      bottomBarTheme: bottomBarTheme,
       configuration: setupTrufiConfiguration(),
       customLayers: [
         cifsLayer,
