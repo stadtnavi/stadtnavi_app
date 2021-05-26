@@ -42,6 +42,13 @@ class ChargingMarkerModal extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              if (element.id != null)
+                Text(
+                  "id: ${element.id}",
+                  style: TextStyle(
+                    color: theme.textTheme.bodyText1.color,
+                  ),
+                ),
               if (element.c != null)
                 Text(
                   "c: ${element.c}",

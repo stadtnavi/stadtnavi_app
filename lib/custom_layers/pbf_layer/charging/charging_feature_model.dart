@@ -34,7 +34,7 @@ class ChargingFeature {
     for (final element in geoJsonPoint.properties) {
       switch (element.keys.first) {
         case "id":
-          id = element.values.first.dartStringValue;
+          id = element.values.first.dartIntValue?.toString();
           break;
         case "name":
           name = element.values.first.dartStringValue;
