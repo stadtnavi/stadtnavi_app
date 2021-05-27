@@ -18,6 +18,7 @@ class CustomStopTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final languageCode = Localizations.localeOf(context).languageCode;
     return Column(
       children: [
         ListTile(
@@ -72,9 +73,10 @@ class CustomStopTile extends StatelessWidget {
                                 size: 17,
                               ),
                               const SizedBox(width: 5),
-                              // TODO translate code in web "route-destination-arrives"
                               Text(
-                                "Drop-off only",
+                                languageCode == 'en'
+                                    ? "Drop-off only"
+                                    : "Nur Abgabe",
                                 style: theme.textTheme.bodyText1
                                     .copyWith(fontSize: 13),
                               ),
