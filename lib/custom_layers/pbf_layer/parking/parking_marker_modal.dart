@@ -18,10 +18,12 @@ class ParkingMarkerModal extends StatelessWidget {
     String spaces;
     if (parkingFeature.total != null) {
       if (parkingFeature.free != null) {
-        spaces =
-            "${parkingFeature.free} of ${parkingFeature.total} parking spaces available";
+        spaces = localeName == 'en'
+            ? "${parkingFeature.free} of ${parkingFeature.total} parking spaces available"
+            : "${parkingFeature.free} von ${parkingFeature.total} Stellplätzen verfügbar";
       } else {
-        spaces = "${parkingFeature.total} parking spaces";
+        spaces =
+            "${parkingFeature.total} ${localeName == 'en' ? 'parking spaces' : 'Stellplätze'}";
       }
       if (parkingFeature.state == "closed") {
         spaces += " (closed)";
@@ -30,8 +32,9 @@ class ParkingMarkerModal extends StatelessWidget {
     String disabledSpaces;
     if (parkingFeature.totalDisabled != null &&
         parkingFeature.freeDisabled != null) {
-      disabledSpaces =
-          "${parkingFeature.freeDisabled} of ${parkingFeature.totalDisabled} wheelchair-accessible parking spaces available";
+      disabledSpaces = localeName == 'en'
+          ? "${parkingFeature.freeDisabled} of ${parkingFeature.totalDisabled} wheelchair-accessible parking spaces available"
+          : "${parkingFeature.freeDisabled} von ${parkingFeature.totalDisabled} rollstuhlgerechten Parkplätzen vorhanden";
     }
     final notes = jsonDecode(parkingFeature.notes ?? "{}");
     return Column(
@@ -81,9 +84,9 @@ class ParkingMarkerModal extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Divider(),
-                    const Text(
-                      "OPENING HOURS",
-                      style: TextStyle(
+                    Text(
+                      localeName == 'en' ? "OPENING HOURS" : "ÖFFNUNGSZEITEN",
+                      style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
@@ -117,9 +120,9 @@ class ParkingMarkerModal extends StatelessWidget {
                       onPressed: () {
                         launch(parkingFeature.url);
                       },
-                      child: const Text(
-                        "More info",
-                        style: TextStyle(
+                      child: Text(
+                        localeName == 'en' ? "More info" : "Mehr Infos",
+                        style: const TextStyle(
                           decoration: TextDecoration.underline,
                           color: Colors.blue,
                         ),

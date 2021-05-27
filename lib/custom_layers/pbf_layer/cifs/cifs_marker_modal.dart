@@ -12,11 +12,14 @@ class CifsMarkerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final languageCode = Localizations.localeOf(context).languageCode;
     final String startTime = element.starttime != null
-        ? DateFormat("MMM d, yyyy").format(DateTime.parse(element.starttime))
+        ? DateFormat("MMM d, yyyy", languageCode)
+            .format(DateTime.parse(element.starttime))
         : "";
     final String endTime = element.endtime != null
-        ? DateFormat("MMM d, yyyy").format(DateTime.parse(element.endtime))
+        ? DateFormat("MMM d, yyyy", languageCode)
+            .format(DateTime.parse(element.endtime))
         : "";
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -74,9 +77,9 @@ class CifsMarkerModal extends StatelessWidget {
                       onPressed: () {
                         launch(element.url);
                       },
-                      child: const Text(
-                        "More info",
-                        style: TextStyle(
+                      child: Text(
+                        languageCode == 'en' ? "More info" : "Mehr Infos",
+                        style: const TextStyle(
                           decoration: TextDecoration.underline,
                           color: Colors.blue,
                         ),

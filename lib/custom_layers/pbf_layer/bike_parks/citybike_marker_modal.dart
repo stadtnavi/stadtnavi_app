@@ -26,6 +26,7 @@ class CitybikeMarkerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final languageCode = Localizations.localeOf(context).languageCode;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,9 +58,10 @@ class CitybikeMarkerModal extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (element.maxCapacity != null&& element.maxCapacity!="-2147483648")
+              if (element.maxCapacity != null &&
+                  element.maxCapacity != "-2147483648")
                 Text(
-                  "${element.maxCapacity} parking spaces",
+                  "${element.maxCapacity} ${languageCode == 'en' ? 'parking spaces' : 'Stellplätze'}",
                   style: TextStyle(
                     color: theme.textTheme.bodyText1.color,
                   ),

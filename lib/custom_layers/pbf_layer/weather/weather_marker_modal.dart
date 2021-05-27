@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_feature_model.dart';
@@ -12,6 +11,8 @@ class ParkingMarkerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final isEnglishCode = languageCode == 'en';
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -40,35 +41,35 @@ class ParkingMarkerModal extends StatelessWidget {
             children: [
               if (parkingFeature.airTemperatureC != null)
                 Text(
-                  "Air Temperature: ${parkingFeature.airTemperatureC} °C",
+                  "${isEnglishCode ? 'Air Temperature' : 'Lufttemperatur'}: ${parkingFeature.airTemperatureC} °C",
                   style: TextStyle(
                     color: theme.textTheme.bodyText1.color,
                   ),
                 ),
               if (parkingFeature.roadTemperatureC != null)
                 Text(
-                  "Road Temperature:  ${parkingFeature.roadTemperatureC} °C",
+                  "${isEnglishCode ? 'Road Temperature' : 'Straßentemperatur'}:  ${parkingFeature.roadTemperatureC} °C",
                   style: TextStyle(
                     color: theme.textTheme.bodyText1.color,
                   ),
                 ),
               if (parkingFeature.precipitationType != null)
                 Text(
-                  "Precipitation: ${parkingFeature.precipitationType}",
+                  "${isEnglishCode ? 'Precipitation' : 'Niederschlag'}: ${parkingFeature.precipitationType}",
                   style: TextStyle(
                     color: theme.textTheme.bodyText1.color,
                   ),
                 ),
               if (parkingFeature.roadCondition != null)
                 Text(
-                  "Condition: ${parkingFeature.roadCondition}",
+                  "${isEnglishCode ? 'Condition' : 'Straßenzustand'}: ${parkingFeature.roadCondition}",
                   style: TextStyle(
                     color: theme.textTheme.bodyText1.color,
                   ),
                 ),
               if (parkingFeature.updatedAt != null)
                 Text(
-                  "Last update: ${DateFormat('hh:mm a').format(DateTime.parse(parkingFeature.updatedAt).toLocal())}",
+                  "${isEnglishCode ? 'Last update' : 'Daten von'}: ${DateFormat('hh:mm a', languageCode).format(DateTime.parse(parkingFeature.updatedAt).toLocal())}",
                   style: TextStyle(
                     color: theme.textTheme.bodyText1.color,
                   ),

@@ -6,11 +6,13 @@ import 'citybikes_enum.dart';
 import 'citybikes_icon.dart';
 
 extension CityBikeLayerIdsToString on CityBikeLayerIds {
-  String enumToString() {
+  String enumToString({bool isEnglishCode = true}) {
     final Map<CityBikeLayerIds, String> enumStrings = {
-      CityBikeLayerIds.carSharing: "Car sharing station",
-      CityBikeLayerIds.regiorad: "Bike rental station",
-      CityBikeLayerIds.taxi: "Taxi rank",
+      CityBikeLayerIds.carSharing:
+          isEnglishCode ? "Car sharing station" : "Carsharing-Station",
+      CityBikeLayerIds.regiorad:
+          isEnglishCode ? "Bike rental station" : "Fahrradverleih",
+      CityBikeLayerIds.taxi: isEnglishCode ? "Taxi rank" : "Taxistand",
     };
 
     return enumStrings[this];
@@ -24,6 +26,7 @@ class CitybikeMarkerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final languageCode = Localizations.localeOf(context).languageCode;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,7 +60,8 @@ class CitybikeMarkerModal extends StatelessWidget {
             children: [
               if (element.type != null)
                 Text(
-                  element.type.enumToString(),
+                  element.type
+                      .enumToString(isEnglishCode: languageCode == 'en'),
                   style: TextStyle(
                     color: theme.textTheme.bodyText1.color,
                   ),
