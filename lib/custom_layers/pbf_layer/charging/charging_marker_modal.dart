@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:trufi_core/l10n/trufi_localization.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'charging_feature_model.dart';
 import 'charging_icons.dart';
 
@@ -70,7 +72,6 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                   color: theme.textTheme.bodyText1.color,
                 ),
               ),
-              const Divider(),
               if (loading)
                 LinearProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(
@@ -84,19 +85,109 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          item.id,
-                          style: TextStyle(
-                            color: theme.textTheme.bodyText1.color,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        const Divider(
+                          height: 10,
                         ),
-                        Text(
-                          "Status: ${item.status}",
-                          style: TextStyle(
-                            color: theme.textTheme.bodyText1.color,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              item.id,
+                              style: TextStyle(
+                                color: theme.textTheme.bodyText1.color,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            if (item.status != null)
+                              Text(
+                                item.status,
+                                style: TextStyle(
+                                  color: item.status == "AVAILABLE"
+                                      ? Colors.green
+                                      : Colors.orange,
+                                ),
+                              ),
+                          ],
                         ),
+                        if (item.phone != null)
+                          GestureDetector(
+                            onTap: () {
+                              launch(
+                                "tel:${item.phone}",
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.phone,
+                                  size: 15,
+                                  color: Colors.grey,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  item.phone,
+                                  style: const TextStyle(
+                                    color: Colors.blue,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        if (item.openingTimes["twentyfourseven"] == true)
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.access_time,
+                                size: 15,
+                                color: Colors.grey,
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                localeName == "en"
+                                    ? "Open 24/7"
+                                    : "Durchgängig geöffnet",
+                                style: TextStyle(
+                                  color: theme.textTheme.bodyText1.color,
+                                ),
+                              ),
+                            ],
+                          ),
+                        if (item.relatedResource != null &&
+                            item.relatedResource.isNotEmpty &&
+                            item.relatedResource.first["url"] != null)
+                          GestureDetector(
+                            onTap: () {
+                              launch(
+                                item.relatedResource.first["url"].toString(),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.info_outline,
+                                  size: 15,
+                                  color: Colors.grey,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  localeName == "en"
+                                      ? "Payment details"
+                                      : "Zahlungsdetails",
+                                  style: const TextStyle(
+                                    color: Colors.blue,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -177,6 +268,7 @@ class ChargingDetail {
   List<String> parkingRestrictions;
   Map openingTimes;
   List<String> connectors;
+  List<Map> relatedResource;
   ChargingDetail({
     @required this.id,
     @required this.status,
@@ -191,6 +283,9 @@ class ChargingDetail {
       : id = map["evse_id"]?.toString(),
         status = map["status"]?.toString(),
         phone = map["phone"]?.toString(),
+        relatedResource = (map["related_resource"] as List)
+            ?.map<Map>((e) => e as Map)
+            ?.toList(),
         capabilities = (map["capabilities"] as List)
             .map<String>((element) => "$element")
             .toList(),
