@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
 import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
+import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
 import 'package:http/http.dart' as http;
@@ -13,10 +14,32 @@ import 'stop_marker_modal/stop_marker_modal.dart';
 import 'stops_enum.dart';
 import 'stops_icon.dart';
 
+extension StopsLayerIdsIdsToString on StopsLayerIds {
+  String enumToStringEN() {
+    final Map<StopsLayerIds, String> enumStrings = {
+      StopsLayerIds.bus: "Bus stops",
+      StopsLayerIds.rail: "Train stations",
+      StopsLayerIds.carpool: "Carpool stops",
+      StopsLayerIds.subway: "Metro Station",
+    };
+    return enumStrings[this];
+  }
+
+  String enumToStringDE() {
+    final Map<StopsLayerIds, String> enumStrings = {
+      StopsLayerIds.bus: "Bushaltestellen",
+      StopsLayerIds.rail: "Bahnhöfe",
+      StopsLayerIds.carpool: "Mitfahrpunkte",
+      StopsLayerIds.subway: "U-Bahnhöfe",
+    };
+    return enumStrings[this];
+  }
+}
+
 class StopsLayer extends CustomLayer {
   final Map<String, StopFeature> _pbfMarkers = {};
-
-  StopsLayer(StopsLayerIds layerId) : super(layerId.enumToString());
+  final StopsLayerIds layerId;
+  StopsLayer(this.layerId) : super(layerId.enumToString());
   void addMarker(StopFeature pointFeature) {
     if (_pbfMarkers[pointFeature.gtfsId] == null) {
       _pbfMarkers[pointFeature.gtfsId] = pointFeature;
@@ -109,5 +132,13 @@ class StopsLayer extends CustomLayer {
         }
       }
     }
+  }
+
+  @override
+  String name(BuildContext context) {
+    final localeName = TrufiLocalization.of(context).localeName;
+    return localeName == "en"
+        ? layerId.enumToStringEN()
+        : layerId.enumToStringDE();
   }
 }
