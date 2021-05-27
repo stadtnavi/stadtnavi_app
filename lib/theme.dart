@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 final stadtnaviTheme = ThemeData(
   primaryColor: const Color(0xff9bbf28),
-  accentColor: const Color(0xffec5188),
+  accentColor: const Color(0xff4ea700),
   backgroundColor: Colors.white,
   textTheme: ThemeData.light().textTheme.copyWith(
         bodyText1: const TextStyle(color: Color(0xFF000000)),
