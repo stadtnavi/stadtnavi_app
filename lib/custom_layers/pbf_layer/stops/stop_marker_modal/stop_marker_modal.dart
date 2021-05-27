@@ -15,6 +15,7 @@ class StopMarkerModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final languageCode = Localizations.localeOf(context).languageCode;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -42,11 +43,13 @@ class StopMarkerModal extends StatelessWidget {
               color: Colors.white,
               child: Column(
                 children: [
-                  const TabBar(
+                  TabBar(
                     labelColor: Colors.black,
                     tabs: [
-                      Tab(text: "Right now"),
-                      Tab(text: "Timetable"),
+                      Tab(text: languageCode == 'en' ? "Right now" : "Jetzt"),
+                      Tab(
+                          text:
+                              languageCode == 'en' ? "Timetable" : "Fahrplan"),
                     ],
                   ),
                   Expanded(

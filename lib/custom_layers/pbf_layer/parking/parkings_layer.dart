@@ -4,6 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
 import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
+import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
 import 'package:http/http.dart' as http;
@@ -109,5 +110,11 @@ class ParkingLayer extends CustomLayer {
         }
       }
     }
+  }
+
+  @override
+  String name(BuildContext context) {
+    final localeName = TrufiLocalization.of(context).localeName;
+    return localeName == "en" ? "Parking" : "Parken (& Reisen)";
   }
 }

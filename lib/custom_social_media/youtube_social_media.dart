@@ -16,7 +16,9 @@ class YoutubeSocialMedia implements SocialMediaItem {
 
   @override
   String getTitle(BuildContext context) {
-    return "Follow us on youtube";
+    return Localizations.localeOf(context).languageCode == 'en'
+        ? "Follow us on youtube"
+        : "Folge uns aut youtube";
   }
 
   @override

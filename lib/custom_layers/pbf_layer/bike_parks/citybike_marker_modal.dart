@@ -3,21 +3,6 @@ import 'package:flutter_svg/svg.dart';
 
 import 'bike_park_feature_model.dart';
 import 'bike_park_icons.dart';
-// import 'citybike_feature_model.dart';
-// import 'citybikes_enum.dart';
-// import 'citybikes_icon.dart';
-
-// extension CityBikeLayerIdsToString on CityBikeLayerIds {
-//   String enumToString() {
-//     final Map<CityBikeLayerIds, String> enumStrings = {
-//       CityBikeLayerIds.carSharing: "Car sharing station",
-//       CityBikeLayerIds.regiorad: "Bike rental station",
-//       CityBikeLayerIds.taxi: "Taxi rank",
-//     };
-
-//     return enumStrings[this];
-//   }
-// }
 
 class CitybikeMarkerModal extends StatelessWidget {
   final BikeParkFeature element;
@@ -26,6 +11,7 @@ class CitybikeMarkerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final languageCode = Localizations.localeOf(context).languageCode;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,9 +43,10 @@ class CitybikeMarkerModal extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (element.maxCapacity != null&& element.maxCapacity!="-2147483648")
+              if (element.maxCapacity != null &&
+                  element.maxCapacity != "-2147483648")
                 Text(
-                  "${element.maxCapacity} parking spaces",
+                  "${element.maxCapacity} ${languageCode == 'en' ? 'parking spaces' : 'Stellplätze'}",
                   style: TextStyle(
                     color: theme.textTheme.bodyText1.color,
                   ),

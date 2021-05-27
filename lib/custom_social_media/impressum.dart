@@ -10,7 +10,9 @@ class ImpressumMedia implements SocialMediaItem {
 
   @override
   String getTitle(BuildContext context) {
-    return "Impressum";
+    return Localizations.localeOf(context).languageCode == 'en'
+        ? "Imprint"
+        : "Impressum";
   }
 
   @override

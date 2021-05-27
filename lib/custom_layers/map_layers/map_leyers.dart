@@ -9,6 +9,7 @@ import 'package:stadtnavi_app/custom_layers/pbf_layer/citybikes/citybikes_layer.
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parkings_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/stops_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_layer.dart';
+import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/map_tile_provider.dart';
 
 enum MapLayerIds {
@@ -19,6 +20,26 @@ enum MapLayerIds {
 
 extension LayerIdsToString on MapLayerIds {
   String enumToString() {
+    final Map<MapLayerIds, String> enumStrings = {
+      MapLayerIds.streets: "Streets",
+      MapLayerIds.satellite: "Satellite",
+      MapLayerIds.bike: "Bike",
+    };
+
+    return enumStrings[this];
+  }
+
+  String enumToStringDE() {
+    final Map<MapLayerIds, String> enumStrings = {
+      MapLayerIds.streets: "Straßen",
+      MapLayerIds.satellite: "Satellit",
+      MapLayerIds.bike: "Fahrrad",
+    };
+
+    return enumStrings[this];
+  }
+
+  String enumToStringEN() {
     final Map<MapLayerIds, String> enumStrings = {
       MapLayerIds.streets: "Streets",
       MapLayerIds.satellite: "Satellite",
@@ -82,6 +103,14 @@ class MapLayer extends MapTileProvider {
         layerImage[mapLayerId],
         fit: BoxFit.cover,
       );
+
+  @override
+  String name(BuildContext context) {
+    final localeName = TrufiLocalization.of(context).localeName;
+    return localeName == "en"
+        ? mapLayerId.enumToStringEN()
+        : mapLayerId.enumToStringDE();
+  }
 }
 
 class CustomTileProvider extends TileProvider {
@@ -92,7 +121,7 @@ class CustomTileProvider extends TileProvider {
   @override
   ImageProvider getImage(Coords<num> coords, TileLayerOptions options) {
     // inject pbf map layer only if zoom is greater than 12
-    if( coords.z.toInt()>12) {
+    if (coords.z.toInt() > 12) {
       _fetchPBF(coords);
     }
     return NetworkImage(getTileUrl(coords, options), headers: headers);
@@ -148,6 +177,5 @@ class CustomTileProvider extends TileProvider {
     ).catchError((error) {
       log("$error");
     });
-    
   }
 }

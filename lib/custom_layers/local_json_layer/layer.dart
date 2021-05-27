@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_app/custom_layers/local_json_layer/markers_from_assets.dart';
 import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
+import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
 import 'custom_marker_modal.dart';
@@ -23,9 +24,30 @@ extension LayerIdsToString on LayerIds {
     final Map<LayerIds, String> enumStrings = {
       LayerIds.bicycleInfrastructure: "Bicycle Infrastructure",
       LayerIds.bicycleParking: "Bicycle Parking",
-      // LayerIds.charging: "Charging",
       LayerIds.lorawanGateways: "Lorawan Gateways",
       LayerIds.publicToilets: "Public Toilets"
+    };
+
+    return enumStrings[this];
+  }
+
+  String enumToStringEN() {
+    final Map<LayerIds, String> enumStrings = {
+      LayerIds.bicycleInfrastructure: "Bicycle Infrastructure",
+      LayerIds.bicycleParking: "Bike parking spaces",
+      LayerIds.lorawanGateways: "Lorawan Gateways",
+      LayerIds.publicToilets: "Public Toilets"
+    };
+
+    return enumStrings[this];
+  }
+
+  String enumToStringDE() {
+    final Map<LayerIds, String> enumStrings = {
+      LayerIds.bicycleInfrastructure: "Rund um's Fahrrad",
+      LayerIds.bicycleParking: "Fahrradparkplätze",
+      LayerIds.lorawanGateways: "Lorawan Gateways",
+      LayerIds.publicToilets: "Nette Toilette"
     };
 
     return enumStrings[this];
@@ -35,14 +57,14 @@ extension LayerIdsToString on LayerIds {
 Map<LayerIds, String> layerFileNames = {
   LayerIds.bicycleInfrastructure: "bicycleinfrastructure.geojson",
   LayerIds.bicycleParking: "bicycle-parking.geojson",
-  // LayerIds.charging: "charging.geojson",
   LayerIds.lorawanGateways: "lorawan-gateways.geojson",
   LayerIds.publicToilets: "toilet.geojson",
 };
 
 class Layer extends CustomLayer {
   List<CustomMarker> customMarkers = [];
-  Layer(LayerIds layerId) : super(layerId.enumToString()) {
+  final LayerIds layerId;
+  Layer(this.layerId) : super(layerId.enumToString()) {
     load();
   }
 
@@ -104,5 +126,13 @@ class Layer extends CustomLayer {
               .toList()
           : [],
     );
+  }
+
+  @override
+  String name(BuildContext context) {
+    final localeName = TrufiLocalization.of(context).localeName;
+    return localeName == "en"
+        ? layerId.enumToStringEN()
+        : layerId.enumToStringDE();
   }
 }
