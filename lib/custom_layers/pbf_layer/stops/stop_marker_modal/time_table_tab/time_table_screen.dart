@@ -69,6 +69,7 @@ class _TimeTableScreenState extends State<TimeTableScreen>
   Widget build(BuildContext context) {
     super.build(context);
     final theme = Theme.of(context);
+    final languageCode = Localizations.localeOf(context).languageCode;
     return Column(
       children: [
         if (loading)
@@ -120,7 +121,9 @@ class _TimeTableScreenState extends State<TimeTableScreen>
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               child: Text(
-                                "Departures by hour (minutes/route)",
+                                languageCode == 'en'
+                                    ? "Departures by hour (minutes/route)"
+                                    : "Abfahrten nach Stunde (Minuten / Strecke)",
                                 style: theme.textTheme.bodyText1.copyWith(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
