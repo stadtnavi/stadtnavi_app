@@ -6,6 +6,7 @@ import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_marker_mod
 import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_feature_model.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_icons.dart';
 import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
+import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
 import 'package:http/http.dart' as http;
@@ -108,5 +109,11 @@ class WeatherLayer extends CustomLayer {
         }
       }
     }
+  }
+
+  @override
+  String name(BuildContext context) {
+    final localeName = TrufiLocalization.of(context).localeName;
+    return localeName == "en" ? "Road weather" : "Straßenwetter";
   }
 }
