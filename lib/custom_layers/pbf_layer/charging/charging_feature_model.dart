@@ -7,8 +7,8 @@ import 'charging_enum.dart';
 class ChargingFeature {
   final String id;
   final String name;
-  final String c;
-  final String ca;
+  final String capacity;
+  final String available;
   final String tb;
 
   final ChargingLayerIds type;
@@ -17,8 +17,8 @@ class ChargingFeature {
   ChargingFeature({
     @required this.id,
     @required this.name,
-    @required this.c,
-    @required this.ca,
+    @required this.capacity,
+    @required this.available,
     @required this.tb,
     @required this.type,
     @required this.position,
@@ -55,8 +55,8 @@ class ChargingFeature {
     return ChargingFeature(
       id: id,
       name: name,
-      c: c,
-      ca: ca,
+      capacity: c,
+      available: ca,
       tb: tb,
       type: type,
       position: LatLng(
