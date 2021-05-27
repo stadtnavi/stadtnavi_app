@@ -113,6 +113,7 @@ Configuration setupTrufiConfiguration() {
 
 Widget stadtNaviAttributionBuilder(BuildContext context) {
   final theme = Theme.of(context);
+  final languageCode = Localizations.localeOf(context).languageCode;
   return RichText(
     text: TextSpan(
       children: [
@@ -120,7 +121,8 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
           style: theme.textTheme.caption.copyWith(
             color: Colors.black,
           ),
-          text: "© OpenStreetMap Mitwirkende\n",
+          text:
+              "© OpenStreetMap ${languageCode == 'en' ? "" : "Mitwirkende"}\n",
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               launch("https://www.openstreetmap.org/copyright");
@@ -130,7 +132,9 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
           style: theme.textTheme.caption.copyWith(
             color: Colors.black,
           ),
-          text: "Datensätze der NVBW GmbH\n",
+          text: languageCode == 'en'
+              ? "Datasets by "
+              : "Datensätze der NVBW GmbH\n",
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               launch("https://www.nvbw.de/open-data");
