@@ -3,21 +3,6 @@ import 'package:flutter_svg/svg.dart';
 
 import 'bike_park_feature_model.dart';
 import 'bike_park_icons.dart';
-// import 'citybike_feature_model.dart';
-// import 'citybikes_enum.dart';
-// import 'citybikes_icon.dart';
-
-// extension CityBikeLayerIdsToString on CityBikeLayerIds {
-//   String enumToString() {
-//     final Map<CityBikeLayerIds, String> enumStrings = {
-//       CityBikeLayerIds.carSharing: "Car sharing station",
-//       CityBikeLayerIds.regiorad: "Bike rental station",
-//       CityBikeLayerIds.taxi: "Taxi rank",
-//     };
-
-//     return enumStrings[this];
-//   }
-// }
 
 class CitybikeMarkerModal extends StatelessWidget {
   final BikeParkFeature element;
