@@ -34,7 +34,7 @@ Future<void> main() async {
         citybikeLayer,
         bikeParkLayer,
         Layer(LayerIds.publicToilets),
-        Layer(LayerIds.charging),
+        chargingLayer,
         Layer(LayerIds.bicycleParking),
         Layer(LayerIds.bicycleInfrastructure),
         Layer(LayerIds.lorawanGateways)

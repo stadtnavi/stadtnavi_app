@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/bike_parks/bike_parks_layer.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/charging/charging_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/cifs/cifs_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parkings_layer.dart';
@@ -134,6 +135,13 @@ class CustomTileProvider extends TileProvider {
       log("$error");
     });
     await WeatherLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    await ChargingLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
       coords.y.toInt(),

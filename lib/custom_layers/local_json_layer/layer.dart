@@ -13,7 +13,7 @@ import 'custom_marker_model.dart';
 enum LayerIds {
   bicycleInfrastructure,
   bicycleParking,
-  charging,
+  // charging,
   lorawanGateways,
   publicToilets
 }
@@ -23,7 +23,7 @@ extension LayerIdsToString on LayerIds {
     final Map<LayerIds, String> enumStrings = {
       LayerIds.bicycleInfrastructure: "Bicycle Infrastructure",
       LayerIds.bicycleParking: "Bicycle Parking",
-      LayerIds.charging: "Charging",
+      // LayerIds.charging: "Charging",
       LayerIds.lorawanGateways: "Lorawan Gateways",
       LayerIds.publicToilets: "Public Toilets"
     };
@@ -35,7 +35,7 @@ extension LayerIdsToString on LayerIds {
 Map<LayerIds, String> layerFileNames = {
   LayerIds.bicycleInfrastructure: "bicycleinfrastructure.geojson",
   LayerIds.bicycleParking: "bicycle-parking.geojson",
-  LayerIds.charging: "charging.geojson",
+  // LayerIds.charging: "charging.geojson",
   LayerIds.lorawanGateways: "lorawan-gateways.geojson",
   LayerIds.publicToilets: "toilet.geojson",
 };
