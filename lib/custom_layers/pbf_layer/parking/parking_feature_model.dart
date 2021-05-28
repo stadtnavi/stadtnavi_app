@@ -20,7 +20,7 @@ class ParkingFeature {
   final String notes;
   final String freeDisabled;
   final String totalDisabled;
-
+  final bool active;
   final ParkingsLayerIds type;
 
   final LatLng position;
@@ -42,6 +42,7 @@ class ParkingFeature {
     @required this.position,
     @required this.freeDisabled,
     @required this.totalDisabled,
+    @required this.active,
   });
   // ignore: prefer_constructors_over_static_methods
   static ParkingFeature fromGeoJsonPoint(GeoJsonPoint geoJsonPoint) {
@@ -112,7 +113,23 @@ class ParkingFeature {
         default:
       }
     }
-
+    bool active;
+    if (free != null) {
+      final freeNum = int.tryParse(free);
+      if (freeNum != null) {
+        active = freeNum > 0;
+      }
+    }
+    if (freeDisabled != null) {
+      final freeNum = int.tryParse(freeDisabled);
+      if (freeNum != null) {
+        if (active != null) {
+          active &= freeNum > 0;
+        } else {
+          active = freeNum > 0;
+        }
+      }
+    }
     return ParkingFeature(
       geoJsonPoint: geoJsonPoint,
       id: id,
@@ -129,6 +146,7 @@ class ParkingFeature {
       notes: notes,
       freeDisabled: freeDisabled,
       totalDisabled: totalDisabled,
+      active: active,
       type: type,
       position: LatLng(
         geoJsonPoint.geometry.coordinates[1],
