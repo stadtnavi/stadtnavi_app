@@ -71,8 +71,53 @@ class ParkingLayer extends CustomLayer {
                           ),
                         );
                       },
-                      child: SvgPicture.string(
-                        parkingMarkerIcons[element.type] ?? "",
+                      child: Stack(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                              left: markerSize / 5,
+                              top: markerSize / 5,
+                            ),
+                            child: SvgPicture.string(
+                              parkingMarkerIcons[element.type] ?? "",
+                            ),
+                          ),
+                          if (element.active != null)
+                            if (element.active)
+                              Positioned(
+                                child: Container(
+                                  height: markerSize / 2,
+                                  width: markerSize / 2,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.check,
+                                      size: markerSize / 3,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            else
+                              Container(
+                                height: markerSize / 2,
+                                width: markerSize / 2,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.close,
+                                    size: markerSize / 3,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                        ],
                       ),
                     ),
                   ))
