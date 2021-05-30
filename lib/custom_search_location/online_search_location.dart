@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:trufi_core/blocs/location_search_bloc.dart';
+import 'package:trufi_core/models/trufi_place.dart';
 import 'package:trufi_core/repository/exception/fetch_online_exception.dart';
 import 'package:trufi_core/services/search_location/search_location_manager.dart';
-import 'package:trufi_core/trufi_models.dart';
 
 import 'location_model.dart';
 
