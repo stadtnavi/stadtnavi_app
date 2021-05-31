@@ -40,7 +40,7 @@ class _RightNowScreenState extends State<RightNowScreen>
       fetchError = null;
       loading = true;
     });
-    await LayersRepository().fetchStop(widget.stopFeature.gtfsId).then((value) {
+    await LayersRepository.fetchStop(widget.stopFeature.gtfsId).then((value) {
       if (mounted) {
         setState(() {
           stoptimes = value.stoptimesWithoutPatternsCurrent;

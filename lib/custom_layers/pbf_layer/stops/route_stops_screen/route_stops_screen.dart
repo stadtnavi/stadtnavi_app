@@ -68,8 +68,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
       fetchError = null;
       loading = true;
     });
-    await LayersRepository()
-        .fetchStopsRoute(widget.stopTime.trip.pattern.code)
+    await LayersRepository.fetchStopsRoute(widget.stopTime.trip.pattern.code)
         .then((value) async {
       if (mounted) {
         setState(() {

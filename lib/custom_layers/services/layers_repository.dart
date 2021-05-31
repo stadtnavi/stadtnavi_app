@@ -14,20 +14,20 @@ import 'models_otp/pattern.dart';
 import 'models_otp/stop.dart';
 
 class LayersRepository {
-  final GraphQLClient client = getClient();
+  static final GraphQLClient client = getClient();
 
   LayersRepository();
 
-  Future<Stop> fetchStopCached(String idStop) async {
+  static Future<Stop> fetchStopCached(String idStop) async {
     return _fetchStopByTIme(idStop, 0);
   }
 
-  Future<Stop> fetchStop(String idStop) async {
+  static Future<Stop> fetchStop(String idStop) async {
     return _fetchStopByTIme(
         idStop, DateTime.now().millisecondsSinceEpoch ~/ 1000);
   }
 
-  Future<Stop> fetchTimeTable(String idStop, {DateTime date}) async {
+  static Future<Stop> fetchTimeTable(String idStop, {DateTime date}) async {
     final WatchQueryOptions listStopTimes = WatchQueryOptions(
       document: addFragments(parseString(stops_queries.timeTableQuery),
           [stops_fragments.timetableContainerStop]),
@@ -47,7 +47,7 @@ class LayersRepository {
     return stopData;
   }
 
-  Future<Stop> _fetchStopByTIme(String idStop, int startTime) async {
+  static Future<Stop> _fetchStopByTIme(String idStop, int startTime) async {
     final WatchQueryOptions listStopTimes = WatchQueryOptions(
       document: addFragments(parseString(stops_queries.stopDataQuery), [
         stops_fragments.fragmentStopCardHeaderContainerstop,
@@ -72,7 +72,7 @@ class LayersRepository {
     return stopData;
   }
 
-  Future<PatternOtp> fetchStopsRoute(String patternId) async {
+  static Future<PatternOtp> fetchStopsRoute(String patternId) async {
     final WatchQueryOptions patternQuery = WatchQueryOptions(
       document:
           addFragments(parseString(pattern_queries.routeStopListContainer), [
