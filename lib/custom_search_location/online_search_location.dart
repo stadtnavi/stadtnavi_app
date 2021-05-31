@@ -3,8 +3,10 @@ import 'dart:convert';
 
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:latlong/latlong.dart';
 import 'package:trufi_core/blocs/location_search_bloc.dart';
 import 'package:trufi_core/models/trufi_place.dart';
+import 'package:trufi_core/pages/home/plan_map/plan_empty.dart';
 import 'package:trufi_core/repository/exception/fetch_online_exception.dart';
 import 'package:trufi_core/services/search_location/search_location_manager.dart';
 
@@ -61,5 +63,27 @@ class OnlineSearchLocation implements SearchLocationManager {
     final trufiLocationList =
         list.map<TrufiLocation>((e) => e.toTrufiLocation()).toList();
     return trufiLocationList;
+  }
+
+  @override
+  Future<LocationDetail> reverseGeodecoding(LatLng location) async {
+    final response = await http.get(
+      Uri.parse(
+        "https://photon.stadtnavi.eu/pelias/v1/reverse?point.lat=${location.latitude}&point.lon=${location.longitude}&boundary.circle.radius=0.1&lang=en&size=1&layers=address&zones=1",
+      ),
+      headers: {},
+    );
+    final body = jsonDecode(response.body);
+    final features = body["features"] as List;
+    final feature = features.first;
+    final properties = feature["properties"];
+    final String street = properties["street"]?.toString() ?? "";
+    final String houseNumbre = properties["housenumber"]?.toString() ?? "";
+    final String postalcode = properties["postalcode"]?.toString() ?? "";
+    final String locality = properties["locality"]?.toString() ?? "";
+    return LocationDetail(
+      properties["name"]?.toString(),
+      "$street $houseNumbre $postalcode $locality",
+    );
   }
 }
