@@ -1,4 +1,4 @@
-import 'package:trufi_core/trufi_models.dart';
+import 'package:trufi_core/models/trufi_place.dart';
 
 class LocationModel {
   LocationModel({
@@ -27,10 +27,11 @@ class LocationModel {
     final int idx = properties.label.indexOf(",");
     final String address = properties.label.substring(idx + 1).trim();
     return TrufiLocation(
-        description: properties.name,
-        latitude: geometry.coordinates[1],
-        longitude: geometry.coordinates[0],
-        address: address);
+      description: properties.name,
+      latitude: geometry.coordinates[1],
+      longitude: geometry.coordinates[0],
+      address: address,
+    );
   }
 }
 
