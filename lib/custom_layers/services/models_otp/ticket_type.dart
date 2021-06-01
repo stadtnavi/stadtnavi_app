@@ -18,7 +18,9 @@ class TicketType {
         fareId: json['fareId'].toString(),
         price: double.tryParse(json['price'].toString()) ?? 0,
         currency: json['currency'].toString(),
-        zones: json['zones'] != null ? (json['zones'] as List<String>) : null,
+        zones: json['zones'] != null
+            ? (json['zones'] as List<dynamic>).cast<String>()
+            : null,
       );
 
   Map<String, dynamic> toJson() => {

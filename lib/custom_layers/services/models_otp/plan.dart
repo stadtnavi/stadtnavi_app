@@ -41,10 +41,10 @@ class Plan {
               ))
             : null,
         messageEnums: json['messageEnums'] != null
-            ? (json['messageEnums'] as List<String>)
+            ? (json['messageEnums'] as List<dynamic>).cast<String>()
             : null,
         messageStrings: json['messageStrings'] != null
-            ? (json['messageStrings'] as List<String>)
+            ? (json['messageStrings'] as List<dynamic>).cast<String>()
             : null,
         prevDateTime: double.tryParse(json['prevDateTime'].toString()) ?? 0,
         nextDateTime: double.tryParse(json['nextDateTime'].toString()) ?? 0,

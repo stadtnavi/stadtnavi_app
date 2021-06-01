@@ -31,20 +31,20 @@ class BikeRentalStation {
 
   factory BikeRentalStation.fromJson(Map<String, dynamic> json) =>
       BikeRentalStation(
-        id: json['id'].toString(),
-        stationId: json['stationId'].toString(),
-        name: json['name'].toString(),
-        bikesAvailable: int.tryParse(json['bikesAvailable'].toString()) ?? 0,
-        spacesAvailable: int.tryParse(json['spacesAvailable'].toString()) ?? 0,
+        id: json['id'] as String,
+        stationId: json['stationId'] as String,
+        name: json['name'] as String,
+        bikesAvailable: json['bikesAvailable'] as int,
+        spacesAvailable: json['spacesAvailable'] as int,
         state: json['state'].toString(),
         realtime: json['realtime'] as bool,
         allowDropoff: json['allowDropoff'] as bool,
         networks: json['networks'] != null
-            ? (json['networks'] as List<String>)
+            ? (json['networks'] as List<dynamic>).cast<String>()
             : null,
-        lon: double.tryParse(json['lon'].toString()) ?? 0,
-        lat: double.tryParse(json['lat'].toString()) ?? 0,
-        capacity: int.tryParse(json['capacity'].toString()) ?? 0,
+        lon: json['lon'] as double,
+        lat: json['lat'] as double,
+        capacity: json['capacity'] as int,
         allowOverloading: json['allowOverloading'] as bool,
       );
 

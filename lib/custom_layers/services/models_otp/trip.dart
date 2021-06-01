@@ -66,7 +66,7 @@ class Trip {
             : null,
         serviceId: json['serviceId'] as String,
         activeDates: json['activeDates'] != null
-            ? (json['activeDates'] as List<String>)
+            ? (json['activeDates'] as List<dynamic>).cast<String>()
             : null,
         tripShortName: json['tripShortName'] as String,
         tripHeadsign: json['tripHeadsign'] as String,
