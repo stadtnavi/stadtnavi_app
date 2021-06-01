@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
+
 import 'package:trufi_core/blocs/configuration/configuration.dart';
 import 'package:trufi_core/blocs/configuration/models/animation_configuration.dart';
 import 'package:trufi_core/blocs/configuration/models/attribution.dart';
@@ -11,6 +12,7 @@ import 'package:trufi_core/models/definition_feedback.dart';
 import 'package:trufi_core/models/enums/server_type.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'about_section/about_section.dart';
 import 'marker_configuration/custom_marker_configuration.dart';
 
 Configuration setupTrufiConfiguration() {
@@ -78,6 +80,10 @@ Configuration setupTrufiConfiguration() {
     LanguageConfiguration("en", "US", "English", isDefault: true)
   ];
 
+  Widget aboutSection(context) {
+    return const AboutSection();
+  }
+
   final feedbackDefinition = FeedbackDefinition(
     FeedBackType.url,
     "https://stadtnavi.de/feedback/",
@@ -93,6 +99,7 @@ Configuration setupTrufiConfiguration() {
   return Configuration(
     customTranslations: customTranslations,
     feedbackDefinition: feedbackDefinition,
+    aboutSection: aboutSection,
     supportedLanguages: languages,
     serverType: ServerType.graphQLServer,
     teamInformationEmail: "info@trufi.app",
@@ -115,7 +122,7 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
             color: Colors.black,
           ),
           text:
-              "© OpenStreetMap ${languageCode == 'en' ? "" : "Mitwirkende"}\n",
+              "© OpenStreetMap ${languageCode == 'en' ? "Contributors" : "Mitwirkende"}\n",
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               launch("https://www.openstreetmap.org/copyright");
