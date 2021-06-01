@@ -16,3 +16,13 @@ const String timeTableQuery = r'''
         }
       }
 ''';
+const String citybikeQuery = r'''
+  query routes_BikeRentalStation_Query(
+    $id: String!
+  ) {
+    bikeRentalStation(id: $id) {
+      ...BikeRentalStationContent_bikeRentalStation
+      id
+    }
+  }
+''';

@@ -257,3 +257,19 @@ final timetableContainerStop = gql(
     }
   ''',
 );
+
+final bikeRentalStationFragment = gql(
+  '''
+    fragment BikeRentalStationContent_bikeRentalStation on BikeRentalStation {
+      lat
+      lon
+      name
+      spacesAvailable
+      bikesAvailable
+      capacity
+      networks
+      stationId
+      state
+    }
+  ''',
+);

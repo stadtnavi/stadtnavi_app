@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
 import 'package:intl/intl.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/citybikes/citybike_data_fetch.dart';
 
 import 'graphl_client/graphql_client.dart';
 import 'graphl_client/graphql_utils.dart';
@@ -10,6 +11,7 @@ import 'graphql_operation/fragment/pattern_fragments.dart' as pattern_fragments;
 import 'graphql_operation/fragment/stop_fragments.dart' as stops_fragments;
 import 'graphql_operation/queries/pattern_queries.dart' as pattern_queries;
 import 'graphql_operation/queries/stops_queries.dart' as stops_queries;
+import 'models_otp/bike_rental_station.dart';
 import 'models_otp/pattern.dart';
 import 'models_otp/stop.dart';
 
@@ -93,9 +95,28 @@ class LayersRepository {
     if (patternResult.hasException && patternResult.data == null) {
       throw Exception("Bad request");
     }
-    final stopData = PatternOtp.fromJson(
+    final patternOtp = PatternOtp.fromJson(
         patternResult.data['pattern'] as Map<String, dynamic>);
 
-    return stopData;
+    return patternOtp;
+  }
+
+  static Future<CityBikeDataFetch> fetchCityBikesData(String cityBikeId) async {
+    final WatchQueryOptions cityBikeQuery = WatchQueryOptions(
+      document: addFragments(parseString(stops_queries.citybikeQuery),
+          [stops_fragments.bikeRentalStationFragment]),
+      variables: <String, dynamic>{
+        "id": cityBikeId,
+      },
+      fetchResults: true,
+    );
+    final bikeRentalStation = await client.query(cityBikeQuery);
+    if (bikeRentalStation.hasException && bikeRentalStation.data == null) {
+      throw Exception("Bad request");
+    }
+    final bikeRentalStationData = BikeRentalStation.fromJson(
+        bikeRentalStation.data['bikeRentalStation'] as Map<String, dynamic>);
+
+    return CityBikeDataFetch.fromBikeRentalStation(bikeRentalStationData);
   }
 }
