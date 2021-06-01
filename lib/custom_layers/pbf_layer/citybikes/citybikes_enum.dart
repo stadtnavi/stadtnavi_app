@@ -12,7 +12,7 @@ enum CityBikeLayerIds {
 CityBikeLayerIds cityBikeLayerIdStringToEnum(String id) {
   return CityBikeLayerIdsExtension.names.keys.firstWhere(
     (keyE) => keyE.name == id,
-    orElse: () => CityBikeLayerIds.regiorad,
+    orElse: () => CityBikeLayerIds.carSharing,
   );
 }
 
@@ -50,26 +50,46 @@ extension CityBikeLayerIdsExtension on CityBikeLayerIds {
   static const networkBookDataEn = <CityBikeLayerIds, NetworkBookData>{
     CityBikeLayerIds.taxi: null,
     CityBikeLayerIds.carSharing: NetworkBookData(
-        'Book a shared car', 'https://stuttgart.stadtmobil.de/privatkunden/'),
+      'Book a shared car',
+      'https://stuttgart.stadtmobil.de/privatkunden/',
+      languageCode: "en",
+    ),
     CityBikeLayerIds.regiorad: NetworkBookData(
-        'Book a rental bike', 'https://www.regioradstuttgart.de/'),
+      'Book a rental bike',
+      'https://www.regioradstuttgart.de/',
+      languageCode: "en",
+    ),
   };
 
   static const networkBookDataDe = <CityBikeLayerIds, NetworkBookData>{
     CityBikeLayerIds.taxi: null,
     CityBikeLayerIds.carSharing: NetworkBookData(
-        'Buchen Sie ein Car-Sharing-Auto',
-        'https://stuttgart.stadtmobil.de/privatkunden/'),
+      'Buchen Sie ein Car-Sharing-Auto',
+      'https://stuttgart.stadtmobil.de/privatkunden/',
+      languageCode: "de",
+    ),
     CityBikeLayerIds.regiorad: NetworkBookData(
-        'Buchen Sie ein Leihrad', 'https://www.regioradstuttgart.de/de'),
+      'Buchen Sie ein Leihrad',
+      'https://www.regioradstuttgart.de/de',
+      languageCode: "de",
+    ),
   };
 
-  String get name => names[this] ?? 'car-sharing';
+  String get name => names[this];
 
-  SvgPicture get image => images[this] ?? SvgPicture.string(taxiSvg);
+  Widget get image =>
+      images[this] ??
+      const Icon(
+        Icons.error,
+        color: Colors.red,
+      );
 
-  SvgPicture get imageStop =>
-      imagesStop[this] ?? SvgPicture.string(taxiStopSvg);
+  Widget get imageStop =>
+      imagesStop[this] ??
+      const Icon(
+        Icons.error,
+        color: Colors.red,
+      );
 
   String getTranslate(String languageCode) =>
       languageCode == 'en' ? translateEn[this] : translateDE[this];
@@ -91,7 +111,7 @@ class NetworkBookData {
   const NetworkBookData(
     this.title,
     this.url, {
-    this.languageCode = 'en',
+    this.languageCode,
     this.icon = Icons.launch,
   });
 
