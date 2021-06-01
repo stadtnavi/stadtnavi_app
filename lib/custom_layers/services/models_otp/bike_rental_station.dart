@@ -40,7 +40,7 @@ class BikeRentalStation {
         realtime: json['realtime'] as bool,
         allowDropoff: json['allowDropoff'] as bool,
         networks: json['networks'] != null
-            ? (json['networks'] as List<String>)
+            ? (json['networks'] as List<dynamic>).cast<String>()
             : null,
         lon: double.tryParse(json['lon'].toString()) ?? 0,
         lat: double.tryParse(json['lat'].toString()) ?? 0,
