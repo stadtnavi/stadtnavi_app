@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:stadtnavi_app/custom_layers/services/layers_repository.dart';
@@ -52,57 +51,43 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
                   height: 30,
                   width: 30,
                   margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: widget.element.type.imageStop,
+                  child: widget.element.type.image,
                 ),
                 Expanded(
-                  child: Text(
-                    cityBikeDataFetch.name ?? "",
-                    style: const TextStyle(fontSize: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        cityBikeDataFetch.name ?? "",
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                      if (widget.element.type != null)
+                        Text(
+                          widget.element.type.getTranslate(languageCode),
+                          style: TextStyle(
+                            color:
+                                theme.textTheme.bodyText1.color.withOpacity(.5),
+                          ),
+                        ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
           const Divider(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (widget.element.type != null)
-                  Text(
-                    widget.element.type.getTranslate(languageCode),
-                    style: TextStyle(
-                      color: theme.textTheme.bodyText1.color,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: SizedBox(
-                    height: 25,
-                    width: 25,
-                    child: widget.element.type.image,
-                  ),
+          if (cityBikeDataFetch.bikesAvailable > -1)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+              child: Text(
+                languageCode == 'en'
+                    ? "Bikes available at the station right now (${cityBikeDataFetch.bikesAvailable})"
+                    : "Leihräder verfübar (${cityBikeDataFetch.bikesAvailable})",
+                style: TextStyle(
+                  color: theme.textTheme.bodyText1.color,
                 ),
-                if (cityBikeDataFetch.bikesAvailable > -1)
-                  Text(
-                    languageCode == 'en'
-                        ? "Bikes available at the station right now (${cityBikeDataFetch.bikesAvailable})"
-                        : "Leihräder verfübar (${cityBikeDataFetch.bikesAvailable})",
-                    style: TextStyle(
-                      color: theme.textTheme.bodyText1.color,
-                    ),
-                  ),
-              ],
+              ),
             ),
-          ),
           if (cityBikeDataFetch.firstNetwork != null &&
               cityBikeDataFetch.firstNetwork.hasBook(languageCode))
             Card(
