@@ -16,7 +16,6 @@ import 'about_section/about_section.dart';
 import 'marker_configuration/custom_marker_configuration.dart';
 
 Configuration setupTrufiConfiguration() {
-
   // Attribution
   final attribution = Attribution(
     representatives: [
@@ -120,9 +119,10 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
         TextSpan(
           style: theme.textTheme.caption.copyWith(
             color: Colors.black,
+            decoration: TextDecoration.underline,
           ),
           text:
-              "© OpenStreetMap ${languageCode == 'en' ? "Contributors" : "Mitwirkende"}\n",
+              "© OpenStreetMap ${languageCode == 'en' ? "Contributors" : "Mitwirkende"},\n",
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               launch("https://www.openstreetmap.org/copyright");
@@ -132,9 +132,14 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
           style: theme.textTheme.caption.copyWith(
             color: Colors.black,
           ),
-          text: languageCode == 'en'
-              ? "Datasets by "
-              : "Datensätze der NVBW GmbH\n",
+          text: languageCode == 'en' ? "Datasets by " : "Datensätze der ",
+        ),
+        TextSpan(
+          style: theme.textTheme.caption.copyWith(
+            color: Colors.black,
+            decoration: TextDecoration.underline,
+          ),
+          text: "NVBW GmbH",
           recognizer: TapGestureRecognizer()
             ..onTap = () {
               launch("https://www.nvbw.de/open-data");
@@ -143,6 +148,13 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
         TextSpan(
           style: theme.textTheme.caption.copyWith(
             color: Colors.black,
+          ),
+          text: languageCode == 'en' ? " and " : " und ",
+        ),
+        TextSpan(
+          style: theme.textTheme.caption.copyWith(
+            color: Colors.black,
+            decoration: TextDecoration.underline,
           ),
           text: "VVS GmbH",
           recognizer: TapGestureRecognizer()
