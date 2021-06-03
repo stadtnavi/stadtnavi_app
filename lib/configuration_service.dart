@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
-
 import 'package:trufi_core/blocs/configuration/configuration.dart';
 import 'package:trufi_core/blocs/configuration/models/animation_configuration.dart';
 import 'package:trufi_core/blocs/configuration/models/attribution.dart';
@@ -75,8 +74,8 @@ Configuration setupTrufiConfiguration() {
 
   // Languages
   final languages = [
-    LanguageConfiguration("de", "DE", "Deutsch"),
-    LanguageConfiguration("en", "US", "English", isDefault: true)
+    LanguageConfiguration("de", "DE", "Deutsch", isDefault: true),
+    LanguageConfiguration("en", "US", "English")
   ];
 
   Widget aboutSection(context) {
