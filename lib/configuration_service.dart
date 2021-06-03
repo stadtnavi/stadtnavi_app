@@ -102,7 +102,7 @@ Configuration setupTrufiConfiguration() {
     serverType: ServerType.graphQLServer,
     teamInformationEmail: "info@trufi.app",
     attribution: attribution,
-    animations: AnimationConfiguration(),
+    animations:AnimationConfiguration(success: null),
     markers: const CustomMarkerConfiguration(),
     map: map,
     urls: urls,
