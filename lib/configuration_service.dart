@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
+import 'package:stadtnavi_app/offer_carpool/offer_carpool_screen.dart';
 
 import 'package:trufi_core/blocs/configuration/configuration.dart';
 import 'package:trufi_core/blocs/configuration/models/animation_configuration.dart';
@@ -8,7 +9,9 @@ import 'package:trufi_core/blocs/configuration/models/attribution.dart';
 import 'package:trufi_core/blocs/configuration/models/language_configuration.dart';
 import 'package:trufi_core/blocs/configuration/models/map_configuration.dart';
 import 'package:trufi_core/blocs/configuration/models/url_collection.dart';
+import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/definition_feedback.dart';
+import 'package:trufi_core/models/enums/enums_plan/enums_plan.dart';
 import 'package:trufi_core/models/enums/server_type.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -96,18 +99,39 @@ Configuration setupTrufiConfiguration() {
     };
 
   return Configuration(
-    customTranslations: customTranslations,
-    feedbackDefinition: feedbackDefinition,
-    aboutSection: aboutSection,
-    supportedLanguages: languages,
-    serverType: ServerType.graphQLServer,
-    teamInformationEmail: "info@trufi.app",
-    attribution: attribution,
-    animations: AnimationConfiguration(),
-    markers: const CustomMarkerConfiguration(),
-    map: map,
-    urls: urls,
-  );
+      customTranslations: customTranslations,
+      feedbackDefinition: feedbackDefinition,
+      aboutSection: aboutSection,
+      supportedLanguages: languages,
+      serverType: ServerType.graphQLServer,
+      teamInformationEmail: "info@trufi.app",
+      attribution: attribution,
+      animations: AnimationConfiguration(),
+      markers: const CustomMarkerConfiguration(),
+      map: map,
+      urls: urls,
+      planItineraryLegBuilder: (context, leg) {
+        final localization = TrufiLocalization.of(context);
+        final localeName = localization.localeName;
+        return leg.transportMode == TransportMode.car
+            ? ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          OfferCarpoolScreen(planItineraryLeg: leg),
+                    ),
+                  );
+                },
+                child: Text(
+                  localeName == "en"
+                      ? "Offer carpool"
+                      : "Fahrgemeinschaft anbieten",
+                ),
+              )
+            : null;
+      });
 }
 
 Widget stadtNaviAttributionBuilder(BuildContext context) {
