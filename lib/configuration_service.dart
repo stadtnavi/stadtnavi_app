@@ -78,8 +78,8 @@ Configuration setupTrufiConfiguration() {
 
   // Languages
   final languages = [
-    LanguageConfiguration("de", "DE", "Deutsch"),
-    LanguageConfiguration("en", "US", "English", isDefault: true)
+    LanguageConfiguration("de", "DE", "Deutsch", isDefault: true),
+    LanguageConfiguration("en", "US", "English")
   ];
 
   Widget aboutSection(context) {
