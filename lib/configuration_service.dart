@@ -111,10 +111,12 @@ Configuration setupTrufiConfiguration() {
       map: map,
       urls: urls,
       planItineraryLegBuilder: (context, leg) {
+        final theme = Theme.of(context);
         final localization = TrufiLocalization.of(context);
         final localeName = localization.localeName;
         return leg.transportMode == TransportMode.car
             ? ElevatedButton(
+                style: ElevatedButton.styleFrom(primary: theme.primaryColor),
                 onPressed: () {
                   Navigator.push(
                     context,
