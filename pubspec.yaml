@@ -4,7 +4,7 @@ repository: https://github.com/stadtnavi/stadtnavi-app
 homepage: https://stadtnavi.de/
 issue_tracker: https://github.com/stadtnavi/stadtnavi-app/issues
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.1.5+21
 
@@ -20,20 +20,15 @@ dependencies:
   graphql: ^4.0.1
   lint: ^1.5.3
   scrollable_panel: ^0.4.1
-
-  # TODO: improve the trufi_core dependency, e.g use tags instead commits
-  # the ref should not be a branch because the `pub get` will not get the latest change
-  # so the ref is refering to the latest commit
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
-      ref: c2c7e452b6ffc1e44d55f03264ead0198bf4bda2
+      ref: 2.1.1
 
   vector_tile:
     git:
       url: https://github.com/trufi-association/dart-vector-tile.git
       ref: fc916fd067cb4e64ab782e6249b4e296c7dba913
-
 
 dev_dependencies:
   flutter_test:

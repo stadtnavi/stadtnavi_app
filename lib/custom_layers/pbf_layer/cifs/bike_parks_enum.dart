@@ -1,5 +1,6 @@
 enum CifsTypeIds {
   roadClosed,
+  construction,
 }
 enum CifsSubTypeIds {
   roadClosedConstruction,
@@ -7,6 +8,7 @@ enum CifsSubTypeIds {
 CifsTypeIds cifsTypeIdsStringToEnum(String id) {
   final Map<String, CifsTypeIds> enumStrings = {
     "ROAD_CLOSED": CifsTypeIds.roadClosed,
+    "CONSTRUCTION": CifsTypeIds.construction,
   };
   return enumStrings[id];
 }
