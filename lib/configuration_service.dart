@@ -132,7 +132,7 @@ Configuration setupTrufiConfiguration() {
                       : "Fahrgemeinschaft anbieten",
                 ),
               )
-            : null;
+            : Container();
       });
 }
 
