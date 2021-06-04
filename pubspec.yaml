@@ -24,10 +24,9 @@ dependencies:
   # TODO: improve the trufi_core dependency, e.g use tags instead commits
   # the ref should not be a branch because the `pub get` will not get the latest change
   # so the ref is refering to the latest commit
+
   trufi_core:
-    git:
-      url: https://github.com/trufi-association/trufi-core.git
-      ref: c2c7e452b6ffc1e44d55f03264ead0198bf4bda2
+    path: ../trufi-core
 
   vector_tile:
     git:
