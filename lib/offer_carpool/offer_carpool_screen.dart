@@ -98,8 +98,8 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                         const SizedBox(height: 20),
                         Text(
                           localeName == "en"
-                              ? "Your offer from ${widget.planItineraryLeg.fromName} to ${widget.planItineraryLeg.toName} was added."
-                              : "Ihr Inserat von ${widget.planItineraryLeg.fromName} nach ${widget.planItineraryLeg.toName} wurde eingestellt.",
+                              ? "Your offer from ${widget.planItineraryLeg.fromPlace.name} to ${widget.planItineraryLeg.toPlace.name} was added."
+                              : "Ihr Inserat von ${widget.planItineraryLeg.fromPlace.name} nach ${widget.planItineraryLeg.toPlace.name} wurde eingestellt.",
                           style: Theme.of(context).textTheme.bodyText2.copyWith(
                                 color: Colors.black,
                               ),
@@ -175,7 +175,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                   ),
                             ),
                             Text(
-                              "${widget.planItineraryLeg.fromName} ${localeName == "en" ? " at " : " um "} ${DateFormat('hh:mm aa').format(widget.planItineraryLeg.startTime)}",
+                              "${widget.planItineraryLeg.fromPlace.name} ${localeName == "en" ? " at " : " um "} ${DateFormat('hh:mm aa').format(widget.planItineraryLeg.startTime)}",
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2
@@ -200,7 +200,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                   ),
                             ),
                             Text(
-                              widget.planItineraryLeg.toName,
+                              widget.planItineraryLeg.toPlace.name,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyText2
@@ -446,21 +446,28 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
   Future<void> _createOfferCarpool() async {
     final Map body = {
       "origin": {
-        "label": "71083 Herrenberg",
-        "lat": 48.61747733567233,
-        "lon": 8.841934204101564
+        "label": widget.planItineraryLeg.fromPlace.name,
+        "lat": widget.planItineraryLeg.fromPlace.lat,
+        "lon": widget.planItineraryLeg.fromPlace.lon,
       },
       "destination": {
-        "label": "Hauptstraße, 71154 Nufringen",
-        "lat": 48.62343481126179,
-        "lon": 8.893647193908693
+        "label": widget.planItineraryLeg.toPlace.name,
+        "lat": widget.planItineraryLeg.toPlace.lat,
+        "lon": widget.planItineraryLeg.toPlace.lon,
       },
       "phoneNumber": phoneController.text ?? "",
       "time": offerType == 0
-          ? {"type": "one-off", "departureTime": "04:53", "date": "2021-06-04"}
+          ? {
+              "type": "one-off",
+              "departureTime":
+                  DateFormat('HH:mm').format(widget.planItineraryLeg.startTime),
+              "date": DateFormat('yyyy-MM-dd')
+                  .format(widget.planItineraryLeg.startTime)
+            }
           : {
               "type": "recurring",
-              "departureTime": "04:53",
+              "departureTime":
+                  DateFormat('HH:mm').format(widget.planItineraryLeg.startTime),
               "weekdays": {
                 "monday": daysSelected.contains(CustomDaySelect.monday),
                 "tuesday": daysSelected.contains(CustomDaySelect.tuesday),
