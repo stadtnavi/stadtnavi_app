@@ -13,7 +13,6 @@ import 'package:trufi_core/models/social_media/instagram_social_media.dart';
 import 'package:trufi_core/models/social_media/twitter_social_media.dart';
 import 'package:trufi_core/trufi_app.dart';
 
-import 'custom_layers/local_json_layer/layer.dart';
 import 'custom_layers/services/graphl_client/hive_init.dart';
 import 'custom_social_media/impressum.dart';
 
@@ -26,19 +25,7 @@ Future<void> main() async {
       theme: stadtnaviTheme,
       bottomBarTheme: bottomBarTheme,
       configuration: setupTrufiConfiguration(),
-      customLayers: [
-        cifsLayer,
-        ...stopsLayers.values,
-        weatherLayer,
-        parkingLayer,
-        citybikeLayer,
-        bikeParkLayer,
-        Layer(LayerIds.publicToilets),
-        chargingLayer,
-        Layer(LayerIds.bicycleParking),
-        Layer(LayerIds.bicycleInfrastructure),
-        Layer(LayerIds.lorawanGateways)
-      ],
+      customLayers: customLayers,
       mapTileProviders: [
         MapLayer(MapLayerIds.streets),
         MapLayer(MapLayerIds.satellite),

@@ -141,4 +141,9 @@ class StopsLayer extends CustomLayer {
         ? layerId.enumToStringEN()
         : layerId.enumToStringDE();
   }
+
+  @override
+  Widget icon(BuildContext context) {
+    return SvgPicture.string(stopsIcons[layerId]);
+  }
 }
