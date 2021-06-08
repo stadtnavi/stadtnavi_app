@@ -27,14 +27,14 @@ extension CityBikeLayerIdsExtension on CityBikeLayerIds {
 
   static final images = <CityBikeLayerIds, SvgPicture>{
     CityBikeLayerIds.taxi: SvgPicture.string(taxiSvg),
-    CityBikeLayerIds.cargoBike: SvgPicture.string(taxiSvg),
+    CityBikeLayerIds.cargoBike: SvgPicture.string(cargoBikeSvg),
     CityBikeLayerIds.carSharing: SvgPicture.string(carSharingSvg),
     CityBikeLayerIds.regiorad: SvgPicture.string(regioradSvg),
   };
 
   static final imagesStop = <CityBikeLayerIds, SvgPicture>{
     CityBikeLayerIds.taxi: SvgPicture.string(taxiStopSvg),
-    CityBikeLayerIds.cargoBike: SvgPicture.string(taxiStopSvg),
+    CityBikeLayerIds.cargoBike: SvgPicture.string(cargoBikeStopSvg),
     CityBikeLayerIds.carSharing: SvgPicture.string(carSharingStopSvg),
     CityBikeLayerIds.regiorad: SvgPicture.string(regioradStopSvg),
   };
