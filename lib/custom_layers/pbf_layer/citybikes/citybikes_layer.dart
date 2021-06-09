@@ -12,6 +12,7 @@ import 'citybike_feature_model.dart';
 import 'citybike_marker_modal.dart';
 import 'citybikes_enum.dart';
 import 'citybikes_icon.dart';
+
 class CityBikesLayer extends CustomLayer {
   final Map<String, CityBikeFeature> _pbfMarkers = {};
 
@@ -113,13 +114,16 @@ class CityBikesLayer extends CustomLayer {
   @override
   String name(BuildContext context) {
     final localeName = TrufiLocalization.of(context).localeName;
-    return localeName == "en" ? "Sharing" : "Sharing-Angebote";
+    return localeName == "en"
+        ? "Car, Bike & Cargo bike sharing"
+        : "Carsharing & Fahrrad- / Lastenradverleih";
   }
 
   @override
   Widget icon(BuildContext context) {
-    return SvgPicture.string(
-      taxiStopSvg
-      );
+    return const Icon(
+      Icons.bike_scooter,
+      color: Color.fromRGBO(255, 131, 74, 1),
+    );
   }
 }

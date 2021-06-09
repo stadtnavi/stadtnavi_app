@@ -20,7 +20,7 @@ extension StopsLayerIdsIdsToString on StopsLayerIds {
       StopsLayerIds.bus: "Bus stops",
       StopsLayerIds.rail: "Train stations",
       StopsLayerIds.carpool: "Carpool stops",
-      StopsLayerIds.subway: "Metro Station",
+      StopsLayerIds.subway: "Metro stations",
     };
     return enumStrings[this];
   }

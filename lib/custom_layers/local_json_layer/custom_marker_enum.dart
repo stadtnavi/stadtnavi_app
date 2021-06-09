@@ -20,9 +20,9 @@ extension LayerIdsToString on LayerIds {
 
   String enumToStringEN() {
     final Map<LayerIds, String> enumStrings = {
-      LayerIds.bicycleInfrastructure: "Bicycle Infrastructure",
+      LayerIds.bicycleInfrastructure: "Service stations and stores",
       LayerIds.bicycleParking: "Bike parking spaces",
-      LayerIds.lorawanGateways: "Lorawan Gateways",
+      LayerIds.lorawanGateways: "LoRaWAN Gateways",
       LayerIds.publicToilets: "Public Toilets"
     };
 
@@ -31,9 +31,9 @@ extension LayerIdsToString on LayerIds {
 
   String enumToStringDE() {
     final Map<LayerIds, String> enumStrings = {
-      LayerIds.bicycleInfrastructure: "Rund um's Fahrrad",
+      LayerIds.bicycleInfrastructure: "Service Stationen und Läden",
       LayerIds.bicycleParking: "Fahrradparkplätze",
-      LayerIds.lorawanGateways: "Lorawan Gateways",
+      LayerIds.lorawanGateways: "LoRaWAN Gateways",
       LayerIds.publicToilets: "Nette Toilette"
     };
 
