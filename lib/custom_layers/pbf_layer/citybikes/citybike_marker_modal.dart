@@ -81,8 +81,8 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
               child: Text(
                 languageCode == 'en'
-                    ? "Bikes available at the station right now (${cityBikeDataFetch.bikesAvailable})"
-                    : "Leihräder verfübar (${cityBikeDataFetch.bikesAvailable})",
+                    ? "Cargo bikes available at the station right now (${cityBikeDataFetch.bikesAvailable})"
+                    : "Lastenräder verfügbar (${cityBikeDataFetch.bikesAvailable})",
                 style: TextStyle(
                   color: theme.textTheme.bodyText1.color,
                 ),
