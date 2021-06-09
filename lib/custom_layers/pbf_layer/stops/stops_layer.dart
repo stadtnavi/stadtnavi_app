@@ -20,7 +20,7 @@ extension StopsLayerIdsIdsToString on StopsLayerIds {
       StopsLayerIds.bus: "Bus stops",
       StopsLayerIds.rail: "Train stations",
       StopsLayerIds.carpool: "Carpool stops",
-      StopsLayerIds.subway: "Metro Station",
+      StopsLayerIds.subway: "Metro stations",
     };
     return enumStrings[this];
   }
@@ -140,5 +140,10 @@ class StopsLayer extends CustomLayer {
     return localeName == "en"
         ? layerId.enumToStringEN()
         : layerId.enumToStringDE();
+  }
+
+  @override
+  Widget icon(BuildContext context) {
+    return SvgPicture.string(stopsIcons[layerId]);
   }
 }

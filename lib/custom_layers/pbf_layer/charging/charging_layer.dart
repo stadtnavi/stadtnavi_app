@@ -118,4 +118,11 @@ class ChargingLayer extends CustomLayer {
     final localeName = TrufiLocalization.of(context).localeName;
     return localeName == "en" ? "Charging stations" : "Ladestationen";
   }
+
+  @override
+  Widget icon(BuildContext context) {
+    return SvgPicture.string(
+      chargingIcon,
+    );
+  }
 }

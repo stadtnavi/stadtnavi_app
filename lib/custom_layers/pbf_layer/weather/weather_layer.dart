@@ -116,4 +116,11 @@ class WeatherLayer extends CustomLayer {
     final localeName = TrufiLocalization.of(context).localeName;
     return localeName == "en" ? "Road weather" : "Straßenwetter";
   }
+
+  @override
+  Widget icon(BuildContext context) {
+    return SvgPicture.string(
+      roadWeatherIcons,
+    );
+  }
 }
