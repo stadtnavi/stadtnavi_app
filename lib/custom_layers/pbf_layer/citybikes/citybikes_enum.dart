@@ -5,6 +5,7 @@ import 'citybikes_icon.dart';
 
 enum CityBikeLayerIds {
   carSharing,
+  cargoBike,
   regiorad,
   taxi,
 }
@@ -19,30 +20,35 @@ CityBikeLayerIds cityBikeLayerIdStringToEnum(String id) {
 extension CityBikeLayerIdsExtension on CityBikeLayerIds {
   static const names = <CityBikeLayerIds, String>{
     CityBikeLayerIds.taxi: 'taxi',
+    CityBikeLayerIds.cargoBike: 'cargo-bike',
     CityBikeLayerIds.carSharing: 'car-sharing',
     CityBikeLayerIds.regiorad: 'regiorad',
   };
 
   static final images = <CityBikeLayerIds, SvgPicture>{
     CityBikeLayerIds.taxi: SvgPicture.string(taxiSvg),
+    CityBikeLayerIds.cargoBike: SvgPicture.string(cargoBikeSvg),
     CityBikeLayerIds.carSharing: SvgPicture.string(carSharingSvg),
     CityBikeLayerIds.regiorad: SvgPicture.string(regioradSvg),
   };
 
   static final imagesStop = <CityBikeLayerIds, SvgPicture>{
     CityBikeLayerIds.taxi: SvgPicture.string(taxiStopSvg),
+    CityBikeLayerIds.cargoBike: SvgPicture.string(cargoBikeStopSvg),
     CityBikeLayerIds.carSharing: SvgPicture.string(carSharingStopSvg),
     CityBikeLayerIds.regiorad: SvgPicture.string(regioradStopSvg),
   };
 
   static final translateEn = <CityBikeLayerIds, String>{
     CityBikeLayerIds.taxi: "Taxi rank",
+    CityBikeLayerIds.cargoBike: "Cargo bike rental station",
     CityBikeLayerIds.carSharing: "Car sharing station",
     CityBikeLayerIds.regiorad: "Bike rental station",
   };
 
   static final translateDE = <CityBikeLayerIds, String>{
     CityBikeLayerIds.taxi: 'Taxistand',
+    CityBikeLayerIds.cargoBike: 'Lastenrad-Station',
     CityBikeLayerIds.carSharing: 'Carsharing-Station',
     CityBikeLayerIds.regiorad: 'Fahrradverleih',
   };
@@ -52,6 +58,11 @@ extension CityBikeLayerIdsExtension on CityBikeLayerIds {
     CityBikeLayerIds.carSharing: NetworkBookData(
       'Book a shared car',
       'https://stuttgart.stadtmobil.de/privatkunden/',
+      languageCode: "en",
+    ),
+    CityBikeLayerIds.cargoBike: NetworkBookData(
+      'Book a cargo bike',
+      'https://gueltsteinmobil.de/guelf-unser-lastenfahrrad',
       languageCode: "en",
     ),
     CityBikeLayerIds.regiorad: NetworkBookData(
@@ -66,6 +77,11 @@ extension CityBikeLayerIdsExtension on CityBikeLayerIds {
     CityBikeLayerIds.carSharing: NetworkBookData(
       'Buchen Sie ein Car-Sharing-Auto',
       'https://stuttgart.stadtmobil.de/privatkunden/',
+      languageCode: "de",
+    ),
+    CityBikeLayerIds.cargoBike: NetworkBookData(
+      'Buchen Sie ein Lastenrad',
+      'https://gueltsteinmobil.de/guelf-unser-lastenfahrrad',
       languageCode: "de",
     ),
     CityBikeLayerIds.regiorad: NetworkBookData(
