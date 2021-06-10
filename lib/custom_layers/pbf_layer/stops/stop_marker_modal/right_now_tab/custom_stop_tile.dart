@@ -41,7 +41,7 @@ class CustomStopTile extends StatelessWidget {
               child: stopTime.trip.route.useIcon
                   ? stopTime.trip.route.mode.image
                   : Text(
-                      stopTime.trip.route.shortName,
+                      stopTime?.trip?.route?.shortName ?? '',
                       style: const TextStyle(
                         color: Colors.white,
                       ),

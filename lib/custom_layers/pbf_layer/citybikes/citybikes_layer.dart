@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
 import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
@@ -11,7 +10,6 @@ import 'package:vector_tile/vector_tile.dart';
 import 'citybike_feature_model.dart';
 import 'citybike_marker_modal.dart';
 import 'citybikes_enum.dart';
-import 'citybikes_icon.dart';
 
 class CityBikesLayer extends CustomLayer {
   final Map<String, CityBikeFeature> _pbfMarkers = {};
