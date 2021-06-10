@@ -199,7 +199,7 @@ class Stop {
             .where((stopTime) => !stopTime.isArrival)
             .map((stopTime) => TimeTableStop(
                   id: stopTimePattern.pattern.code,
-                  name: stopTimePattern.pattern.route.shortName ??
+                  name: stopTimePattern?.pattern?.route?.shortName ??
                       stopTimePattern.pattern.headsign,
                   scheduledDeparture: stopTime.scheduledDeparture,
                   serviceDay: stopTime.serviceDay,
