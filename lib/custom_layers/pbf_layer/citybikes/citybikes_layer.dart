@@ -7,9 +7,11 @@ import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 import 'package:vector_tile/vector_tile.dart';
 
+import 'package:flutter_svg/svg.dart';
 import 'citybike_feature_model.dart';
 import 'citybike_marker_modal.dart';
 import 'citybikes_enum.dart';
+import 'citybikes_icon.dart';
 
 class CityBikesLayer extends CustomLayer {
   final Map<String, CityBikeFeature> _pbfMarkers = {};
@@ -119,9 +121,8 @@ class CityBikesLayer extends CustomLayer {
 
   @override
   Widget icon(BuildContext context) {
-    return const Icon(
-      Icons.bike_scooter,
-      color: Color.fromRGBO(255, 131, 74, 1),
+    return SvgPicture.string(
+      citybike,
     );
   }
 }
