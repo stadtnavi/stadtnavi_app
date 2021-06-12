@@ -3,11 +3,10 @@ import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:trufi_core/entities/plan_entity/plan_entity.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
-import 'package:intl/intl.dart';
-
-import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 
 enum CustomDaySelect {
@@ -40,6 +39,7 @@ extension CustomDaySelectExtension on CustomDaySelect {
     CustomDaySelect.saturday: "Samstag",
     CustomDaySelect.sunday: "Sonntag",
   };
+
   String getTranslate(String languageCode) =>
       languageCode == 'en' ? translateEn[this] : translateDE[this];
 }
@@ -63,6 +63,8 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
 
   bool done = false;
   Set<CustomDaySelect> daysSelected = {};
+  final globalKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     final localeName = TrufiLocalization.of(context).localeName;
@@ -73,6 +75,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
           (element) => element.getTranslate(localeName),
         )
         .join(", ");
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -174,14 +177,16 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
-                            Text(
-                              "${widget.planItineraryLeg.fromPlace.name} ${localeName == "en" ? " at " : " um "} ${DateFormat('hh:mm aa').format(widget.planItineraryLeg.startTime)}",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText2
-                                  .copyWith(
-                                    color: Colors.black,
-                                  ),
+                            Expanded(
+                              child: Text(
+                                "${widget.planItineraryLeg.fromPlace.name} ${localeName == "en" ? " at " : " um "} ${DateFormat('hh:mm aa').format(widget.planItineraryLeg.startTime)}",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText2
+                                    .copyWith(
+                                      color: Colors.black,
+                                    ),
+                              ),
                             ),
                           ],
                         ),
@@ -287,14 +292,27 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                   .toList(),
                             ),
                           ),
-                        TextField(
-                          controller: phoneController,
-                          style: const TextStyle(color: Colors.black),
-                          keyboardType: TextInputType.phone,
-                          decoration: InputDecoration(
-                            labelText: localeName == "en"
-                                ? "Add your phone number"
-                                : "Bitte fügen Sie Ihre Telefonnummer hinzu:",
+                        Form(
+                          key: globalKey,
+                          child: TextFormField(
+                            controller: phoneController,
+                            style: const TextStyle(color: Colors.black),
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+                              labelText: localeName == "en"
+                                  ? "Add your phone number"
+                                  : "Bitte fügen Sie Ihre Telefonnummer hinzu:",
+                            ),
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return localeName == "en"
+                                    ? "Please provide a valid phone number."
+                                    : "Bitte geben sie eine Telefonnummer ein.";
+                              }
+                              return null;
+                            },
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -422,6 +440,9 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
   }
 
   Future<void> createOfferCarpool() async {
+    if (!globalKey.currentState.validate()) {
+      return;
+    }
     if (!mounted) return;
     setState(() {
       fetchError = null;
