@@ -13,6 +13,7 @@ import 'modal/charging_modal_models.dart';
 
 class ChargingMarkerModal extends StatefulWidget {
   final ChargingFeature element;
+
   const ChargingMarkerModal({Key key, @required this.element})
       : super(key: key);
 
@@ -24,6 +25,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
   bool loading = true;
   String fetchError;
   ChargingItem chargingItem;
+
   @override
   void initState() {
     super.initState();
@@ -126,10 +128,10 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                     Text(
                       widget.element.available != null
                           ? localeName == "en"
-                              ? "${widget.element.available} of ${widget.element.capacity} parking spaces available"
+                              ? "${widget.element.available} of ${widget.element.capacity} charging slots available"
                               : "${widget.element.available} von ${widget.element.capacity} Ladeplätzen frei"
                           : localeName == "en"
-                              ? "${widget.element.capacity} parking spaces"
+                              ? "${widget.element.capacity} charging slots"
                               : "${widget.element.capacity} Ladeplätzen",
                       style: TextStyle(
                         color: theme.textTheme.bodyText1.color,
