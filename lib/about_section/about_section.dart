@@ -28,8 +28,8 @@ class AboutSection extends StatelessWidget {
           padding: _padding,
           child: Text(
             isLanguageEn
-                ? 'Stadtnavi is a travel planning application for the Herrenberg region. This service includes public transport, footpaths, cycling, car routing (including Park & Ride) and car pooling.\n\nFunded by'
-                : 'Stadtnavi ist eine Reiseplannungs-Anwendung für die Region Herrenberg. Dieser Dienst umfasst ÖPNV, Fußwege, Radverkehr, PKW-Routing (inklusive Park & Ride) und Fahrgemeinschaften.\n\nGefördert durch',
+                ? 'stadtnavi is a travel planning application for the Herrenberg region. This service includes public transport, footpaths, cycling, car routing (including Park & Ride) and car pooling.\n\nFunded by'
+                : 'stadtnavi ist eine Reiseplannungs-Anwendung für die Region Herrenberg. Dieser Dienst umfasst ÖPNV, Fußwege, Radverkehr, PKW-Routing (inklusive Park & Ride) und Fahrgemeinschaften.\n\nGefördert durch',
             style: theme.textTheme.bodyText1,
           ),
         ),

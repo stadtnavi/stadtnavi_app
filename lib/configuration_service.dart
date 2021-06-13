@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:stadtnavi_app/offer_carpool/offer_carpool_screen.dart';
-
 import 'package:trufi_core/blocs/configuration/configuration.dart';
 import 'package:trufi_core/blocs/configuration/models/animation_configuration.dart';
 import 'package:trufi_core/blocs/configuration/models/attribution.dart';
@@ -92,7 +91,7 @@ Configuration setupTrufiConfiguration() {
   );
 
   final customTranslations = TrufiCustomLocalizations()
-    ..title = {const Locale("de"): "Stadtnavi", const Locale("en"): "Stadtnavi"}
+    ..title = {const Locale("de"): "stadtnavi", const Locale("en"): "stadtnavi"}
     ..tagline = {
       const Locale("de"): "Herrenberg",
       const Locale("en"): "Herrenberg"

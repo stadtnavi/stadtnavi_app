@@ -1,6 +1,6 @@
-# Stadtnavi App
+# stadtnavi App
 
-This is the repository for the Stadtnavi App of Herrenberg.
+This is the repository for the stadtnavi App of Herrenberg.
 
 ## Getting Started
 
