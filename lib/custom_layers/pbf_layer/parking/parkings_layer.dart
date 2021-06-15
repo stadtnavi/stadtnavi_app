@@ -1,6 +1,7 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_app/configuration_service.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parkings_enum.dart';
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
@@ -130,7 +131,7 @@ class ParkingLayer extends CustomLayer {
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: "api.dev.stadtnavi.eu",
+      host: baseDomain,
       path: "/map/v1/hb-parking-map/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);

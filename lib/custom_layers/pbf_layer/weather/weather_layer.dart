@@ -1,6 +1,7 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_app/configuration_service.dart';
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_marker_modal.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_feature_model.dart';
@@ -83,7 +84,7 @@ class WeatherLayer extends CustomLayer {
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: "api.dev.stadtnavi.eu",
+      host: baseDomain,
       path: "/map/v1/weather-stations/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);
