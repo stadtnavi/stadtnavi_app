@@ -595,6 +595,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  skeleton_animation:
+    dependency: transitive
+    description:
+      name: skeleton_animation
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -667,8 +674,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "2.1.8"
-      resolved-ref: "54fdc63ccdfe505cdb856f7507c6d3db90ee33c5"
+      ref: "2.2.1"
+      resolved-ref: "9150587745d49a868d9838b7bbda592d3ba269b7"
       url: "https://github.com/trufi-association/trufi-core.git"
     source: git
     version: "2.0.0"
