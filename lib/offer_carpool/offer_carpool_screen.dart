@@ -179,7 +179,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                             ),
                             Expanded(
                               child: Text(
-                                "${widget.planItineraryLeg.fromPlace.name} ${localeName == "en" ? " at " : " um "} ${DateFormat('HH:mm').format(widget.planItineraryLeg.startTime)}${localeName == "en" ? "." : " Uhr."}",
+                                "${widget.planItineraryLeg.fromPlace.name} ${localeName == "en" ? "at" : "um"} ${DateFormat('HH:mm').format(widget.planItineraryLeg.startTime)}${localeName == "en" ? "hrs." : " Uhr."}",
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyText2
