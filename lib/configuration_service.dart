@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:stadtnavi_app/offer_carpool/offer_carpool_screen.dart';
 import 'package:trufi_core/blocs/configuration/configuration.dart';
+import 'package:trufi_core/utils/text/outlined_text.dart';
 import 'package:trufi_core/blocs/configuration/models/animation_configuration.dart';
 import 'package:trufi_core/blocs/configuration/models/attribution.dart';
 import 'package:trufi_core/blocs/configuration/models/language_configuration.dart';
@@ -138,6 +139,10 @@ Configuration setupTrufiConfiguration() {
 Widget stadtNaviAttributionBuilder(BuildContext context) {
   final theme = Theme.of(context);
   final languageCode = Localizations.localeOf(context).languageCode;
+  final List<Shadow> shadows = outlinedText(
+    strokeColor: Colors.white.withOpacity(.3),
+    precision: 2,
+  );
   return RichText(
     text: TextSpan(
       children: [
@@ -145,6 +150,7 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
           style: theme.textTheme.caption.copyWith(
             color: Colors.black,
             decoration: TextDecoration.underline,
+            shadows: shadows,
           ),
           text:
               "© OpenStreetMap ${languageCode == 'en' ? "Contributors" : "Mitwirkende"},\n",
@@ -156,6 +162,7 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
         TextSpan(
           style: theme.textTheme.caption.copyWith(
             color: Colors.black,
+            shadows: shadows,
           ),
           text: languageCode == 'en' ? "Datasets by " : "Datensätze der ",
         ),
@@ -163,6 +170,7 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
           style: theme.textTheme.caption.copyWith(
             color: Colors.black,
             decoration: TextDecoration.underline,
+            shadows: shadows,
           ),
           text: "NVBW GmbH",
           recognizer: TapGestureRecognizer()
@@ -173,6 +181,7 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
         TextSpan(
           style: theme.textTheme.caption.copyWith(
             color: Colors.black,
+            shadows: shadows,
           ),
           text: languageCode == 'en' ? " and " : " und ",
         ),
@@ -180,6 +189,7 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
           style: theme.textTheme.caption.copyWith(
             color: Colors.black,
             decoration: TextDecoration.underline,
+            shadows: shadows,
           ),
           text: "VVS GmbH",
           recognizer: TapGestureRecognizer()
