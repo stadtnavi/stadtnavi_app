@@ -1,6 +1,7 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_app/configuration_service.dart';
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
 import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
@@ -105,7 +106,7 @@ class StopsLayer extends CustomLayer {
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: "api.dev.stadtnavi.eu",
+      host: baseDomain,
       path: "/routing/v1/router/vectorTiles/stops/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);

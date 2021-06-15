@@ -18,6 +18,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'about_section/about_section.dart';
 import 'marker_configuration/custom_marker_configuration.dart';
 
+const baseDomain = "api.qa.stadtnavi.eu";
 Configuration setupTrufiConfiguration() {
   // Attribution
   final attribution = Attribution(
@@ -62,7 +63,7 @@ Configuration setupTrufiConfiguration() {
         "https://trufifeedback.z15.web.core.windows.net/route.html",
     donationUrl: "http://www.trufi.app/donate-inapp",
     openTripPlannerUrl:
-        "https://api.dev.stadtnavi.eu/routing/v1/router/index/graphql",
+        "https://$baseDomain/routing/v1/router/index/graphql",
     shareUrl: "https://appurl.io/BOPP7QnKX",
   );
 

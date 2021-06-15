@@ -1,8 +1,9 @@
 import 'package:graphql/client.dart';
+import 'package:stadtnavi_app/configuration_service.dart';
 
 GraphQLClient getClient() {
   final HttpLink _httpLink = HttpLink(
-    'https://api.dev.stadtnavi.eu/routing/v1/router/index/graphql',
+    'https://$baseDomain/routing/v1/router/index/graphql',
   );
 
   return GraphQLClient(
