@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 import 'package:stadtnavi_app/offer_carpool/offer_carpool_screen.dart';
 import 'package:trufi_core/blocs/configuration/configuration.dart';
+import 'package:trufi_core/blocs/configuration/models/transport_configuration.dart';
 import 'package:trufi_core/utils/text/outlined_text.dart';
 import 'package:trufi_core/blocs/configuration/models/animation_configuration.dart';
 import 'package:trufi_core/blocs/configuration/models/attribution.dart';
@@ -62,8 +63,7 @@ Configuration setupTrufiConfiguration() {
     routeFeedbackUrl:
         "https://trufifeedback.z15.web.core.windows.net/route.html",
     donationUrl: "http://www.trufi.app/donate-inapp",
-    openTripPlannerUrl:
-        "https://$baseDomain/routing/v1/router/index/graphql",
+    openTripPlannerUrl: "https://$baseDomain/routing/v1/router/index/graphql",
     shareUrl: "https://appurl.io/BOPP7QnKX",
   );
 
@@ -109,6 +109,7 @@ Configuration setupTrufiConfiguration() {
       attribution: attribution,
       animations: AnimationConfiguration(success: null),
       markers: const CustomMarkerConfiguration(),
+      transportConf: const TransportConfiguration(showTransportMarker: false),
       map: map,
       urls: urls,
       planItineraryLegBuilder: (context, leg) {
