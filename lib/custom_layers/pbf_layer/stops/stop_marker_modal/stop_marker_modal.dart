@@ -53,6 +53,7 @@ class StopMarkerModal extends StatelessWidget {
                     ],
                   ),
                   Expanded(
+                    key: Key(stopFeature.gtfsId),
                     child: TabBarView(children: [
                       RightNowScreen(
                         stopFeature: stopFeature,

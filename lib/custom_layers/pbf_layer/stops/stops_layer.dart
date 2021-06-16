@@ -7,6 +7,10 @@ import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
+import 'package:trufi_core/blocs/panel/panel_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/plugin_api.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:vector_tile/vector_tile.dart';
 
@@ -88,10 +92,14 @@ class StopsLayer extends CustomLayer {
                     anchorPos: AnchorPos.align(AnchorAlign.top),
                     builder: (context) => GestureDetector(
                       onTap: () {
-                        showMarkerModal(
-                          context: context,
-                          builder: (BuildContext context) => StopMarkerModal(
-                            stopFeature: element,
+                        final panelCubit = context.read<PanelCubit>();
+                        panelCubit.setPanel(
+                          CustomMarkerPanel(
+                            panel: (context) => StopMarkerModal(
+                              stopFeature: element,
+                            ),
+                            positon: element.position,
+                            minSize: 130,
                           ),
                         );
                       },

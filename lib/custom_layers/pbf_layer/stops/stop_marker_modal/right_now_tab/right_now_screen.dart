@@ -67,27 +67,29 @@ class _RightNowScreenState extends State<RightNowScreen>
       children: [
         if (stoptimes != null)
           Expanded(
-            child: ListView.builder(
-              itemCount: stoptimes.length,
-              itemBuilder: (contextBuilde, index) {
-                final Stoptime stopTime = stoptimes[index];
-                return Column(
-                  children: [
-                    if (indexNextDay == index && index == 0)
-                      _TitleDay(
-                        stoptime: stoptimes[index + 1],
+            child: Scrollbar(
+              child: ListView.builder(
+                itemCount: stoptimes.length,
+                itemBuilder: (contextBuilde, index) {
+                  final Stoptime stopTime = stoptimes[index];
+                  return Column(
+                    children: [
+                      if (indexNextDay == index && index == 0)
+                        _TitleDay(
+                          stoptime: stoptimes[index + 1],
+                        ),
+                      CustomStopTile(
+                        stopTime: stopTime,
+                        isLastStop: stoptimes.length - 1 == index,
                       ),
-                    CustomStopTile(
-                      stopTime: stopTime,
-                      isLastStop: stoptimes.length - 1 == index,
-                    ),
-                    if (indexNextDay - 1 == index)
-                      _TitleDay(
-                        stoptime: stoptimes[index + 1],
-                      ),
-                  ],
-                );
-              },
+                      if (indexNextDay - 1 == index)
+                        _TitleDay(
+                          stoptime: stoptimes[index + 1],
+                        ),
+                    ],
+                  );
+                },
+              ),
             ),
           )
         else if (loading)

@@ -78,85 +78,89 @@ class _TimeTableScreenState extends State<TimeTableScreen>
           )
         else if (stoptimesByDay != null)
           Expanded(
-            child: ListView.builder(
-              itemCount: stoptimesByDay.length,
-              itemBuilder: (contextBuilde, index) {
-                final stopTimeKey = stoptimesByDay.keys.toList()[index];
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      if (index == 0)
-                        Column(
-                          children: [
-                            InkWell(
-                              onTap: () async {
-                                final tempPickedDate =
-                                    await showModalBottomSheet<DateTime>(
-                                  context: context,
-                                  isDismissible: false,
-                                  builder: (BuildContext builder) {
-                                    return DateDayPicker(
-                                      dateTime: selecetedDate,
-                                    );
-                                  },
-                                );
-                                if (tempPickedDate != null) {
-                                  selecetedDate = tempPickedDate;
-                                  _fetchStopData(date: tempPickedDate);
-                                }
-                              },
-                              child: Text(DateFormat('yyyy-MM-dd HH-mm')
-                                  .format(selecetedDate)),
-                            ),
-                            const Divider(
-                              height: 0,
-                              color: Colors.black87,
-                              indent: 16,
-                              endIndent: 20,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 15),
-                              child: Text(
-                                languageCode == 'en'
-                                    ? "Departures by hour (minutes/route)"
-                                    : "Abfahrten nach Stunde (Minuten / Strecke)",
-                                style: theme.textTheme.bodyText1.copyWith(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
+            child: Scrollbar(
+              child: ListView.builder(
+                itemCount: stoptimesByDay.length,
+                itemBuilder: (contextBuilde, index) {
+                  final stopTimeKey = stoptimesByDay.keys.toList()[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (index == 0)
+                          Column(
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  final tempPickedDate =
+                                      await showModalBottomSheet<DateTime>(
+                                    context: context,
+                                    isDismissible: false,
+                                    builder: (BuildContext builder) {
+                                      return DateDayPicker(
+                                        dateTime: selecetedDate,
+                                      );
+                                    },
+                                  );
+                                  if (tempPickedDate != null) {
+                                    selecetedDate = tempPickedDate;
+                                    _fetchStopData(date: tempPickedDate);
+                                  }
+                                },
+                                child: Text(DateFormat('yyyy-MM-dd HH-mm')
+                                    .format(selecetedDate)),
+                              ),
+                              const Divider(
+                                height: 0,
+                                color: Colors.black87,
+                                indent: 16,
+                                endIndent: 20,
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 15),
+                                child: Text(
+                                  languageCode == 'en'
+                                      ? "Departures by hour (minutes/route)"
+                                      : "Abfahrten nach Stunde (Minuten / Strecke)",
+                                  style: theme.textTheme.bodyText1.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                        Text(
+                          stoptimesByDay[stopTimeKey][0].hourTime,
+                          style: theme.textTheme.bodyText1.copyWith(
+                              fontSize: 20, fontWeight: FontWeight.w700),
                         ),
-                      Text(
-                        stoptimesByDay[stopTimeKey][0].hourTime,
-                        style: theme.textTheme.bodyText1.copyWith(
-                            fontSize: 20, fontWeight: FontWeight.w700),
-                      ),
-                      const SizedBox(height: 5),
-                      Wrap(
-                        children: [
-                          ...stoptimesByDay[stopTimeKey]
-                              .map((e) => Padding(
-                                    padding: const EdgeInsets.only(right: 15),
-                                    child: Text(
-                                      "${e.minuteTime}/${e.name}",
-                                      style: theme.textTheme.bodyText1.copyWith(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
+                        const SizedBox(height: 5),
+                        Wrap(
+                          children: [
+                            ...stoptimesByDay[stopTimeKey]
+                                .map((e) => Padding(
+                                      padding: const EdgeInsets.only(right: 15),
+                                      child: Text(
+                                        "${e.minuteTime}/${e.name}",
+                                        style:
+                                            theme.textTheme.bodyText1.copyWith(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                        ),
                                       ),
-                                    ),
-                                  ))
-                              .toList(),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              },
+                                    ))
+                                .toList(),
+                          ],
+                        )
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
           )
         else
