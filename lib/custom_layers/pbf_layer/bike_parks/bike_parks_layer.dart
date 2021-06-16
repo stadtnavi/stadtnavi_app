@@ -92,8 +92,8 @@ class BikeParkLayer extends CustomLayer {
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: baseDomain,
-      path: "/map/v1/bike-parks/$z/$x/$y.pbf",
+      host: "api.dev.stadtnavi.eu",
+      path: "/routing/v1/router/vectorTiles/parking/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);
     if (response.statusCode != 200) {
