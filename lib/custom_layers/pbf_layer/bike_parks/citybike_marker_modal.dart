@@ -43,10 +43,9 @@ class CitybikeMarkerModal extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (element.maxCapacity != null &&
-                  element.maxCapacity != "-2147483648")
+              if (element.bicyclePlacesCapacity != null)
                 Text(
-                  "${element.maxCapacity} ${languageCode == 'en' ? 'parking spaces' : 'Stellplätze'}",
+                  "${element.bicyclePlacesCapacity} ${languageCode == 'en' ? 'parking spaces' : 'Stellplätze'}",
                   style: TextStyle(
                     color: theme.textTheme.bodyText1.color,
                   ),
