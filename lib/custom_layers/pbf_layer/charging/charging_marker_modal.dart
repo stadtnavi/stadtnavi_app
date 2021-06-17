@@ -101,47 +101,51 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                     ),
                     const Divider(height: 10),
                   ],
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: chargingItem.connectors.values
-                            .map(
-                              (e) => Row(
-                                children: [
-                                  SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: SvgPicture.string(
-                                      chargingTypeIcons[e.standard] ?? "",
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: chargingItem.connectors.values
+                              .map(
+                                (e) => Row(
+                                  children: [
+                                    Container(
+                                      height: 30,
+                                      width: 30,
+                                      margin: const EdgeInsets.only(right: 5),
+                                      child: SvgPicture.string(
+                                        chargingTypeIcons[e.standard] ?? "",
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "${chargingTypeName[e.standard] ?? e.standard} - ${e.maxAmperage} kW",
-                                    style: TextStyle(
-                                      color: theme.textTheme.bodyText1.color,
+                                    Text(
+                                      "${chargingTypeName[e.standard] ?? e.standard} - ${e.maxAmperage} kW",
+                                      style: TextStyle(
+                                        color: theme.textTheme.bodyText1.color,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      const Text("|"),
-                      Text(
-                        widget.element.available != null
-                            ? localeName == "en"
-                                ? "${widget.element.available} of ${widget.element.capacity} charging slots available"
-                                : "${widget.element.available} von ${widget.element.capacity} Ladeplätzen frei"
-                            : localeName == "en"
-                                ? "${widget.element.capacity} charging slots"
-                                : "${widget.element.capacity} Ladeplätzen",
-                        style: TextStyle(
-                          color: theme.textTheme.bodyText1.color,
+                                  ],
+                                ),
+                              )
+                              .toList(),
                         ),
-                      ),
-                    ],
+                        const Text("|"),
+                        Text(
+                          widget.element.available != null
+                              ? localeName == "en"
+                                  ? "${widget.element.available} of ${widget.element.capacity} charging slots available"
+                                  : "${widget.element.available} von ${widget.element.capacity} Ladeplätzen frei"
+                              : localeName == "en"
+                                  ? "${widget.element.capacity} charging slots"
+                                  : "${widget.element.capacity} Ladeplätzen",
+                          style: TextStyle(
+                            color: theme.textTheme.bodyText1.color,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   if (chargingItem.openingTimes["twentyfourseven"] == true) ...[
                     const Divider(height: 10),
