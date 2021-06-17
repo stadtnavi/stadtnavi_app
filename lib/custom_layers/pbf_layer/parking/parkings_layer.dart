@@ -168,7 +168,7 @@ class ParkingLayer extends CustomLayer {
   @override
   Widget icon(BuildContext context) {
     return SvgPicture.string(
-      parkingMarkerIcons[ParkingsLayerIds.barrierFreeParkingSpace],
+      parkingMarkerIcons[ParkingsLayerIds.parkingSpot],
     );
   }
 }
