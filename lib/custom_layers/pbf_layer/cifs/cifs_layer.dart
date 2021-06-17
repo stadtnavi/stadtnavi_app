@@ -4,10 +4,12 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:stadtnavi_app/configuration_service.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/cifs/bike_parks_enum.dart';
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
-import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
+import 'package:trufi_core/blocs/panel/panel_cubit.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
+import 'package:latlong/latlong.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:vector_tile/vector_tile.dart';
 
@@ -97,6 +99,7 @@ class CifsLayer extends CustomLayer {
                             anchorPos: AnchorPos.align(AnchorAlign.center),
                             builder: (context) => _CifsFeatureMarker(
                               element: element,
+                              point: element.startPoint,
                             ),
                           ))
                       .toList(),
@@ -108,6 +111,7 @@ class CifsLayer extends CustomLayer {
                             anchorPos: AnchorPos.align(AnchorAlign.center),
                             builder: (context) => _CifsFeatureMarker(
                               element: element,
+                              point: element.endPoint,
                             ),
                           ))
                       .toList(),
@@ -161,23 +165,31 @@ class CifsLayer extends CustomLayer {
   @override
   Widget icon(BuildContext context) {
     return SvgPicture.string(
-              cifsIcons[CifsTypeIds.construction],
-            );
+      cifsIcons[CifsTypeIds.construction],
+    );
   }
 }
 
 class _CifsFeatureMarker extends StatelessWidget {
   final CifsFeature element;
-
-  const _CifsFeatureMarker({Key key, this.element}) : super(key: key);
+  final LatLng point;
+  const _CifsFeatureMarker({
+    Key key,
+    @required this.element,
+    @required this.point,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showBottomMarkerModal(
-          context: context,
-          builder: (BuildContext context) => CifsMarkerModal(
-            element: element,
+        final panelCubit = context.read<PanelCubit>();
+        panelCubit.setPanel(
+          CustomMarkerPanel(
+            panel: (context) => CifsMarkerModal(
+              element: element,
+            ),
+            positon: point,
+            minSize: 150,
           ),
         );
       },

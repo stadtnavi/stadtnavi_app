@@ -5,10 +5,11 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_app/custom_layers/local_json_layer/custom_marker_enum.dart';
 import 'package:stadtnavi_app/custom_layers/local_json_layer/markers_from_assets.dart';
-import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
+import 'package:trufi_core/blocs/panel/panel_cubit.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'custom_marker_modal.dart';
 import 'custom_marker_model.dart';
 
@@ -64,10 +65,14 @@ class Layer extends CustomLayer {
                     anchorPos: AnchorPos.align(AnchorAlign.center),
                     builder: (context) => GestureDetector(
                       onTap: () {
-                        showBottomMarkerModal(
-                          context: context,
-                          builder: (BuildContext context) => CustomMarkerModal(
-                            element: element,
+                        final panelCubit = context.read<PanelCubit>();
+                        panelCubit.setPanel(
+                          CustomMarkerPanel(
+                            panel: (context) => CustomMarkerModal(
+                              element: element,
+                            ),
+                            positon: element.position,
+                            minSize: 130,
                           ),
                         );
                       },

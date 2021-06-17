@@ -33,117 +33,119 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (loading)
-          LinearProgressIndicator(
-            valueColor:
-                AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
-          )
-        else if (cityBikeDataFetch != null) ...[
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              children: [
-                Container(
-                  height: 30,
-                  width: 30,
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: widget.element.type.image,
+    return Scrollbar(
+      child: ListView(
+        children: [
+          if (loading)
+            LinearProgressIndicator(
+              valueColor:
+                  AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+            )
+          else if (cityBikeDataFetch != null) ...[
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                children: [
+                  Container(
+                    height: 30,
+                    width: 30,
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: widget.element.type.image,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          cityBikeDataFetch.name ?? "",
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        if (widget.element.type != null)
+                          Text(
+                            widget.element.type.getTranslate(languageCode),
+                            style: TextStyle(
+                              color: theme.textTheme.bodyText1.color
+                                  .withOpacity(.5),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Divider(),
+            if (cityBikeDataFetch.bikesAvailable > -1)
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+                child: Text(
+                  languageCode == 'en'
+                      ? "Cargo bikes available at the station right now (${cityBikeDataFetch.bikesAvailable})"
+                      : "Lastenräder verfügbar (${cityBikeDataFetch.bikesAvailable})",
+                  style: TextStyle(
+                    color: theme.textTheme.bodyText1.color,
+                  ),
                 ),
-                Expanded(
+              ),
+            if (cityBikeDataFetch.firstNetwork != null &&
+                cityBikeDataFetch.firstNetwork.hasBook(languageCode))
+              Card(
+                color: Colors.grey[100],
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        cityBikeDataFetch.name ?? "",
-                        style: const TextStyle(fontSize: 20),
+                        cityBikeDataFetch.firstNetwork
+                            .getNetworkBookData(languageCode)
+                            .title,
+                        style: theme.textTheme.bodyText1.copyWith(
+                            fontWeight: FontWeight.w700,
+                            fontSize: theme.textTheme.bodyText1.fontSize + 1),
                       ),
-                      if (widget.element.type != null)
-                        Text(
-                          widget.element.type.getTranslate(languageCode),
-                          style: TextStyle(
-                            color:
-                                theme.textTheme.bodyText1.color.withOpacity(.5),
-                          ),
+                      const SizedBox(height: 10),
+                      InkWell(
+                        onTap: () {
+                          launch(cityBikeDataFetch.firstNetwork
+                              .getNetworkBookData(languageCode)
+                              .url);
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              cityBikeDataFetch.firstNetwork
+                                  .getNetworkBookData(languageCode)
+                                  .bookText,
+                              style: theme.textTheme.bodyText2
+                                  .copyWith(fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(width: 5),
+                            Icon(
+                              cityBikeDataFetch.firstNetwork
+                                  .getNetworkBookData(languageCode)
+                                  .icon,
+                              size: 20,
+                              color: const Color(0xff007ac9),
+                            )
+                          ],
                         ),
+                      )
                     ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          const Divider(),
-          if (cityBikeDataFetch.bikesAvailable > -1)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-              child: Text(
-                languageCode == 'en'
-                    ? "Cargo bikes available at the station right now (${cityBikeDataFetch.bikesAvailable})"
-                    : "Lastenräder verfügbar (${cityBikeDataFetch.bikesAvailable})",
-                style: TextStyle(
-                  color: theme.textTheme.bodyText1.color,
-                ),
               ),
+          ] else
+            Text(
+              fetchError,
+              style: const TextStyle(color: Colors.red),
             ),
-          if (cityBikeDataFetch.firstNetwork != null &&
-              cityBikeDataFetch.firstNetwork.hasBook(languageCode))
-            Card(
-              color: Colors.grey[100],
-              margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      cityBikeDataFetch.firstNetwork
-                          .getNetworkBookData(languageCode)
-                          .title,
-                      style: theme.textTheme.bodyText1.copyWith(
-                          fontWeight: FontWeight.w700,
-                          fontSize: theme.textTheme.bodyText1.fontSize + 1),
-                    ),
-                    const SizedBox(height: 10),
-                    InkWell(
-                      onTap: () {
-                        launch(cityBikeDataFetch.firstNetwork
-                            .getNetworkBookData(languageCode)
-                            .url);
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            cityBikeDataFetch.firstNetwork
-                                .getNetworkBookData(languageCode)
-                                .bookText,
-                            style: theme.textTheme.bodyText2
-                                .copyWith(fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(width: 5),
-                          Icon(
-                            cityBikeDataFetch.firstNetwork
-                                .getNetworkBookData(languageCode)
-                                .icon,
-                            size: 20,
-                            color: const Color(0xff007ac9),
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-        ] else
-          Text(
-            fetchError,
-            style: const TextStyle(color: Colors.red),
-          ),
-      ],
+        ],
+      ),
     );
   }
 

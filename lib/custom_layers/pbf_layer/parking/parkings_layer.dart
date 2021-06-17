@@ -5,10 +5,11 @@ import 'package:stadtnavi_app/configuration_service.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parkings_enum.dart';
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
-import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
+import 'package:trufi_core/blocs/panel/panel_cubit.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:vector_tile/vector_tile.dart';
 
@@ -66,10 +67,15 @@ class ParkingLayer extends CustomLayer {
                     anchorPos: AnchorPos.align(AnchorAlign.center),
                     builder: (context) => GestureDetector(
                       onTap: () {
-                        showBottomMarkerModal(
-                          context: context,
-                          builder: (BuildContext context) => ParkingMarkerModal(
-                            parkingFeature: element,
+
+                        final panelCubit = context.read<PanelCubit>();
+                        panelCubit.setPanel(
+                          CustomMarkerPanel(
+                            panel: (context) => ParkingMarkerModal(
+                              parkingFeature: element,
+                            ),
+                            positon: element.position,
+                            minSize: 150,
                           ),
                         );
                       },

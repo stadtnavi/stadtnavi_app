@@ -13,71 +13,71 @@ class ParkingMarkerModal extends StatelessWidget {
     final theme = Theme.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
     final isEnglishCode = languageCode == 'en';
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: SvgPicture.string(roadWeatherIcons),
-              ),
-              Expanded(
-                child: Text(
-                  parkingFeature.address,
-                  style: const TextStyle(fontSize: 20),
+    return Scrollbar(
+      child: ListView(
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: SvgPicture.string(roadWeatherIcons),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Text(
+                    parkingFeature.address,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (parkingFeature.airTemperatureC != null)
-                Text(
-                  "${isEnglishCode ? 'Air Temperature' : 'Lufttemperatur'}: ${parkingFeature.airTemperatureC} °C",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyText1.color,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (parkingFeature.airTemperatureC != null)
+                  Text(
+                    "${isEnglishCode ? 'Air Temperature' : 'Lufttemperatur'}: ${parkingFeature.airTemperatureC} °C",
+                    style: TextStyle(
+                      color: theme.textTheme.bodyText1.color,
+                    ),
                   ),
-                ),
-              if (parkingFeature.roadTemperatureC != null)
-                Text(
-                  "${isEnglishCode ? 'Road Temperature' : 'Straßentemperatur'}:  ${parkingFeature.roadTemperatureC} °C",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyText1.color,
+                if (parkingFeature.roadTemperatureC != null)
+                  Text(
+                    "${isEnglishCode ? 'Road Temperature' : 'Straßentemperatur'}:  ${parkingFeature.roadTemperatureC} °C",
+                    style: TextStyle(
+                      color: theme.textTheme.bodyText1.color,
+                    ),
                   ),
-                ),
-              if (parkingFeature.precipitationType != null)
-                Text(
-                  "${isEnglishCode ? 'Precipitation' : 'Niederschlag'}: ${parkingFeature.precipitationType}",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyText1.color,
+                if (parkingFeature.precipitationType != null)
+                  Text(
+                    "${isEnglishCode ? 'Precipitation' : 'Niederschlag'}: ${parkingFeature.precipitationType}",
+                    style: TextStyle(
+                      color: theme.textTheme.bodyText1.color,
+                    ),
                   ),
-                ),
-              if (parkingFeature.roadCondition != null)
-                Text(
-                  "${isEnglishCode ? 'Condition' : 'Straßenzustand'}: ${parkingFeature.roadCondition}",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyText1.color,
+                if (parkingFeature.roadCondition != null)
+                  Text(
+                    "${isEnglishCode ? 'Condition' : 'Straßenzustand'}: ${parkingFeature.roadCondition}",
+                    style: TextStyle(
+                      color: theme.textTheme.bodyText1.color,
+                    ),
                   ),
-                ),
-              if (parkingFeature.updatedAt != null)
-                Text(
-                  "${isEnglishCode ? 'Last update' : 'Daten von'}: ${DateFormat('hh:mm a', languageCode).format(DateTime.parse(parkingFeature.updatedAt).toLocal())}",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyText1.color,
+                if (parkingFeature.updatedAt != null)
+                  Text(
+                    "${isEnglishCode ? 'Last update' : 'Daten von'}: ${DateFormat('hh:mm a', languageCode).format(DateTime.parse(parkingFeature.updatedAt).toLocal())}",
+                    style: TextStyle(
+                      color: theme.textTheme.bodyText1.color,
+                    ),
                   ),
-                ),
-            ],
-          ),
-        )
-      ],
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

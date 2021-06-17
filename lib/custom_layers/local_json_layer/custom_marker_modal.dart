@@ -22,44 +22,44 @@ class CustomMarkerModal extends StatelessWidget {
     }
     // apply format to the popup content
     body = body.replaceAll(", ", "\n\n");
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            children: [
-              Container(
-                height: 30,
-                width: 30,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: SvgPicture.string(element.image),
-              ),
-              Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(fontSize: 20),
+    return Scrollbar(
+      child: ListView(
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              children: [
+                Container(
+                  height: 30,
+                  width: 30,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: SvgPicture.string(element.image),
                 ),
-              ),
-            ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                body,
-                style: TextStyle(
-                  color: theme.textTheme.bodyText1.color,
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(fontSize: 20),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        )
-      ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  body,
+                  style: TextStyle(
+                    color: theme.textTheme.bodyText1.color,
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }

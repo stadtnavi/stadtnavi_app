@@ -3,11 +3,12 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
 import 'package:stadtnavi_app/configuration_service.dart';
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
-import 'package:stadtnavi_app/custom_layers/widget/marker_modal.dart';
+import 'package:trufi_core/blocs/panel/panel_cubit.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
 import 'package:vector_tile/vector_tile.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'citybike_feature_model.dart';
 import 'citybike_marker_modal.dart';
@@ -65,11 +66,14 @@ class CityBikesLayer extends CustomLayer {
                     anchorPos: AnchorPos.align(AnchorAlign.top),
                     builder: (context) => GestureDetector(
                       onTap: () {
-                        showBottomMarkerModal(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              CitybikeMarkerModal(
-                            element: element,
+                        final panelCubit = context.read<PanelCubit>();
+                        panelCubit.setPanel(
+                          CustomMarkerPanel(
+                            panel: (context) => CitybikeMarkerModal(
+                              element: element,
+                            ),
+                            positon: element.position,
+                            minSize: 150,
                           ),
                         );
                       },

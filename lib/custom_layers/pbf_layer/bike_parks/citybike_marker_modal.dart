@@ -12,48 +12,48 @@ class CitybikeMarkerModal extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          child: Row(
-            children: [
-              Container(
-                height: 30,
-                width: 30,
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: SvgPicture.string(
-                  parkingMarkerIcons[element.type] ?? "",
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  element.name ?? "",
-                  style: const TextStyle(fontSize: 20),
-                ),
-              ),
-            ],
-          ),
-        ),
-        const Divider(),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              if (element.bicyclePlacesCapacity != null)
-                Text(
-                  "${element.bicyclePlacesCapacity} ${languageCode == 'en' ? 'parking spaces' : 'Stellplätze'}",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyText1.color,
+    return Scrollbar(
+      child: ListView(
+        children: [
+          Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            child: Row(
+              children: [
+                Container(
+                  height: 30,
+                  width: 30,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: SvgPicture.string(
+                    parkingMarkerIcons[element.type] ?? "",
                   ),
                 ),
-            ],
+                Expanded(
+                  child: Text(
+                    element.name ?? "",
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ),
+              ],
+            ),
           ),
-        )
-      ],
+          const Divider(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                if (element.bicyclePlacesCapacity != null)
+                  Text(
+                    "${element.bicyclePlacesCapacity} ${languageCode == 'en' ? 'parking spaces' : 'Stellplätze'}",
+                    style: TextStyle(
+                      color: theme.textTheme.bodyText1.color,
+                    ),
+                  ),
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
