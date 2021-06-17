@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:trufi_core/widgets/custom_location_selector.dart';
 
 import 'charging_feature_model.dart';
 import 'charging_icons.dart';
@@ -13,9 +14,13 @@ import 'modal/charging_modal_models.dart';
 
 class ChargingMarkerModal extends StatefulWidget {
   final ChargingFeature element;
+  final void Function() onFetchPlan;
 
-  const ChargingMarkerModal({Key key, @required this.element})
-      : super(key: key);
+  const ChargingMarkerModal({
+    Key key,
+    @required this.element,
+    @required this.onFetchPlan,
+  }) : super(key: key);
 
   @override
   _ChargingMarkerModalState createState() => _ChargingMarkerModalState();
@@ -38,9 +43,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final localeName = TrufiLocalization.of(context).localeName;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return ListView(
       children: [
         Container(
           margin: const EdgeInsets.symmetric(vertical: 10),
@@ -97,47 +100,51 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                   ),
                   const Divider(height: 10),
                 ],
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: chargingItem.connectors.values
-                          .map(
-                            (e) => Row(
-                              children: [
-                                SizedBox(
-                                  height: 30,
-                                  width: 30,
-                                  child: SvgPicture.string(
-                                    chargingTypeIcons[e.standard] ?? "",
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: chargingItem.connectors.values
+                            .map(
+                              (e) => Row(
+                                children: [
+                                  Container(
+                                    height: 30,
+                                    width: 30,
+                                    margin: const EdgeInsets.only(right: 5),
+                                    child: SvgPicture.string(
+                                      chargingTypeIcons[e.standard] ?? "",
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "${chargingTypeName[e.standard] ?? e.standard} - ${e.maxAmperage} kW",
-                                  style: TextStyle(
-                                    color: theme.textTheme.bodyText1.color,
+                                  Text(
+                                    "${chargingTypeName[e.standard] ?? e.standard} - ${e.maxAmperage} kW",
+                                    style: TextStyle(
+                                      color: theme.textTheme.bodyText1.color,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          )
-                          .toList(),
-                    ),
-                    const Text("|"),
-                    Text(
-                      widget.element.available != null
-                          ? localeName == "en"
-                              ? "${widget.element.available} of ${widget.element.capacity} charging slots available"
-                              : "${widget.element.available} von ${widget.element.capacity} Ladeplätzen frei"
-                          : localeName == "en"
-                              ? "${widget.element.capacity} charging slots"
-                              : "${widget.element.capacity} Ladeplätzen",
-                      style: TextStyle(
-                        color: theme.textTheme.bodyText1.color,
+                                ],
+                              ),
+                            )
+                            .toList(),
                       ),
-                    ),
-                  ],
+                      const Text("|"),
+                      Text(
+                        widget.element.available != null
+                            ? localeName == "en"
+                                ? "${widget.element.available} of ${widget.element.capacity} charging slots available"
+                                : "${widget.element.available} von ${widget.element.capacity} Ladeplätzen frei"
+                            : localeName == "en"
+                                ? "${widget.element.capacity} charging slots"
+                                : "${widget.element.capacity} Ladeplätzen",
+                        style: TextStyle(
+                          color: theme.textTheme.bodyText1.color,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 if (chargingItem.openingTimes["twentyfourseven"] == true) ...[
                   const Divider(height: 10),
@@ -249,6 +256,14 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                       ),
                     ),
                   ],
+                  CustomLocationSelector(
+                    onFetchPlan: widget.onFetchPlan,
+                    locationData: LocationDetail(
+                      chargingItem?.name ?? "",
+                      "",
+                      widget.element.position,
+                    ),
+                  ),
                 ],
               ] else
                 Text(
@@ -257,7 +272,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                 ),
             ],
           ),
-        )
+        ),
       ],
     );
   }

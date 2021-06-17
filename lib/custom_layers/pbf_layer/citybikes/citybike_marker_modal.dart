@@ -3,14 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:stadtnavi_app/custom_layers/services/layers_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:trufi_core/widgets/custom_location_selector.dart';
 import 'citybike_data_fetch.dart';
 import 'citybike_feature_model.dart';
 import 'citybikes_enum.dart';
 
 class CitybikeMarkerModal extends StatefulWidget {
   final CityBikeFeature element;
-  const CitybikeMarkerModal({Key key, @required this.element})
-      : super(key: key);
+  final void Function() onFetchPlan;
+  const CitybikeMarkerModal({
+    Key key,
+    @required this.element,
+    @required this.onFetchPlan,
+  }) : super(key: key);
 
   @override
   _CitybikeMarkerModalState createState() => _CitybikeMarkerModalState();
@@ -33,9 +38,7 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return ListView(
       children: [
         if (loading)
           LinearProgressIndicator(
@@ -133,7 +136,15 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
                           )
                         ],
                       ),
-                    )
+                    ),
+                    CustomLocationSelector(
+                      onFetchPlan: widget.onFetchPlan,
+                      locationData: LocationDetail(
+                        cityBikeDataFetch.name ?? "",
+                        "",
+                        widget.element.position,
+                      ),
+                    ),
                   ],
                 ),
               ),

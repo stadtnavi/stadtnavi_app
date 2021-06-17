@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:latlong/latlong.dart';
 import 'package:trufi_core/blocs/location_search_bloc.dart';
 import 'package:trufi_core/models/trufi_place.dart';
-import 'package:trufi_core/pages/home/plan_map/plan_empty.dart';
+import 'package:trufi_core/widgets/custom_location_selector.dart';
 import 'package:trufi_core/repository/exception/fetch_online_exception.dart';
 import 'package:trufi_core/services/search_location/search_location_manager.dart';
 
@@ -85,6 +85,7 @@ class OnlineSearchLocation implements SearchLocationManager {
     return LocationDetail(
       properties["name"]?.toString(),
       "$address$postalcode $locality",
+      location,
     );
   }
 }

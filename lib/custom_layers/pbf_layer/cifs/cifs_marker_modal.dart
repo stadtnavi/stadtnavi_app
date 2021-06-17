@@ -2,13 +2,22 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:trufi_core/widgets/custom_location_selector.dart';
 
+import 'package:latlong/latlong.dart';
 import 'cifs_feature_model.dart';
 import 'cifs_icons.dart';
 
 class CifsMarkerModal extends StatelessWidget {
   final CifsFeature element;
-  const CifsMarkerModal({Key key, @required this.element}) : super(key: key);
+  final void Function() onFetchPlan;
+  final LatLng position;
+  const CifsMarkerModal({
+    Key key,
+    @required this.element,
+    @required this.onFetchPlan,
+    @required this.position,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -21,9 +30,7 @@ class CifsMarkerModal extends StatelessWidget {
         ? DateFormat("MMM d, yyyy", languageCode)
             .format(DateTime.parse(element.endtime))
         : "";
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return ListView(
       children: [
         Container(
           margin: const EdgeInsets.symmetric(vertical: 10),
@@ -89,7 +96,15 @@ class CifsMarkerModal extends StatelessWidget {
                 ),
             ],
           ),
-        )
+        ),
+        CustomLocationSelector(
+          onFetchPlan: onFetchPlan,
+          locationData: LocationDetail(
+            element.locationStreet,
+            "",
+            position,
+          ),
+        ),
       ],
     );
   }
