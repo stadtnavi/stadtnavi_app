@@ -43,111 +43,109 @@ class ParkingMarkerModal extends StatelessWidget {
           : "${parkingFeature.freeDisabled} von ${parkingFeature.totalDisabled} rollstuhlgerechten Parkplätzen vorhanden";
     }
     final notes = jsonDecode(parkingFeature.notes ?? "{}");
-    return Scrollbar(
-      child: ListView(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: SvgPicture.string(
-                    parkingMarkerIcons[parkingFeature.type] ?? "",
+    return ListView(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: SvgPicture.string(
+                  parkingMarkerIcons[parkingFeature.type] ?? "",
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  parkingFeature.name,
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (spaces != null)
+                Text(
+                  spaces,
+                  style: const TextStyle(
+                    color: Colors.black,
                   ),
                 ),
-                Expanded(
-                  child: Text(
-                    parkingFeature.name,
-                    style: const TextStyle(fontSize: 20),
+              if (disabledSpaces != null)
+                Text(
+                  disabledSpaces,
+                  style: const TextStyle(
+                    color: Colors.black,
                   ),
                 ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (spaces != null)
-                  Text(
-                    spaces,
-                    style: const TextStyle(
-                      color: Colors.black,
+              if (parkingFeature.openingHours != null)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Divider(),
+                    Text(
+                      localeName == 'en' ? "OPENING HOURS" : "ÖFFNUNGSZEITEN",
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                if (disabledSpaces != null)
-                  Text(
-                    disabledSpaces,
-                    style: const TextStyle(
-                      color: Colors.black,
+                    Text(
+                      parkingFeature.openingHours.replaceAll("; ", "\n"),
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                if (parkingFeature.openingHours != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Divider(),
-                      Text(
-                        localeName == 'en' ? "OPENING HOURS" : "ÖFFNUNGSZEITEN",
+                  ],
+                ),
+              if (notes[localeName] != null)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Divider(),
+                    Text(
+                      "${notes[localeName]}",
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              if (parkingFeature.url != null)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        launch(parkingFeature.url);
+                      },
+                      child: Text(
+                        localeName == 'en' ? "More info" : "Mehr Infos",
                         style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline,
+                          color: Colors.blue,
                         ),
                       ),
-                      Text(
-                        parkingFeature.openingHours.replaceAll("; ", "\n"),
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                if (notes[localeName] != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Divider(),
-                      Text(
-                        "${notes[localeName]}",
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
-                  ),
-                if (parkingFeature.url != null)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          launch(parkingFeature.url);
-                        },
-                        child: Text(
-                          localeName == 'en' ? "More info" : "Mehr Infos",
-                          style: const TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-              ],
-            ),
+                    ),
+                  ],
+                ),
+            ],
           ),
-          CustomLocationSelector(
-            onFetchPlan: onFetchPlan,
-            locationData: LocationDetail(
-              parkingFeature.name ?? "",
-              "",
-              parkingFeature.position,
-            ),
+        ),
+        CustomLocationSelector(
+          onFetchPlan: onFetchPlan,
+          locationData: LocationDetail(
+            parkingFeature.name ?? "",
+            "",
+            parkingFeature.position,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

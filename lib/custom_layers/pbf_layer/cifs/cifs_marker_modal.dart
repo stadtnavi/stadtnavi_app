@@ -30,84 +30,82 @@ class CifsMarkerModal extends StatelessWidget {
         ? DateFormat("MMM d, yyyy", languageCode)
             .format(DateTime.parse(element.endtime))
         : "";
-    return Scrollbar(
-      child: ListView(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              children: [
-                Container(
-                  height: 20,
-                  width: 20,
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: SvgPicture.string(
-                    cifsIcons[element.type] ?? "",
-                  ),
+    return ListView(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Container(
+                height: 20,
+                width: 20,
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: SvgPicture.string(
+                  cifsIcons[element.type] ?? "",
                 ),
-                Expanded(
-                  child: Text(
-                    element.locationStreet,
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 5),
-            child: Text(
-              "$startTime - $endTime",
-              textAlign: TextAlign.end,
-              style: const TextStyle(
-                color: Colors.grey,
               ),
+              Expanded(
+                child: Text(
+                  element.locationStreet,
+                  style: const TextStyle(fontSize: 20),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 5),
+          child: Text(
+            "$startTime - $endTime",
+            textAlign: TextAlign.end,
+            style: const TextStyle(
+              color: Colors.grey,
             ),
           ),
-          const Divider(),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (element.description != null)
-                  Text(
-                    element.description,
-                    style: TextStyle(
-                      color: theme.textTheme.bodyText1.color,
-                    ),
+        ),
+        const Divider(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (element.description != null)
+                Text(
+                  element.description,
+                  style: TextStyle(
+                    color: theme.textTheme.bodyText1.color,
                   ),
-                if (element.url != null)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      TextButton(
-                        onPressed: () {
-                          launch(element.url);
-                        },
-                        child: Text(
-                          languageCode == 'en' ? "More info" : "Mehr Infos",
-                          style: const TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Colors.blue,
-                          ),
+                ),
+              if (element.url != null)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        launch(element.url);
+                      },
+                      child: Text(
+                        languageCode == 'en' ? "More info" : "Mehr Infos",
+                        style: const TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Colors.blue,
                         ),
                       ),
-                    ],
-                  ),
-              ],
-            ),
+                    ),
+                  ],
+                ),
+            ],
           ),
-          CustomLocationSelector(
-            onFetchPlan: onFetchPlan,
-            locationData: LocationDetail(
-              element.locationStreet,
-              "",
-              position,
-            ),
+        ),
+        CustomLocationSelector(
+          onFetchPlan: onFetchPlan,
+          locationData: LocationDetail(
+            element.locationStreet,
+            "",
+            position,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

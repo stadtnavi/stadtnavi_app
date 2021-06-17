@@ -28,52 +28,50 @@ class CustomMarkerModal extends StatelessWidget {
     }
     // apply format to the popup content
     body = body.replaceAll(", ", "\n\n");
-    return Scrollbar(
-      child: ListView(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              children: [
-                Container(
-                  height: 30,
-                  width: 30,
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: SvgPicture.string(element.image),
+    return ListView(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Container(
+                height: 30,
+                width: 30,
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: SvgPicture.string(element.image),
+              ),
+              Expanded(
+                child: Text(
+                  title,
+                  style: const TextStyle(fontSize: 20),
                 ),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: const TextStyle(fontSize: 20),
-                  ),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                body,
+                style: TextStyle(
+                  color: theme.textTheme.bodyText1.color,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  body,
-                  style: TextStyle(
-                    color: theme.textTheme.bodyText1.color,
-                  ),
-                ),
-              ],
-            ),
+        ),
+        CustomLocationSelector(
+          onFetchPlan: onFetchPlan,
+          locationData: LocationDetail(
+            title,
+            "",
+            element.position,
           ),
-          CustomLocationSelector(
-            onFetchPlan: onFetchPlan,
-            locationData: LocationDetail(
-              title,
-              "",
-              element.position,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

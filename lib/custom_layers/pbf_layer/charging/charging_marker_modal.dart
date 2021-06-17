@@ -43,46 +43,117 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final localeName = TrufiLocalization.of(context).localeName;
-    return Scrollbar(
-      child: ListView(
-        children: [
-          Container(
-            margin: const EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              children: [
-                Container(
-                  height: 30,
-                  width: 30,
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: SvgPicture.string(
-                    chargingIcon,
-                  ),
+    return ListView(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Container(
+                height: 30,
+                width: 30,
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: SvgPicture.string(
+                  chargingIcon,
                 ),
-                Expanded(
-                  child: Text(
-                    chargingItem?.name ?? "",
-                    style: const TextStyle(fontSize: 20),
-                  ),
+              ),
+              Expanded(
+                child: Text(
+                  chargingItem?.name ?? "",
+                  style: const TextStyle(fontSize: 20),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (loading)
-                  LinearProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        Theme.of(context).primaryColor),
-                  )
-                else if (chargingItem != null) ...[
-                  if (chargingItem.openingTimes["twentyfourseven"] == true) ...[
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (loading)
+                LinearProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).primaryColor),
+                )
+              else if (chargingItem != null) ...[
+                if (chargingItem.openingTimes["twentyfourseven"] == true) ...[
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.access_time,
+                        size: 15,
+                        color: Colors.grey,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        localeName == "en"
+                            ? "Open 24/7"
+                            : "Durchgängig geöffnet",
+                        style: TextStyle(
+                          color: theme.textTheme.bodyText1.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Divider(height: 10),
+                ],
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: chargingItem.connectors.values
+                            .map(
+                              (e) => Row(
+                                children: [
+                                  Container(
+                                    height: 30,
+                                    width: 30,
+                                    margin: const EdgeInsets.only(right: 5),
+                                    child: SvgPicture.string(
+                                      chargingTypeIcons[e.standard] ?? "",
+                                    ),
+                                  ),
+                                  Text(
+                                    "${chargingTypeName[e.standard] ?? e.standard} - ${e.maxAmperage} kW",
+                                    style: TextStyle(
+                                      color: theme.textTheme.bodyText1.color,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                            .toList(),
+                      ),
+                      const Text("|"),
+                      Text(
+                        widget.element.available != null
+                            ? localeName == "en"
+                                ? "${widget.element.available} of ${widget.element.capacity} charging slots available"
+                                : "${widget.element.available} von ${widget.element.capacity} Ladeplätzen frei"
+                            : localeName == "en"
+                                ? "${widget.element.capacity} charging slots"
+                                : "${widget.element.capacity} Ladeplätzen",
+                        style: TextStyle(
+                          color: theme.textTheme.bodyText1.color,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (chargingItem.openingTimes["twentyfourseven"] == true) ...[
+                  const Divider(height: 10),
+                  if (chargingItem.capabilities != null &&
+                      chargingItem.capabilities.isNotEmpty)
                     Row(
                       children: [
                         const Icon(
-                          Icons.access_time,
+                          Icons.monetization_on_outlined,
                           size: 15,
                           color: Colors.grey,
                         ),
@@ -90,71 +161,50 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                           width: 5,
                         ),
                         Text(
-                          localeName == "en"
-                              ? "Open 24/7"
-                              : "Durchgängig geöffnet",
+                          chargingItem.capabilities
+                              .toList()
+                              .where((e) => capabilitiesNameEN[e] != null)
+                              .map((e) => localeName == "en"
+                                  ? capabilitiesNameEN[e]
+                                  : capabilitiesNameDE[e] ?? "")
+                              .toList()
+                              .join(", "),
                           style: TextStyle(
                             color: theme.textTheme.bodyText1.color,
                           ),
                         ),
                       ],
                     ),
-                    const Divider(height: 10),
-                  ],
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: chargingItem.connectors.values
-                              .map(
-                                (e) => Row(
-                                  children: [
-                                    Container(
-                                      height: 30,
-                                      width: 30,
-                                      margin: const EdgeInsets.only(right: 5),
-                                      child: SvgPicture.string(
-                                        chargingTypeIcons[e.standard] ?? "",
-                                      ),
-                                    ),
-                                    Text(
-                                      "${chargingTypeName[e.standard] ?? e.standard} - ${e.maxAmperage} kW",
-                                      style: TextStyle(
-                                        color: theme.textTheme.bodyText1.color,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
-                              .toList(),
+                  Row(
+                    children: [
+                      const Icon(
+                        Icons.location_on,
+                        size: 15,
+                        color: Colors.grey,
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        "${chargingItem.address}, ${chargingItem.postalCode}, ${chargingItem.city}",
+                        style: TextStyle(
+                          color: theme.textTheme.bodyText1.color,
                         ),
-                        const Text("|"),
-                        Text(
-                          widget.element.available != null
-                              ? localeName == "en"
-                                  ? "${widget.element.available} of ${widget.element.capacity} charging slots available"
-                                  : "${widget.element.available} von ${widget.element.capacity} Ladeplätzen frei"
-                              : localeName == "en"
-                                  ? "${widget.element.capacity} charging slots"
-                                  : "${widget.element.capacity} Ladeplätzen",
-                          style: TextStyle(
-                            color: theme.textTheme.bodyText1.color,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  if (chargingItem.openingTimes["twentyfourseven"] == true) ...[
-                    const Divider(height: 10),
-                    if (chargingItem.capabilities != null &&
-                        chargingItem.capabilities.isNotEmpty)
-                      Row(
+                  if (chargingItem.evses != null &&
+                      chargingItem.evses.isNotEmpty)
+                    GestureDetector(
+                      onTap: () {
+                        launch(
+                          "tel:${chargingItem.evses.first.phone}",
+                        );
+                      },
+                      child: Row(
                         children: [
                           const Icon(
-                            Icons.monetization_on_outlined,
+                            Icons.phone,
                             size: 15,
                             color: Colors.grey,
                           ),
@@ -162,120 +212,68 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                             width: 5,
                           ),
                           Text(
-                            chargingItem.capabilities
-                                .toList()
-                                .where((e) => capabilitiesNameEN[e] != null)
-                                .map((e) => localeName == "en"
-                                    ? capabilitiesNameEN[e]
-                                    : capabilitiesNameDE[e] ?? "")
-                                .toList()
-                                .join(", "),
-                            style: TextStyle(
-                              color: theme.textTheme.bodyText1.color,
+                            chargingItem.evses.first.phone,
+                            style: const TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ],
                       ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on,
-                          size: 15,
-                          color: Colors.grey,
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          "${chargingItem.address}, ${chargingItem.postalCode}, ${chargingItem.city}",
-                          style: TextStyle(
-                            color: theme.textTheme.bodyText1.color,
-                          ),
-                        ),
-                      ],
                     ),
-                    if (chargingItem.evses != null &&
-                        chargingItem.evses.isNotEmpty)
-                      GestureDetector(
-                        onTap: () {
-                          launch(
-                            "tel:${chargingItem.evses.first.phone}",
-                          );
-                        },
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.phone,
-                              size: 15,
-                              color: Colors.grey,
+                  if (chargingItem.evses != null &&
+                      chargingItem.evses.isNotEmpty &&
+                      chargingItem.evses.first.relatedResource != null &&
+                      chargingItem.evses.first.relatedResource.isNotEmpty &&
+                      chargingItem.evses.first.relatedResource.first["url"] !=
+                          null) ...[
+                    const Divider(height: 10),
+                    GestureDetector(
+                      onTap: () {
+                        launch(chargingItem
+                            .evses.first.relatedResource.first["url"]
+                            .toString());
+                      },
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: SvgPicture.string(
+                              deepLinkIcon,
                             ),
-                            const SizedBox(
-                              width: 5,
+                          ),
+                          Text(
+                            localeName == "en"
+                                ? "Start charging"
+                                : "Ladevorgang starten",
+                            style: const TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
                             ),
-                            Text(
-                              chargingItem.evses.first.phone,
-                              style: const TextStyle(
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    if (chargingItem.evses != null &&
-                        chargingItem.evses.isNotEmpty &&
-                        chargingItem.evses.first.relatedResource != null &&
-                        chargingItem.evses.first.relatedResource.isNotEmpty &&
-                        chargingItem.evses.first.relatedResource.first["url"] !=
-                            null) ...[
-                      const Divider(height: 10),
-                      GestureDetector(
-                        onTap: () {
-                          launch(chargingItem
-                              .evses.first.relatedResource.first["url"]
-                              .toString());
-                        },
-                        child: Row(
-                          children: [
-                            SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: SvgPicture.string(
-                                deepLinkIcon,
-                              ),
-                            ),
-                            Text(
-                              localeName == "en"
-                                  ? "Start charging"
-                                  : "Ladevorgang starten",
-                              style: const TextStyle(
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                    CustomLocationSelector(
-                      onFetchPlan: widget.onFetchPlan,
-                      locationData: LocationDetail(
-                        chargingItem?.name ?? "",
-                        "",
-                        widget.element.position,
+                          ),
+                        ],
                       ),
                     ),
                   ],
-                ] else
-                  Text(
-                    fetchError,
-                    style: const TextStyle(color: Colors.red),
+                  CustomLocationSelector(
+                    onFetchPlan: widget.onFetchPlan,
+                    locationData: LocationDetail(
+                      chargingItem?.name ?? "",
+                      "",
+                      widget.element.position,
+                    ),
                   ),
-              ],
-            ),
+                ],
+              ] else
+                Text(
+                  fetchError,
+                  style: const TextStyle(color: Colors.red),
+                ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
