@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:trufi_core/widgets/custom_location_selector.dart';
 
 import 'bike_park_feature_model.dart';
 import 'bike_park_icons.dart';
 
 class CitybikeMarkerModal extends StatelessWidget {
   final BikeParkFeature element;
-  const CitybikeMarkerModal({Key key, @required this.element})
-      : super(key: key);
+  final void Function() onFetchPlan;
+  const CitybikeMarkerModal({
+    Key key,
+    @required this.element,
+    @required this.onFetchPlan,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -51,7 +56,15 @@ class CitybikeMarkerModal extends StatelessWidget {
                   ),
               ],
             ),
-          )
+          ),
+          CustomLocationSelector(
+            onFetchPlan: onFetchPlan,
+            locationData: LocationDetail(
+              element.name ?? "",
+              "",
+              element.position,
+            ),
+          ),
         ],
       ),
     );

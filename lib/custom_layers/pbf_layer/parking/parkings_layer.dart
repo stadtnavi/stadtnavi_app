@@ -67,12 +67,12 @@ class ParkingLayer extends CustomLayer {
                     anchorPos: AnchorPos.align(AnchorAlign.center),
                     builder: (context) => GestureDetector(
                       onTap: () {
-
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context) => ParkingMarkerModal(
+                            panel: (context, onFetchPlan) => ParkingMarkerModal(
                               parkingFeature: element,
+                              onFetchPlan: onFetchPlan,
                             ),
                             positon: element.position,
                             minSize: 150,

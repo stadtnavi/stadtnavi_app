@@ -94,7 +94,7 @@ class StopsLayer extends CustomLayer {
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context) => StopMarkerModal(
+                            panel: (context, _) => StopMarkerModal(
                               stopFeature: element,
                             ),
                             positon: element.position,

@@ -3,11 +3,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_feature_model.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/weather/weather_icons.dart';
 import 'package:intl/intl.dart';
+import 'package:trufi_core/widgets/custom_location_selector.dart';
 
 class ParkingMarkerModal extends StatelessWidget {
   final WeatherFeature parkingFeature;
-  const ParkingMarkerModal({Key key, @required this.parkingFeature})
-      : super(key: key);
+  final void Function() onFetchPlan;
+  const ParkingMarkerModal({
+    Key key,
+    @required this.parkingFeature,
+    @required this.onFetchPlan,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -75,7 +80,15 @@ class ParkingMarkerModal extends StatelessWidget {
                   ),
               ],
             ),
-          )
+          ),
+          CustomLocationSelector(
+            onFetchPlan: onFetchPlan,
+            locationData: LocationDetail(
+              parkingFeature.address ?? "",
+              "",
+              parkingFeature.position,
+            ),
+          ),
         ],
       ),
     );

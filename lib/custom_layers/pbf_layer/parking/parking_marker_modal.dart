@@ -7,10 +7,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:trufi_core/widgets/custom_location_selector.dart';
+
 class ParkingMarkerModal extends StatelessWidget {
   final ParkingFeature parkingFeature;
-  const ParkingMarkerModal({Key key, @required this.parkingFeature})
-      : super(key: key);
+  final void Function() onFetchPlan;
+  const ParkingMarkerModal({
+    Key key,
+    @required this.parkingFeature,
+    @required this.onFetchPlan,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final localization = TrufiLocalization.of(context);
@@ -131,7 +137,15 @@ class ParkingMarkerModal extends StatelessWidget {
                   ),
               ],
             ),
-          )
+          ),
+          CustomLocationSelector(
+            onFetchPlan: onFetchPlan,
+            locationData: LocationDetail(
+              parkingFeature.name ?? "",
+              "",
+              parkingFeature.position,
+            ),
+          ),
         ],
       ),
     );

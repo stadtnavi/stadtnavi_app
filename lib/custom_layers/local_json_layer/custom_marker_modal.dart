@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_app/custom_layers/local_json_layer/custom_marker_model.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
+import 'package:trufi_core/widgets/custom_location_selector.dart';
 
 class CustomMarkerModal extends StatelessWidget {
   final CustomMarker element;
-  const CustomMarkerModal({Key key, @required this.element}) : super(key: key);
+  final void Function() onFetchPlan;
+  const CustomMarkerModal({
+    Key key,
+    @required this.element,
+    @required this.onFetchPlan,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final localization = TrufiLocalization.of(context);
@@ -57,7 +63,15 @@ class CustomMarkerModal extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
+          CustomLocationSelector(
+            onFetchPlan: onFetchPlan,
+            locationData: LocationDetail(
+              title,
+              "",
+              element.position,
+            ),
+          ),
         ],
       ),
     );

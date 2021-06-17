@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:trufi_core/widgets/custom_location_selector.dart';
 
 import 'charging_feature_model.dart';
 import 'charging_icons.dart';
@@ -13,9 +14,13 @@ import 'modal/charging_modal_models.dart';
 
 class ChargingMarkerModal extends StatefulWidget {
   final ChargingFeature element;
+  final void Function() onFetchPlan;
 
-  const ChargingMarkerModal({Key key, @required this.element})
-      : super(key: key);
+  const ChargingMarkerModal({
+    Key key,
+    @required this.element,
+    @required this.onFetchPlan,
+  }) : super(key: key);
 
   @override
   _ChargingMarkerModalState createState() => _ChargingMarkerModalState();
@@ -248,6 +253,14 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                         ),
                       ),
                     ],
+                    CustomLocationSelector(
+                      onFetchPlan: widget.onFetchPlan,
+                      locationData: LocationDetail(
+                        chargingItem?.name ?? "",
+                        "",
+                        widget.element.position,
+                      ),
+                    ),
                   ],
                 ] else
                   Text(
@@ -256,7 +269,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                   ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
