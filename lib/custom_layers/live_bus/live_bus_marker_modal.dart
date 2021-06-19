@@ -1,26 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:rxdart/subjects.dart';
-
+import './live_bus_layer.dart';
 import 'live_bus_enum.dart';
 import 'live_bus_model.dart';
 
-class CifsMarkerModal extends StatefulWidget {
+class LiveBusMarkerModal extends StatefulWidget {
   final LiveBusFeature mainElement;
-  final BehaviorSubject<LiveBusFeature> currentFocus;
-  const CifsMarkerModal({
+
+  final OnLiveBusStateChangeContainer onLiveBusStateChangeContainer;
+  const LiveBusMarkerModal({
     Key key,
     @required this.mainElement,
-    @required this.currentFocus,
+    @required this.onLiveBusStateChangeContainer,
   }) : super(key: key);
 
   @override
-  _CifsMarkerModalState createState() => _CifsMarkerModalState();
+  _LiveBusMarkerModalState createState() => _LiveBusMarkerModalState();
 }
 
-class _CifsMarkerModalState extends State<CifsMarkerModal> {
+class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
+  LiveBusFeature element;
+  @override
+  void initState() {
+    element = widget.mainElement;
+    super.initState();
+    widget.onLiveBusStateChangeContainer.onUpdate = (element) {
+      if (mounted) {
+        setState(() {
+          this.element = element;
+        });
+      }
+    };
+  }
+
   @override
   void dispose() {
-    widget.currentFocus.sink.add(null);
+    widget.onLiveBusStateChangeContainer.dispose();
     super.dispose();
   }
 
@@ -28,55 +42,49 @@ class _CifsMarkerModalState extends State<CifsMarkerModal> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
-    return StreamBuilder<LiveBusFeature>(
-        stream: widget.currentFocus,
-        builder: (context, snapshot) {
-          final LiveBusFeature element = snapshot.data ?? widget.mainElement;
-          return ListView(
+    return ListView(
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
             children: [
               Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 25,
-                      width: 25,
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: liveBusStateIcon(element.type),
-                    ),
-                    const Expanded(
-                      child: Text(
-                        "Bus",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    ),
-                  ],
-                ),
+                height: 25,
+                width: 25,
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: liveBusStateIcon(element.type),
               ),
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 20,
-                      width: 20,
-                      margin: const EdgeInsets.symmetric(horizontal: 10),
-                      child: liveBusStateToOccupandyIcon(element.type),
-                    ),
-                    Expanded(
-                      child: Text(
-                        liveBusStateToOccupancyState(
-                            element.type, languageCode),
-                        style: TextStyle(
-                          color: theme.textTheme.bodyText1.color,
-                        ),
-                      ),
-                    ),
-                  ],
+              const Expanded(
+                child: Text(
+                  "Bus",
+                  style: TextStyle(fontSize: 20),
                 ),
               ),
             ],
-          );
-        });
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          child: Row(
+            children: [
+              Container(
+                height: 20,
+                width: 20,
+                margin: const EdgeInsets.symmetric(horizontal: 10),
+                child: liveBusStateToOccupandyIcon(element.type),
+              ),
+              Expanded(
+                child: Text(
+                  liveBusStateToOccupancyState(element.type, languageCode),
+                  style: TextStyle(
+                    color: theme.textTheme.bodyText1.color,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

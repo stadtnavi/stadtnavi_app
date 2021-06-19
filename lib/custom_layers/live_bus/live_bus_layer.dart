@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:rxdart/subjects.dart';
 import 'package:trufi_core/blocs/panel/panel_cubit.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
 import 'package:trufi_core/models/custom_layer.dart';
@@ -18,18 +16,30 @@ import 'live_bus_icons.dart';
 import 'live_bus_marker_modal.dart';
 import 'live_bus_model.dart';
 
+class OnLiveBusStateChangeContainer {
+  final String id;
+  final void Function() dispose;
+  void Function(LiveBusFeature) onUpdate;
+
+  OnLiveBusStateChangeContainer(this.id, this.dispose);
+  void update(LiveBusFeature liveBusFeature) {
+    if (onUpdate != null) {
+      onUpdate(liveBusFeature);
+    }
+  }
+}
+
 class LiveBusLayer extends CustomLayer {
   final Map<String, LiveBusFeature> _pbfMarkers = {};
-
-  final currentFocus = BehaviorSubject<LiveBusFeature>();
+  OnLiveBusStateChangeContainer onLiveBusStateChangeContainer;
   LiveBusLayer(String id) : super(id) {
     connect().catchError((error) {
-      log("$error");
+      // should not make any effect on layer behavior
     });
   }
   Future<MqttServerClient> connect() async {
     final MqttServerClient client = MqttServerClient.withPort(
-      'wss://api.dev.stadtnavi.eu/mqtt/',
+      'wss://api.stadtnavi.de/mqtt/',
       'flutter_client',
       443,
     );
@@ -56,7 +66,6 @@ class LiveBusLayer extends CustomLayer {
                 entity["vehicle"] as Map,
               );
               addMarker(liveBusFeature);
-              log(jsonEncode(entity["vehicle"]));
             }
           }
         }
@@ -68,11 +77,10 @@ class LiveBusLayer extends CustomLayer {
   void addMarker(LiveBusFeature pointFeature) {
     _pbfMarkers[pointFeature.id] = pointFeature;
     refresh();
-    currentFocus.stream.last.then((value) {
-      if (value != null && value.id == pointFeature.id) {
-        currentFocus.sink.add(pointFeature);
-      }
-    });
+    if (onLiveBusStateChangeContainer != null &&
+        onLiveBusStateChangeContainer.id == pointFeature.id) {
+      onLiveBusStateChangeContainer.update(pointFeature);
+    }
   }
 
   @override
@@ -111,12 +119,20 @@ class LiveBusLayer extends CustomLayer {
                     anchorPos: AnchorPos.align(AnchorAlign.center),
                     builder: (context) => GestureDetector(
                       onTap: () {
+                        onLiveBusStateChangeContainer =
+                            OnLiveBusStateChangeContainer(
+                          element.id,
+                          () {
+                            onLiveBusStateChangeContainer = null;
+                          },
+                        );
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context, onFetchPlan) => CifsMarkerModal(
+                            panel: (context, onFetchPlan) => LiveBusMarkerModal(
                               mainElement: element,
-                              currentFocus: currentFocus,
+                              onLiveBusStateChangeContainer:
+                                  onLiveBusStateChangeContainer,
                             ),
                             positon: element.position,
                             minSize: 130,

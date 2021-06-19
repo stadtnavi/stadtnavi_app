@@ -20,7 +20,6 @@ dependencies:
   graphql: ^4.0.1
   lint: ^1.5.3
   mqtt_client: ^9.3.1
-  rxdart: ^0.26.0
   scrollable_panel: ^0.4.1
   trufi_core:
     git:
