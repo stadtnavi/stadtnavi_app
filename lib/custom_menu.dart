@@ -197,12 +197,6 @@ final List<List<MenuItem>> menuItems = [
             }).toList(),
           );
         }),
-    // FacebookSocialMedia("https://www.facebook.com/stadtnavi/"),
-    // InstagramSocialMedia("https://www.instagram.com/stadtnavi/"),
-    // TwitterSocialMedia("https://twitter.com/stadtnavi"),
-    // YoutubeSocialMedia(
-    //   "https://www.youtube.com/channel/UCL_K2RPU0pxV5VYw0Aj_PUA",
-    // ),
     SimpleMenuItem(
       buildIcon: (context) => const Icon(
         Icons.thumb_up_alt_outlined,
