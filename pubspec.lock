@@ -71,20 +71,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.6"
-  convert:
-    dependency: transitive
-    description:
-      name: convert
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
   crypto:
     dependency: transitive
     description:
       name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.5"
+    version: "3.0.1"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -103,6 +96,13 @@ packages:
     dependency: transitive
     description:
       name: equatable
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.0"
+  event_bus:
+    dependency: transitive
+    description:
+      name: event_bus
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
@@ -279,14 +279,14 @@ packages:
       name: graphql
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.3-alpha.1"
+    version: "4.1.0-beta.2"
   hive:
     dependency: transitive
     description:
       name: hive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.4.4+1"
+    version: "1.6.0-nullsafety.2"
   http:
     dependency: transitive
     description:
@@ -371,6 +371,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+  mqtt_client:
+    dependency: "direct main"
+    description:
+      name: mqtt_client
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "9.3.1"
   nested:
     dependency: transitive
     description:
@@ -674,8 +681,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "2.3.1"
-      resolved-ref: dafb84be6d8ff50dc546b4084583f474693f76da
+      ref: "2.4.2"
+      resolved-ref: a007df07f2f60671090a32bce698a3bce17efb04
       url: "https://github.com/trufi-association/trufi-core.git"
     source: git
     version: "2.0.0"
@@ -748,14 +755,7 @@ packages:
       name: uuid
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.2"
-  uuid_enhanced:
-    dependency: transitive
-    description:
-      name: uuid_enhanced
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.2"
+    version: "3.0.4"
   validate:
     dependency: transitive
     description:
@@ -779,13 +779,13 @@ packages:
       url: "https://github.com/trufi-association/dart-vector-tile.git"
     source: git
     version: "0.1.6"
-  websocket:
+  web_socket_channel:
     dependency: transitive
     description:
-      name: websocket
+      name: web_socket_channel
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.5"
+    version: "2.1.0"
   win32:
     dependency: transitive
     description:

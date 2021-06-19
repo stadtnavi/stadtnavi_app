@@ -6,7 +6,7 @@ issue_tracker: https://github.com/stadtnavi/stadtnavi-app/issues
 
 publish_to: "none"
 
-version: 1.2.6+36
+version: 1.2.8+38
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -19,11 +19,12 @@ dependencies:
 
   graphql: ^4.0.1
   lint: ^1.5.3
+  mqtt_client: ^9.3.1
   scrollable_panel: ^0.4.1
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
-      ref: 2.3.1
+      ref: 2.4.2
 
   vector_tile:
     git:
