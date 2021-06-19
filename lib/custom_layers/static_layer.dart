@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stadtnavi_app/custom_layers/live_bus/live_bus_layer.dart';
 import 'package:stadtnavi_app/custom_layers/local_json_layer/custom_marker_enum.dart';
 import 'package:stadtnavi_app/custom_layers/local_json_layer/layer.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/charging/charging_layer.dart';
@@ -25,9 +26,10 @@ final ParkingLayer parkingLayer = ParkingLayer("Parking");
 final CityBikesLayer citybikeLayer = CityBikesLayer("Sharing");
 final BikeParkLayer bikeParkLayer = BikeParkLayer("Bike Parking Space");
 final CifsLayer cifsLayer = CifsLayer("Roadworks");
+final LiveBusLayer liveBusLayer = LiveBusLayer("LiveBusBeta");
 final WeatherLayer weatherLayer = WeatherLayer("Road Weather");
 final ChargingLayer chargingLayer = ChargingLayer("Charging");
-// TODO: translate layer containers
+
 final List<CustomLayerContainer> customLayers = [
   CustomLayerContainer(
     name: (context) => TrufiLocalization.of(context).localeName == "en"
@@ -41,6 +43,7 @@ final List<CustomLayerContainer> customLayers = [
       stopsLayers[StopsLayerIds.bus],
       stopsLayers[StopsLayerIds.subway],
       stopsLayers[StopsLayerIds.rail],
+      liveBusLayer,
     ],
   ),
   CustomLayerContainer(
