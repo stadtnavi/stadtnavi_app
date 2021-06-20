@@ -22,6 +22,10 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>stadtnavi app is using your location to display it on a map.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>stadtnavi app is using your location to display it on a map.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,9 +45,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSLocationWhenInUseUsageDescription</key>
-    <string>TODO: Add a correct text here. {Ask for location permission}</string>
-    <key>NSLocationAlwaysUsageDescription</key>
-    <string>TODO: Add a correct text here. {Ask for location permission}</string>
 </dict>
 </plist>
