@@ -7,151 +7,182 @@ import 'parkings_enum.dart';
 class ParkingFeature {
   final GeoJsonPoint geoJsonPoint;
   final String id;
-  final String address;
   final String name;
-  final String feeHours;
-  final String openingHours;
-  final String free;
-  final String forecast;
-  final String state;
-  final String coords;
-  final String total;
+  final String note;
   final String url;
-  final String notes;
-  final String freeDisabled;
-  final String totalDisabled;
-  final bool active;
+  // OPERATIONAL, TEMPORARILY_CLOSED, CLOSED
+  final String state;
+  final String tags;
+  final String openingHours;
+  final String feeHours;
+  final bool bicyclePlaces;
+  final bool anyCarPlaces;
+  final bool carPlaces;
+  final bool wheelchairAccessibleCarPlaces;
+  final bool realTimeData;
+  final String capacity;
+  final int bicyclePlacesCapacity;
+  final int carPlacesCapacity;
+  final int availabilityCarPlacesCapacity;
+  final int totalDisabled;
+  final int freeDisabled;
   final ParkingsLayerIds type;
 
   final LatLng position;
   ParkingFeature({
     @required this.geoJsonPoint,
     @required this.id,
-    @required this.address,
     @required this.name,
-    @required this.feeHours,
-    @required this.openingHours,
-    @required this.free,
-    @required this.forecast,
-    @required this.state,
-    @required this.coords,
-    @required this.total,
+    @required this.note,
     @required this.url,
-    @required this.notes,
+    @required this.state,
+    @required this.tags,
+    @required this.openingHours,
+    @required this.feeHours,
+    @required this.bicyclePlaces,
+    @required this.anyCarPlaces,
+    @required this.carPlaces,
+    @required this.wheelchairAccessibleCarPlaces,
+    @required this.realTimeData,
+    @required this.capacity,
+    @required this.bicyclePlacesCapacity,
+    @required this.carPlacesCapacity,
+    @required this.availabilityCarPlacesCapacity,
+    @required this.totalDisabled,
+    @required this.freeDisabled,
     @required this.type,
     @required this.position,
-    @required this.freeDisabled,
-    @required this.totalDisabled,
-    @required this.active,
   });
   // ignore: prefer_constructors_over_static_methods
   static ParkingFeature fromGeoJsonPoint(GeoJsonPoint geoJsonPoint) {
     String id;
-    String address;
     String name;
-    String feeHours;
-    String openingHours;
-    String free;
-    String forecast;
-    String state;
-    String coords;
-    String total;
+    String note;
     String url;
-    String notes;
-    String freeDisabled;
-    String totalDisabled;
-
-    ParkingsLayerIds type;
+    String state;
+    String tags;
+    String openingHours;
+    String feeHours;
+    bool bicyclePlaces;
+    bool anyCarPlaces;
+    bool carPlaces;
+    bool wheelchairAccessibleCarPlaces;
+    bool realTimeData;
+    String capacity;
+    int bicyclePlacesCapacity;
+    int carPlacesCapacity;
+    int availabilityCarPlacesCapacity;
+    int totalDisabled;
+    int freeDisabled;
     for (final element in geoJsonPoint.properties) {
       switch (element.keys.first) {
         case "id":
           id = element.values.first.dartStringValue;
           break;
-        case "lot_type":
-          type = pbfParkingLayerIdsstringToEnum(
-              element.values.first.dartStringValue);
-          break;
-        case "address":
-          address = element.values.first.dartStringValue;
+        case "note":
+          note = element.values.first.dartStringValue;
           break;
         case "name":
           name = element.values.first.dartStringValue;
           break;
-        case "fee_hours":
-          feeHours = element.values.first.dartStringValue;
-          break;
-        case "opening_hours":
-          openingHours = element.values.first.dartStringValue;
-          break;
-        case "free":
-          free = element.values.first.dartIntValue?.toString();
-          break;
-        case "forecast":
-          forecast = element.values.first.dartBoolValue?.toString();
+        case "detailsUrl":
+          url = element.values.first.dartStringValue;
           break;
         case "state":
           state = element.values.first.dartStringValue;
           break;
-        case "coords":
-          coords = element.values.first.dartStringValue;
+        case "bicyclePlaces":
+          bicyclePlaces = element.values.first.dartBoolValue;
           break;
-        case "total":
-          total = element.values.first.dartIntValue?.toString();
+        case "anyCarPlaces":
+          anyCarPlaces = element.values.first.dartBoolValue;
           break;
-        case "url":
-          url = element.values.first.dartStringValue;
+        case "carPlaces":
+          carPlaces = element.values.first.dartBoolValue;
           break;
-        case "notes":
-          notes = element.values.first.dartStringValue;
+        case "wheelchairAccessibleCarPlaces":
+          wheelchairAccessibleCarPlaces = element.values.first.dartBoolValue;
           break;
-        case "free:disabled":
-          freeDisabled = element.values.first.dartIntValue?.toString();
+        case "realTimeData":
+          realTimeData = element.values.first.dartBoolValue;
           break;
-        case "total:disabled":
-          totalDisabled = element.values.first.dartIntValue?.toString();
+        case "capacity":
+          capacity = element.values.first.dartStringValue;
+          break;
+        case "capacity.bicyclePlaces":
+          bicyclePlacesCapacity = element.values.first.dartIntValue.toInt();
+          break;
+        case "capacity.carPlaces":
+          carPlacesCapacity = element.values.first.dartIntValue.toInt();
+          break;
+        case "availability.carPlaces":
+          availabilityCarPlacesCapacity =
+              element.values.first.dartIntValue.toInt();
+          break;
+        case "availability.wheelchairAccessibleCarPlaces":
+          freeDisabled = element.values.first.dartIntValue.toInt();
+          break;
+        case "capacity.wheelchairAccessibleCarPlaces":
+          totalDisabled = element.values.first.dartIntValue.toInt();
+          break;
+        case "tags":
+          tags = element.values.first.dartStringValue;
+          break;
+        case "openingHours":
+          openingHours = element.values.first.dartStringValue;
+          break;
+        case "feeHours":
+          feeHours = element.values.first.dartStringValue;
           break;
         default:
       }
     }
-    bool active;
-    if (free != null) {
-      final freeNum = int.tryParse(free);
-      if (freeNum != null) {
-        active = freeNum > 0;
-      }
-    }
-    if (freeDisabled != null) {
-      final freeNum = int.tryParse(freeDisabled);
-      if (freeNum != null) {
-        if (active != null) {
-          active &= freeNum > 0;
-        } else {
-          active = freeNum > 0;
-        }
-      }
-    }
+
+    if (anyCarPlaces == null || !anyCarPlaces) return null;
+    // ignore: unnecessary_raw_strings
+    final regex = RegExp(r"lot_type:([^,]+)");
+    final regexResult = tags != null ? regex.firstMatch(tags) : null;
+    final String stringType = regexResult?.group(1);
+
+    final ParkingsLayerIds type = stringType != null
+        ? pbfParkingLayerIdsstringToEnum(stringType)
+        : ParkingsLayerIds.parkingSpot;
     return ParkingFeature(
       geoJsonPoint: geoJsonPoint,
       id: id,
-      address: address,
       name: name,
-      feeHours: feeHours,
-      openingHours: openingHours,
-      free: free,
-      forecast: forecast,
-      state: state,
-      coords: coords,
-      total: total,
+      note: note,
       url: url,
-      notes: notes,
-      freeDisabled: freeDisabled,
+      state: state,
+      tags: tags,
+      openingHours: openingHours,
+      feeHours: feeHours,
+      bicyclePlaces: bicyclePlaces,
+      anyCarPlaces: anyCarPlaces,
+      carPlaces: carPlaces,
+      wheelchairAccessibleCarPlaces: wheelchairAccessibleCarPlaces,
+      realTimeData: realTimeData,
+      capacity: capacity,
+      bicyclePlacesCapacity: bicyclePlacesCapacity,
+      carPlacesCapacity: carPlacesCapacity,
+      availabilityCarPlacesCapacity: availabilityCarPlacesCapacity,
       totalDisabled: totalDisabled,
-      active: active,
+      freeDisabled: freeDisabled,
       type: type,
       position: LatLng(
         geoJsonPoint.geometry.coordinates[1],
         geoJsonPoint.geometry.coordinates[0],
       ),
     );
+  }
+
+  bool markerState() {
+    if (carPlacesCapacity != null && availabilityCarPlacesCapacity != null) {
+      return availabilityCarPlacesCapacity != 0;
+    } else if (totalDisabled != null && freeDisabled != null) {
+      return freeDisabled != 0;
+    } else {
+      return null;
+    }
   }
 }

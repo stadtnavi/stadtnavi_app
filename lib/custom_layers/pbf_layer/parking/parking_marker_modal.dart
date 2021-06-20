@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parking_feature_model.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parking_icons.dart';
@@ -22,17 +20,18 @@ class ParkingMarkerModal extends StatelessWidget {
     final localization = TrufiLocalization.of(context);
     final localeName = localization.localeName;
     String spaces;
-    if (parkingFeature.total != null) {
-      if (parkingFeature.free != null) {
+    if (parkingFeature.carPlacesCapacity != null) {
+      if (parkingFeature.availabilityCarPlacesCapacity != null) {
         spaces = localeName == 'en'
-            ? "${parkingFeature.free} of ${parkingFeature.total} parking spaces available"
-            : "${parkingFeature.free} von ${parkingFeature.total} Stellplätzen verfügbar";
+            ? "${parkingFeature.availabilityCarPlacesCapacity} of ${parkingFeature.carPlacesCapacity} parking spaces available"
+            : "${parkingFeature.availabilityCarPlacesCapacity} von ${parkingFeature.carPlacesCapacity} Stellplätzen verfügbar";
       } else {
         spaces =
-            "${parkingFeature.total} ${localeName == 'en' ? 'parking spaces' : 'Stellplätze'}";
+            "${parkingFeature.carPlacesCapacity} ${localeName == 'en' ? 'parking spaces' : 'Stellplätze'}";
       }
-      if (parkingFeature.state == "closed") {
-        spaces += " (closed)";
+
+      if (parkingFeature.state == "CLOSED") {
+        spaces += " (${localeName == 'en' ? 'closed' : 'Geschlossen'})";
       }
     }
     String disabledSpaces;
@@ -42,7 +41,6 @@ class ParkingMarkerModal extends StatelessWidget {
           ? "${parkingFeature.freeDisabled} of ${parkingFeature.totalDisabled} wheelchair-accessible parking spaces available"
           : "${parkingFeature.freeDisabled} von ${parkingFeature.totalDisabled} rollstuhlgerechten Parkplätzen vorhanden";
     }
-    final notes = jsonDecode(parkingFeature.notes ?? "{}");
     return ListView(
       children: [
         Container(
@@ -103,13 +101,13 @@ class ParkingMarkerModal extends StatelessWidget {
                     ),
                   ],
                 ),
-              if (notes[localeName] != null)
+              if (parkingFeature.note != null)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     const Divider(),
                     Text(
-                      "${notes[localeName]}",
+                      parkingFeature.note,
                       style: const TextStyle(
                         color: Colors.black,
                       ),
