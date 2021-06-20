@@ -89,10 +89,12 @@ class BikeParkFeature {
         default:
       }
     }
-    type = tags != null && tags.contains("osm:covered")
-        ? BikeParkLayerIds.covered
-        : BikeParkLayerIds.notCovered;
-
+    type = tags != null && tags.contains("osm:amenity=bicycle_parking")
+        ? tags.contains("osm:covered")
+            ? BikeParkLayerIds.covered
+            : BikeParkLayerIds.notCovered
+        : null;
+    if (type == null) return null;
     return BikeParkFeature(
       geoJsonPoint: geoJsonPoint,
       id: id,

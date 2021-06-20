@@ -60,8 +60,8 @@ class BikeParkLayer extends CustomLayer {
       markers: markerSize != null
           ? markersList
               .map((element) => Marker(
-                    height: markerSize,
-                    width: markerSize,
+                    height: markerSize * .8,
+                    width: markerSize * .8,
                     point: element.position,
                     anchorPos: AnchorPos.align(AnchorAlign.center),
                     builder: (context) => GestureDetector(
@@ -79,14 +79,9 @@ class BikeParkLayer extends CustomLayer {
                           ),
                         );
                       },
-                      child: parkingMarkerIcons[element.type] != null
-                          ? SvgPicture.string(
-                              parkingMarkerIcons[element.type],
-                            )
-                          : const Icon(
-                              Icons.error,
-                              color: Colors.red,
-                            ),
+                      child: SvgPicture.string(
+                        parkingMarkerIcons[element.type],
+                      ),
                     ),
                   ))
               .toList()
@@ -117,7 +112,7 @@ class BikeParkLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final BikeParkFeature pointFeature =
               BikeParkFeature.fromGeoJsonPoint(geojson);
-          bikeParkLayer?.addMarker(pointFeature);
+          if (pointFeature != null) bikeParkLayer?.addMarker(pointFeature);
         } else {
           throw Exception("Should never happened, Feature is not a point");
         }
