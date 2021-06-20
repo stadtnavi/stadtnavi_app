@@ -73,7 +73,7 @@ class Layer extends CustomLayer {
                               onFetchPlan: onFetchPlan,
                             ),
                             positon: element.position,
-                            minSize: 130,
+                            minSize: 50,
                           ),
                         );
                       },

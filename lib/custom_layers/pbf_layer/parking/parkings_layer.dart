@@ -74,7 +74,7 @@ class ParkingLayer extends CustomLayer {
                               onFetchPlan: onFetchPlan,
                             ),
                             positon: element.position,
-                            minSize: 150,
+                            minSize: 50,
                           ),
                         );
                       },
