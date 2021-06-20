@@ -24,7 +24,7 @@ dependencies:
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
-      ref: 2.5.1
+      ref: 2.5.2
 
   vector_tile:
     git:
