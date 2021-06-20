@@ -112,7 +112,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                           Text(
                             localeName == "en"
                                 ? "You've set the following time: ${DateFormat('dd/MM/yyyy').format(widget.planItineraryLeg.startTime)} at ${DateFormat('hh:mm aa').format(widget.planItineraryLeg.startTime)}."
-                                : "Sie haben für den folgendes Datum und Uhrzeit inseriert: ${DateFormat('dd/MM/yyyy').format(widget.planItineraryLeg.startTime)} um ${DateFormat('HH:mm').format(widget.planItineraryLeg.startTime)} Uhr.",
+                                : "Sie haben für den folgendes Datum und Uhrzeit inseriert: ${DateFormat('dd.MM.yyyy').format(widget.planItineraryLeg.startTime)} um ${DateFormat('HH:mm').format(widget.planItineraryLeg.startTime)} Uhr.",
                             style:
                                 Theme.of(context).textTheme.bodyText2.copyWith(
                                       color: Colors.black,
