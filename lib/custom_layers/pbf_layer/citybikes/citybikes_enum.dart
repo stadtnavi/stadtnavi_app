@@ -52,6 +52,19 @@ extension CityBikeLayerIdsExtension on CityBikeLayerIds {
     CityBikeLayerIds.carSharing: 'Carsharing-Station',
     CityBikeLayerIds.regiorad: 'Fahrradverleih',
   };
+  static final capacityEn = <CityBikeLayerIds, String>{
+    CityBikeLayerIds.taxi: "Taxis available at the station right now",
+    CityBikeLayerIds.cargoBike: "Cargo bikes available at the station right now",
+    CityBikeLayerIds.carSharing: "Cars sharing available at the station right now",
+    CityBikeLayerIds.regiorad: "Bikes available at the station right now",
+  };
+
+  static final capacityDE = <CityBikeLayerIds, String>{
+    CityBikeLayerIds.taxi: 'Taxis verfügbar',
+    CityBikeLayerIds.cargoBike: 'Lastenräder verfügbar',
+    CityBikeLayerIds.carSharing: 'Carsharing verfügbar',
+    CityBikeLayerIds.regiorad: 'Leihräder verfügbar',
+  };
 
   static const networkBookDataEn = <CityBikeLayerIds, NetworkBookData>{
     CityBikeLayerIds.taxi: null,
@@ -109,6 +122,8 @@ extension CityBikeLayerIdsExtension on CityBikeLayerIds {
 
   String getTranslate(String languageCode) =>
       languageCode == 'en' ? translateEn[this] : translateDE[this];
+  String getCapacity(String languageCode, int capacity) =>
+      languageCode == 'en' ? "${capacityEn[this]} ($capacity)" : "${capacityDE[this]} ($capacity)";
 
   NetworkBookData getNetworkBookData(String languageCode) =>
       languageCode == 'en' ? networkBookDataEn[this] : networkBookDataDe[this];

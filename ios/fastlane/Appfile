@@ -1,4 +1,4 @@
-app_identifier("com.example.stadtnaviApp") # The bundle identifier of your app
+app_identifier("de.stadtnavi.herrenberg") # The bundle identifier of your app
 apple_id("samuelriotz@icloud.com") # Your Apple email address
 
 itc_team_id("120228268") # App Store Connect Team ID

@@ -110,7 +110,10 @@ class CityBikesLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final CityBikeFeature pointFeature =
               CityBikeFeature.fromGeoJsonPoint(geojson);
-          citybikeLayer?.addMarker(pointFeature);
+              // TODO implement cargo bike 
+          if (pointFeature.type != CityBikeLayerIds.cargoBike) {
+            citybikeLayer?.addMarker(pointFeature);
+          }
         } else {
           throw Exception("Should never happened, Feature is not a point");
         }
