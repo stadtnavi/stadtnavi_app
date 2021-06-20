@@ -681,8 +681,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "2.5.0"
-      resolved-ref: "870dddcb710ecf878f8bb4ab25cb2db8960147fb"
+      ref: "2.5.1"
+      resolved-ref: e6b66701395fed105e40262b00fcf3c6bfc340c1
       url: "https://github.com/trufi-association/trufi-core.git"
     source: git
     version: "2.0.0"

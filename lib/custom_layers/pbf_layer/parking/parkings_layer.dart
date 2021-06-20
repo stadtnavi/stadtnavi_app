@@ -1,7 +1,6 @@
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:stadtnavi_app/configuration_service.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parkings_enum.dart';
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
@@ -75,7 +74,7 @@ class ParkingLayer extends CustomLayer {
                               onFetchPlan: onFetchPlan,
                             ),
                             positon: element.position,
-                            minSize: 150,
+                            minSize: 50,
                           ),
                         );
                       },
@@ -90,8 +89,8 @@ class ParkingLayer extends CustomLayer {
                               parkingMarkerIcons[element.type] ?? "",
                             ),
                           ),
-                          if (element.active != null)
-                            if (element.active)
+                          if (element.markerState() != null)
+                            if (element.markerState())
                               Positioned(
                                 child: Container(
                                   height: markerSize / 2,
@@ -137,8 +136,8 @@ class ParkingLayer extends CustomLayer {
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: baseDomain,
-      path: "/map/v1/hb-parking-map/$z/$x/$y.pbf",
+      host: "api.dev.stadtnavi.eu",
+      path: "/routing/v1/router/vectorTiles/parking/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);
     if (response.statusCode != 200) {
@@ -157,7 +156,7 @@ class ParkingLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final ParkingFeature pointFeature =
               ParkingFeature.fromGeoJsonPoint(geojson);
-          parkingLayer?.addMarker(pointFeature);
+          if (pointFeature != null) parkingLayer?.addMarker(pointFeature);
         } else {
           throw Exception("Should never happened, Feature is not a point");
         }

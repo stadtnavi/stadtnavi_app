@@ -191,7 +191,7 @@ class _CifsFeatureMarker extends StatelessWidget {
               position: point,
             ),
             positon: point,
-            minSize: 150,
+            minSize: 50,
           ),
         );
       },

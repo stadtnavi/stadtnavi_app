@@ -135,7 +135,7 @@ class LiveBusLayer extends CustomLayer {
                                   onLiveBusStateChangeContainer,
                             ),
                             positon: element.position,
-                            minSize: 130,
+                            minSize: 50,
                           ),
                         );
                       },
