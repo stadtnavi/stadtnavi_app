@@ -28,8 +28,24 @@ class AboutSection extends StatelessWidget {
           padding: _padding,
           child: Text(
             isLanguageEn
-                ? 'stadtnavi is a travel planning application for the city of Herrenberg and its surroundings. This service includes public transport, footpaths, cycling, street and parking information, intermodal routing, charging infrastructure and sharing offerings.\n\nFunded by'
-                : 'stadtnavi ist eine Reiseplanungs-Anwendung für die Stadt Herrenberg und Umgebung. Dieser Dienst umfasst ÖPNV, Fußwege, Radverkehr, Straßen- und Parkplatzinformationen, intermodales Routing, Ladeinfrastruktur und Sharing-Angebote.\n\nGefördert durch',
+                ? 'stadtnavi is a travel planning application for the city of Herrenberg and its surroundings. This service includes public transport, footpaths, cycling, street and parking information, charging infrastructure and sharing offerings. The mobility offerings are connected through intermodal routing.'
+                : 'stadtnavi ist eine Reiseplanungs-Anwendung für die Stadt Herrenberg und Umgebung. Dieser Dienst umfasst ÖPNV, Fußwege, Radverkehr, Straßen- und Parkplatzinformationen, Ladeinfrastruktur und Sharing-Angebote. Mobilitätsangebote werden durch intermodales Routing miteinander vernetzt.',
+            style: theme.textTheme.bodyText1,
+          ),
+        ),
+        Padding(
+          padding: _padding,
+          child: Text(
+            isLanguageEn
+                ? 'The city of Herrenberg has developed this app funded by the Federal Ministry of Transport and Digital Infrastructure (BMVI) as model city. The stadtnavi application is an open source solution and can be used, customized and further developed by other municipalities to meet individual needs (white lable solution). Participation is welcome!'
+                : 'Die Stadt Herrenberg hat diese App im Rahmen der Modellstadt, gefördert durch das Bundesministerium für Verkehr und digitale Infrastruktur (BMVI) entwickelt. stadtnavi Anwendung ist eine Open Source Lösung und kann von anderen Kommunen und Akteuren unter ihrem Namen und Erscheinungsbild verwendet und an individuelle Bedürfnisse angepasst und weiterentwickelt werden (White Label Lösung). Mitmachen ist gewünscht!',
+            style: theme.textTheme.bodyText1,
+          ),
+        ),
+        Padding(
+          padding: _padding,
+          child: Text(
+            isLanguageEn ? 'Funded by' : 'Gefördert durch',
             style: theme.textTheme.bodyText1,
           ),
         ),
