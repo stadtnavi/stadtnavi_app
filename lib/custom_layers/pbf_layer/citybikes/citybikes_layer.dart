@@ -30,12 +30,6 @@ class CityBikesLayer extends CustomLayer {
   LayerOptions buildLayerOptions(int zoom) {
     double markerSize;
     switch (zoom) {
-      case 13:
-        markerSize = 5;
-        break;
-      case 14:
-        markerSize = 10;
-        break;
       case 15:
         markerSize = 15;
         break;
@@ -83,7 +77,24 @@ class CityBikesLayer extends CustomLayer {
                     ),
                   ))
               .toList()
-          : [],
+          : zoom > 11
+              ? markersList
+                  .map(
+                    (element) => Marker(
+                      height: 5,
+                      width: 5,
+                      point: element.position,
+                      anchorPos: AnchorPos.align(AnchorAlign.center),
+                      builder: (context) => Container(
+                        decoration: BoxDecoration(
+                          color: element.type.imageStopColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList()
+              : [],
     );
   }
 
@@ -110,7 +121,7 @@ class CityBikesLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final CityBikeFeature pointFeature =
               CityBikeFeature.fromGeoJsonPoint(geojson);
-              // TODO implement cargo bike 
+          // TODO implement cargo bike
           if (pointFeature.type != CityBikeLayerIds.cargoBike) {
             citybikeLayer?.addMarker(pointFeature);
           }

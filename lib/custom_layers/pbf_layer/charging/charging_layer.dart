@@ -29,26 +29,20 @@ class ChargingLayer extends CustomLayer {
   LayerOptions buildLayerOptions(int zoom) {
     double markerSize;
     switch (zoom) {
-      case 13:
-        markerSize = 5;
-        break;
-      case 14:
-        markerSize = 10;
-        break;
       case 15:
-        markerSize = 15;
-        break;
-      case 16:
         markerSize = 20;
         break;
-      case 17:
+      case 16:
         markerSize = 25;
         break;
-      case 18:
+      case 17:
         markerSize = 30;
         break;
+      case 18:
+        markerSize = 35;
+        break;
       default:
-        markerSize = zoom != null && zoom > 18 ? 35 : null;
+        markerSize = zoom != null && zoom > 18 ? 40 : null;
     }
     final markersList = _pbfMarkers.values.toList();
     // avoid vertical wrong overlapping
@@ -78,13 +72,75 @@ class ChargingLayer extends CustomLayer {
                           ),
                         );
                       },
-                      child: SvgPicture.string(
-                        chargingIcon,
+                      child: Stack(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.only(
+                              left: markerSize / 5,
+                              top: markerSize / 5,
+                            ),
+                            child: SvgPicture.string(
+                              chargingIcon,
+                            ),
+                          ),
+                          if (element.capacityUnknown == 0)
+                            if (element.available > 0)
+                              Positioned(
+                                child: Container(
+                                  height: markerSize / 2,
+                                  width: markerSize / 2,
+                                  decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: Center(
+                                    child: Icon(
+                                      Icons.check,
+                                      size: markerSize / 3,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            else
+                              Container(
+                                height: markerSize / 2,
+                                width: markerSize / 2,
+                                decoration: BoxDecoration(
+                                  color: Colors.red,
+                                  borderRadius: BorderRadius.circular(100),
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.close,
+                                    size: markerSize / 3,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                        ],
                       ),
                     ),
                   ))
               .toList()
-          : [],
+          : zoom > 11
+              ? markersList
+                  .map(
+                    (element) => Marker(
+                      height: 5,
+                      width: 5,
+                      point: element.position,
+                      anchorPos: AnchorPos.align(AnchorAlign.center),
+                      builder: (context) => Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xff00b096),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList()
+              : [],
     );
   }
 
