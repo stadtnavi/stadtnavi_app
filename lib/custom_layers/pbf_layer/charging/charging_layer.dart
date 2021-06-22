@@ -29,12 +29,6 @@ class ChargingLayer extends CustomLayer {
   LayerOptions buildLayerOptions(int zoom) {
     double markerSize;
     switch (zoom) {
-      case 13:
-        markerSize = 10;
-        break;
-      case 14:
-        markerSize = 15;
-        break;
       case 15:
         markerSize = 20;
         break;
@@ -129,7 +123,24 @@ class ChargingLayer extends CustomLayer {
                     ),
                   ))
               .toList()
-          : [],
+          : zoom > 11
+              ? markersList
+                  .map(
+                    (element) => Marker(
+                      height: 5,
+                      width: 5,
+                      point: element.position,
+                      anchorPos: AnchorPos.align(AnchorAlign.center),
+                      builder: (context) => Container(
+                        decoration: BoxDecoration(
+                          color: const Color(0xff00b096),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList()
+              : [],
     );
   }
 

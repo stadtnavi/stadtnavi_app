@@ -38,6 +38,12 @@ extension CityBikeLayerIdsExtension on CityBikeLayerIds {
     CityBikeLayerIds.carSharing: SvgPicture.string(carSharingStopSvg),
     CityBikeLayerIds.regiorad: SvgPicture.string(regioradStopSvg),
   };
+  static final imagesStopColor = <CityBikeLayerIds, Color>{
+    CityBikeLayerIds.taxi: const Color(0xfff1b736),
+    CityBikeLayerIds.cargoBike: const Color(0xffff834a),
+    CityBikeLayerIds.carSharing: const Color(0xffff834a),
+    CityBikeLayerIds.regiorad: const Color(0xffffffff),
+  };
 
   static final translateEn = <CityBikeLayerIds, String>{
     CityBikeLayerIds.taxi: "Taxi rank",
@@ -54,8 +60,10 @@ extension CityBikeLayerIdsExtension on CityBikeLayerIds {
   };
   static final capacityEn = <CityBikeLayerIds, String>{
     CityBikeLayerIds.taxi: "Taxis available at the station right now",
-    CityBikeLayerIds.cargoBike: "Cargo bikes available at the station right now",
-    CityBikeLayerIds.carSharing: "Cars sharing available at the station right now",
+    CityBikeLayerIds.cargoBike:
+        "Cargo bikes available at the station right now",
+    CityBikeLayerIds.carSharing:
+        "Cars sharing available at the station right now",
     CityBikeLayerIds.regiorad: "Bikes available at the station right now",
   };
 
@@ -119,11 +127,13 @@ extension CityBikeLayerIdsExtension on CityBikeLayerIds {
         Icons.error,
         color: Colors.red,
       );
+  Color get imageStopColor => imagesStopColor[this] ?? Colors.transparent;
 
   String getTranslate(String languageCode) =>
       languageCode == 'en' ? translateEn[this] : translateDE[this];
-  String getCapacity(String languageCode, int capacity) =>
-      languageCode == 'en' ? "${capacityEn[this]} ($capacity)" : "${capacityDE[this]} ($capacity)";
+  String getCapacity(String languageCode, int capacity) => languageCode == 'en'
+      ? "${capacityEn[this]} ($capacity)"
+      : "${capacityDE[this]} ($capacity)";
 
   NetworkBookData getNetworkBookData(String languageCode) =>
       languageCode == 'en' ? networkBookDataEn[this] : networkBookDataDe[this];

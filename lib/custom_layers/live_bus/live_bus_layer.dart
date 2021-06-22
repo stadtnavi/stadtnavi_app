@@ -87,12 +87,6 @@ class LiveBusLayer extends CustomLayer {
   LayerOptions buildLayerOptions(int zoom) {
     double markerSize;
     switch (zoom) {
-      case 13:
-        markerSize = 5;
-        break;
-      case 14:
-        markerSize = 10;
-        break;
       case 15:
         markerSize = 15;
         break;
@@ -143,7 +137,25 @@ class LiveBusLayer extends CustomLayer {
                     ),
                   ))
               .toList()
-          : [],
+          : zoom > 11
+              ? markersList
+                  .map(
+                    (element) => Marker(
+                      height: 5,
+                      width: 5,
+                      point: element.position,
+                      anchorPos: AnchorPos.align(AnchorAlign.center),
+                      builder: (context) => Container(
+                        decoration: BoxDecoration(
+                          color: liveBusStateColor(element.type) ??
+                              Colors.transparent,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList()
+              : [],
     );
   }
 
