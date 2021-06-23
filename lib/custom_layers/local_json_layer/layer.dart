@@ -75,7 +75,7 @@ class Layer extends CustomLayer {
                     ),
                   ))
               .toList()
-          : zoom > 11
+          : zoom != null && zoom > 11
               ? customMarkers
                   .map(
                     (element) => Marker(

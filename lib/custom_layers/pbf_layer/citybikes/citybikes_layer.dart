@@ -77,7 +77,7 @@ class CityBikesLayer extends CustomLayer {
                     ),
                   ))
               .toList()
-          : zoom > 11
+          : zoom != null && zoom > 11
               ? markersList
                   .map(
                     (element) => Marker(
