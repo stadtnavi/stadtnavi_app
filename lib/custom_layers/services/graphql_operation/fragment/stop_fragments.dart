@@ -270,6 +270,9 @@ final bikeRentalStationFragment = gql(
       networks
       stationId
       state
+      rentalUris {
+        web
+      }
     }
   ''',
 );
