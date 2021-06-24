@@ -109,33 +109,35 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
                           fontSize: theme.textTheme.bodyText1.fontSize + 1),
                     ),
                     const SizedBox(height: 10),
-                    InkWell(
-                      onTap: () {
-                        launch(cityBikeDataFetch.firstNetwork
-                            .getNetworkBookData(languageCode)
-                            .url);
-                      },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            cityBikeDataFetch.firstNetwork
-                                .getNetworkBookData(languageCode)
-                                .bookText,
-                            style: theme.textTheme.bodyText2
-                                .copyWith(fontWeight: FontWeight.w600),
-                          ),
-                          const SizedBox(width: 5),
-                          Icon(
-                            cityBikeDataFetch.firstNetwork
-                                .getNetworkBookData(languageCode)
-                                .icon,
-                            size: 20,
-                            color: const Color(0xff007ac9),
-                          )
-                        ],
+                    if (cityBikeDataFetch.getUrl(languageCode) != null)
+                      InkWell(
+                        onTap: () async {
+                          final url = cityBikeDataFetch.getUrl(languageCode);
+                          if (await canLaunch(url)) {
+                            launch(url);
+                          }
+                        },
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              cityBikeDataFetch.firstNetwork
+                                  .getNetworkBookData(languageCode)
+                                  .bookText,
+                              style: theme.textTheme.bodyText2
+                                  .copyWith(fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(width: 5),
+                            Icon(
+                              cityBikeDataFetch.firstNetwork
+                                  .getNetworkBookData(languageCode)
+                                  .icon,
+                              size: 20,
+                              color: const Color(0xff007ac9),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
                     CustomLocationSelector(
                       onFetchPlan: widget.onFetchPlan,
                       locationData: LocationDetail(
