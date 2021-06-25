@@ -44,6 +44,15 @@ Widget liveBusStateIcon(LiveBusState id) {
   return enumStrings[id];
 }
 
+Color liveBusStateColor(LiveBusState id) {
+  final Map<LiveBusState, Color> enumStrings = {
+    LiveBusState.standingRoomOnly: Colors.red,
+    LiveBusState.fewSeatsAvailable: const Color(0xffff6319),
+    LiveBusState.manySeatsAvailable: Colors.green,
+  };
+  return enumStrings[id] ;
+}
+
 String liveBusStateToOccupancyState(LiveBusState id, String lang) {
   final Map<LiveBusState, String> enumStrings = {
     LiveBusState.standingRoomOnly:

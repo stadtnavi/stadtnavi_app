@@ -132,7 +132,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                       ),
                       const Text("|"),
                       Text(
-                        widget.element.available != null
+                        widget.element.capacityUnknown == 0
                             ? localeName == "en"
                                 ? "${widget.element.available} of ${widget.element.capacity} charging slots available"
                                 : "${widget.element.available} von ${widget.element.capacity} Ladeplätzen frei"

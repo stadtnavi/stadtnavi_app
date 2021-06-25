@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 enum LayerIds {
   bicycleInfrastructure,
   bicycleParking,
@@ -13,6 +15,16 @@ extension LayerIdsToString on LayerIds {
       LayerIds.bicycleParking: "Bicycle Parking",
       LayerIds.lorawanGateways: "Lorawan Gateways",
       LayerIds.publicToilets: "Public Toilets"
+    };
+
+    return enumStrings[this];
+  }
+  Color enumToColor() {
+    final Map<LayerIds, Color> enumStrings = {
+      LayerIds.bicycleInfrastructure: Colors.blue,
+      LayerIds.bicycleParking: Colors.blue[600],
+      LayerIds.lorawanGateways: Colors.blueAccent,
+      LayerIds.publicToilets: Colors.red,
     };
 
     return enumStrings[this];

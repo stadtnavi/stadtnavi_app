@@ -24,13 +24,38 @@ class LocationModel {
         "properties": properties.toJson(),
       };
   TrufiLocation toTrufiLocation() {
-    final int idx = properties.label.indexOf(",");
-    final String address = properties.label.substring(idx + 1).trim();
+    String houseDetails;
+    if (properties.housenumber != "null" && properties.street != "null") {
+      houseDetails = "${properties.housenumber} ${properties.street}, ";
+    } else if (properties.housenumber != "null") {
+      houseDetails = "${properties.housenumber}, ";
+    } else if (properties.street != "null") {
+      houseDetails = "${properties.street}, ";
+    }
+
+    String streetDetails;
+    if (properties.postalcode != "null" && properties.locality != "null") {
+      streetDetails = "${properties.postalcode} ${properties.locality}";
+    } else if (properties.postalcode != "null") {
+      streetDetails = properties.postalcode;
+    } else if (properties.locality != "null") {
+      streetDetails = properties.locality;
+    }
+
+    String addressDetails = "";
+    if (houseDetails != null && streetDetails != null) {
+      addressDetails = "$houseDetails$streetDetails";
+    } else if (houseDetails != null) {
+      addressDetails = houseDetails;
+    } else if (streetDetails != null) {
+      addressDetails = streetDetails;
+    }
+
     return TrufiLocation(
       description: properties.name,
       latitude: geometry.coordinates[1],
       longitude: geometry.coordinates[0],
-      address: address,
+      address: addressDetails,
     );
   }
 }

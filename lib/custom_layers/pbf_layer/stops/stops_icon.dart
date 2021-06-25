@@ -1,4 +1,6 @@
 
+import 'package:flutter/material.dart';
+
 import 'stops_enum.dart';
 
 const String _carpool = """
@@ -63,4 +65,10 @@ const Map<StopsLayerIds, String> stopsIcons = {
   StopsLayerIds.bus: _bus,
   StopsLayerIds.rail: _rail,
   StopsLayerIds.subway: _subway,
+};
+const Map<StopsLayerIds, Color> stopsIconsColor = {
+  StopsLayerIds.carpool: Color(0xff9fc727),
+  StopsLayerIds.bus: Color(0xffff0000),
+  StopsLayerIds.rail: Color(0xff008000),
+  StopsLayerIds.subway: Color(0xff0000FF),
 };
