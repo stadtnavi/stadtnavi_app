@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong/latlong.dart';
-import 'package:scrollable_panel/scrollable_panel.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/route_stops_screen/bottom_stops_detail.dart';
 
 import 'package:stadtnavi_app/custom_layers/services/layers_repository.dart';
@@ -11,6 +10,7 @@ import 'package:stadtnavi_app/custom_layers/services/models_otp/pattern.dart';
 
 import 'package:stadtnavi_app/custom_layers/services/models_otp/stoptime.dart';
 import 'package:trufi_core/blocs/configuration/configuration_cubit.dart';
+import 'package:trufi_core/widgets/custom_scrollable_container.dart';
 import 'package:trufi_core/widgets/map/buttons/crop_button.dart';
 import 'package:trufi_core/widgets/map/buttons/your_location_button.dart';
 import 'package:trufi_core/widgets/map/trufi_map.dart';
@@ -42,7 +42,6 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   final LatLngBounds _selectedBounds = LatLngBounds();
   bool needsCameraUpdate = true;
   int indexNextDay = -1;
-  final PanelController panelController = PanelController();
   @override
   void initState() {
     super.initState();
@@ -122,83 +121,81 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                   AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
             )
           else if (patternOtp != null) ...[
-            Positioned.fill(
-              child: TrufiMap(
-                key: const ValueKey("DetailStopMap"),
-                controller: _trufiMapController,
-                onPositionChanged: _handleOnMapPositionChanged,
-                onTap: (_) {
-                  panelController.open();
-                },
-                layerOptionsBuilder: (context) => [
-                  PolylineLayerOptions(
-                    polylines: [
-                      Polyline(
-                        points: routePoints,
-                        color: Color(
-                          int.tryParse("0xFF${patternOtp.route?.color}") ??
-                              patternOtp.route.mode.color.value,
-                        ),
-                        strokeWidth: 6.0,
+            CustomScrollableContainer(
+              openedPosition: 200,
+              bottomPadding: 100,
+              body: Stack(
+                children: [
+                  TrufiMap(
+                    key: const ValueKey("DetailStopMap"),
+                    controller: _trufiMapController,
+                    onPositionChanged: _handleOnMapPositionChanged,
+                    layerOptionsBuilder: (context) => [
+                      PolylineLayerOptions(
+                        polylines: [
+                          Polyline(
+                            points: routePoints,
+                            color: Color(
+                              int.tryParse("0xFF${patternOtp.route?.color}") ??
+                                  patternOtp.route.mode.color.value,
+                            ),
+                            strokeWidth: 6.0,
+                          ),
+                        ],
                       ),
+                      MarkerLayerOptions(
+                        markers: [
+                          ...stopsLocations.map((e) => buildTransferMarker(e))
+                        ],
+                      ),
+                      MarkerLayerOptions(markers: [
+                        trufiConfiguration.markers
+                            .buildFromMarker(stopsLocations[0]),
+                        trufiConfiguration.markers.buildToMarker(
+                            stopsLocations[stopsLocations.length - 1]),
+                      ]),
                     ],
                   ),
-                  MarkerLayerOptions(
-                    markers: [
-                      ...stopsLocations.map((e) => buildTransferMarker(e))
-                    ],
-                  ),
-                  MarkerLayerOptions(markers: [
-                    trufiConfiguration.markers
-                        .buildFromMarker(stopsLocations[0]),
-                    trufiConfiguration.markers.buildToMarker(
-                        stopsLocations[stopsLocations.length - 1]),
-                  ]),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 16.0,
-              right: 16.0,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  YourLocationButton(
-                    trufiMapController: _trufiMapController,
-                  ),
-                  const Padding(padding: EdgeInsets.all(4.0)),
-                  CropButton(
-                    key: _cropButtonKey,
-                    onPressed: () => setState(() {
-                      needsCameraUpdate = true;
-                    }),
-                  ),
-                ],
-              ),
-            ),
-            ScrollablePanel(
-              controller: panelController,
-              builder: (context, controller) {
-                return SingleChildScrollView(
-                  controller: controller,
-                  child: SizedBox(
-                    height: MediaQuery.of(context).size.height + 1,
-                    child: BottomStopsDetails(
-                      routeOtp: patternOtp.route,
-                      stops: patternOtp.stops ?? [],
-                      moveTo: (point) {
-                        panelController.open();
-                        _trufiMapController.move(
-                          center: point,
-                          zoom: 16,
-                          tickerProvider: this,
-                        );
-                      },
+                  Positioned(
+                    bottom: 0,
+                    left: 10,
+                    child: trufiConfiguration.map.mapAttributionBuilder(
+                      context,
                     ),
                   ),
-                );
-              },
+                  Positioned(
+                    top: 16.0,
+                    right: 16.0,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        YourLocationButton(
+                          trufiMapController: _trufiMapController,
+                        ),
+                        const Padding(padding: EdgeInsets.all(4.0)),
+                        CropButton(
+                          key: _cropButtonKey,
+                          onPressed: () => setState(() {
+                            needsCameraUpdate = true;
+                          }),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              panel: BottomStopsDetails(
+                routeOtp: patternOtp.route,
+                stops: patternOtp.stops ?? [],
+                moveTo: (point) {
+                  _trufiMapController.move(
+                    center: point,
+                    zoom: 16,
+                    tickerProvider: this,
+                  );
+                },
+              ),
             ),
           ] else
             Text(

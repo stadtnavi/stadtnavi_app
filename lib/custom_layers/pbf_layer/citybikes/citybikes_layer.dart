@@ -64,10 +64,15 @@ class CityBikesLayer extends CustomLayer {
                         panelCubit.setPanel(
                           CustomMarkerPanel(
                             panel: (context, onFetchPlan) =>
-                                CitybikeMarkerModal(
-                              element: element,
-                              onFetchPlan: onFetchPlan,
-                            ),
+                                element.id == "cargobike-herrenberg"
+                                    ? CargoBikeMarkerModal(
+                                        element: element,
+                                        onFetchPlan: onFetchPlan,
+                                      )
+                                    : CitybikeMarkerModal(
+                                        element: element,
+                                        onFetchPlan: onFetchPlan,
+                                      ),
                             positon: element.position,
                             minSize: 50,
                           ),
