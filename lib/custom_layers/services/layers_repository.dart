@@ -4,11 +4,14 @@ import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
 import 'package:intl/intl.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/citybikes/citybike_data_fetch.dart';
+import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parking_data_fetch.dart';
+import 'package:trufi_core/services/models_otp/vehicle_parking.dart';
 
 import 'graphl_client/graphql_client.dart';
 import 'graphl_client/graphql_utils.dart';
 import 'graphql_operation/fragment/pattern_fragments.dart' as pattern_fragments;
 import 'graphql_operation/fragment/stop_fragments.dart' as stops_fragments;
+import 'graphql_operation/queries/park_queries.dart' as park_queries;
 import 'graphql_operation/queries/pattern_queries.dart' as pattern_queries;
 import 'graphql_operation/queries/stops_queries.dart' as stops_queries;
 import 'models_otp/bike_rental_station.dart';
@@ -118,5 +121,23 @@ class LayersRepository {
         bikeRentalStation.data['bikeRentalStation'] as Map<String, dynamic>);
 
     return CityBikeDataFetch.fromBikeRentalStation(bikeRentalStationData);
+  }
+
+  static Future<VehicleParkingDataFetch> fetchPark(String parkId) async {
+    final WatchQueryOptions parkingQuery = WatchQueryOptions(
+      document: parseString(park_queries.parking),
+      variables: <String, dynamic>{
+        "parkId": parkId,
+      },
+      fetchResults: true,
+    );
+    final parkingResult = await client.query(parkingQuery);
+    if (parkingResult.hasException && parkingResult.data == null) {
+      throw Exception("Bad request");
+    }
+    final parkingData = VehicleParking.fromMap(
+        parkingResult.data['vehicleParking'] as Map<String, dynamic>);
+
+    return VehicleParkingDataFetch.fromVehicleParking(parkingData);
   }
 }
