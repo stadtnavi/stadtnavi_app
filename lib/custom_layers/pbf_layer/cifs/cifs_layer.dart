@@ -199,9 +199,8 @@ class _CifsFeatureMarker extends StatelessWidget {
           ? SvgPicture.string(
               cifsIcons[element.type],
             )
-          : const Icon(
-              Icons.error,
-              color: Colors.red,
+          : SvgPicture.string(
+              cifsIcons[CifsTypeIds.construction],
             ),
     );
   }
