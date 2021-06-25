@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong/latlong.dart';
-import 'package:scrollable_panel/scrollable_panel.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/route_stops_screen/bottom_stops_detail.dart';
 
 import 'package:stadtnavi_app/custom_layers/services/layers_repository.dart';
@@ -43,7 +42,6 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   final LatLngBounds _selectedBounds = LatLngBounds();
   bool needsCameraUpdate = true;
   int indexNextDay = -1;
-  final PanelController panelController = PanelController();
   @override
   void initState() {
     super.initState();
@@ -132,9 +130,6 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                     key: const ValueKey("DetailStopMap"),
                     controller: _trufiMapController,
                     onPositionChanged: _handleOnMapPositionChanged,
-                    onTap: (_) {
-                      panelController.open();
-                    },
                     layerOptionsBuilder: (context) => [
                       PolylineLayerOptions(
                         polylines: [
@@ -194,7 +189,6 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                 routeOtp: patternOtp.route,
                 stops: patternOtp.stops ?? [],
                 moveTo: (point) {
-                  panelController.open();
                   _trufiMapController.move(
                     center: point,
                     zoom: 16,
