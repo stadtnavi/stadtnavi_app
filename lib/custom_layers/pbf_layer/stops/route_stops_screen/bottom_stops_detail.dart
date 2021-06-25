@@ -23,60 +23,58 @@ class BottomStopsDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Card(
-      child: Column(
-        children: [
-          Container(
-            margin: const EdgeInsets.fromLTRB(15, 15, 15, 20),
-            child: Row(
-              children: [
-                SizedBox(
-                  height: 28,
-                  width: 28,
-                  child: routeOtp.mode.image,
+    return Column(
+      children: [
+        Container(
+          margin: const EdgeInsets.fromLTRB(15, 15, 15, 20),
+          child: Row(
+            children: [
+              SizedBox(
+                height: 28,
+                width: 28,
+                child: routeOtp.mode.image,
+              ),
+              const SizedBox(width: 10),
+              Text(
+                routeOtp.mode.name,
+                style: theme.textTheme.bodyText2.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  routeOtp.mode.name,
-                  style: theme.textTheme.bodyText2.copyWith(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+              ),
+              Text(
+                ' - ${routeOtp?.shortName ?? ''}',
+                style: theme.textTheme.bodyText2.copyWith(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-                Text(
-                  ' - ${routeOtp?.shortName ?? ''}',
-                  style: theme.textTheme.bodyText2.copyWith(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-          const Divider(),
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              itemCount: stops.length,
-              itemBuilder: (contextBuilde, index) {
-                final Stop stop = stops[index];
-                return TextButton(
-                  onPressed: () => moveTo(LatLng(stop.lat, stop.lon)),
-                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  child: StopItemTile(
-                    stop: stop,
-                    color: Color(
-                      int.tryParse("0xFF${routeOtp.color}") ??
-                          routeOtp.mode.color.value,
-                    ),
-                    isLastElement: index == stops.length - 1,
+        ),
+        const Divider(),
+        Expanded(
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: stops.length,
+            itemBuilder: (contextBuilde, index) {
+              final Stop stop = stops[index];
+              return TextButton(
+                onPressed: () => moveTo(LatLng(stop.lat, stop.lon)),
+                style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                child: StopItemTile(
+                  stop: stop,
+                  color: Color(
+                    int.tryParse("0xFF${routeOtp.color}") ??
+                        routeOtp.mode.color.value,
                   ),
-                );
-              },
-            ),
+                  isLastElement: index == stops.length - 1,
+                ),
+              );
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
