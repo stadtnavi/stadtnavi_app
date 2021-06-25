@@ -36,9 +36,16 @@ class AboutSection extends StatelessWidget {
         Padding(
           padding: _padding,
           child: Text(
+            isLanguageEn ? 'Contribute:' : 'Mitmachen:',
+            style: theme.textTheme.bodyText1,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 5.0),
+          child: Text(
             isLanguageEn
-                ? 'The city of Herrenberg has developed this app funded by the Federal Ministry of Transport and Digital Infrastructure (BMVI) as model city. The stadtnavi application is an open source solution and can be used, customized and further developed by other municipalities to meet individual needs (white lable solution). Participation is welcome!'
-                : 'Die Stadt Herrenberg hat diese App im Rahmen der Modellstadt, gefördert durch das Bundesministerium für Verkehr und digitale Infrastruktur (BMVI) entwickelt. stadtnavi Anwendung ist eine Open Source Lösung und kann von anderen Kommunen und Akteuren unter ihrem Namen und Erscheinungsbild verwendet und an individuelle Bedürfnisse angepasst und weiterentwickelt werden (White Label Lösung). Mitmachen ist gewünscht!',
+                ? 'The city of Herrenberg has developed this app, funded by the Federal Ministry of Transport and Digital Infrastructure (BMVI), as model city. The stadtnavi app is an open source solution and can be used, customized and further developed by other municipalities to meet individual needs (white lable solution). Participation is welcome!'
+                : 'Die Stadt Herrenberg hat diese App im Rahmen der Modellstadt, gefördert durch das Bundesministerium für Verkehr und digitale Infrastruktur (BMVI) entwickelt. stadtnavi ist eine Open Source Lösung und kann von anderen Kommunen und Akteuren unter ihrem Namen und Erscheinungsbild verwendet und an individuelle Bedürfnisse angepasst und weiterentwickelt werden (White Label Lösung). Mitmachen ist gewünscht!',
             style: theme.textTheme.bodyText1,
           ),
         ),

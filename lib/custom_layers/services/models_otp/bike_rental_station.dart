@@ -1,3 +1,5 @@
+import 'bike_rental_station_uris.dart';
+
 class BikeRentalStation {
   final String id;
   final String stationId;
@@ -8,6 +10,7 @@ class BikeRentalStation {
   final bool realtime;
   final bool allowDropoff;
   final List<String> networks;
+  final BikeRentalStationUris rentalUris;
   final double lon;
   final double lat;
   final int capacity;
@@ -23,6 +26,7 @@ class BikeRentalStation {
     this.realtime,
     this.allowDropoff,
     this.networks,
+    this.rentalUris,
     this.lon,
     this.lat,
     this.capacity,
@@ -41,6 +45,10 @@ class BikeRentalStation {
         allowDropoff: json['allowDropoff'] as bool,
         networks: json['networks'] != null
             ? (json['networks'] as List<dynamic>).cast<String>()
+            : null,
+        rentalUris: json['rentalUris'] != null
+            ? BikeRentalStationUris.fromMap(
+                json['rentalUris'] as Map<String, dynamic>)
             : null,
         lon: json['lon'] as double,
         lat: json['lat'] as double,
@@ -62,5 +70,6 @@ class BikeRentalStation {
         'lat': lat,
         'capacity': capacity,
         'allowOverloading': allowOverloading,
+        'rentalUris': rentalUris?.toMap(),
       };
 }
