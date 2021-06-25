@@ -19,7 +19,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'about_section/about_section.dart';
 import 'marker_configuration/custom_marker_configuration.dart';
 
-const baseDomain = "api.qa.stadtnavi.eu";
+const baseDomain = "api.stadtnavi.de";
 Configuration setupTrufiConfiguration() {
   // Attribution
   final attribution = Attribution(
