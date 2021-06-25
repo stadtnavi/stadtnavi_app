@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/parking/parkings_enum.dart';
+import 'package:stadtnavi_app/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
 import 'package:trufi_core/blocs/panel/panel_cubit.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
@@ -24,6 +27,10 @@ class ParkingLayer extends CustomLayer {
       _pbfMarkers[pointFeature.name] = pointFeature;
       refresh();
     }
+    LayersRepository.fetchPark(pointFeature.id).then((value) {
+      final data = value;
+      log(data.toString());
+    }).catchError(() {});
   }
 
   @override
