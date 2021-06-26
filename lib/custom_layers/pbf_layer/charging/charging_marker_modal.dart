@@ -138,7 +138,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                                 : "${widget.element.available} von ${widget.element.capacity} Ladeplätzen frei"
                             : localeName == "en"
                                 ? "${widget.element.capacity} charging slots"
-                                : "${widget.element.capacity} Ladeplätzen",
+                                : "${widget.element.capacity} Ladeplätze",
                         style: TextStyle(
                           color: theme.textTheme.bodyText1.color,
                         ),

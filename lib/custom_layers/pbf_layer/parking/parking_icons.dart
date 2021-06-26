@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'parkings_enum.dart';
 
 const String _parking = """
