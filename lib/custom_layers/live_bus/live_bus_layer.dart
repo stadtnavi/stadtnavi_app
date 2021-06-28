@@ -162,7 +162,7 @@ class LiveBusLayer extends CustomLayer {
   @override
   String name(BuildContext context) {
     final localeName = TrufiLocalization.of(context).localeName;
-    return localeName == "en" ? "Bus positions (Beta)" : "Buspositionen (Beta)";
+    return localeName == "en" ? "Bus positions" : "Buspositionen";
   }
 
   @override
