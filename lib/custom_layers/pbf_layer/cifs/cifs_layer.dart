@@ -84,7 +84,8 @@ class CifsLayer extends CustomLayer {
                 polylines: markersList
                     .map((e) => Polyline(
                           points: e.polyline.reversed.toList(),
-                          color: Colors.red,
+                          color: Colors.red.withOpacity(.8),
+                          isDotted: true,
                           strokeWidth: polylineSize,
                         ))
                     .toList(),
