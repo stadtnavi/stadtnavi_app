@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -23,14 +21,15 @@ class ParkingLayer extends CustomLayer {
 
   ParkingLayer(String id) : super(id);
   void addMarker(ParkingFeature pointFeature) {
-    if (_pbfMarkers[pointFeature.name] == null) {
-      _pbfMarkers[pointFeature.name] = pointFeature;
+    if (_pbfMarkers[pointFeature.id] == null) {
+      _pbfMarkers[pointFeature.id] = pointFeature;
       refresh();
     }
-    LayersRepository.fetchPark(pointFeature.id).then((value) {
-      final data = value;
-      log(data.toString());
-    }).catchError(() {});
+  }
+
+  void forceAddMarker(ParkingFeature pointFeature) {
+    _pbfMarkers[pointFeature.id] = pointFeature;
+    refresh();
   }
 
   @override
@@ -65,67 +64,72 @@ class ParkingLayer extends CustomLayer {
                     width: markerSize,
                     point: element.position,
                     anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) => GestureDetector(
-                      onTap: () {
-                        final panelCubit = context.read<PanelCubit>();
-                        panelCubit.setPanel(
-                          CustomMarkerPanel(
-                            panel: (context, onFetchPlan) => ParkingMarkerModal(
-                              parkingFeature: element,
-                              onFetchPlan: onFetchPlan,
+                    builder: (context) => ParkingStateUpdater(
+                      element: element,
+                      addMarker: forceAddMarker,
+                      child: GestureDetector(
+                        onTap: () {
+                          final panelCubit = context.read<PanelCubit>();
+                          panelCubit.setPanel(
+                            CustomMarkerPanel(
+                              panel: (context, onFetchPlan) =>
+                                  ParkingMarkerModal(
+                                parkingFeature: element,
+                                onFetchPlan: onFetchPlan,
+                              ),
+                              positon: element.position,
+                              minSize: 50,
                             ),
-                            positon: element.position,
-                            minSize: 50,
-                          ),
-                        );
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: markerSize / 5,
-                              top: markerSize / 5,
+                          );
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                left: markerSize / 5,
+                                top: markerSize / 5,
+                              ),
+                              child: SvgPicture.string(
+                                parkingMarkerIcons[element.type] ?? "",
+                              ),
                             ),
-                            child: SvgPicture.string(
-                              parkingMarkerIcons[element.type] ?? "",
-                            ),
-                          ),
-                          if (element.markerState() != null)
-                            if (element.markerState())
-                              Positioned(
-                                child: Container(
+                            if (element.markerState() != null)
+                              if (element.markerState())
+                                Positioned(
+                                  child: Container(
+                                    height: markerSize / 2,
+                                    width: markerSize / 2,
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.check,
+                                        size: markerSize / 3,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              else
+                                Container(
                                   height: markerSize / 2,
                                   width: markerSize / 2,
                                   decoration: BoxDecoration(
-                                    color: Colors.green,
+                                    color: Colors.red,
                                     borderRadius: BorderRadius.circular(100),
                                   ),
                                   child: Center(
                                     child: Icon(
-                                      Icons.check,
+                                      Icons.close,
                                       size: markerSize / 3,
                                       color: Colors.white,
                                     ),
                                   ),
-                                ),
-                              )
-                            else
-                              Container(
-                                height: markerSize / 2,
-                                width: markerSize / 2,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.close,
-                                    size: markerSize / 3,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )
-                        ],
+                                )
+                          ],
+                        ),
                       ),
                     ),
                   ))
@@ -174,7 +178,9 @@ class ParkingLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final ParkingFeature pointFeature =
               ParkingFeature.fromGeoJsonPoint(geojson);
-          if (pointFeature != null) parkingLayer?.addMarker(pointFeature);
+          if (pointFeature != null && pointFeature.id != null) {
+            parkingLayer?.addMarker(pointFeature);
+          }
         } else {
           throw Exception("Should never happened, Feature is not a point");
         }
@@ -193,5 +199,112 @@ class ParkingLayer extends CustomLayer {
     return SvgPicture.string(
       parkingMarkerIcons[ParkingsLayerIds.parkingSpot],
     );
+  }
+}
+
+class ParkingStateUpdater extends StatefulWidget {
+  final Widget child;
+  final ParkingFeature element;
+  final void Function(ParkingFeature pointFeature) addMarker;
+  const ParkingStateUpdater({
+    Key key,
+    @required this.child,
+    @required this.element,
+    @required this.addMarker,
+  }) : super(key: key);
+
+  @override
+  _ParkingStateUpdaterState createState() => _ParkingStateUpdaterState();
+}
+
+class _ParkingStateUpdaterState extends State<ParkingStateUpdater> {
+  final int interval = 30;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
+      if (widget.element.carPlacesCapacity != null &&
+          widget.element.availabilityCarPlacesCapacity != null) {
+        loadData();
+      }
+      if (widget.element.totalDisabled != null &&
+          widget.element.freeDisabled != null) {
+        loadDisabledData();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
+
+  Future<void> loadData() async {
+    if (!mounted) return;
+    await LayersRepository.fetchPark(widget.element.id).then((value) {
+      final data = ParkingFeature(
+        geoJsonPoint: widget.element.geoJsonPoint,
+        id: widget.element.id,
+        name: widget.element.name,
+        note: widget.element.note,
+        url: widget.element.url,
+        state: widget.element.state,
+        tags: widget.element.tags,
+        openingHours: widget.element.openingHours,
+        feeHours: widget.element.feeHours,
+        bicyclePlaces: widget.element.bicyclePlaces,
+        anyCarPlaces: widget.element.anyCarPlaces,
+        carPlaces: widget.element.carPlaces,
+        wheelchairAccessibleCarPlaces:
+            widget.element.wheelchairAccessibleCarPlaces,
+        realTimeData: widget.element.realTimeData,
+        capacity: widget.element.capacity,
+        bicyclePlacesCapacity: widget.element.bicyclePlacesCapacity,
+        carPlacesCapacity: widget.element.carPlacesCapacity,
+        availabilityCarPlacesCapacity: value.availability.carSpaces,
+        totalDisabled: widget.element.totalDisabled,
+        freeDisabled: widget.element.freeDisabled,
+        type: widget.element.type,
+        position: widget.element.position,
+      );
+      widget.addMarker(data);
+    }).catchError((error) {});
+    await Future.delayed(Duration(seconds: interval));
+    if (mounted) loadData();
+  }
+
+  Future<void> loadDisabledData() async {
+    if (!mounted) return;
+    await LayersRepository.fetchPark(widget.element.id).then((value) {
+      final data = ParkingFeature(
+        geoJsonPoint: widget.element.geoJsonPoint,
+        id: widget.element.id,
+        name: widget.element.name,
+        note: widget.element.note,
+        url: widget.element.url,
+        state: widget.element.state,
+        tags: widget.element.tags,
+        openingHours: widget.element.openingHours,
+        feeHours: widget.element.feeHours,
+        bicyclePlaces: widget.element.bicyclePlaces,
+        anyCarPlaces: widget.element.anyCarPlaces,
+        carPlaces: widget.element.carPlaces,
+        wheelchairAccessibleCarPlaces:
+            widget.element.wheelchairAccessibleCarPlaces,
+        realTimeData: widget.element.realTimeData,
+        capacity: widget.element.capacity,
+        bicyclePlacesCapacity: widget.element.bicyclePlacesCapacity,
+        carPlacesCapacity: widget.element.carPlacesCapacity,
+        availabilityCarPlacesCapacity:
+            widget.element.availabilityCarPlacesCapacity,
+        totalDisabled: widget.element.totalDisabled,
+        freeDisabled: value.availability.wheelchairAccessibleCarSpaces,
+        type: widget.element.type,
+        position: widget.element.position,
+      );
+      widget.addMarker(data);
+    }).catchError((error) {});
+    await Future.delayed(Duration(seconds: interval));
+    if (mounted) loadDisabledData();
   }
 }
