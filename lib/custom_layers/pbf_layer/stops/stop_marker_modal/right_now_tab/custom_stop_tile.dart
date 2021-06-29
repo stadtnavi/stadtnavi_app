@@ -50,8 +50,7 @@ class CustomStopTile extends StatelessWidget {
             ),
             title: Text(
               stopTime.getHeadsing(
-                isLastStop: isLastStop,
-              ),
+                  isLastStop: isLastStop, languageCode: languageCode),
               style: const TextStyle(
                 color: Colors.black,
               ),

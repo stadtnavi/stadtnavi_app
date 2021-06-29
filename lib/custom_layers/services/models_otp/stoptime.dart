@@ -94,11 +94,18 @@ class Stoptime {
     return realtimeState == RealtimeState.canceled;
   }
 
-  String getHeadsing({@required bool isLastStop}) {
-    // TODO translate code strings
+  String getHeadsing({
+    @required bool isLastStop,
+    String languageCode,
+  }) {
     if (isArrival) {
-      if (isLastStop) return 'route-destination-endpoint';
-      return trip?.tripHeadsign ?? 'route-destination-arrives';
+      if (isLastStop) {
+        return languageCode == 'en'
+            ? 'Arrives / Terminus'
+            : 'Ankunft / Endstation';
+      }
+      return trip?.tripHeadsign ??
+          (languageCode == 'en' ? 'Drop-off only' : 'Nur Ausstieg');
     }
     final String tempHeadsing = headsign ??
         (trip.pattern.headsign ??

@@ -10,6 +10,8 @@ import 'package:stadtnavi_app/custom_layers/services/models_otp/pattern.dart';
 
 import 'package:stadtnavi_app/custom_layers/services/models_otp/stoptime.dart';
 import 'package:trufi_core/blocs/configuration/configuration_cubit.dart';
+import 'package:trufi_core/l10n/trufi_localization.dart';
+import 'package:trufi_core/models/enums/enums_plan/enums_plan.dart';
 import 'package:trufi_core/widgets/custom_scrollable_container.dart';
 import 'package:trufi_core/widgets/map/buttons/crop_button.dart';
 import 'package:trufi_core/widgets/map/buttons/your_location_button.dart';
@@ -94,6 +96,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
 
   @override
   Widget build(BuildContext context) {
+    final localization = TrufiLocalization.of(context);
     if (_mapController.ready) {
       if (needsCameraUpdate && _selectedBounds.isValid) {
         _trufiMapController.fitBounds(
@@ -108,7 +111,8 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
       appBar: AppBar(
         title: Row(
           children: [
-            Text(widget.stopTime.trip.route.mode.name),
+            Text(getTransportMode(mode: widget.stopTime.trip.route.mode.name)
+                .getTranslate(localization)),
             Text(' - ${widget.stopTime?.trip?.route?.shortName ?? ''}'),
           ],
         ),
