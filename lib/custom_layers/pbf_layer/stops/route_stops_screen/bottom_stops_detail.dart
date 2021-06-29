@@ -3,6 +3,8 @@ import 'package:latlong/latlong.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/enums/mode.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/route.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/stop.dart';
+import 'package:trufi_core/l10n/trufi_localization.dart';
+import 'package:trufi_core/models/enums/enums_plan/enums_plan.dart';
 
 import 'stop_item_tile.dart';
 
@@ -23,6 +25,7 @@ class BottomStopsDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localization = TrufiLocalization.of(context);
     return Column(
       children: [
         Container(
@@ -36,7 +39,8 @@ class BottomStopsDetails extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Text(
-                routeOtp.mode.name,
+                getTransportMode(mode: routeOtp.mode.name)
+                    .getTranslate(localization),
                 style: theme.textTheme.bodyText2.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stadtnavi_app/custom_layers/services/layers_repository.dart';
+import 'package:trufi_core/l10n/trufi_localization.dart';
 
 import 'package:stadtnavi_app/custom_layers/services/models_otp/stoptime.dart';
 
@@ -118,11 +119,13 @@ class _TitleDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localization = TrufiLocalization.of(context);
     return Column(
       children: [
         ListTile(
           title: Text(
-            DateFormat('EEEE  dd.MM.yyyy').format(stoptime.dateTime),
+            DateFormat('EEEE  dd.MM.yyyy', localization.localeName)
+                .format(stoptime.dateTime),
             style: const TextStyle(
               fontSize: 20,
               color: Colors.black,
