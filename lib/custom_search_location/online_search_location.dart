@@ -79,12 +79,19 @@ class OnlineSearchLocation implements SearchLocationManager {
     final properties = feature["properties"];
     final String street = properties["street"]?.toString();
     final String houseNumbre = properties["housenumber"]?.toString();
-    final String postalcode = properties["postalcode"]?.toString() ?? "";
-    final String locality = properties["locality"]?.toString() ?? "";
-    final String address = street != null ? "$street $houseNumbre, " : "";
+    final String postalcode = properties["postalcode"]?.toString();
+    final String locality = properties["locality"]?.toString();
+    String streetHouse = "";
+    if (street != null) {
+      if (houseNumbre != null) {
+        streetHouse = "$street $houseNumbre,";
+      } else {
+        streetHouse = "$street,";
+      }
+    }
     return LocationDetail(
       properties["name"]?.toString(),
-      "$address$postalcode $locality",
+      "$streetHouse $postalcode $locality",
       location,
     );
   }
