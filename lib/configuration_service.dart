@@ -64,6 +64,7 @@ Configuration setupTrufiConfiguration() {
         "https://trufifeedback.z15.web.core.windows.net/route.html",
     donationUrl: "http://www.trufi.app/donate-inapp",
     openTripPlannerUrl: "https://$baseDomain/routing/v1/router/index/graphql",
+    faresUrl: "https://$baseDomain/fares",
     shareUrl: "https://appurl.io/BOPP7QnKX",
   );
 
