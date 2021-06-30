@@ -162,9 +162,14 @@ final List<List<MenuItem>> menuItems = [
         name: (context) {
           final theme = Theme.of(context);
           return DropdownButton<SocialMediaItem>(
-            icon: Text(Localizations.localeOf(context).languageCode == "en"
-                ? "Social media"
-                : "Soziale Medien"),
+            icon: Row(
+              children: [
+                Text(Localizations.localeOf(context).languageCode == "en"
+                    ? "Social media"
+                    : "Soziale Medien"),
+                const Icon(Icons.arrow_drop_down),
+              ],
+            ),
             selectedItemBuilder: (_) => [],
             underline: Container(),
             style: theme.textTheme.bodyText1,
