@@ -352,12 +352,12 @@ class _CargobikeMarkerModalState extends State<CargoBikeMarkerModal> {
               ),
               TextButton(
                 onPressed: () {
-                  launch(cityBikeDataFetch.bookingUrl);
+                  // launch(cityBikeDataFetch.bookingUrl);
                 },
                 child: Text(
-                  languageCode == "en" ? "Book now" : "Jetzt buchen",
-                  style: TextStyle(
-                    color: theme.primaryColor,
+                  languageCode == "en" ? "Book" : "Buchen",
+                  style: const TextStyle(
+                    color: Colors.grey,
                   ),
                 ),
               ),
