@@ -181,7 +181,7 @@ class LiveBusLayer extends CustomLayer {
                                   element.name,
                                   style: TextStyle(
                                     fontSize: markerSize / 2,
-                                    color: Colors.black,
+                                    color: Colors.red,
                                   ),
                                 ),
                               ),
