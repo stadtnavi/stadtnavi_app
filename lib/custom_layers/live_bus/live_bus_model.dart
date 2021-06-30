@@ -12,6 +12,7 @@ class LiveBusFeature {
   final LatLng position;
   final double bearing;
   final LiveBusState type;
+  final DateTime created = DateTime.now();
   LiveBusFeature.fromGeoJsonLine(
     Map json, {
     @required this.tripId,
