@@ -37,7 +37,19 @@ class LiveBusLayer extends CustomLayer {
     connect().catchError((error) {
       // should not make any effect on layer behavior
     });
+    filterOldValues().catchError((error) {
+      // should not make any effect on layer behavior
+    });
   }
+  Future<void> filterOldValues() async {
+    final date = DateTime.now();
+    _pbfMarkers.removeWhere(
+      (key, value) => date.difference(value.created).inMinutes >= 3,
+    );
+    await Future.delayed(const Duration(seconds: 30));
+    filterOldValues();
+  }
+
   Future<MqttServerClient> connect() async {
     final MqttServerClient client = MqttServerClient.withPort(
       'wss://api.dev.stadtnavi.eu/mqtt/',
@@ -181,7 +193,7 @@ class LiveBusLayer extends CustomLayer {
                                   element.name,
                                   style: TextStyle(
                                     fontSize: markerSize / 2,
-                                    color: Colors.black,
+                                    color: Colors.red,
                                   ),
                                 ),
                               ),

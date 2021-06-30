@@ -104,7 +104,9 @@ class CityBikesLayer extends CustomLayer {
                                   height: markerSize / 2,
                                   width: markerSize / 2,
                                   decoration: BoxDecoration(
-                                    color: Colors.orange,
+                                    color: element.id == "cargobike-herrenberg"
+                                        ? Colors.red
+                                        : Colors.orange,
                                     borderRadius: BorderRadius.circular(100),
                                     border: Border.all(
                                       color: Colors.white,
