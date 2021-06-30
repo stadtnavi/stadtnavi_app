@@ -54,10 +54,49 @@ class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
                 margin: const EdgeInsets.symmetric(horizontal: 10),
                 child: liveBusStateIcon(element.type),
               ),
-              const Expanded(
-                child: Text(
-                  "Bus",
-                  style: TextStyle(fontSize: 20),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          widget.mainElement.name ?? "",
+                          style: const TextStyle(fontSize: 25),
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(2),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                widget.mainElement.time ?? "",
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              const Icon(
+                                Icons.arrow_forward,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      "${languageCode == "en" ? "To " : "Ri. "}${widget.mainElement.to}" ??
+                          "",
+                      style: const TextStyle(fontSize: 15, color: Colors.black),
+                    ),
+                  ],
                 ),
               ),
             ],

@@ -10,9 +10,9 @@ enum LiveBusState {
 }
 LiveBusState liveBusStateToEnum(String id) {
   final Map<String, LiveBusState> enumStrings = {
-    "STANDING_ROOM_ONLY": LiveBusState.standingRoomOnly,
-    "FEW_SEATS_AVAILABLE": LiveBusState.fewSeatsAvailable,
-    "MANY_SEATS_AVAILABLE": LiveBusState.manySeatsAvailable,
+    "3": LiveBusState.standingRoomOnly,
+    "2": LiveBusState.fewSeatsAvailable,
+    "1": LiveBusState.manySeatsAvailable,
   };
   return enumStrings[id] ?? LiveBusState.manySeatsAvailable;
 }
@@ -22,21 +22,21 @@ Widget liveBusStateIcon(LiveBusState id) {
     LiveBusState.standingRoomOnly: Container(
       decoration: BoxDecoration(
         color: Colors.red,
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: SvgPicture.string(markerLiveBusIcon),
     ),
     LiveBusState.fewSeatsAvailable: Container(
       decoration: BoxDecoration(
         color: const Color(0xffff6319),
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: SvgPicture.string(markerLiveBusIcon),
     ),
     LiveBusState.manySeatsAvailable: Container(
       decoration: BoxDecoration(
         color: Colors.green,
-        borderRadius: BorderRadius.circular(50),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: SvgPicture.string(markerLiveBusIcon),
     ),
