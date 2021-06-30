@@ -112,7 +112,7 @@ class CityBikesLayer extends CustomLayer {
                                   ),
                                   child: Center(
                                     child: Text(
-                                      "1",
+                                      "${element.extraInfo.bikesAvailable}",
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: markerSize / 3,
@@ -123,7 +123,6 @@ class CityBikesLayer extends CustomLayer {
                               )
                           ],
                         ),
-                        // child: element.type.imageStop,
                       ),
                     ),
                   ))
