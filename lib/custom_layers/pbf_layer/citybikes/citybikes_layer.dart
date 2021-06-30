@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
 import 'package:stadtnavi_app/configuration_service.dart';
+import 'package:stadtnavi_app/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_app/custom_layers/static_layer.dart';
 import 'package:trufi_core/blocs/panel/panel_cubit.dart';
 import 'package:trufi_core/l10n/trufi_localization.dart';
@@ -24,6 +25,11 @@ class CityBikesLayer extends CustomLayer {
       _pbfMarkers[pointFeature.id] = pointFeature;
       refresh();
     }
+  }
+
+  void forceAddMarker(CityBikeFeature pointFeature) {
+    _pbfMarkers[pointFeature.id] = pointFeature;
+    refresh();
   }
 
   @override
@@ -58,27 +64,67 @@ class CityBikesLayer extends CustomLayer {
                     width: markerSize + 5,
                     point: element.position,
                     anchorPos: AnchorPos.align(AnchorAlign.top),
-                    builder: (context) => GestureDetector(
-                      onTap: () {
-                        final panelCubit = context.read<PanelCubit>();
-                        panelCubit.setPanel(
-                          CustomMarkerPanel(
-                            panel: (context, onFetchPlan) =>
-                                element.id == "cargobike-herrenberg"
-                                    ? CargoBikeMarkerModal(
-                                        element: element,
-                                        onFetchPlan: onFetchPlan,
-                                      )
-                                    : CitybikeMarkerModal(
-                                        element: element,
-                                        onFetchPlan: onFetchPlan,
+                    builder: (context) => SharingMarkerUpdater(
+                      element: element,
+                      addMarker: forceAddMarker,
+                      child: GestureDetector(
+                        onTap: () {
+                          final panelCubit = context.read<PanelCubit>();
+                          panelCubit.setPanel(
+                            CustomMarkerPanel(
+                              panel: (context, onFetchPlan) =>
+                                  element.id == "cargobike-herrenberg"
+                                      ? CargoBikeMarkerModal(
+                                          element: element,
+                                          onFetchPlan: onFetchPlan,
+                                        )
+                                      : CitybikeMarkerModal(
+                                          element: element,
+                                          onFetchPlan: onFetchPlan,
+                                        ),
+                              positon: element.position,
+                              minSize: 50,
+                            ),
+                          );
+                        },
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: markerSize,
+                              width: markerSize,
+                              margin: EdgeInsets.only(top: markerSize / 5),
+                              // margin: E,
+                              child: element.type.imageStop,
+                            ),
+                            if (element.extraInfo != null &&
+                                element.extraInfo.bikesAvailable >= 0)
+                              Positioned(
+                                right: markerSize / 5,
+                                child: Container(
+                                  height: markerSize / 2,
+                                  width: markerSize / 2,
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange,
+                                    borderRadius: BorderRadius.circular(100),
+                                    border: Border.all(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "1",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: markerSize / 3,
                                       ),
-                            positon: element.position,
-                            minSize: 50,
-                          ),
-                        );
-                      },
-                      child: element.type.imageStop,
+                                    ),
+                                  ),
+                                ),
+                              )
+                          ],
+                        ),
+                        // child: element.type.imageStop,
+                      ),
                     ),
                   ))
               .toList()
@@ -147,5 +193,45 @@ class CityBikesLayer extends CustomLayer {
     return SvgPicture.string(
       citybike,
     );
+  }
+}
+
+class SharingMarkerUpdater extends StatefulWidget {
+  final Widget child;
+  final CityBikeFeature element;
+  final void Function(CityBikeFeature pointFeature) addMarker;
+  const SharingMarkerUpdater({
+    Key key,
+    @required this.child,
+    @required this.element,
+    @required this.addMarker,
+  }) : super(key: key);
+
+  @override
+  _SharingMarkerUpdaterState createState() => _SharingMarkerUpdaterState();
+}
+
+class _SharingMarkerUpdaterState extends State<SharingMarkerUpdater> {
+  final int interval = 30;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
+      loadData();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return widget.child;
+  }
+
+  Future<void> loadData() async {
+    if (!mounted) return;
+    await LayersRepository.fetchCityBikesData(widget.element.id).then((value) {
+      widget.addMarker(widget.element.copyWithExtraInfo(value));
+    }).catchError((error) {});
+    await Future.delayed(Duration(seconds: interval));
+    if (mounted) loadData();
   }
 }
