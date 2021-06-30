@@ -153,7 +153,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                     Row(
                       children: [
                         const Icon(
-                          Icons.monetization_on_outlined,
+                          Icons.euro,
                           size: 15,
                           color: Colors.grey,
                         ),
