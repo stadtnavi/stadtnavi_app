@@ -111,6 +111,7 @@ class LayersRepository {
       variables: <String, dynamic>{
         "id": cityBikeId,
       },
+      fetchPolicy: FetchPolicy.noCache,
       fetchResults: true,
     );
     final bikeRentalStation = await client.query(cityBikeQuery);
@@ -130,6 +131,7 @@ class LayersRepository {
         "parkId": parkId,
       },
       fetchResults: true,
+      fetchPolicy: FetchPolicy.noCache,
     );
     final parkingResult = await client.query(parkingQuery);
     if (parkingResult.hasException && parkingResult.data == null) {
