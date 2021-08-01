@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/stops/route_stops_screen/bottom_stops_detail.dart';
 
 import 'package:stadtnavi_app/custom_layers/services/layers_repository.dart';
@@ -97,15 +97,17 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   @override
   Widget build(BuildContext context) {
     final localization = TrufiLocalization.of(context);
-    if (_mapController.ready) {
-      if (needsCameraUpdate && _selectedBounds.isValid) {
-        _trufiMapController.fitBounds(
-          bounds: _selectedBounds,
-          tickerProvider: this,
-        );
-        needsCameraUpdate = false;
-      }
-    }
+    _mapController.onReady.then(
+      (value) => () {
+        if (needsCameraUpdate && _selectedBounds.isValid) {
+          _trufiMapController.fitBounds(
+            bounds: _selectedBounds,
+            tickerProvider: this,
+          );
+          needsCameraUpdate = false;
+        }
+      },
+    );
     final trufiConfiguration = context.read<ConfigurationCubit>().state;
     return Scaffold(
       appBar: AppBar(
