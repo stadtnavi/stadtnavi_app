@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:flutter/services.dart';
 
 import 'custom_marker_model.dart';

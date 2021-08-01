@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/enums/mode.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/route.dart';
 import 'package:stadtnavi_app/custom_layers/services/models_otp/stop.dart';
