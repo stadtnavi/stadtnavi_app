@@ -19,11 +19,10 @@ dependencies:
 
   lint: ^1.5.3
   mqtt_client: ^9.3.1
-  # TODO updated ref
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
-      ref: 2.9.0
+      ref: 2.9.1
 
   vector_tile:
     git:
