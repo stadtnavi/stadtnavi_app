@@ -6,7 +6,7 @@ issue_tracker: https://github.com/stadtnavi/stadtnavi-app/issues
 
 publish_to: "none"
 
-version: 1.4.0+50
+version: 1.4.1+51
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
