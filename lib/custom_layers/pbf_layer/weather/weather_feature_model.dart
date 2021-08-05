@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:vector_tile/vector_tile.dart';
 
 class WeatherFeature {
-final String address;
-   final  String airTemperatureC;
-   final  String roadTemperatureC;
-   final  String precipitationType;
-   final  String roadCondition;
-   final  String updatedAt;
-
+  final String address;
+  final String airTemperatureC;
+  final String roadTemperatureC;
+  final String precipitationType;
+  final String roadCondition;
+  final String updatedAt;
 
   final LatLng position;
   WeatherFeature({

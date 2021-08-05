@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:stadtnavi_app/custom_layers/pbf_layer/citybikes/citybike_data_fetch.dart';
 import 'package:vector_tile/vector_tile.dart';
 

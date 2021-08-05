@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:trufi_core/models/markers/marker_configuration.dart';
 import 'package:trufi_core/models/markers/markers_default/your_location_marker.dart';
 
@@ -55,7 +55,11 @@ class CustomMarkerConfiguration implements MarkerConfiguration {
             anchorPos: AnchorPos.align(AnchorAlign.center),
             builder: (context) => const MyLocationMarker(),
           )
-        : Marker(width: 0, height: 0);
+        : Marker(
+            width: 0,
+            height: 0,
+            point: LatLng(0, 0),
+            builder: (_) => Container());
   }
 
   @override

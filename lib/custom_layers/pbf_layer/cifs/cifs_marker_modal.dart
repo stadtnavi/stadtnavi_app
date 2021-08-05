@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:trufi_core/widgets/custom_location_selector.dart';
 
-import 'package:latlong/latlong.dart';
+import 'package:latlong2/latlong.dart';
 import 'cifs_feature_model.dart';
 import 'cifs_icons.dart';
 
