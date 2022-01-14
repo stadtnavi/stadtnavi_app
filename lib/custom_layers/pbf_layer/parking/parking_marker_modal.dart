@@ -94,7 +94,10 @@ class ParkingMarkerModal extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      parkingFeature.openingHours.replaceAll("; ", "\n"),
+                      localeName == 'en'
+                          ? parkingFeature.openingHours.replaceAll("; ", "\n")
+                          : _parseAbbreviationDE(parkingFeature.openingHours
+                              .replaceAll("; ", "\n")),
                       style: const TextStyle(
                         color: Colors.black,
                       ),
@@ -145,5 +148,15 @@ class ParkingMarkerModal extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String _parseAbbreviationDE(String msg) {
+    final weekDaysEn = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
+    final weekDaysDe = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+    String parsedDe = msg;
+    for (var i = 0; i < weekDaysEn.length; i++) {
+      parsedDe = parsedDe.replaceAll(weekDaysEn[i], weekDaysDe[i]);
+    }
+    return parsedDe;
   }
 }
