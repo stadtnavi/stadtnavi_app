@@ -157,6 +157,12 @@ class ParkingMarkerModal extends StatelessWidget {
     for (var i = 0; i < weekDaysEn.length; i++) {
       parsedDe = parsedDe.replaceAll(weekDaysEn[i], weekDaysDe[i]);
     }
+    if (parsedDe.contains('PH off')) {
+      parsedDe = parsedDe.replaceAll('PH off', 'Gesetzlicher Feiertag Geschlossen');
+    } else {
+      parsedDe = parsedDe.replaceAll('PH', 'Gesetzlicher Feiertag');
+    }
+
     return parsedDe;
   }
 }
