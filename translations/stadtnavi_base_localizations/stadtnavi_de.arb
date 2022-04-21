@@ -1,0 +1,254 @@
+{
+  "itineraryTicketsTitle": "Benötigte Fahrkarten",
+  "@itineraryTicketsTitle": {
+    "description": "Itinerary Ticket Title label"
+  },
+  "itineraryTicketTitle": "Benötigte Fahrkarte",
+  "@itineraryTicketTitle": {
+    "description": "Itinerary Ticket Title label"
+  },
+  "itineraryBuyTicket": "Tickets kaufen",
+  "@itineraryBuyTicket": {
+    "description": "Itinerary Buy tickets label"
+  },
+  "itineraryMissingPrice": "Keine Preisangabe möglich",
+  "@itineraryMissingPrice": {
+    "description": "Itinerary No price information label"
+  },
+  "itineraryPriceOnlyPublicTransport": "Preisauskunft nur für ÖPNV gültig.",
+  "@itineraryPriceOnlyPublicTransport": {
+    "description": "Itinerary Price Only PublicTransport label"
+  },
+  "copyrightsPriceProvider": "Tarifauskünfte werden durch die Nahverkehrsgesellschaft Baden-Württemberg mbH (NVBW) zur Verfügung gestellt. Alle Angaben ohne Gewähr.",
+  "@copyrightsPriceProvider": {
+    "description": "copyrights Price Provider for cost"
+  },
+  "fareTicketName": "Regulär",
+  "@fareTicketName": {
+    "description": "The type ticket."
+  },
+  "settingPanelWalkingSpeed": "Laufgeschwindigkeit",
+  "@settingPanelWalkingSpeed": {
+    "description": "Walking Speed configuration panel label"
+  },
+  "settingPanelAvoidWalking": "Gehen vermeiden",
+  "@settingPanelAvoidWalking": {
+    "description": "Avoid Walking configuration panel label"
+  },
+  "settingPanelTransportModes": "Verkehrsmittel auswählen",
+  "@settingPanelTransportModes": {
+    "description": "Transport Modes configuration panel label"
+  },
+  "instructionVehicleSharing": "Sharing angebote",
+  "@instructionVehicleSharing": {
+    "description": "Vehicle name (Sharing)"
+  },
+  "commonCitybikes": "Leihräder und Scooter",
+  "@commonCitybikes": {
+    "description": "General Citybikes label"
+  },
+  "instructionVehicleSharingRegioRad": "RegioRad",
+  "@instructionVehicleSharingRegioRad": {
+    "description": "Vehicle name (RegioRad)"
+  },
+  "instructionVehicleSharingTaxi": "Taxi",
+  "@instructionVehicleSharingTaxi": {
+    "description": "Vehicle name (Taxi)"
+  },
+  "instructionVehicleSharingCarSharing": "Fahrgemeinschaft",
+  "@instructionVehicleSharingCarSharing": {
+    "description": "Vehicle name (Car sharing)"
+  },
+  "settingPanelAvoidTransfers": "Umstiege vermeiden",
+  "@settingPanelAvoidTransfers": {
+    "description": "Avoid Transfers configuration panel label"
+  },
+  "settingPanelMyModesTransport": "Meine Reiseoptionen",
+  "@settingPanelMyModesTransport": {
+    "description": "My modes of transport configuration panel label"
+  },
+  "settingPanelBikingSpeed": "Geschwindigkeit mit dem Fahrrad",
+  "@settingPanelBikingSpeed": {
+    "description": "Travel Speed configuration panel label"
+  },
+  "settingPanelMyModesTransportParkRide": "Park & Ride",
+  "@settingPanelMyModesTransportParkRide": {
+    "description": "Park and Ride configuration panel label"
+  },
+  "settingPanelAccessibility": "Barrierefreiheit",
+  "@settingPanelAccessibility": {
+    "description": "Accessibility configuration panel label"
+  },
+  "settingPanelWheelchair": "Rollstuhlgerecht",
+  "@settingPanelWheelchair": {
+    "description": "Wheelchair configuration panel label"
+  },
+  "settingPanelMyModesTransportBike": "Fahrrad",
+  "@settingPanelMyModesTransportBike": {
+    "description": "Bike configuration panel label"
+  },
+  "typeSpeedSlow": "Langsam",
+  "@typeSpeedSlow": {
+    "description": "Slow speed type"
+  },
+  "typeSpeedFast": "Schnell",
+  "@typeSpeedFast": {
+    "description": "Fast speed type"
+  },
+  "typeSpeedAverage": "Normal",
+  "@typeSpeedAverage": {
+    "description": "Average speed type"
+  },
+  "commonLeavingNow": "Abfahrt jetzt",
+  "@commonLeavingNow": {
+    "description": "General Leaving now label"
+  },
+  "commonArrival": "Ankunft",
+  "@commonArrival": {
+    "description": "General Arrival label"
+  },
+  "commonDeparture": "Abfahrt",
+  "@commonDeparture": {
+    "description": "General Departure label"
+  },
+  "infoMessageDestinationOutsideService": "Leider konnte keine Route an diesen Zielort gefunden werden. Der Zielort befindet sich außerhalb des abgedeckten Gebietes. Bitte ändern Sie den Zielort.",
+  "@infoMessageDestinationOutsideService": {
+    "description": "Text info message Destination outside for plan Fetch"
+  },
+  "infoMessageNoRouteMsg": "Wir konnten leider keine Reisevorschläge für diese Strecke finden. Bitte versuchen Sie den Abfahrts- oder Zielort zu ändern.",
+  "@infoMessageNoRouteMsg": {
+    "description": "Text info message No Route Msg for plan Fetch"
+  },
+  "infoMessageNoRouteMsgWithChanges": "Leider wurden keine Reiseoptionen zu Ihrer Anfrage gefunden. Passen Sie Ihre Einstellungen, Abfahrt- oder Zielort an.",
+  "@infoMessageNoRouteMsgWithChanges": {
+    "description": "Text info message No Route Msg With Changes for plan Fetch"
+  },
+  "infoMessageNoRouteOriginNearDestination": "Keine Reisevorschläge gefunden, da Abfahrts- und Zielort übereinstimmen.",
+  "@infoMessageNoRouteOriginNearDestination": {
+    "description": "Text info message no route origin same as a destination for plan Fetch"
+  },
+  "infoMessageNoRouteOriginSameAsDestination": "Die Entfernung zwischen Start und Ziel ist sehr gering. Bitte ändern Sie einen dieser Orte.",
+  "@infoMessageNoRouteOriginSameAsDestination": {
+    "description": "Text info message No Route Origin Same As Destination for plan Fetch"
+  },
+  "infoMessageNoRouteShowingAlternativeOptions": "Keine Routenvorschläge mit Ihren Einstelllungen gefunden. Stattdessen haben wird die folgenden Reiseoptionen gefunden:",
+  "@infoMessageNoRouteShowingAlternativeOptions": {
+    "description": "Text info message No Route Showing Alternative Options for plan Fetch"
+  },
+  "infoMessageOnlyCyclingRoutes": "Ihre Suche ergab nur Fahrrad-Routen.",
+  "@infoMessageOnlyCyclingRoutes": {
+    "description": "Text info message Only walking and cycling Routes for plan Fetch"
+  },
+  "infoMessageOnlyWalkingCyclingRoutes": "Ihre Suche ergab nur Fußweg- und Fahrrad-Routen.",
+  "@infoMessageOnlyWalkingCyclingRoutes": {
+    "description": "Text info message Only cycling Routes for plan Fetch"
+  },
+  "infoMessageOnlyWalkingRoutes": "Ihre Suche ergab nur Fußweg-Routen.",
+  "@infoMessageOnlyWalkingRoutes": {
+    "description": "Text info message Only Walking Routes for plan Fetch"
+  },
+  "infoMessageOriginOutsideService": "Leider konnte keine Route von diesem Startort gefunden werden. Der Startort befindet sich außerhalb des abgedeckten Gebietes. Bitte ändern Sie den Startort.",
+  "@infoMessageOriginOutsideService": {
+    "description": "Text info message origin outside for plan Fetch"
+  },
+  "infoMessageUseNationalServicePrefix": "Wir empfehlen, dass Sie den überregionalen Routenplaner nutzen,",
+  "@infoMessageUseNationalServicePrefix": {
+    "description": "Text info message Use National Service Prefix for plan Fetch"
+  },
+  "bikeRentalBikeStation": "Leihrad-Station",
+  "@bikeRentalBikeStation": {
+      "description": "Common Text Bike station"
+  },
+  "commonDetails": "Details",
+  "@commonDetails": {
+      "description": "General details label"
+  },
+  "commonMoreInformartion": "Mehr Infos",
+  "@commonMoreInformartion": {
+      "description": "General More informartion label"
+  },
+  "commonCall": "Anrufen",
+  "@commonCall": {
+      "description": "General Call label"
+  },
+  "commonOnDemandTaxi": "Fahrt buchen",
+  "@commonOnDemandTaxi": {
+      "description": "General book a trip label"
+  },
+  "carParkCloseCapacityMessage": "Dieser Parkplatz ist fast ausgebucht. Bitte planen Sie zusätzliche Zeit für Ihre Anfahrt ein.",
+  "@carParkCloseCapacityMessage": {
+      "description": "This car park is close to capacity"
+  },
+  "carParkExcludeFull": "Volle Parkplätze ausschließen",
+  "@carParkExcludeFull": {
+      "description": "Car Park Exclude Full parks label"
+  },
+  "bikeRentalNetworkFreeFloating": "Ziel ist keine Rückgabestation. Ausleihe kann hier nicht abgeschlossen werden. Anbieterabhängig fallen weiter Gebühren bis zur Rückgabe an einer Station an.",
+  "@bikeRentalNetworkFreeFloating": {
+      "description": "Text Bike Rental Network message FreeFloating"
+  },
+  "fetchMoreItinerariesLaterDeparturesTitle": "Später",
+  "@fetchMoreItinerariesLaterDeparturesTitle": {
+      "description": "Text about extra fetch itineraries for later departure title "
+  },
+  "fetchMoreItinerariesEarlierDepartures": "Früher",
+  "@fetchMoreItinerariesEarlierDepartures": {
+      "description": "Text about extra fetch itineraries for Earlier departure title "
+  },
+  "settingPanelMyModesTransportBikeRide": "Bike & Ride",
+  "@settingPanelMyModesTransportBikeRide": {
+      "description": "Bike and Ride configuration panel label"
+  },
+  "instructionVehicleTaxi": "Ruftaxi",
+  "@instructionVehicleTaxi": {
+      "description": "Vehicle name (onCar)"
+  },
+  "mapTypeLabel": "Kartentyp",
+  "@mapTypeLabel": {
+      "description": "Label for the Map types"
+  },
+  "commonMapSettings": "Karteneinstellungen",
+  "@commonMapSettings": {
+      "description": "General Map Settings label"
+  },
+  "commonShowMap": "Was soll auf der Karte angezeigt werden?",
+  "@commonShowMap": {
+      "description": "General Show on map tilers label"
+  },
+  "bikePark": "Fahrrad abstellen",
+  "@bikePark": {
+      "description": ""
+  },
+  "itinerarySummaryBikeParkTitle": "Fahrrad abstellen und weiterfahren",
+  "@itinerarySummaryBikeParkTitle": {
+      "description": "Text title itinerary Summary Bike Park Title"
+  },
+  "itinerarySummaryBikeAndPublicRailSubwayTitle": "Nehmen Sie Ihr Rad mit in den Zug oder die bahn",
+  "@itinerarySummaryBikeAndPublicRailSubwayTitle": {
+      "description": "Text title itinerary Summary Bike And Public Rail Subway"
+  },
+  "departureBikeStation": "Abfahrt um {departureTime} von {departureStop} Leihrad-Station",
+  "@departureBikeStation": {
+      "placeholders": {
+          "departureStop": {
+              "example": "herrenberg"
+          },
+          "departureTime": {
+              "example": "11:45"
+          }
+      },
+      "description": "Departure Bike Station detail Time and Stop"
+  },
+  "commonSettings": "Einstellungen",
+  "commonTrack": "Gleis",
+  "@commonTrack": {
+      "description": "General Track  label"
+  },
+  "commonPlatform": "Plattform",
+  "@commonPlatform": {
+      "description": "General Platform  label"
+  },
+  "@commonSettings": {
+    "description": "General Settings label"
+  }
+}
