@@ -792,10 +792,10 @@ packages:
   stadtnavi_core:
     dependency: "direct main"
     description:
-      path: "../../../stadtnavi-core"
+      path: "../.."
       relative: true
     source: path
-    version: "0.0.1"
+    version: "1.0.0"
   stream_channel:
     dependency: transitive
     description:
@@ -841,9 +841,11 @@ packages:
   trufi_core:
     dependency: transitive
     description:
-      path: "../../../trufi-core"
-      relative: true
-    source: path
+      path: "."
+      ref: "3.0.0"
+      resolved-ref: "5bd6ff88f1d8596429f0c9315fb1ef38f2694f34"
+      url: "https://github.com/trufi-association/trufi-core.git"
+    source: git
     version: "3.0.0"
   tuple:
     dependency: transitive
