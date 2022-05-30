@@ -36,18 +36,18 @@ void main() async {
       urlFeedback: 'https://stadtnavi.de/feedback/',
       urlShareApp: 'https://ludwigsburg.stadtnavi.eu',
       urlRepository: 'https://github.com/trufi-association/trufi-app',
+      urlImpressum: 'https://www.ludwigsburg.de/LB2020/impressum.html',
+      reportDefectsUri: Uri.parse('https://maengelmelder.service-bw.de/'),
       layersContainer: customLayersLudwigsburg,
       urlSocialMedia: const UrlSocialMedia(
-        urlFacebook: 'https://www.facebook.com/stadtnavi/',
-        urlInstagram: 'https://www.instagram.com/stadtnavi/',
-        urlTwitter: 'https://twitter.com/stadtnavi',
-        urlYoutube: 'https://www.youtube.com/channel/UCL_K2RPU0pxV5VYw0Aj_PUA',
+        urlFacebook: 'https://de-de.facebook.com/ludwigsburg/',
+        urlInstagram:
+            'https://www.instagram.com/accounts/login/?next=/ludwigsburg.de/',
       ),
-      // https://www.ludwigsburg.de/LB2020/impressum.html
-      // https://maengelmelder.service-bw.de/
-
-      // "focus.point.lat": "48.895195",
-      // "focus.point.lon": "9.188647",
+      searchLocationQueryParameters: const {
+        "focus.point.lat": "48.895195",
+        "focus.point.lon": "9.188647",
+      },
       trufiBaseTheme: TrufiBaseTheme(
         themeMode: ThemeMode.light,
         brightness: Brightness.light,
