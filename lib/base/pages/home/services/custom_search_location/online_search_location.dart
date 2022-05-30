@@ -11,15 +11,22 @@ import 'package:trufi_core/base/pages/saved_places/repository/search_location_re
 import 'location_model.dart';
 
 class OnlineSearchLocation implements SearchLocationRepository {
- 
   static const String searchEndpoint =
       'https://photon.stadtnavi.eu/pelias/v1/search';
+
+  final Map<String, dynamic>? queryParameters;
+
+  const OnlineSearchLocation({
+    this.queryParameters = const {},
+  });
+
   @override
   Future<List<TrufiPlace>> fetchLocations(
     String query, {
     int limit = 15,
     String? correlationId,
   }) async {
+    final extraQueryParameters = queryParameters ?? {};
     final Uri request = Uri.parse(
       searchEndpoint,
     ).replace(queryParameters: {
@@ -33,6 +40,7 @@ class OnlineSearchLocation implements SearchLocationRepository {
       "lang": Intl.getCurrentLocale().split("_")[0],
       "sources": "oa,osm,gtfshb",
       "layers": "station,venue,address,street",
+      ...extraQueryParameters
     });
     final response = await _fetchRequest(request);
     if (response.statusCode != 200) {

@@ -23,6 +23,9 @@ class StadtnaviApp extends StatelessWidget {
   final String urlFeedback;
   final String urlShareApp;
   final String urlRepository;
+  final String urlImpressum;
+  final Uri reportDefectsUri;
+  final Map<String, dynamic>? searchLocationQueryParameters;
   final LatLng center;
   final double? onlineZoom;
   final List<CustomLayerContainer> layersContainer;
@@ -38,6 +41,9 @@ class StadtnaviApp extends StatelessWidget {
     required this.urlFeedback,
     required this.urlShareApp,
     required this.urlRepository,
+    required this.urlImpressum,
+    required this.reportDefectsUri,
+    this.searchLocationQueryParameters,
     required this.center,
     this.onlineZoom,
     required this.layersContainer,
@@ -59,7 +65,9 @@ class StadtnaviApp extends StatelessWidget {
           markersConfiguration: const CustomMarkerConfiguration(),
           mapAttributionBuilder: stadtNaviAttributionBuilder,
         ),
-        searchLocationRepository: OnlineSearchLocation(),
+        searchLocationRepository: OnlineSearchLocation(
+          queryParameters: searchLocationQueryParameters,
+        ),
         layersContainer: layersContainer,
         mapTileProviders: [
           MapLayer(MapLayerIds.streets),
@@ -81,6 +89,8 @@ class StadtnaviApp extends StatelessWidget {
           urlRepository: urlRepository,
           urlShareApp: urlShareApp,
           urlSocialMedia: urlSocialMedia,
+          urlImpressum: urlImpressum,
+          reportDefectsUri: reportDefectsUri,
           asyncExecutor: customAsyncExecutor,
         ),
       ),

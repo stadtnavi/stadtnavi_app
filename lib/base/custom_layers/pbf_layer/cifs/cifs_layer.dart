@@ -58,16 +58,16 @@ class CifsLayer extends CustomLayer {
     double? markerSize;
     switch (zoom) {
       case 13:
-        markerSize = 5;
-        break;
-      case 14:
-        markerSize = 10;
-        break;
-      case 15:
         markerSize = 15;
         break;
-      case 16:
+      case 14:
         markerSize = 20;
+        break;
+      case 15:
+        markerSize = 30;
+        break;
+      case 16:
+        markerSize = 30;
         break;
       case 17:
         markerSize = 25;

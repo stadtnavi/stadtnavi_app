@@ -101,9 +101,9 @@ abstract class DefaultStadtnaviValues {
     required String urlShareApp,
     required String urlFeedback,
     required String urlRepository,
+    required String urlImpressum,
+    required Uri reportDefectsUri,
     UrlSocialMedia? urlSocialMedia,
-    String? impressumUrl,
-    Uri? reportDefectsUri,
   }) {
     generateDrawer(String currentRoute) {
       return (BuildContext _) => StadtnaviDrawer(
@@ -113,12 +113,10 @@ abstract class DefaultStadtnaviValues {
             backgroundImageBuilder: backgroundImageBuilder,
             urlShareApp: urlShareApp,
             menuItems: stadtnaviMenuItems(
-                defaultUrls: urlSocialMedia,
-                reportDefectsUri:
-                    Uri.parse('https://www.herrenberg.de/tools/mvs').replace(
-                  fragment: "mvPagePictures",
-                ),
-                impressumUrl: 'https://www.herrenberg.de/impressum'),
+              defaultUrls: urlSocialMedia,
+              reportDefectsUri: reportDefectsUri,
+              impressumUrl: urlImpressum,
+            ),
           );
     }
 

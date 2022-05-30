@@ -18,10 +18,10 @@ extension LayerIdsToString on LayerIds {
 
   Color enumToColor() {
     final Map<LayerIds, Color> enumStrings = {
-      LayerIds.bicycleInfrastructure: Colors.blue,
+      LayerIds.bicycleInfrastructure: Colors.black,
       LayerIds.bicycleParking: Colors.blue[600]!,
-      LayerIds.lorawanGateways: Colors.blueAccent,
-      LayerIds.publicToilets: Colors.red,
+      LayerIds.lorawanGateways: Colors.black,
+      LayerIds.publicToilets: Colors.black,
     };
 
     return enumStrings[this] ?? Colors.black;

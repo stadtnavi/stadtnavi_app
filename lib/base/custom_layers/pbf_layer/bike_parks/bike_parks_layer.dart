@@ -32,10 +32,10 @@ class BikeParkLayer extends CustomLayer {
     double? markerSize;
     switch (zoom) {
       case 15:
-        markerSize = 15;
+        markerSize = null;
         break;
       case 16:
-        markerSize = 20;
+        markerSize = null;
         break;
       case 17:
         markerSize = 25;

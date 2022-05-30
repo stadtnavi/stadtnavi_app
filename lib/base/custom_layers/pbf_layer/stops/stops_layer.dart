@@ -42,9 +42,11 @@ extension StopsLayerIdsIdsToString on StopsLayerIds {
 
 class StopsLayer extends CustomLayer {
   final Map<String, StopFeature> _pbfMarkers = {};
+
   final StopsLayerIds layerId;
   StopsLayer(this.layerId, String weight)
       : super(layerId.enumToString(), weight);
+
   void addMarker(StopFeature pointFeature) {
     if (_pbfMarkers[pointFeature.gtfsId] == null) {
       _pbfMarkers[pointFeature.gtfsId!] = pointFeature;
