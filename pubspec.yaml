@@ -1,7 +1,7 @@
 name: stadtnavi_core
 description: A Flutter Plugin for stadtnavi core.
 homepage: https://stadtnavi.de/
-version: 0.0.1
+version: 1.5.1
 
 publish_to: "none"
 
@@ -13,7 +13,9 @@ dependencies:
   flutter:
     sdk: flutter
   trufi_core:
-    path: ../trufi-core
+    git:
+      url: https://github.com/trufi-association/trufi-core.git
+      ref: 3.0.0
   vector_tile: ^0.3.2
   skeleton_animation: ^0.1.4
   maps_toolkit: ^2.0.0
