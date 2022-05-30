@@ -42,6 +42,11 @@ void main() async {
       urlFeedback: 'https://stadtnavi.de/feedback/',
       urlShareApp: 'https://herrenberg.stadtnavi.de/',
       urlRepository: 'https://github.com/trufi-association/trufi-app',
+      urlImpressum: 'https://www.herrenberg.de/impressum',
+      reportDefectsUri:
+          Uri.parse('https://www.herrenberg.de/tools/mvs').replace(
+        fragment: "mvPagePictures",
+      ),
       layersContainer: customLayersHerrenberg,
       urlSocialMedia: const UrlSocialMedia(
         urlFacebook: 'https://www.facebook.com/stadtnavi/',
