@@ -1,0 +1,254 @@
+{
+  "itineraryTicketsTitle": "Required tickets",
+  "@itineraryTicketsTitle": {
+    "description": "Itinerary Ticket Title label"
+  },
+  "itineraryTicketTitle": "Required ticket",
+  "@itineraryTicketTitle": {
+    "description": "Itinerary Ticket Title label"
+  },
+  "itineraryBuyTicket": "Buy tickets",
+  "@itineraryBuyTicket": {
+    "description": "Itinerary Buy tickets label"
+  },
+  "itineraryMissingPrice": "No price information",
+  "@itineraryMissingPrice": {
+    "description": "Itinerary No price information label"
+  },
+  "itineraryPriceOnlyPublicTransport": "Price only valid for public transport part of the journey.",
+  "@itineraryPriceOnlyPublicTransport": {
+    "description": "Itinerary Price Only PublicTransport label"
+  },
+  "copyrightsPriceProvider": "Fare information provided by Nahverkehrsgesellschaft Baden-Württemberg mbH (NVBW). No liability for the correctness of the information.",
+  "@copyrightsPriceProvider": {
+    "description": "copyrights Price Provider for cost"
+  },
+  "fareTicketName": "Adult",
+  "@fareTicketName": {
+    "description": "The type ticket."
+  },
+  "settingPanelWalkingSpeed": "Walking speed",
+  "@settingPanelWalkingSpeed": {
+    "description": "Walking Speed configuration panel label"
+  },
+  "settingPanelAvoidWalking": "Avoid walking",
+  "@settingPanelAvoidWalking": {
+    "description": "Avoid Walking configuration panel label"
+  },
+  "settingPanelTransportModes": "Transport modes",
+  "@settingPanelTransportModes": {
+    "description": "Transport Modes configuration panel label"
+  },
+  "instructionVehicleSharing": "Sharing",
+  "@instructionVehicleSharing": {
+    "description": "Vehicle name (Sharing)"
+  },
+  "commonCitybikes": "Citybikes",
+  "@commonCitybikes": {
+    "description": "General Citybikes label"
+  },
+  "instructionVehicleSharingRegioRad": "RegioRad",
+  "@instructionVehicleSharingRegioRad": {
+    "description": "Vehicle name (RegioRad)"
+  },
+  "instructionVehicleSharingTaxi": "Taxi",
+  "@instructionVehicleSharingTaxi": {
+    "description": "Vehicle name (Taxi)"
+  },
+  "instructionVehicleSharingCarSharing": "Car sharing",
+  "@instructionVehicleSharingCarSharing": {
+    "description": "Vehicle name (Car sharing)"
+  },
+  "settingPanelAvoidTransfers": "Avoid transfers",
+  "@settingPanelAvoidTransfers": {
+    "description": "Avoid Transfers configuration panel label"
+  },
+  "settingPanelMyModesTransport": "My modes of transport",
+  "@settingPanelMyModesTransport": {
+    "description": "My modes of transport configuration panel label"
+  },
+  "settingPanelBikingSpeed": "Biking speed",
+  "@settingPanelBikingSpeed": {
+    "description": "Travel Speed configuration panel label"
+  },
+  "settingPanelMyModesTransportParkRide": "Park & Ride",
+  "@settingPanelMyModesTransportParkRide": {
+    "description": "Park and Ride configuration panel label"
+  },
+  "settingPanelAccessibility": "Accessibility",
+  "@settingPanelAccessibility": {
+    "description": "Accessibility configuration panel label"
+  },
+  "settingPanelWheelchair": "Wheelchair",
+  "@settingPanelWheelchair": {
+    "description": "Wheelchair configuration panel label"
+  },
+  "settingPanelMyModesTransportBike": "Bike",
+  "@settingPanelMyModesTransportBike": {
+    "description": "Bike configuration panel label"
+  },
+  "typeSpeedAverage": "Normal",
+  "@typeSpeedAverage": {
+    "description": "Average speed type"
+  },
+  "typeSpeedFast": "Fast",
+  "@typeSpeedFast": {
+    "description": "Fast speed type"
+  },
+  "typeSpeedSlow": "Slow",
+  "@typeSpeedSlow": {
+    "description": "Slow speed type"
+  },
+  "commonLeavingNow": "Leaving now",
+  "@commonLeavingNow": {
+    "description": "General Leaving now label"
+  },
+  "commonArrival": "Arrival",
+  "@commonArrival": {
+    "description": "General Arrival label"
+  },
+  "commonDeparture": "Departure",
+  "@commonDeparture": {
+    "description": "General Departure label"
+  },
+  "infoMessageDestinationOutsideService": "No route suggestions were found because the destination is outside the service area.",
+  "@infoMessageDestinationOutsideService": {
+    "description": "Text info message Destination outside for plan Fetch"
+  },
+  "infoMessageNoRouteMsg": "Unfortunately, no route suggestions were found.",
+  "@infoMessageNoRouteMsg": {
+    "description": "Text info message No Route Msg for plan Fetch"
+  },
+  "infoMessageNoRouteMsgWithChanges": "Unfortunately, no route suggestions were found. Please check your search settings or try changing the origin or destination.",
+  "@infoMessageNoRouteMsgWithChanges": {
+    "description": "Text info message No Route Msg With Changes for plan Fetch"
+  },
+  "infoMessageNoRouteOriginNearDestination": "No route suggestions were found because the origin and destination are the same.",
+  "@infoMessageNoRouteOriginNearDestination": {
+    "description": "Text info message no route origin same as a destination for plan Fetch"
+  },
+  "infoMessageNoRouteOriginSameAsDestination": "No route suggestions were found because the origin and destination are very close to each other.",
+  "@infoMessageNoRouteOriginSameAsDestination": {
+    "description": "Text info message No Route Origin Same As Destination for plan Fetch"
+  },
+  "infoMessageNoRouteShowingAlternativeOptions": "No route suggestions were found with the your settings. However, we found the following route options:",
+  "@infoMessageNoRouteShowingAlternativeOptions": {
+    "description": "Text info message No Route Showing Alternative Options for plan Fetch"
+  },
+  "infoMessageOnlyCyclingRoutes": "Your search returned only cycling routes.",
+  "@infoMessageOnlyCyclingRoutes": {
+    "description": "Text info message Only walking and cycling Routes for plan Fetch"
+  },
+  "infoMessageOnlyWalkingCyclingRoutes": "Your search returned only walking and cycling routes.",
+  "@infoMessageOnlyWalkingCyclingRoutes": {
+    "description": "Text info message Only cycling Routes for plan Fetch"
+  },
+  "infoMessageOnlyWalkingRoutes": "Your search returned only walking routes.",
+  "@infoMessageOnlyWalkingRoutes": {
+    "description": "Text info message Only Walking Routes for plan Fetch"
+  },
+  "infoMessageOriginOutsideService": "No route suggestions were found because the origin is outside the service area.",
+  "@infoMessageOriginOutsideService": {
+    "description": "Text info message origin outside for plan Fetch"
+  },
+  "infoMessageUseNationalServicePrefix": "We recommend you try the national journey planner,",
+  "@infoMessageUseNationalServicePrefix": {
+    "description": "Text info message Use National Service Prefix for plan Fetch"
+  },
+  "bikeRentalBikeStation": "Bike station",
+  "@bikeRentalBikeStation": {
+      "description": "Common Text Bike station"
+  },
+  "commonDetails": "Details",
+  "@commonDetails": {
+      "description": "General details label"
+  },
+  "commonMoreInformartion": "More informartion",
+  "@commonMoreInformartion": {
+      "description": "General More informartion label"
+  },
+  "commonCall": "Call",
+  "@commonCall": {
+      "description": "General Call label"
+  },
+  "commonOnDemandTaxi": "Book a trip",
+  "@commonOnDemandTaxi": {
+      "description": "General book a trip label"
+  },
+  "carParkCloseCapacityMessage": "This car park is close to capacity. Please allow additional time for you journey.",
+  "@carParkCloseCapacityMessage": {
+      "description": "This car park is close to capacity"
+  },
+  "carParkExcludeFull": "Exclude full car parks",
+  "@carParkExcludeFull": {
+      "description": "Car Park Exclude Full parks label"
+  },
+  "bikeRentalNetworkFreeFloating": "Destination is not a designated drop-off area. Rental cannot be completed here. Please check terms & conditions for additional fees.",
+  "@bikeRentalNetworkFreeFloating": {
+      "description": "Text Bike Rental Network message FreeFloating"
+  },
+  "fetchMoreItinerariesLaterDeparturesTitle": "Later departures",
+  "@fetchMoreItinerariesLaterDeparturesTitle": {
+      "description": "Text about extra fetch itineraries for later departure title "
+  },
+  "fetchMoreItinerariesEarlierDepartures": "Earlier departures",
+  "@fetchMoreItinerariesEarlierDepartures": {
+      "description": "Text about extra fetch itineraries for Earlier departure title "
+  },
+  "settingPanelMyModesTransportBikeRide": "Bike & Ride",
+  "@settingPanelMyModesTransportBikeRide": {
+      "description": "Bike and Ride configuration panel label"
+  },
+  "instructionVehicleTaxi": "Taxi",
+  "@instructionVehicleTaxi": {
+      "description": "Vehicle name (onCar)"
+  },
+  "mapTypeLabel": "Map Type",
+  "@mapTypeLabel": {
+      "description": "Label for the Map types"
+  },
+  "commonMapSettings": "Map Settings",
+  "@commonMapSettings": {
+      "description": "General Map Settings label"
+  },
+  "commonShowMap": "Show on map",
+  "@commonShowMap": {
+      "description": "General Show on map tilers label"
+  },
+  "bikePark": "Park & Ride for bikes",
+  "@bikePark": {
+      "description": ""
+  },
+  "itinerarySummaryBikeParkTitle": "Leave your bike at a Park & Ride",
+  "@itinerarySummaryBikeParkTitle": {
+      "description": "Text title itinerary Summary Bike Park Title"
+  },
+  "itinerarySummaryBikeAndPublicRailSubwayTitle": "Take your bike with you on the train or to metro",
+  "@itinerarySummaryBikeAndPublicRailSubwayTitle": {
+      "description": "Text title itinerary Summary Bike And Public Rail Subway"
+  },
+  "departureBikeStation": "Departure at {departureTime} from {departureStop} bike station",
+  "@departureBikeStation": {
+      "placeholders": {
+          "departureStop": {
+              "example": "herrenberg"
+          },
+          "departureTime": {
+              "example": "11:45"
+          }
+      },
+      "description": "Departure Bike Station detail Time and Stop"
+  },
+  "commonSettings": "Settings",
+  "commonTrack": "Track",
+  "@commonTrack": {
+      "description": "General Track  label"
+  },
+  "commonPlatform": "Platform",
+  "@commonPlatform": {
+      "description": "General Platform  label"
+  },
+  "@commonSettings": {
+    "description": "General Settings label"
+  }
+}
