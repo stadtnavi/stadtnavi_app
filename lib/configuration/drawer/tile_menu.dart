@@ -24,7 +24,7 @@ class ReportDefectsButton extends MenuItem {
                   context,
                   Localizations.localeOf(context).languageCode == "en"
                       ? "Report defect"
-                      : "Mangel melden",
+                      : "Mängelmelder",
                 ),
             selectedIcon: (context) =>
                 const Icon(Icons.report_outlined, color: Colors.grey),
