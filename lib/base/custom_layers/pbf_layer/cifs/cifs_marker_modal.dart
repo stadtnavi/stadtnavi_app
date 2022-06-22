@@ -1,8 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
-import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:latlong2/latlong.dart';
@@ -96,14 +94,6 @@ class CifsMarkerModal extends StatelessWidget {
                   ],
                 ),
             ],
-          ),
-        ),
-        CustomLocationSelector(
-          onFetchPlan: onFetchPlan,
-          locationData: LocationDetail(
-            element.locationStreet,
-            "",
-            position,
           ),
         ),
       ],

@@ -55,29 +55,6 @@ class CifsLayer extends CustomLayer {
       default:
         polylineSize = zoom != null && zoom > 18 ? 8 : null;
     }
-    double? markerSize;
-    switch (zoom) {
-      case 13:
-        markerSize = 15;
-        break;
-      case 14:
-        markerSize = 20;
-        break;
-      case 15:
-        markerSize = 30;
-        break;
-      case 16:
-        markerSize = 30;
-        break;
-      case 17:
-        markerSize = 25;
-        break;
-      case 18:
-        markerSize = 30;
-        break;
-      default:
-        markerSize = zoom != null && zoom > 18 ? 35 : null;
-    }
     final markersList = _pbfMarkers.values.toList();
     return GroupLayerOptions(
       group: polylineSize != null
@@ -92,34 +69,6 @@ class CifsLayer extends CustomLayer {
                         ))
                     .toList(),
               ),
-              MarkerLayerOptions(
-                markers: [
-                  ...markersList
-                      .map((element) => Marker(
-                            height: markerSize!,
-                            width: markerSize,
-                            point: element.startPoint,
-                            anchorPos: AnchorPos.align(AnchorAlign.center),
-                            builder: (context) => _CifsFeatureMarker(
-                              element: element,
-                              point: element.startPoint,
-                            ),
-                          ))
-                      .toList(),
-                  ...markersList
-                      .map((element) => Marker(
-                            height: markerSize!,
-                            width: markerSize,
-                            point: element.endPoint,
-                            anchorPos: AnchorPos.align(AnchorAlign.center),
-                            builder: (context) => _CifsFeatureMarker(
-                              element: element,
-                              point: element.endPoint,
-                            ),
-                          ))
-                      .toList(),
-                ],
-              )
             ]
           : [],
     );
@@ -127,7 +76,58 @@ class CifsLayer extends CustomLayer {
 
   @override
   LayerOptions? buildLayerOptionsPriority(int zoom) {
-    return null;
+    double? markerSize;
+    switch (zoom) {
+      case 13:
+        markerSize = 15;
+        break;
+      case 14:
+        markerSize = 20;
+        break;
+      case 15:
+        markerSize = 23;
+        break;
+      case 16:
+        markerSize = 25;
+        break;
+      case 17:
+        markerSize = 25;
+        break;
+      case 18:
+        markerSize = 30;
+        break;
+      default:
+        markerSize = zoom > 18 ? 35 : null;
+    }
+    final markersList = _pbfMarkers.values.toList();
+    return MarkerLayerOptions(
+      markers: [
+        ...markersList
+            .map((element) => Marker(
+                  height: markerSize!,
+                  width: markerSize,
+                  point: element.startPoint,
+                  anchorPos: AnchorPos.align(AnchorAlign.center),
+                  builder: (context) => _CifsFeatureMarker(
+                    element: element,
+                    point: element.startPoint,
+                  ),
+                ))
+            .toList(),
+        ...markersList
+            .map((element) => Marker(
+                  height: markerSize!,
+                  width: markerSize,
+                  point: element.endPoint,
+                  anchorPos: AnchorPos.align(AnchorAlign.center),
+                  builder: (context) => _CifsFeatureMarker(
+                    element: element,
+                    point: element.endPoint,
+                  ),
+                ))
+            .toList(),
+      ],
+    );
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {

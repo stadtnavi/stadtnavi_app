@@ -88,10 +88,9 @@ class ParkingFeature {
     final regex = RegExp(r"lot_type:([^,]+)");
     final regexResult = tags != null ? regex.firstMatch(tags) : null;
     final String? stringType = regexResult?.group(1);
-
     final ParkingsLayerIds type = stringType != null
         ? pbfParkingLayerIdsstringToEnum(stringType)
-        : ParkingsLayerIds.parkingSpot;
+        : ParkingsLayerIds.parkRide;
     return ParkingFeature(
       geoJsonPoint: geoJsonPoint,
       id: id,
@@ -176,12 +175,15 @@ class ParkingFeature {
       bicyclePlaces: bicyclePlaces ?? this.bicyclePlaces,
       anyCarPlaces: anyCarPlaces ?? this.anyCarPlaces,
       carPlaces: carPlaces ?? this.carPlaces,
-      wheelchairAccessibleCarPlaces: wheelchairAccessibleCarPlaces ?? this.wheelchairAccessibleCarPlaces,
+      wheelchairAccessibleCarPlaces:
+          wheelchairAccessibleCarPlaces ?? this.wheelchairAccessibleCarPlaces,
       realTimeData: realTimeData ?? this.realTimeData,
       capacity: capacity ?? this.capacity,
-      bicyclePlacesCapacity: bicyclePlacesCapacity ?? this.bicyclePlacesCapacity,
+      bicyclePlacesCapacity:
+          bicyclePlacesCapacity ?? this.bicyclePlacesCapacity,
       carPlacesCapacity: carPlacesCapacity ?? this.carPlacesCapacity,
-      availabilityCarPlacesCapacity: availabilityCarPlacesCapacity ?? this.availabilityCarPlacesCapacity,
+      availabilityCarPlacesCapacity:
+          availabilityCarPlacesCapacity ?? this.availabilityCarPlacesCapacity,
       totalDisabled: totalDisabled ?? this.totalDisabled,
       freeDisabled: freeDisabled ?? this.freeDisabled,
       type: type ?? this.type,

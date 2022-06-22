@@ -85,11 +85,11 @@ class ChargingLayer extends CustomLayer {
                             ),
                           ),
                           if (element.capacityUnknown == 0)
-                            if ((element.available ?? 0) > 0)
+                            if ((element.available ?? 0) > 1)
                               Positioned(
                                 child: Container(
-                                  height: markerSize / 2,
-                                  width: markerSize / 2,
+                                  height: markerSize / 1.8,
+                                  width: markerSize / 1.8,
                                   decoration: BoxDecoration(
                                     color: Colors.green,
                                     borderRadius: BorderRadius.circular(100),
@@ -103,10 +103,20 @@ class ChargingLayer extends CustomLayer {
                                   ),
                                 ),
                               )
+                            else if ((element.available ?? 0) == 1)
+                              Positioned(
+                                child: SizedBox(
+                                  height: markerSize / 1.8,
+                                  width: markerSize / 1.8,
+                                  child: SvgPicture.string(
+                                    charginIconPoorAvailability,
+                                  ),
+                                ),
+                              )
                             else
                               Container(
-                                height: markerSize / 2,
-                                width: markerSize / 2,
+                                height: markerSize / 1.8,
+                                width: markerSize / 1.8,
                                 decoration: BoxDecoration(
                                   color: Colors.red,
                                   borderRadius: BorderRadius.circular(100),

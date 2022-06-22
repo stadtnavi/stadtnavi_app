@@ -29,7 +29,7 @@ class StaticTileLayers {
   static BikeParkLayer bikeParkLayer = BikeParkLayer("Bike Parking Space", '3');
   static BicycleNetworkLayer bicycleNetworkLayer =
       BicycleNetworkLayer("Bicycle Network Space", '2');
-  static CifsLayer cifsLayer = CifsLayer("Roadworks", '1');
+  static CifsLayer cifsLayer = CifsLayer("Roadworks", '2');
   static LiveBusLayer liveBusLayer = LiveBusLayer("LiveBusBeta", '3');
   static WeatherLayer weatherLayer = WeatherLayer("Road Weather", '3');
   static ChargingLayer chargingLayer = ChargingLayer("Charging", '3');

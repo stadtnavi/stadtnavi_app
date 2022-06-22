@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
@@ -97,7 +99,7 @@ class CityBikesLayer extends CustomLayer {
                               child: element.type?.imageStop,
                             ),
                             if (element.extraInfo?.bikesAvailable != null &&
-                                element.extraInfo!.bikesAvailable! >= 0)
+                                element.extraInfo!.bikesAvailable! >= 0 && element.type != CityBikeLayerIds.carSharing)
                               Positioned(
                                 right: markerSize / 5,
                                 child: Container(
