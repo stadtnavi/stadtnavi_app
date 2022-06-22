@@ -55,7 +55,7 @@ extension CityBikeLayerIdsExtension on CityBikeLayerIds {
     CityBikeLayerIds.taxi: const Color(0xfff1b736),
     CityBikeLayerIds.cargoBike: const Color(0xffff834a),
     CityBikeLayerIds.carSharing: const Color(0xffff834a),
-    CityBikeLayerIds.regiorad: const Color(0xffffffff),
+    CityBikeLayerIds.regiorad: const Color(0xff009FE4),
     CityBikeLayerIds.scooter: const Color(0xffff834a),
   };
 
