@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:ludwigsburg/components/share_itinerary_button.dart';
 import 'package:ludwigsburg/configuration_routes.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layer_local_storage.dart';
@@ -57,6 +58,7 @@ void main() async {
       extraDrawerItems: extraDrawerItems,
       extraRoutes: extraRoutes,
       extraBlocs: extraBlocs,
+      extraFloatingMapButtons: extraButtons,
     ),
   );
 }
