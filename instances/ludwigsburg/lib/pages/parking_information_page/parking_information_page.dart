@@ -136,51 +136,66 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
                             ? "${parking.freeDisabled} of ${parking.totalDisabled} wheelchair-accessible parking spaces available"
                             : "${parking.freeDisabled} von ${parking.totalDisabled} rollstuhlgerechten Parkplätzen vorhanden";
                       }
-                      return SizedBox(
-                          child: ListTile(
-                        leading: SvgPicture.string(
-                          parkingMarkerIcons[parking.type] ?? "",
-                        ),
-                        title: Text(parking.name.toString()),
-                        subtitle: spaces != null || disabledSpaces != null
-                            ? Text(
-                                "${spaces ?? ''}${spaces != null && disabledSpaces != null ? '\n' : ''}${disabledSpaces ?? ''}",
-                              )
-                            : null,
-                        trailing: (parking.markerState() != null)
-                            ? (parking.markerState()!)
-                                ? Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      color: Colors.green,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.check,
-                                        size: 20,
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                      return Column(
+                        children: [
+                          ListTile(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                            minLeadingWidth: 0,
+                            leading: SizedBox(
+                              width: 40,
+                              height: 40,
+                              child: SvgPicture.string(
+                                parkingMarkerIcons[parking.type] ?? "",
+                              ),
+                            ),
+                            title: Text(parking.name.toString()),
+                            subtitle: spaces != null || disabledSpaces != null
+                                ? Text(
+                                    "${spaces ?? ''}${spaces != null && disabledSpaces != null ? '\n' : ''}${disabledSpaces ?? ''}",
                                   )
-                                : Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: const Center(
-                                      child: Icon(
-                                        Icons.close,
-                                        size: 10,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  )
-                            : null,
-                      ));
+                                : null,
+                            trailing: (parking.markerState() != null)
+                                ? (parking.markerState()!)
+                                    ? Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.check,
+                                            size: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.close,
+                                            size: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )
+                                : null,
+                          ),
+                          const Divider(
+                            color: Colors.grey,
+                            height: 0,
+                          ),
+                        ],
+                      );
                     },
                   ),
                 ),
