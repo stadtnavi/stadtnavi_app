@@ -25,11 +25,16 @@ import 'package:trufi_core/base/pages/feedback/translations/feedback_localizatio
 import 'package:trufi_core/base/pages/saved_places/repository/search_location_repository.dart';
 import 'package:trufi_core/base/pages/saved_places/saved_places.dart';
 import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
+import 'package:trufi_core/base/widgets/drawer/menu/menu_item.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 import 'package:trufi_core/base/blocs/localization/trufi_localization_cubit.dart';
 import 'package:trufi_core/base/pages/saved_places/search_locations_cubit/search_locations_cubit.dart';
 import 'package:trufi_core/base/pages/transport_list/route_transports_cubit/route_transports_cubit.dart';
+
+typedef RouterBuilder = Map<String, RouteSettings Function(RouteData)> Function(
+  WidgetBuilder Function(String),
+);
 
 abstract class DefaultStadtnaviValues {
   static TrufiLocalization trufiLocalization({Locale? currentLocale}) =>
@@ -53,6 +58,7 @@ abstract class DefaultStadtnaviValues {
     required SearchLocationRepository searchLocationRepository,
     required List<CustomLayerContainer> layersContainer,
     required List<MapTileProvider> mapTileProviders,
+    List<BlocProvider>? extraBlocs,
   }) {
     return [
       BlocProvider<RouteTransportsCubit>(
@@ -90,6 +96,7 @@ abstract class DefaultStadtnaviValues {
           mapTileProviders: mapTileProviders,
         ),
       ),
+      if (extraBlocs != null) ...extraBlocs,
     ];
   }
 
@@ -104,6 +111,8 @@ abstract class DefaultStadtnaviValues {
     required String urlImpressum,
     required Uri reportDefectsUri,
     UrlSocialMedia? urlSocialMedia,
+    List<MenuItem>? extraDrawerItems,
+    RouterBuilder? extraRoutes,
   }) {
     generateDrawer(String currentRoute) {
       return (BuildContext _) => StadtnaviDrawer(
@@ -113,10 +122,10 @@ abstract class DefaultStadtnaviValues {
             backgroundImageBuilder: backgroundImageBuilder,
             urlShareApp: urlShareApp,
             menuItems: stadtnaviMenuItems(
-              defaultUrls: urlSocialMedia,
-              reportDefectsUri: reportDefectsUri,
-              impressumUrl: urlImpressum,
-            ),
+                defaultUrls: urlSocialMedia,
+                reportDefectsUri: reportDefectsUri,
+                impressumUrl: urlImpressum,
+                extraItems: extraDrawerItems),
           );
     }
 
@@ -159,6 +168,7 @@ abstract class DefaultStadtnaviValues {
                     drawerBuilder: generateDrawer(AboutPage.route),
                   ),
                 ),
+            if (extraRoutes != null) ...extraRoutes(generateDrawer),
           },
         );
       },

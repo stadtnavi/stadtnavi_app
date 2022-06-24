@@ -101,32 +101,34 @@ class CifsLayer extends CustomLayer {
     }
     final markersList = _pbfMarkers.values.toList();
     return MarkerLayerOptions(
-      markers: [
-        ...markersList
-            .map((element) => Marker(
-                  height: markerSize!,
-                  width: markerSize,
-                  point: element.startPoint,
-                  anchorPos: AnchorPos.align(AnchorAlign.center),
-                  builder: (context) => _CifsFeatureMarker(
-                    element: element,
-                    point: element.startPoint,
-                  ),
-                ))
-            .toList(),
-        ...markersList
-            .map((element) => Marker(
-                  height: markerSize!,
-                  width: markerSize,
-                  point: element.endPoint,
-                  anchorPos: AnchorPos.align(AnchorAlign.center),
-                  builder: (context) => _CifsFeatureMarker(
-                    element: element,
-                    point: element.endPoint,
-                  ),
-                ))
-            .toList(),
-      ],
+      markers: markerSize != null
+          ? [
+              ...markersList
+                  .map((element) => Marker(
+                        height: markerSize!,
+                        width: markerSize,
+                        point: element.startPoint,
+                        anchorPos: AnchorPos.align(AnchorAlign.center),
+                        builder: (context) => _CifsFeatureMarker(
+                          element: element,
+                          point: element.startPoint,
+                        ),
+                      ))
+                  .toList(),
+              ...markersList
+                  .map((element) => Marker(
+                        height: markerSize!,
+                        width: markerSize,
+                        point: element.endPoint,
+                        anchorPos: AnchorPos.align(AnchorAlign.center),
+                        builder: (context) => _CifsFeatureMarker(
+                          element: element,
+                          point: element.endPoint,
+                        ),
+                      ))
+                  .toList(),
+            ]
+          : [],
     );
   }
 

@@ -20,6 +20,7 @@ List<List<MenuItem>> stadtnaviMenuItems({
   required UrlSocialMedia? defaultUrls,
   required String impressumUrl,
   required Uri reportDefectsUri,
+  List<MenuItem>? extraItems,
 }) {
   return [
     [
@@ -40,6 +41,7 @@ List<List<MenuItem>> stadtnaviMenuItems({
           return localization.menuConnections;
         },
       ),
+      if (extraItems != null) ...extraItems,
       MenuPageItem(
         id: SavedPlacesPage.route,
         selectedIcon: (context) => Icon(
@@ -56,7 +58,7 @@ List<List<MenuItem>> stadtnaviMenuItems({
           final localization = SavedPlacesLocalization.of(context);
           return localization.menuYourPlaces;
         },
-      )
+      ),
     ],
     [
       ReportDefectsButton(
