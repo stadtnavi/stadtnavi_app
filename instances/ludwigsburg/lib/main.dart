@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:ludwigsburg/configuration_routes.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layer_local_storage.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
+import 'package:stadtnavi_core/consts.dart';
 import 'package:stadtnavi_core/stadtnavi_core.dart';
 
 import 'package:trufi_core/base/utils/graphql_client/hive_init.dart';
@@ -14,9 +16,6 @@ import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'branding_ludwigsburg.dart';
 import 'static_layer.dart';
 
-const baseDomain = "api.stadtnavi.de";
-String openTripPlannerUrl =
-    "https://$baseDomain/routing/v1/router/index/graphql";
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initHiveForFlutter(boxes: [
@@ -37,7 +36,8 @@ void main() async {
       urlShareApp: 'https://ludwigsburg.stadtnavi.eu',
       urlRepository: 'https://github.com/trufi-association/trufi-app',
       urlImpressum: 'https://www.ludwigsburg.de/LB2020/impressum.html',
-      reportDefectsUri: Uri.parse('https://www.ludwigsburg.de/start/rathaus+und+service/maengelmelder.html'),
+      reportDefectsUri: Uri.parse(
+          'https://www.ludwigsburg.de/start/rathaus+und+service/maengelmelder.html'),
       layersContainer: customLayersLudwigsburg,
       urlSocialMedia: const UrlSocialMedia(
         urlFacebook: 'https://de-de.facebook.com/ludwigsburg/',
@@ -54,6 +54,9 @@ void main() async {
         theme: brandingStadtnaviLudwigsburg,
         darkTheme: brandingStadtnaviLudwigsburgDark,
       ),
+      extraDrawerItems: extraDrawerItems,
+      extraRoutes: extraRoutes,
+      extraBlocs: extraBlocs,
     ),
   );
 }
