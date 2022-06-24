@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ludwigsburg/pages/about/about.dart';
 import 'package:ludwigsburg/pages/parking_information_page/parking_information_cubit/parking_information_cubit.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,14 @@ Map<String, RouteSettings Function(RouteData)> extraRoutes(
   return {
     ParkingInformationPage.route: (route) => NoAnimationPage(
           child: ParkingInformationPage(
+            drawerBuilder: drawerBuilder(ParkingInformationPage.route),
+          ),
+        ),
+    AboutPage.route: (route) => NoAnimationPage(
+          child: AboutPage(
+            appName: 'stadtnavi',
+            cityName: 'Ludwigsburg',
+            urlRepository: 'https://github.com/trufi-association/trufi-app',
             drawerBuilder: drawerBuilder(ParkingInformationPage.route),
           ),
         ),
