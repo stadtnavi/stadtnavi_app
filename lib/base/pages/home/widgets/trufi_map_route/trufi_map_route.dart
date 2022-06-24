@@ -20,11 +20,13 @@ import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 class TrufiMapRoute extends StatefulWidget {
   final TrufiMapController trufiMapController;
   final AsyncExecutor asyncExecutor;
+  final WidgetBuilder? extraFloatingMapButtons;
   final WidgetBuilder? overlapWidget;
   const TrufiMapRoute({
     Key? key,
     required this.trufiMapController,
     required this.asyncExecutor,
+    this.extraFloatingMapButtons,
     this.overlapWidget,
   }) : super(key: key);
 
@@ -83,6 +85,7 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
                 children: [
                   CropButton(
                       key: _cropButtonKey, onPressed: _handleOnCropPressed),
+                  if (widget.extraFloatingMapButtons != null) widget.extraFloatingMapButtons!(context)
                 ],
               ),
             );

@@ -38,6 +38,7 @@ class StadtnaviApp extends StatelessWidget {
   final List<MenuItem>? extraDrawerItems;
   final RouterBuilder? extraRoutes;
   final List<BlocProvider>? extraBlocs;
+  final WidgetBuilder? extraFloatingMapButtons;
 
   const StadtnaviApp({
     Key? key,
@@ -59,6 +60,7 @@ class StadtnaviApp extends StatelessWidget {
     this.extraDrawerItems,
     this.extraRoutes,
     this.extraBlocs,
+    this.extraFloatingMapButtons,
   }) : super(key: key);
 
   @override
@@ -84,7 +86,7 @@ class StadtnaviApp extends StatelessWidget {
           MapLayer(MapLayerIds.satellite),
           MapLayer(MapLayerIds.bike),
         ],
-        extraBlocs:extraBlocs,
+        extraBlocs: extraBlocs,
       ),
       trufiRouter: TrufiRouter(
         routerDelegate: DefaultStadtnaviValues.routerDelegate(
@@ -105,6 +107,7 @@ class StadtnaviApp extends StatelessWidget {
           asyncExecutor: customAsyncExecutor,
           extraDrawerItems: extraDrawerItems,
           extraRoutes: extraRoutes,
+          extraFloatingMapButtons: extraFloatingMapButtons,
         ),
       ),
     );

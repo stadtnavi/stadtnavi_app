@@ -113,6 +113,7 @@ abstract class DefaultStadtnaviValues {
     UrlSocialMedia? urlSocialMedia,
     List<MenuItem>? extraDrawerItems,
     RouterBuilder? extraRoutes,
+    WidgetBuilder? extraFloatingMapButtons,
   }) {
     generateDrawer(String currentRoute) {
       return (BuildContext _) => StadtnaviDrawer(
@@ -144,6 +145,7 @@ abstract class DefaultStadtnaviValues {
                       return TrufiMapRoute(
                         trufiMapController: trufiMapController,
                         asyncExecutor: asyncExecutor ?? AsyncExecutor(),
+                        extraFloatingMapButtons: extraFloatingMapButtons,
                       );
                     },
                     drawerBuilder: generateDrawer(HomePage.route),
