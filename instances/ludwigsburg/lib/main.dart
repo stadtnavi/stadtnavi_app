@@ -53,7 +53,7 @@ void main() async {
         themeMode: ThemeMode.light,
         brightness: Brightness.light,
         theme: brandingStadtnaviLudwigsburg,
-        darkTheme: brandingStadtnaviLudwigsburgDark,
+        darkTheme: brandingStadtnaviLudwigsburg,
       ),
       extraDrawerItems: extraDrawerItems,
       extraRoutes: extraRoutes,
