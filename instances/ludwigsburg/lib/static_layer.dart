@@ -84,7 +84,8 @@ final List<CustomLayerContainer> customLayersLudwigsburg = [
         isOnline: true,
       ),
       StaticTileLayers.cifsLayer,
-      StaticTileLayers.weatherLayer,
+      // Hide "Straßenwetter" Layer
+      // StaticTileLayers.weatherLayer,
       Layer(
         LayerIds.lorawanGateways,
         '3',

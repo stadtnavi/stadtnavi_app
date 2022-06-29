@@ -4,6 +4,7 @@ import 'package:ludwigsburg/components/share_itinerary_button.dart';
 import 'package:ludwigsburg/configuration_routes.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layer_local_storage.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
@@ -26,6 +27,8 @@ void main() async {
     SettingFetchCubit.path,
     CustomLayerLocalStorage.path,
   ]);
+  // TODO we need to improve disable fetch method
+  WeatherLayer.isdisable = true;
   runApp(
     StadtnaviApp(
       appName: 'stadtnavi',

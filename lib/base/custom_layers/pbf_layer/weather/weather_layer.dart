@@ -98,7 +98,10 @@ class WeatherLayer extends CustomLayer {
     );
   }
 
+  static bool isdisable = false;
+
   static Future<void> fetchPBF(int z, int x, int y) async {
+    if (isdisable) return;
     final uri = Uri(
       scheme: "https",
       host: baseDomain,
