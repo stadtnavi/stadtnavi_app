@@ -155,7 +155,7 @@ class ParkingZonesLayer extends CustomLayer {
   @override
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? "Parking zones" : "Parkplätze";
+    return localeName == "en" ? "Parking zones" : "Parkzonen";
   }
 
   @override

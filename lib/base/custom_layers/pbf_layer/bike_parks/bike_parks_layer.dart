@@ -144,7 +144,7 @@ class BikeParkLayer extends CustomLayer {
   @override
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? "Bike parking spaces" : "Fahrradparkplätze";
+    return localeName == "en" ? "Bike parking spaces" : "Fahrradstellplätze";
   }
 
   @override
