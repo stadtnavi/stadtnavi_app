@@ -31,8 +31,10 @@ class AboutPage extends StatelessWidget {
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
-    final localization = AboutLocalization.of(context);
-    return AppBar(title: Text(localization.menuAbout));
+    return AppBar(
+        title: Text(Localizations.localeOf(context).languageCode == "en"
+            ? "About this service"
+            : "Über diesen Dienst"));
   }
 
   Widget _buildBody(BuildContext context) {

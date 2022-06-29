@@ -101,7 +101,7 @@ List<List<MenuItem>> stadtnaviMenuItems({
         ),
         name: (context) => Localizations.localeOf(context).languageCode == "en"
             ? "About this service"
-            : "Über diesen Service",
+            : "Über diesen Dienst",
       ),
       if (defaultUrls != null && defaultUrls.existUrl)
         stadtNaviSocialMedia(defaultUrls),
