@@ -25,7 +25,7 @@ Map<String, RouteSettings Function(RouteData)> extraRoutes(
             appName: 'stadtnavi',
             cityName: 'Ludwigsburg',
             urlRepository: 'https://github.com/trufi-association/trufi-app',
-            drawerBuilder: drawerBuilder(ParkingInformationPage.route),
+            drawerBuilder: drawerBuilder(AboutPage.route),
           ),
         ),
   };
