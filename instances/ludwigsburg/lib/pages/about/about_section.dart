@@ -2,9 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class AboutSection extends StatelessWidget {
   static const _padding = EdgeInsets.only(top: 16.0);
+  static const _paddingPart = EdgeInsets.only(top: 24.0);
 
   const AboutSection({
     Key? key,
@@ -32,25 +32,54 @@ class AboutSection extends StatelessWidget {
           padding: _padding,
           child: Text(
             isLanguageEn
-                ? '$appName is a travel planning application for the city of $cityName and its surroundings. This service includes public transport, footpaths, cycling, street and parking information, charging infrastructure and sharing offerings. The mobility offerings are connected through intermodal routing.'
-                : '$appName ist eine Reiseplanungs-Anwendung für die Stadt $cityName und Umgebung. Dieser Dienst umfasst ÖPNV, Fußwege, Radverkehr, Straßen- und Parkplatzinformationen, Ladeinfrastruktur und Sharing-Angebote. Mobilitätsangebote werden durch intermodales Routing miteinander vernetzt.',
+                ? '$appName $cityName is a travel planning application for the city of $cityName and its surroundings. This service includes public transport, footpaths, cycling, street and parking information, charging infrastructure and sharing offerings. The mobility offerings are connected through intermodal routing.'
+                : '$appName $cityName ist eine Reiseplanungs-Anwendung für die Stadt $cityName und Umgebung. Dieser Dienst umfasst ÖPNV, Fußwege, Radverkehr, Straßen- und Parkplatzinformationen, Ladeinfrastruktur und Sharing-Angebote. Mobilitätsangebote werden durch intermodales Routing miteinander vernetzt.',
             style: theme.textTheme.bodyText1,
+          ),
+        ),
+        Padding(
+          padding: _paddingPart,
+          child: Text(
+            isLanguageEn ? 'Contribute' : 'Mitmachen',
+            style: theme.textTheme.subtitle1?.copyWith(
+                color: theme.textTheme.bodyText1?.color,
+                fontWeight: FontWeight.w700),
           ),
         ),
         Padding(
           padding: _padding,
-          child: Text(
-            isLanguageEn ? 'Contribute:' : 'Mitmachen:',
-            style: theme.textTheme.bodyText1,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 5.0),
-          child: Text(
-            isLanguageEn
-                ? 'The city of $cityName has developed this app, funded by the Federal Ministry of Transport and Digital Infrastructure (BMVI), as model city. The $appName app is an open source solution and can be used, customized and further developed by other municipalities to meet individual needs (white lable solution). Participation is welcome!'
-                : 'Die Stadt $cityName hat diese App im Rahmen der Modellstadt, gefördert durch das Bundesministerium für Verkehr und digitale Infrastruktur (BMVI) entwickelt. $appName ist eine Open Source Lösung und kann von anderen Kommunen und Akteuren unter ihrem Namen und Erscheinungsbild verwendet und an individuelle Bedürfnisse angepasst und weiterentwickelt werden (White Label Lösung). Mitmachen ist gewünscht!',
-            style: theme.textTheme.bodyText1,
+          child: RichText(
+            text: TextSpan(
+              style: theme.textTheme.bodyText1,
+              children: [
+                TextSpan(
+                  text: isLanguageEn
+                      ? 'The Stadtwerke Ludwigsburg have developed this app, based on stadtnavi Herrenberg, which was funded by the Federal Ministry of Transport and Digital Infrastructure (BMVI). The stadtnavi app is an open source solution, '
+                      : 'stadtnavi Ludwigsburg basiert auf dem BMVI-geförderten Projekt stadtnavi Herrenberg. stadtnavi Anwendung ist eine Open Source Lösung, ',
+                ),
+                TextSpan(
+                  text: isLanguageEn
+                      ? 'available via GitHub'
+                      : 'auf GitHub verfügbar',
+                  style: TextStyle(
+                    color: theme.colorScheme.primary,
+                    decoration: TextDecoration.underline,
+                  ),
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () async {
+                      const url = 'https://github.com/stadtnavi/digitransit-ui';
+                      if (await canLaunch(url)) {
+                        await launch(url);
+                      }
+                    },
+                ),
+                TextSpan(
+                  text: isLanguageEn
+                      ? ', and can be used, customized and further developed by other municipalities to meet individual needs (white lable solution). Participation is welcome!'
+                      : ', und kann von anderen Kommunen und Akteuren unter ihrem Namen und Erscheinungsbild verwendet und an individuelle Bedürfnisse angepasst und weiterentwickelt werden (White Label Lösung). Mitmachen ist gewünscht!',
+                ),
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 16),
@@ -62,7 +91,7 @@ class AboutSection extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: _padding,
+          padding: _paddingPart,
           child: Text(
             isLanguageEn ? 'Digitransit platform' : 'Digitransit Plattform',
             style: theme.textTheme.subtitle1?.copyWith(
@@ -72,15 +101,52 @@ class AboutSection extends StatelessWidget {
         ),
         Padding(
           padding: _padding,
-          child: Text(
-            isLanguageEn
-                ? 'This service is based on the Digitransit Platform and the backend service OpenTripPlanner. All software is available under an open license. Thanks to everyone involved.'
-                : 'Dieser Dienst basiert auf der Digitransit Platform und dem Backend-Dienst OpenTripPlanner. Alle Software ist unter einer offenen Lizenzen verfügbar. Vielen Dank an alle Beteiligten.',
-            style: theme.textTheme.bodyText1,
-          ),
+          child: isLanguageEn
+              ? Text(
+                  'The Digitransit service platform is an open source routing platform developed by HSL and Traficom. It builds on OpenTripPlanner by Conveyal. Enhancements by Transportkollektiv and MITFAHR|DE|ZENTRALE. All software is open source. Thanks to everybody working on this!',
+                  style: theme.textTheme.bodyText1,
+                )
+              : Column(
+                  children: [
+                    Text(
+                      'Dieser Dienst basiert auf der Digitransit Platform und dem Backend-Dienst OpenTripPlanner. Alle Software ist unter einer offenen Lizenzen verfügbar. Vielen Dank an alle Beteiligten.',
+                      style: theme.textTheme.bodyText1,
+                    ),
+                    const SizedBox(height: 16),
+                    RichText(
+                      text: TextSpan(
+                        style: theme.textTheme.bodyText1,
+                        children: [
+                          const TextSpan(
+                            text:
+                                'Der gesamte Quellcode der Plattform, die aus vielen verschiedenen Komponenten besteht, ist auf ',
+                          ),
+                          TextSpan(
+                            text: 'Github',
+                            style: TextStyle(
+                              color: theme.colorScheme.primary,
+                              decoration: TextDecoration.underline,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () async {
+                                const url =
+                                    'https://github.com/stadtnavi/';
+                                if (await canLaunch(url)) {
+                                  await launch(url);
+                                }
+                              },
+                          ),
+                          const TextSpan(
+                            text: ' verfügbar.',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
         ),
         Padding(
-          padding: _padding,
+          padding: _paddingPart,
           child: Text(
             isLanguageEn ? 'Data sources' : 'Datenquellen',
             style: theme.textTheme.subtitle1?.copyWith(
@@ -92,7 +158,7 @@ class AboutSection extends StatelessWidget {
           padding: _padding,
           child: RichText(
             text: TextSpan(
-              text: isLanguageEn ? 'Card data ' : 'Kartendaten: © ',
+              text: isLanguageEn ? 'Map data: © ' : 'Kartendaten: © ',
               style: theme.textTheme.bodyText1,
               children: <TextSpan>[
                 TextSpan(
@@ -101,6 +167,7 @@ class AboutSection extends StatelessWidget {
                       : 'OpenStreetMap Mitwirkende',
                   style: theme.textTheme.bodyText2?.copyWith(
                     decoration: TextDecoration.underline,
+                    color: theme.colorScheme.primary,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
@@ -120,7 +187,7 @@ class AboutSection extends StatelessWidget {
           child: RichText(
             text: TextSpan(
               text: isLanguageEn
-                  ? 'ÖPNV-data: Datasets from '
+                  ? 'Public transit data: Datasets by '
                   : 'ÖPNV-Daten: Datensätze der ',
               style: theme.textTheme.bodyText1,
               children: <TextSpan>[
@@ -128,6 +195,7 @@ class AboutSection extends StatelessWidget {
                   text: 'NVBW GmbH',
                   style: theme.textTheme.bodyText2?.copyWith(
                     decoration: TextDecoration.underline,
+                    color: theme.colorScheme.primary,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
@@ -145,6 +213,7 @@ class AboutSection extends StatelessWidget {
                   text: 'VVS GmbH',
                   style: theme.textTheme.bodyText2?.copyWith(
                     decoration: TextDecoration.underline,
+                    color: theme.colorScheme.primary,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
@@ -156,7 +225,7 @@ class AboutSection extends StatelessWidget {
                 ),
                 TextSpan(
                   text: isLanguageEn
-                      ? ', shapes (i.e. geometries of the routes) each enriched with OpenStreetMap data © OpenStreetMap Contributors'
+                      ? ', Shapes (d.h. Geometries of transit routes) enhanced with OpenStreetMap data © OpenStreetMap contributors'
                       : ', Shapes (d.h. Geometrien der Streckenverläufe) jeweils angereichert mit OpenStreetMap-Daten © OpenStreetMap Mitwirkende',
                   style: theme.textTheme.bodyText1,
                 ),
@@ -168,7 +237,7 @@ class AboutSection extends StatelessWidget {
           padding: _padding,
           child: Text(
             isLanguageEn
-                ? 'All statements without guarantee.'
+                ? 'No responsibility is accepted for the accuracy of this information.'
                 : 'Alle Angaben ohne Gewähr.',
             style: theme.textTheme.bodyText1,
           ),
