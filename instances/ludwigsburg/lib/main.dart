@@ -7,6 +7,7 @@ import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_lay
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/setting_payload/setting_panel/setting_panel.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/consts.dart';
 import 'package:stadtnavi_core/stadtnavi_core.dart';
@@ -29,6 +30,8 @@ void main() async {
   ]);
   // TODO we need to improve disable fetch method
   WeatherLayer.isdisable = true;
+  // TODO we need to improve enableCarpool
+  SettingPanel.enableCarpool = false;
   runApp(
     StadtnaviApp(
       appName: 'stadtnavi',

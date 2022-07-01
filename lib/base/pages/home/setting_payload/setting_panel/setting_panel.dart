@@ -14,6 +14,8 @@ class SettingPanel extends StatelessWidget {
   static const String route = "/setting-panel";
   static const Divider _divider = Divider(thickness: 2);
   static const Divider _dividerWeight = Divider(thickness: 10);
+  // TODO improve availability carpool
+  static bool enableCarpool = true;
 
   const SettingPanel({
     Key? key,
@@ -125,20 +127,22 @@ class SettingPanel extends StatelessWidget {
                           .setTransportMode(TransportMode.subway);
                     },
                   ),
-                  _divider,
-                  CustomSwitchTile(
-                    title: localizationBase.instructionVehicleCarpool,
-                    secondary: SizedBox(
-                      height: 35,
-                      width: 35,
-                      child: TransportMode.carPool.getImage(),
+                  if (enableCarpool) _divider,
+                  if (enableCarpool)
+                    CustomSwitchTile(
+                      title: localizationBase.instructionVehicleCarpool,
+                      secondary: SizedBox(
+                        height: 35,
+                        width: 35,
+                        child: TransportMode.carPool.getImage(),
+                      ),
+                      value:
+                          state.transportModes.contains(TransportMode.carPool),
+                      onChanged: (_) {
+                        payloadDataPlanCubit
+                            .setTransportMode(TransportMode.carPool);
+                      },
                     ),
-                    value: state.transportModes.contains(TransportMode.carPool),
-                    onChanged: (_) {
-                      payloadDataPlanCubit
-                          .setTransportMode(TransportMode.carPool);
-                    },
-                  ),
                   _divider,
                   CustomSwitchTile(
                     title: localization.instructionVehicleSharing,
@@ -218,14 +222,16 @@ class SettingPanel extends StatelessWidget {
                             ),
                           if (BikeRentalNetwork.regioradStuttgart.visible)
                             CustomSwitchTile(
-                              title: localization.instructionVehicleSharingRegioRad,
+                              title: localization
+                                  .instructionVehicleSharingRegioRad,
                               secondary: SizedBox(
                                 height: 35,
                                 width: 35,
-                                child: BikeRentalNetwork.regioradStuttgart.image,
+                                child:
+                                    BikeRentalNetwork.regioradStuttgart.image,
                               ),
-                              value: state.bikeRentalNetworks
-                                  .contains(BikeRentalNetwork.regioradStuttgart),
+                              value: state.bikeRentalNetworks.contains(
+                                  BikeRentalNetwork.regioradStuttgart),
                               onChanged: (_) {
                                 payloadDataPlanCubit.setBikeRentalNetwork(
                                     BikeRentalNetwork.regioradStuttgart);
@@ -238,10 +244,11 @@ class SettingPanel extends StatelessWidget {
                               secondary: SizedBox(
                                 height: 35,
                                 width: 35,
-                                child: BikeRentalNetwork.openbikeHerrenberg.image,
+                                child:
+                                    BikeRentalNetwork.openbikeHerrenberg.image,
                               ),
-                              value: state.bikeRentalNetworks
-                                  .contains(BikeRentalNetwork.openbikeHerrenberg),
+                              value: state.bikeRentalNetworks.contains(
+                                  BikeRentalNetwork.openbikeHerrenberg),
                               onChanged: (_) {
                                 payloadDataPlanCubit.setBikeRentalNetwork(
                                     BikeRentalNetwork.openbikeHerrenberg);
