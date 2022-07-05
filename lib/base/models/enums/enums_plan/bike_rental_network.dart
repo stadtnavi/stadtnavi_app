@@ -23,7 +23,7 @@ extension BikeRentalNetworkExtension on BikeRentalNetwork {
     BikeRentalNetwork.taxi: 'taxi',
     BikeRentalNetwork.carSharing: 'car-sharing',
     BikeRentalNetwork.cargoBike: 'cargo-bike',
-    BikeRentalNetwork.scooter: 'tier_LUDWIGSBURG',
+    BikeRentalNetwork.scooter: 'tier_ludwigsburg',
     BikeRentalNetwork.openbikeHerrenberg: 'de.openbikebox.stadt-herrenberg',
     BikeRentalNetwork.regioradStuttgart:
         'de.mfdz.flinkster.cab.regiorad_stuttgart',
@@ -42,7 +42,7 @@ extension BikeRentalNetworkExtension on BikeRentalNetwork {
     BikeRentalNetwork.taxi: const Color(0xfff1b736),
     BikeRentalNetwork.carSharing: const Color(0xffff834a),
     BikeRentalNetwork.cargoBike: const Color(0xff009fe4),
-    BikeRentalNetwork.scooter: const Color(0xffF28149),
+    BikeRentalNetwork.scooter: const Color(0xff0F1A50),
     BikeRentalNetwork.openbikeHerrenberg: const Color(0xff009fe4),
     BikeRentalNetwork.regioradStuttgart: const Color(0xff009fe4),
   };
