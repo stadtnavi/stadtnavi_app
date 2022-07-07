@@ -99,8 +99,8 @@ class AppShareButtonMenu extends MenuItem {
           onClick: (context, _) {
             final currentLocale = Localizations.localeOf(context).languageCode;
             Share.share(currentLocale == "en"
-                ? "Download the $appName app, the public transport app for $cityName and its surroundings on $urlShareApp"
-                : "Hol' dir die $appName App für den öffentlichen Nahverkehr in $cityName und Umgebung auf $urlShareApp");
+                ? "Download the $appName $cityName app, the public transport app for $cityName and its surroundings on $urlShareApp"
+                : "Hol' dir die $appName $cityName App für den öffentlichen Nahverkehr in $cityName und Umgebung auf $urlShareApp");
           },
         );
 }
