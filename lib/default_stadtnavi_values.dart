@@ -13,6 +13,7 @@ import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/home_page.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/trufi_map_route.dart';
+import 'package:stadtnavi_core/base/pages/saved_places/saved_places.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:stadtnavi_core/configuration/drawer/menu_items_stadtnavi.dart';
 import 'package:stadtnavi_core/configuration/trufi_drawer.dart';
@@ -23,7 +24,6 @@ import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider_cubit.
 import 'package:trufi_core/base/pages/about/translations/about_localizations.dart';
 import 'package:trufi_core/base/pages/feedback/translations/feedback_localizations.dart';
 import 'package:trufi_core/base/pages/saved_places/repository/search_location_repository.dart';
-import 'package:trufi_core/base/pages/saved_places/saved_places.dart';
 import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/menu_item.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';

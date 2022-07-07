@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stadtnavi_core/base/pages/home/search_location_field/components/suggestion.dart';
 
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/widgets/location_search_delegate/build_street_results.dart';
-import 'package:trufi_core/base/widgets/location_search_delegate/suggestion_list.dart';
 
 class LocationSearchDelegate extends SearchDelegate<TrufiLocation?> {
   final bool isOrigin;
