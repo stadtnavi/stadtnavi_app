@@ -366,7 +366,7 @@ class _BuildTitle extends StatelessWidget {
             title.toUpperCase(),
             style: TextStyle(
               fontWeight: FontWeight.w600,
-              color: theme.colorScheme.secondary,
+              color: theme.primaryColor,
             ),
           )
         ],

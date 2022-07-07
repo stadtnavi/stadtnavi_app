@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/pages/saved_places/location_tiler.dart';
 import 'package:stadtnavi_core/base/widgets/choose_location.dart';
+import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 
-import 'package:trufi_core/base/const/consts.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/pages/saved_places/search_locations_cubit/search_locations_cubit.dart';
 import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
@@ -19,11 +19,10 @@ class SavedPlacesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final searchLocationsCubit = context.read<SearchLocationsCubit>();
-    // final config = context.read<ConfigurationCubit>().state;
     final localizationSP = SavedPlacesLocalization.of(context);
     final theme = Theme.of(context);
     final titleStyle = TextStyle(
-      color: titleColor(theme),
+      color: ThemeCubit.isDarkMode(theme) ? Colors.white : theme.primaryColor,
       fontSize: 15,
       fontWeight: FontWeight.w600,
     );
