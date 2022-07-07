@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/search_location_field/buttons.dart';
+import 'package:stadtnavi_core/base/pages/home/search_location_field/location_form_field.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
-import 'package:trufi_core/base/pages/home/widgets/search_location_field/buttons.dart';
-import 'package:trufi_core/base/pages/home/widgets/search_location_field/location_form_field.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
 class FormFieldsLandscape extends StatelessWidget {
@@ -25,6 +25,7 @@ class FormFieldsLandscape extends StatelessWidget {
   final void Function() onSwap;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final localization = TrufiBaseLocalization.of(context);
     final mapRouteState = context.read<MapRouteCubit>().state;
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
@@ -35,8 +36,7 @@ class FormFieldsLandscape extends StatelessWidget {
           child: LocationFormField(
             isOrigin: true,
             hintText: localization.searchPleaseSelectOrigin,
-            textLeadingImage:
-                mapConfiguratiom.markersConfiguration.fromMarker,
+            textLeadingImage: mapConfiguratiom.markersConfiguration.fromMarker,
             onSaved: onSaveFrom,
             value: mapRouteState.fromPlace,
           ),
@@ -47,6 +47,7 @@ class FormFieldsLandscape extends StatelessWidget {
               ? SwapButton(
                   orientation: Orientation.landscape,
                   onSwap: onSwap,
+                  color: theme.appBarTheme.foregroundColor!,
                 )
               : null,
         ),
@@ -62,7 +63,10 @@ class FormFieldsLandscape extends StatelessWidget {
         SizedBox(
           width: 40.0,
           child: mapRouteState.isPlacesDefined
-              ? ResetButton(onReset: onReset)
+              ? ResetButton(
+                  onReset: onReset,
+                  color: theme.appBarTheme.foregroundColor!,
+                )
               : null,
         ),
       ],

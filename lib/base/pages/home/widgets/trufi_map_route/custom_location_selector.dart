@@ -38,7 +38,7 @@ class CustomLocationSelector extends StatelessWidget {
             },
             child: Text(
               localization.commonOrigin,
-              style: TextStyle(color: theme.colorScheme.secondary),
+              style: TextStyle(color: theme.primaryColor),
             ),
           ),
         ),
@@ -58,7 +58,7 @@ class CustomLocationSelector extends StatelessWidget {
             },
             child: Text(
               localization.commonDestination,
-              style: TextStyle(color: theme.colorScheme.secondary),
+              style: TextStyle(color: theme.primaryColor),
             ),
           ),
         ),

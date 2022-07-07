@@ -5,7 +5,7 @@ final brandingStadtnaviHerrenberg = ThemeData.from(
     primarySwatch: const MaterialColor(
       0xff9BBF28,
       <int, Color>{
-        50: Color(0xfff4f7e6), 
+        50: Color(0xfff4f7e6),
         100: Color(0xffe2ebc1),
         200: Color(0xffcfde99),
         300: Color(0xffbbd26f),
@@ -27,7 +27,7 @@ final brandingStadtnaviHerrenberg = ThemeData.from(
   scaffoldBackgroundColor: Colors.grey[200],
   appBarTheme: const AppBarTheme(
     backgroundColor: Color(0xff9BBF28),
-    foregroundColor: Colors.white
+    foregroundColor: Colors.white,
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Colors.white,

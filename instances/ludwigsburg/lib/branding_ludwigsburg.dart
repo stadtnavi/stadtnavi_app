@@ -24,9 +24,11 @@ final brandingStadtnaviLudwigsburg = ThemeData.from(
     errorColor: Colors.red,
   ),
 ).copyWith(
+  primaryColor: Colors.black,
   scaffoldBackgroundColor: Colors.grey[200],
-  appBarTheme: const AppBarTheme(
+  appBarTheme:  AppBarTheme(
     backgroundColor: Color(0xfffecc01),
+    foregroundColor: Colors.black,
   ),
   floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Colors.white,

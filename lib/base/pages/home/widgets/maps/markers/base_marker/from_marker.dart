@@ -21,7 +21,7 @@ class FromMarker extends StatelessWidget {
                 width: 6,
                 height: 6,
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.secondary,
+                  color: theme.colorScheme.primary,
                   shape: BoxShape.circle,
                 ),
               ),

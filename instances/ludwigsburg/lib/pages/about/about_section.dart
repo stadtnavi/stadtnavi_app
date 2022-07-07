@@ -54,7 +54,7 @@ class AboutSection extends StatelessWidget {
               children: [
                 TextSpan(
                   text: isLanguageEn
-                      ? 'The Stadtwerke Ludwigsburg have developed this app, based on stadtnavi Herrenberg, which was funded by the Federal Ministry of Transport and Digital Infrastructure (BMVI). The stadtnavi app is an open source solution, '
+                      ? 'The Stadtwerke Ludwigsburg have developed this app, based on stadtnavi Herrenberg, which was funded by the Federal Ministry of Transport and Digital Infrastructure (BMDV). The stadtnavi app is an open source solution, '
                       : 'stadtnavi Ludwigsburg basiert auf dem BMVI-geförderten Projekt stadtnavi Herrenberg. stadtnavi Anwendung ist eine Open Source Lösung, ',
                 ),
                 TextSpan(
@@ -129,8 +129,7 @@ class AboutSection extends StatelessWidget {
                             ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () async {
-                                const url =
-                                    'https://github.com/stadtnavi/';
+                                const url = 'https://github.com/stadtnavi/';
                                 if (await canLaunch(url)) {
                                   await launch(url);
                                 }
@@ -165,7 +164,7 @@ class AboutSection extends StatelessWidget {
                   text: isLanguageEn
                       ? 'OpenStreetMap Contributors'
                       : 'OpenStreetMap Mitwirkende',
-                  style: theme.textTheme.bodyText2?.copyWith(
+                  style: TextStyle(
                     decoration: TextDecoration.underline,
                     color: theme.colorScheme.primary,
                   ),
@@ -193,7 +192,7 @@ class AboutSection extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(
                   text: 'NVBW GmbH',
-                  style: theme.textTheme.bodyText2?.copyWith(
+                  style: TextStyle(
                     decoration: TextDecoration.underline,
                     color: theme.colorScheme.primary,
                   ),
@@ -211,7 +210,7 @@ class AboutSection extends StatelessWidget {
                 ),
                 TextSpan(
                   text: 'VVS GmbH',
-                  style: theme.textTheme.bodyText2?.copyWith(
+                  style: TextStyle(
                     decoration: TextDecoration.underline,
                     color: theme.colorScheme.primary,
                   ),

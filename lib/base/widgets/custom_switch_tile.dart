@@ -19,7 +19,7 @@ class CustomSwitchTile extends StatelessWidget {
     return SwitchListTile.adaptive(
       title: Text(title, style: theme.textTheme.bodyText1),
       secondary: secondary,
-      activeColor: theme.colorScheme.secondary,
+      activeColor: theme.colorScheme.primary,
       value: value,
       onChanged: onChanged,
     );

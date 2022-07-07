@@ -102,7 +102,7 @@ class TransitLeg extends StatelessWidget {
                           text: TextSpan(
                             style: theme.primaryTextTheme.bodyText2?.copyWith(
                               decoration: TextDecoration.underline,
-                              color: theme.colorScheme.primary,
+                              color: theme.primaryColor,
                               fontWeight: FontWeight.w600,
                             ),
                             text: localization.commonMoreInformartion,
@@ -132,7 +132,7 @@ class TransitLeg extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     decoration: BoxDecoration(
-                      color: theme.primaryColor,
+                      color: theme.colorScheme.primary,
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: Text(
@@ -153,7 +153,7 @@ class TransitLeg extends StatelessWidget {
                     width: 210,
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     decoration: BoxDecoration(
-                      color: theme.primaryColor,
+                      color: theme.colorScheme.primary,
                       borderRadius: BorderRadius.circular(40),
                     ),
                     child: Text(
@@ -189,10 +189,10 @@ class TransitLeg extends StatelessWidget {
               ),
               tilePadding:
                   const EdgeInsets.symmetric(horizontal: 7, vertical: 0),
-              textColor: theme.colorScheme.primary,
-              collapsedTextColor: theme.colorScheme.primary,
-              iconColor: theme.colorScheme.primary,
-              collapsedIconColor: theme.colorScheme.primary,
+              textColor: theme.primaryColor,
+              collapsedTextColor: theme.primaryColor,
+              iconColor: theme.primaryColor,
+              collapsedIconColor: theme.primaryColor,
               childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
               children: [
                 ...leg.intermediatePlaces!
@@ -230,8 +230,10 @@ class TransitLeg extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(width: 5),
-                                  Icon(Icons.keyboard_arrow_right,
-                                      color: theme.colorScheme.primary),
+                                  Icon(
+                                    Icons.keyboard_arrow_right,
+                                    color: theme.colorScheme.primary,
+                                  ),
                                 ],
                               ),
                             ),

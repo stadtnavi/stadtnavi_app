@@ -146,7 +146,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                         const SizedBox(height: 30),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: theme.primaryColor),
+                              primary: theme.colorScheme.primary),
                           onPressed: () {
                             Navigator.pop(context);
                           },
@@ -412,7 +412,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                         const SizedBox(height: 30),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: theme.primaryColor),
+                              primary: theme.colorScheme.primary),
                           onPressed: termsChecked && !loading
                               ? createOfferCarpool
                               : null,

@@ -92,14 +92,14 @@ class _DateTimePickerState extends State<DateTimePicker>
                   labelPadding: const EdgeInsets.only(top: 18, bottom: 10),
                   controller: _controller,
                   indicatorWeight: 2,
-                  indicatorColor: theme.colorScheme.secondary,
+                  indicatorColor: theme.primaryColor,
                   tabs: [
                     Text(
                       localization.commonDeparture,
                       style: _styleOptions.copyWith(
                         color: tempDateConf.isArriveBy
                             ? Colors.grey[700]
-                            : theme.colorScheme.secondary,
+                            : theme.primaryColor,
                         fontWeight: tempDateConf.isArriveBy
                             ? FontWeight.w400
                             : FontWeight.w400,
@@ -110,7 +110,7 @@ class _DateTimePickerState extends State<DateTimePicker>
                       localization.commonArrival,
                       style: _styleOptions.copyWith(
                         color: tempDateConf.isArriveBy
-                            ? theme.colorScheme.secondary
+                            ? theme.primaryColor
                             : Colors.grey[700],
                         fontWeight: !tempDateConf.isArriveBy
                             ? FontWeight.w400
@@ -169,7 +169,7 @@ class _DateTimePickerState extends State<DateTimePicker>
                       child: Text(
                         localizationBase.commonOK.toUpperCase(),
                         style: TextStyle(
-                          color: theme.colorScheme.secondary,
+                          color: theme.primaryColor,
                         ),
                       ),
                     ),

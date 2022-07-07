@@ -38,7 +38,7 @@ class CustomTextButton extends StatelessWidget {
             ),
           ),
           backgroundColor: MaterialStateProperty.all<Color>(
-            color ?? (isDark ? theme.primaryColor : Colors.white),
+            color ?? (isDark ? theme.colorScheme.primary : Colors.white),
           ),
           padding: MaterialStateProperty.all<EdgeInsets>(
               const EdgeInsets.symmetric(horizontal: 10)),

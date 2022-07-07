@@ -15,6 +15,7 @@ class MapSettingButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final localization = StadtnaviBaseLocalization.of(context);
     return InkWell(
       onTap: () async {
@@ -36,13 +37,16 @@ class MapSettingButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
         child: Row(
           children: [
-            const Icon(Icons.tune, color: Colors.white),
+            Icon(
+              Icons.tune,
+              color: theme.appBarTheme.foregroundColor!,
+            ),
             const SizedBox(width: 5),
             Text(
               localization.commonSettings,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
-                color: Colors.white,
+                color: theme.appBarTheme.foregroundColor!,
               ),
             ),
           ],
