@@ -18,7 +18,18 @@ class ParkingInformationServices {
 
   Future<List<ParkingFeature>> fetchParkings() async {
     final parkingsArea = await _fetchParkingsByArea(z: 14, x: 8609, y: 5633);
-    return fetchParkingsByIds(parkingsArea);
+    final parkingsArea1 = await _fetchParkingsByArea(z: 14, x: 8610, y: 5633);
+    final parkingsArea2 = await _fetchParkingsByArea(z: 14, x: 8608, y: 5633);
+    final listAll = [
+      ...parkingsArea,
+      ...parkingsArea1,
+      ...parkingsArea2,
+    ];
+    var map2 = <String, ParkingFeature>{};
+    for (ParkingFeature parking in listAll) {
+      map2[parking.id!] = parking;
+    }
+    return fetchParkingsByIds(map2.values.toList());
   }
 
   Future<List<ParkingFeature>> _fetchParkingsByArea({
