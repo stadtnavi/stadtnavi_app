@@ -55,7 +55,7 @@ class AboutSection extends StatelessWidget {
                 TextSpan(
                   text: isLanguageEn
                       ? 'The Stadtwerke Ludwigsburg have developed this app, based on stadtnavi Herrenberg, which was funded by the Federal Ministry of Transport and Digital Infrastructure (BMDV). The stadtnavi app is an open source solution, '
-                      : 'stadtnavi Ludwigsburg basiert auf dem BMVI-geförderten Projekt stadtnavi Herrenberg. stadtnavi Anwendung ist eine Open Source Lösung, ',
+                      : 'stadtnavi Ludwigsburg basiert auf dem BMDV-geförderten Projekt stadtnavi Herrenberg. stadtnavi Anwendung ist eine Open Source Lösung, ',
                 ),
                 TextSpan(
                   text: isLanguageEn
