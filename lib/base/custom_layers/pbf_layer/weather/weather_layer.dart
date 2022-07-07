@@ -62,7 +62,12 @@ class WeatherLayer extends CustomLayer {
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context, onFetchPlan) => ParkingMarkerModal(
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
+                                ParkingMarkerModal(
                               parkingFeature: element,
                               onFetchPlan: onFetchPlan,
                             ),

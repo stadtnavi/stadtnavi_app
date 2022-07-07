@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:async_executor/async_executor.dart';
 import 'package:flutter/material.dart';
+import 'package:routemaster/routemaster.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
@@ -50,6 +51,17 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       final mapRouteState = mapRouteCubit.state;
       repaintMap(mapRouteCubit, mapRouteState);
     });
+    WidgetsBinding.instance?.addPostFrameCallback(
+      (duration) => processUniLink(),
+    );
+  }
+
+  Future<void> processUniLink() async {
+    final queryParameters = RouteData.of(context).queryParameters;
+    if (queryParameters['FetchRoute'] != null &&
+        queryParameters['FetchRoute'] == "true") {
+      await _callFetchPlan(context);
+    }
   }
 
   @override

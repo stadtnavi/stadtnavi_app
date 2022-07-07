@@ -3,14 +3,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:ludwigsburg/pages/parking_information_page/parking_overview_map.dart';
+import 'package:routemaster/routemaster.dart';
 
 import 'package:ludwigsburg/pages/parking_information_page/parking_information_cubit/parking_information_cubit.dart';
+import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_icons.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
+import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/home_page.dart';
 
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/default_pages_menu.dart';
 import 'package:trufi_core/base/widgets/alerts/fetch_error_handler.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/menu_item.dart';
+import 'package:trufi_core/base/models/trufi_place.dart';
+import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
+import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 
 class ParkingInformationPage extends StatefulWidget {
   static const String route = "/ParkingInformation";
@@ -68,6 +77,7 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final panelCubit = context.read<PanelCubit>();
     final parkingInformationCubit = context.read<ParkingInformationCubit>();
     return BlocBuilder<ParkingInformationCubit, ParkingInformationState>(
       builder: (context, state) {
@@ -139,7 +149,37 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
                       return Column(
                         children: [
                           ListTile(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                            onTap: () {
+                              panelCubit.setPanel(
+                                CustomMarkerPanel(
+                                  panel: (
+                                    context,
+                                    onFetchPlan, {
+                                    isOnlyDestination,
+                                  }) =>
+                                      ParkingStateUpdater(
+                                    parkingFeature: parking,
+                                    onFetchPlan: () {
+                                      panelCubit.cleanPanel();
+                                      _callFetchPlan();
+                                    },
+                                    isOnlyDestination:
+                                        isOnlyDestination ?? true,
+                                  ),
+                                  positon: parking.position,
+                                  minSize: 50,
+                                ),
+                              );
+                              showTrufiDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    ParkingOverviewMap(
+                                  parking: parking,
+                                ),
+                              );
+                            },
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 5),
                             minLeadingWidth: 0,
                             leading: SizedBox(
                               width: 40,
@@ -210,6 +250,33 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
           ),
         );
       },
+    );
+  }
+
+  Future<void> _callFetchPlan() async {
+    final localization = TrufiBaseLocalization.of(context);
+    final mapRouteCubit = context.read<MapRouteCubit>();
+    final locationProvider = GPSLocationProvider();
+    final currentLocation = locationProvider.myLocation;
+    if (currentLocation != null) {
+      await mapRouteCubit.setFromPlace(TrufiLocation(
+        description: localization.commonYourLocation,
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+      ));
+      _cleanNavigatorStore();
+    } else {
+      await locationProvider.startLocation(context);
+    }
+  }
+
+  void _cleanNavigatorStore() {
+    while (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    }
+    Routemaster.of(context).push(
+      HomePage.route,
+      queryParameters: {"FetchRoute": "true"},
     );
   }
 }

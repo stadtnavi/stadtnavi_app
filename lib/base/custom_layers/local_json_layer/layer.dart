@@ -97,7 +97,12 @@ class Layer extends CustomLayer {
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context, onFetchPlan) => CustomMarkerModal(
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
+                                CustomMarkerModal(
                               element: element,
                               onFetchPlan: onFetchPlan,
                             ),

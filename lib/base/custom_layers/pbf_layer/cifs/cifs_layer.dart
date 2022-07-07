@@ -199,7 +199,12 @@ class _CifsFeatureMarker extends StatelessWidget {
         final panelCubit = context.read<PanelCubit>();
         panelCubit.setPanel(
           CustomMarkerPanel(
-            panel: (context, onFetchPlan) => CifsMarkerModal(
+            panel: (
+              context,
+              onFetchPlan, {
+              isOnlyDestination,
+            }) =>
+                CifsMarkerModal(
               element: element,
               onFetchPlan: onFetchPlan,
               position: point,

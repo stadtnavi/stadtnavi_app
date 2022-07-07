@@ -92,7 +92,12 @@ class ParkingZonesLayer extends CustomLayer {
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context, onFetchPlan) => ParkingZoneModal(
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
+                                ParkingZoneModal(
                               element: element,
                             ),
                             positon: element.coordinates,

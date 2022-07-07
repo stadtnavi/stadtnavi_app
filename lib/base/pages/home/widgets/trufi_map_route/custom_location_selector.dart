@@ -10,10 +10,12 @@ class CustomLocationSelector extends StatelessWidget {
     Key? key,
     required this.locationData,
     required this.onFetchPlan,
+    this.isOnlyDestination = false,
   }) : super(key: key);
 
   final LocationDetail locationData;
   final void Function() onFetchPlan;
+  final bool isOnlyDestination;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -23,44 +25,65 @@ class CustomLocationSelector extends StatelessWidget {
     return Row(
       children: [
         const SizedBox(width: 10),
-        Expanded(
-          child: OutlinedButton(
-            onPressed: () async {
-              final location = TrufiLocation(
-                description: locationData.description,
-                address: locationData.street,
-                latitude: locationData.position.latitude,
-                longitude: locationData.position.longitude,
-              );
-              await mapRouteCubit.setFromPlace(location);
-              searchLocationsCubit.insertHistoryPlace(location);
-              onFetchPlan();
-            },
-            child: Text(
-              localization.commonOrigin,
-              style: TextStyle(color: theme.primaryColor),
+        if (!isOnlyDestination)
+          Expanded(
+            child: OutlinedButton(
+              onPressed: () async {
+                final location = TrufiLocation(
+                  description: locationData.description,
+                  address: locationData.street,
+                  latitude: locationData.position.latitude,
+                  longitude: locationData.position.longitude,
+                );
+                await mapRouteCubit.setFromPlace(location);
+                searchLocationsCubit.insertHistoryPlace(location);
+                onFetchPlan();
+              },
+              child: Text(
+                localization.commonOrigin,
+                style: TextStyle(color: theme.primaryColor),
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 10),
+        if (isOnlyDestination) const SizedBox(width: 10),
         Expanded(
-          child: OutlinedButton(
-            onPressed: () async {
-              final location = TrufiLocation(
-                description: locationData.description,
-                address: locationData.street,
-                latitude: locationData.position.latitude,
-                longitude: locationData.position.longitude,
-              );
-              await mapRouteCubit.setToPlace(location);
-              searchLocationsCubit.insertHistoryPlace(location);
-              onFetchPlan();
-            },
-            child: Text(
-              localization.commonDestination,
-              style: TextStyle(color: theme.primaryColor),
-            ),
-          ),
+          child: (isOnlyDestination)
+              ? Center(
+                  child: OutlinedButton(
+                    onPressed: () async {
+                      final location = TrufiLocation(
+                        description: locationData.description,
+                        address: locationData.street,
+                        latitude: locationData.position.latitude,
+                        longitude: locationData.position.longitude,
+                      );
+                      await mapRouteCubit.setToPlace(location);
+                      searchLocationsCubit.insertHistoryPlace(location);
+                      onFetchPlan();
+                    },
+                    child: Text(
+                      localization.commonDestination,
+                      style: TextStyle(color: theme.primaryColor),
+                    ),
+                  ),
+                )
+              : OutlinedButton(
+                  onPressed: () async {
+                    final location = TrufiLocation(
+                      description: locationData.description,
+                      address: locationData.street,
+                      latitude: locationData.position.latitude,
+                      longitude: locationData.position.longitude,
+                    );
+                    await mapRouteCubit.setToPlace(location);
+                    searchLocationsCubit.insertHistoryPlace(location);
+                    onFetchPlan();
+                  },
+                  child: Text(
+                    localization.commonDestination,
+                    style: TextStyle(color: theme.primaryColor),
+                  ),
+                ),
         ),
         const SizedBox(width: 10),
       ],

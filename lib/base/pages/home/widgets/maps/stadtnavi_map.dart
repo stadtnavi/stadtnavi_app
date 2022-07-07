@@ -22,7 +22,8 @@ class StadtnaviMap extends StatefulWidget {
   final TapCallback? onTap;
   final LongPressCallback? onLongPress;
   final PositionCallback? onPositionChanged;
-  final bool showCustomMarkes;
+  final bool showMapTypeButton;
+  final String? showLayerById;
   const StadtnaviMap({
     Key? key,
     required this.trufiMapController,
@@ -31,7 +32,8 @@ class StadtnaviMap extends StatefulWidget {
     this.onTap,
     this.onLongPress,
     this.onPositionChanged,
-    this.showCustomMarkes = true,
+    this.showMapTypeButton = true,
+    this.showLayerById,
   }) : super(key: key);
 
   @override
@@ -90,17 +92,20 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
                       .buildTileLayerOptions(),
                   mapConfiguratiom.markersConfiguration
                       .buildYourLocationMarkerLayerOptions(currentLocation),
-                  if (widget.showCustomMarkes)
-                    ...customLayersCubit.activeCustomLayers(mapZoom),
+                  ...customLayersCubit.activeCustomLayers(
+                    mapZoom,
+                    showLayerById: widget.showLayerById,
+                  ),
                   ...widget.layerOptionsBuilder(context),
                 ],
               );
             }),
-        const Positioned(
-          top: 16.0,
-          right: 16.0,
-          child: MapTypeButton(),
-        ),
+        if (widget.showMapTypeButton)
+          const Positioned(
+            top: 16.0,
+            right: 16.0,
+            child: MapTypeButton(),
+          ),
         Positioned(
           bottom: 16.0,
           right: 16.0,

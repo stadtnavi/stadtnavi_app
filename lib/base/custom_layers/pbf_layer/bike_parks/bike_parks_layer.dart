@@ -64,7 +64,11 @@ class BikeParkLayer extends CustomLayer {
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context, onFetchPlan) =>
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
                                 CitybikeMarkerModal(
                               element: element,
                               onFetchPlan: onFetchPlan,

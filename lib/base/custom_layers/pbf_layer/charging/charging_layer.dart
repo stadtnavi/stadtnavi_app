@@ -63,7 +63,11 @@ class ChargingLayer extends CustomLayer {
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context, onFetchPlan) =>
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
                                 ChargingMarkerModal(
                               element: element,
                               onFetchPlan: onFetchPlan,

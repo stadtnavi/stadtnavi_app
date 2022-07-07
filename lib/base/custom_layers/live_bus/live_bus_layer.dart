@@ -160,7 +160,11 @@ class LiveBusLayer extends CustomLayer {
                           final panelCubit = context.read<PanelCubit>();
                           panelCubit.setPanel(
                             CustomMarkerPanel(
-                              panel: (context, onFetchPlan) =>
+                              panel: (
+                                context,
+                                onFetchPlan, {
+                                isOnlyDestination,
+                              }) =>
                                   LiveBusMarkerModal(
                                 mainElement: element,
                                 onLiveBusStateChangeContainer:
