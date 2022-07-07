@@ -102,7 +102,7 @@ class _DateTimePickerState extends State<DateTimePicker>
                             : theme.primaryColor,
                         fontWeight: tempDateConf.isArriveBy
                             ? FontWeight.w400
-                            : FontWeight.w400,
+                            : FontWeight.w500,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -114,7 +114,7 @@ class _DateTimePickerState extends State<DateTimePicker>
                             : Colors.grey[700],
                         fontWeight: !tempDateConf.isArriveBy
                             ? FontWeight.w400
-                            : FontWeight.w400,
+                            : FontWeight.w500,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -170,6 +170,7 @@ class _DateTimePickerState extends State<DateTimePicker>
                         localizationBase.commonOK.toUpperCase(),
                         style: TextStyle(
                           color: theme.primaryColor,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
