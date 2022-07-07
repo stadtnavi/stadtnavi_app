@@ -101,7 +101,6 @@ class _ParkingOverviewMapState extends State<ParkingOverviewMap>
               ],
             ),
             panel: panelCubit.state.panel?.panel(context, () {
-              panelCubit.cleanPanel();
               _callFetchPlan();
             }, isOnlyDestination: true),
             bottomPadding: panelCubit.state.panel?.minSize ?? 0,
@@ -114,6 +113,7 @@ class _ParkingOverviewMapState extends State<ParkingOverviewMap>
   Future<void> _callFetchPlan() async {
     final localization = TrufiBaseLocalization.of(context);
     final mapRouteCubit = context.read<MapRouteCubit>();
+    final panelCubit = context.read<PanelCubit>();
     final locationProvider = GPSLocationProvider();
     final currentLocation = locationProvider.myLocation;
     if (currentLocation != null) {
@@ -122,6 +122,7 @@ class _ParkingOverviewMapState extends State<ParkingOverviewMap>
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
       ));
+      panelCubit.cleanPanel();
       _cleanNavigatorStore();
     } else {
       await locationProvider.startLocation(context);

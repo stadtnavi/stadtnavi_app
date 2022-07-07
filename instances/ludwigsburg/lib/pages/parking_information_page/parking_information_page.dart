@@ -160,7 +160,6 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
                                       ParkingStateUpdater(
                                     parkingFeature: parking,
                                     onFetchPlan: () {
-                                      panelCubit.cleanPanel();
                                       _callFetchPlan();
                                     },
                                     isOnlyDestination:
@@ -255,6 +254,7 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
 
   Future<void> _callFetchPlan() async {
     final localization = TrufiBaseLocalization.of(context);
+    final panelCubit = context.read<PanelCubit>();
     final mapRouteCubit = context.read<MapRouteCubit>();
     final locationProvider = GPSLocationProvider();
     final currentLocation = locationProvider.myLocation;
@@ -264,6 +264,7 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
         latitude: currentLocation.latitude,
         longitude: currentLocation.longitude,
       ));
+      panelCubit.cleanPanel();
       _cleanNavigatorStore();
     } else {
       await locationProvider.startLocation(context);
