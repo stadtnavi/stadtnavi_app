@@ -19,6 +19,9 @@ import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 List<List<MenuItem>> stadtnaviMenuItems({
   required UrlSocialMedia? defaultUrls,
   required String impressumUrl,
+  required String appName,
+  required String cityName,
+  required String urlShareApp,
   required Uri reportDefectsUri,
   List<MenuItem>? extraItems,
 }) {
@@ -106,7 +109,11 @@ List<List<MenuItem>> stadtnaviMenuItems({
       if (defaultUrls != null && defaultUrls.existUrl)
         stadtNaviSocialMedia(defaultUrls),
       RateApp(),
-      AppShareButtonMenu(),
+      AppShareButtonMenu(
+        appName: appName,
+        cityName: cityName,
+        urlShareApp: urlShareApp,
+      ),
     ],
     [menuLanguage(), ImpressumMedia(impressumUrl)]
   ];

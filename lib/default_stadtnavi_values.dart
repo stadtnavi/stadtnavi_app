@@ -123,10 +123,14 @@ abstract class DefaultStadtnaviValues {
             backgroundImageBuilder: backgroundImageBuilder,
             urlShareApp: urlShareApp,
             menuItems: stadtnaviMenuItems(
-                defaultUrls: urlSocialMedia,
-                reportDefectsUri: reportDefectsUri,
-                impressumUrl: urlImpressum,
-                extraItems: extraDrawerItems),
+              defaultUrls: urlSocialMedia,
+              reportDefectsUri: reportDefectsUri,
+              impressumUrl: urlImpressum,
+              extraItems: extraDrawerItems,
+              appName: appName,
+              cityName: cityName,
+              urlShareApp: urlShareApp,
+            ),
           );
     }
 
