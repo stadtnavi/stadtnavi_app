@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stadtnavi_core/base/pages/home/search_location_field/location_search_delegate.dart';
+import 'package:stadtnavi_core/base/pages/home/search_location_field/components/location_search_delegate.dart';
 
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
-import 'package:stadtnavi_core/base/pages/home/search_location_field/buttons.dart';
-import 'package:stadtnavi_core/base/pages/home/search_location_field/location_form_field.dart';
+import 'package:stadtnavi_core/base/pages/home/search_location_field/components/buttons.dart';
+import 'package:stadtnavi_core/base/pages/home/search_location_field/components/location_form_field.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
