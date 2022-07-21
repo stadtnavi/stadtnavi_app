@@ -67,7 +67,7 @@ class LiveBusLayer extends CustomLayer {
       for (final MqttReceivedMessage<MqttMessage> input in inputs) {
         final message = input.payload as MqttPublishMessage;
         final payload = MqttPublishPayload.bytesToStringAsString(
-          message.payload.message!,
+          message.payload.message,
         );
         //  1=gtfsrt
         //  2=vp
