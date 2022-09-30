@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybike_data_fetch.dart';
@@ -22,11 +24,17 @@ class CityBikeFeature {
     if (geoJsonPoint?.properties == null) return null;
     final properties = geoJsonPoint?.properties ?? <String, VectorTileValue>{};
     String? id = properties['id']?.dartStringValue;
+    String? networks = properties['networks']?.dartStringValue;
+    // TODO the backend send a network=tier_ludwigsburg but the correct is network=tier_LUDWIGSBURG for scooter
+    if (networks == null || networks == 'cargo-bike' || networks == 'tier_ludwigsburg') {
+      return null;
+    }
     CityBikeLayerIds? type = properties['networks'] != null
         ? cityBikeLayerIdStringToEnum(
-            properties['networks']?.dartStringValue ?? '',
+            networks,
           )
         : null;
+
     return CityBikeFeature(
       geoJsonPoint: geoJsonPoint,
       id: id ?? '',
