@@ -35,8 +35,7 @@ void main() async {
       urlShareApp: 'https://stadtnavi.swlb.de/',
       urlRepository: 'https://github.com/trufi-association/trufi-app',
       urlImpressum: 'https://www.ludwigsburg.de/LB2020/impressum.html',
-      reportDefectsUri: Uri.parse(
-          'https://www.ludwigsburg.de/start/rathaus+und+service/maengelmelder.html'),
+      reportDefectsUri: Uri.parse('https://www.ludwigsburg.de/start/rathaus+und+service/maengelmelder.html'),
       layersContainer: customLayersLudwigsburg,
       urlSocialMedia: const UrlSocialMedia(
         urlFacebook: 'https://de-de.facebook.com/ludwigsburg/',
