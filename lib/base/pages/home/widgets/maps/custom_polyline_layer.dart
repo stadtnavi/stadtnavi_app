@@ -69,7 +69,7 @@ class CustomPolyline {
 }
 
 class CustomPolylineLayer extends StatelessWidget {
-  final CustomPolylineLayerOptions polylineOpts;
+  final CustomPolylineLayer polylineOpts;
   final MapState map;
   final Stream<void>? stream;
 

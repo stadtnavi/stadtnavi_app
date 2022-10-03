@@ -14,13 +14,13 @@ String aboutIcon = """
 </svg>
 """;
 
-class ReportDefectsButton extends MenuItem {
+class ReportDefectsButton extends TrufiMenuItem {
   final Uri uri;
   ReportDefectsButton({required this.uri})
       : super(
             notSelectedIcon: (context) =>
                 const Icon(Icons.report_outlined, color: Colors.grey),
-            name: (context) => MenuItem.buildName(
+            name: (context) => TrufiMenuItem.buildName(
                   context,
                   Localizations.localeOf(context).languageCode == "en"
                       ? "Report defect"
@@ -49,11 +49,11 @@ class ReportDefectsButton extends MenuItem {
   }
 }
 
-class ImpressumMedia extends MenuItem {
+class ImpressumMedia extends TrufiMenuItem {
   ImpressumMedia(String url)
       : super(
             notSelectedIcon: (context) => const Icon(Icons.receipt_rounded),
-            name: (context) => MenuItem.buildName(
+            name: (context) => TrufiMenuItem.buildName(
                   context,
                   Localizations.localeOf(context).languageCode == 'en'
                       ? "Imprint"
@@ -65,12 +65,12 @@ class ImpressumMedia extends MenuItem {
             });
 }
 
-class RateApp extends MenuItem {
+class RateApp extends TrufiMenuItem {
   RateApp()
       : super(
             notSelectedIcon: (context) =>
                 const Icon(Icons.thumb_up_alt_outlined),
-            name: (context) => MenuItem.buildName(
+            name: (context) => TrufiMenuItem.buildName(
                   context,
                   Localizations.localeOf(context).languageCode == "en"
                       ? "Rate the app"
@@ -82,12 +82,12 @@ class RateApp extends MenuItem {
             });
 }
 
-class AppShareButtonMenu extends MenuItem {
+class AppShareButtonMenu extends TrufiMenuItem {
   AppShareButtonMenu()
       : super(
           selectedIcon: (context) => const Icon(Icons.share_location_outlined),
           notSelectedIcon: (context) => const Icon(Icons.share_outlined),
-          name: (context) => MenuItem.buildName(
+          name: (context) => TrufiMenuItem.buildName(
             context,
             Localizations.localeOf(context).languageCode == 'en'
                 ? "Share the app"

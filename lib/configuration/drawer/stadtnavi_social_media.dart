@@ -6,7 +6,7 @@ import 'package:trufi_core/base/widgets/drawer/menu/default_item_menu.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/menu_item.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 
-MenuItem stadtNaviSocialMedia(UrlSocialMedia defaultUrls) {
+TrufiMenuItem stadtNaviSocialMedia(UrlSocialMedia defaultUrls) {
   return SimpleMenuItem(
       buildIcon: (context) => const Icon(Icons.rss_feed),
       name: (context) {

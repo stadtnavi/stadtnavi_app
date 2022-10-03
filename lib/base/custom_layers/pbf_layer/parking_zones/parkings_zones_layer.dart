@@ -22,7 +22,7 @@ class ParkingZonesLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions buildLayerOptions(int? zoom) {
+  Widget buildLayerOptions(int? zoom) {
     if (_parkingZonePoligons.isEmpty) {
       load();
     }
@@ -43,7 +43,7 @@ class ParkingZonesLayer extends CustomLayer {
       default:
         markerSize = zoom != null && zoom > 12 ? 30 : null;
     }
-    return PolygonLayerOptions(
+    return PolygonLayer(
       polygonCulling: true,
       polygons: markerSize != null
           ? _parkingZonePoligons
@@ -61,7 +61,7 @@ class ParkingZonesLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions? buildLayerOptionsPriority(int? zoom) {
+  Widget? buildLayerOptionsPriority(int? zoom) {
     double? markerSize;
     switch (zoom) {
       case 15:
@@ -79,7 +79,7 @@ class ParkingZonesLayer extends CustomLayer {
       default:
         markerSize = zoom != null && zoom > 12 ? 30 : null;
     }
-    return MarkerLayerOptions(
+    return MarkerLayer(
       markers: markerSize != null
           ? _parkingZoneMarkers
               .map((element) => Marker(

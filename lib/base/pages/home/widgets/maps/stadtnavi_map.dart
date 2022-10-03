@@ -13,7 +13,7 @@ import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.
 import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider_cubit.dart';
 import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 
-typedef LayerOptionsBuilder = List<LayerOptions> Function(BuildContext context);
+typedef LayerOptionsBuilder = List<Widget> Function(BuildContext context);
 
 class StadtnaviMap extends StatefulWidget {
   final TrufiMapController trufiMapController;

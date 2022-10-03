@@ -16,7 +16,7 @@ import 'package:trufi_core/base/widgets/drawer/menu/default_pages_menu.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/menu_item.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 
-List<List<MenuItem>> stadtnaviMenuItems({
+List<List<TrufiMenuItem>> stadtnaviMenuItems({
   required UrlSocialMedia? defaultUrls,
   required String impressumUrl,
   required Uri reportDefectsUri,

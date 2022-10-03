@@ -121,7 +121,7 @@ class LiveBusLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions buildLayerOptions(int? zoom) {
+  Widget buildLayerOptions(int? zoom) {
     double? markerSize;
     switch (zoom) {
       case 15:
@@ -140,7 +140,7 @@ class LiveBusLayer extends CustomLayer {
         markerSize = zoom != null && zoom > 18 ? 35 : null;
     }
     final markersList = _pbfMarkers.values.toList();
-    return MarkerLayerOptions(
+    return MarkerLayer(
       markers: markerSize != null
           ? markersList
               .map((element) => Marker(
@@ -224,7 +224,7 @@ class LiveBusLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions? buildLayerOptionsPriority(int zoom) {
+  Widget? buildLayerOptionsPriority(int zoom) {
     return null;
   }
 

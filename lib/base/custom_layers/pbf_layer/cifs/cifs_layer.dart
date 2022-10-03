@@ -31,7 +31,7 @@ class CifsLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions buildLayerOptions(int? zoom) {
+  Widget buildLayerOptions(int? zoom) {
     double? polylineSize;
     switch (zoom) {
       case 13:
@@ -59,7 +59,7 @@ class CifsLayer extends CustomLayer {
     return GroupLayerOptions(
       group: polylineSize != null
           ? [
-              PolylineLayerOptions(
+              PolylineLayer(
                 polylines: markersList
                     .map((e) => Polyline(
                           points: e.polyline.reversed.toList(),
@@ -75,7 +75,7 @@ class CifsLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions? buildLayerOptionsPriority(int zoom) {
+  Widget? buildLayerOptionsPriority(int zoom) {
     double? markerSize;
     switch (zoom) {
       case 13:
@@ -100,7 +100,7 @@ class CifsLayer extends CustomLayer {
         markerSize = zoom > 18 ? 35 : null;
     }
     final markersList = _pbfMarkers.values.toList();
-    return MarkerLayerOptions(
+    return MarkerLayer(
       markers: [
         ...markersList
             .map((element) => Marker(

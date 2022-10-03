@@ -5,7 +5,7 @@ import 'package:trufi_core/base/blocs/localization/trufi_localization_cubit.dart
 import 'package:trufi_core/base/widgets/drawer/menu/default_item_menu.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/menu_item.dart';
 
-MenuItem menuLanguage() {
+TrufiMenuItem menuLanguage() {
   return SimpleMenuItem(
       buildIcon: (context) => const Icon(Icons.translate),
       name: (context) {

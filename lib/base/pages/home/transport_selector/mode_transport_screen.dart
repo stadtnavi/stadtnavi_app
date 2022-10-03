@@ -48,7 +48,7 @@ class _ModeTransportScreen extends State<ModeTransportScreen>
           children: [
             BlocListener<MapModesCubit, MapModesState>(
               listener: (buildContext, state) {
-                trufiMapController.mapController.onReady.then((_) {
+                trufiMapController.onReady.then((_) {
                   repaintMap(mapRouteState, mapModesCubit, state);
                 });
               },

@@ -17,7 +17,7 @@ class StadtnaviDrawer extends StatelessWidget {
   final String cityName;
   final String urlShareApp;
   final String currentRoute;
-  final List<List<MenuItem>> menuItems;
+  final List<List<TrufiMenuItem>> menuItems;
   final WidgetBuilder? backgroundImageBuilder;
 
   @override

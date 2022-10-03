@@ -79,7 +79,7 @@ class BicycleNetworkLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions buildLayerOptions(int? zoom) {
+  Widget buildLayerOptions(int? zoom) {
     if (_listlist.isEmpty) {
       load();
     }
@@ -117,7 +117,7 @@ class BicycleNetworkLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions? buildLayerOptionsPriority(int zoom) {
+  Widget? buildLayerOptionsPriority(int zoom) {
     return null;
   }
 

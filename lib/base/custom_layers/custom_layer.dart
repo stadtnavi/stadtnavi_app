@@ -11,9 +11,9 @@ abstract class CustomLayer {
     if (onRefresh != null) onRefresh!();
   }
 
-  LayerOptions buildLayerOptions(int zoom);
+  Widget buildLayerOptions(int zoom);
 
-  LayerOptions? buildLayerOptionsPriority(int zoom);
+  Widget? buildLayerOptionsPriority(int zoom);
 
   String name(BuildContext context);
 
