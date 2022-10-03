@@ -82,9 +82,12 @@ class RateApp extends TrufiMenuItem {
             });
 }
 
-class AppShareButtonMenu extends TrufiMenuItem {
-  AppShareButtonMenu()
-      : super(
+class AppShareButtonMenu extends MenuItem {
+  AppShareButtonMenu({
+    required String appName,
+    required String cityName,
+    required String urlShareApp,
+  }) : super(
           selectedIcon: (context) => const Icon(Icons.share_location_outlined),
           notSelectedIcon: (context) => const Icon(Icons.share_outlined),
           name: (context) => TrufiMenuItem.buildName(
@@ -96,8 +99,8 @@ class AppShareButtonMenu extends TrufiMenuItem {
           onClick: (context, _) {
             final currentLocale = Localizations.localeOf(context).languageCode;
             Share.share(currentLocale == "en"
-                ? "Download the stadtnavi app, the public transport app for Herrenberg and its surroundings on https://herrenberg.stadtnavi.de/"
-                : "Hol' dir die stadtnavi App für den öffentlichen Nahverkehr in Herrenberg und Umgebung auf https://herrenberg.stadtnavi.de/");
+                ? "Download the $appName $cityName app, the public transport app for $cityName and its surroundings on $urlShareApp"
+                : "Hol' dir die $appName $cityName App für den öffentlichen Nahverkehr in $cityName und Umgebung auf $urlShareApp");
           },
         );
 }

@@ -43,8 +43,8 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
   ),
   CustomLayerContainer(
     name: (context) => TrufiBaseLocalization.of(context).localeName == "en"
-        ? "Sharing Offers"
-        : "Sharing Angebote",
+        ? "Sharing"
+        : "Sharing-Angebote",
     icon: (context) => const Icon(
       Icons.bike_scooter,
       color: Colors.grey,

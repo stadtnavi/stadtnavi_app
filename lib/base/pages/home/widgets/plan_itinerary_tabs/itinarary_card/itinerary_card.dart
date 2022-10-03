@@ -67,7 +67,7 @@ class ItineraryCard extends StatelessWidget {
                           text:
                               " (${itinerary.getDistanceString(localizationBase)})",
                           style: TextStyle(
-                            color: theme.colorScheme.secondary,
+                            color: theme.primaryColor,
                           ),
                         )
                       ],
@@ -82,7 +82,7 @@ class ItineraryCard extends StatelessWidget {
                   width: 5,
                   height: 50 * MediaQuery.of(context).textScaleFactor,
                   color: itinerary == selectedItinerary
-                      ? theme.colorScheme.secondary
+                      ? theme.colorScheme.primary
                       : Colors.grey[400],
                   margin: const EdgeInsets.only(
                     right: 5,

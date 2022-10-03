@@ -62,7 +62,12 @@ class WeatherLayer extends CustomLayer {
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context, onFetchPlan) => ParkingMarkerModal(
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
+                                ParkingMarkerModal(
                               parkingFeature: element,
                               onFetchPlan: onFetchPlan,
                             ),
@@ -98,7 +103,10 @@ class WeatherLayer extends CustomLayer {
     );
   }
 
+  static bool isdisable = false;
+
   static Future<void> fetchPBF(int z, int x, int y) async {
+    if (isdisable) return;
     final uri = Uri(
       scheme: "https",
       host: baseDomain,

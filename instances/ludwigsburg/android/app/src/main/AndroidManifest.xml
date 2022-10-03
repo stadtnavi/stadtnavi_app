@@ -22,7 +22,7 @@
      </intent>
    </queries>
    <application
-        android:label="ludwigsburg"
+        android:label="stadtnavi Ludwigsburg"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

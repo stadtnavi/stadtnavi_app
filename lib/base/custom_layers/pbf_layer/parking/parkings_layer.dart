@@ -70,10 +70,15 @@ class ParkingLayer extends CustomLayer {
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context, onFetchPlan) =>
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
                                 ParkingStateUpdater(
                               parkingFeature: element,
                               onFetchPlan: onFetchPlan,
+                              isOnlyDestination: isOnlyDestination ?? false,
                             ),
                             positon: element.position,
                             minSize: 50,

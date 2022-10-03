@@ -18,6 +18,7 @@ class ItineraryDateSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final localization = StadtnaviBaseLocalization.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
     final payloadDataPlanCubit = context.watch<SettingFetchCubit>();
@@ -49,9 +50,9 @@ class ItineraryDateSelector extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            const Icon(
+            Icon(
               Icons.access_time_rounded,
-              color: Colors.white,
+              color: theme.appBarTheme.foregroundColor!,
               size: 20,
             ),
             Expanded(
@@ -61,14 +62,17 @@ class ItineraryDateSelector extends StatelessWidget {
                     : payloadDataPlanCubit.state.arriveBy
                         ? "${localization.commonArrival} ${payloadDataPlanCubit.state.date!.customFormat(languageCode)}"
                         : "${localization.commonDeparture}  ${payloadDataPlanCubit.state.date!.customFormat(languageCode)}",
-                style: const TextStyle(fontSize: 15, color: Colors.white),
+                style: TextStyle(
+                  fontSize: 15,
+                  color: theme.appBarTheme.foregroundColor!,
+                ),
                 textAlign: TextAlign.center,
                 maxLines: 1,
               ),
             ),
-            const Icon(
+            Icon(
               Icons.keyboard_arrow_down,
-              color: Colors.white,
+              color: theme.appBarTheme.foregroundColor!,
               size: 20,
             ),
           ],

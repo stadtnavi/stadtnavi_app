@@ -106,8 +106,9 @@ class AboutSection extends StatelessWidget {
                   text: isLanguageEn
                       ? 'OpenStreetMap Contributors'
                       : 'OpenStreetMap Mitwirkende',
-                  style: theme.textTheme.bodyText2?.copyWith(
+                  style: TextStyle(
                     decoration: TextDecoration.underline,
+                    color: theme.primaryColor,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
@@ -133,8 +134,9 @@ class AboutSection extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(
                   text: 'NVBW GmbH',
-                  style: theme.textTheme.bodyText2?.copyWith(
+                  style: TextStyle(
                     decoration: TextDecoration.underline,
+                    color: theme.primaryColor,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
@@ -150,8 +152,9 @@ class AboutSection extends StatelessWidget {
                 ),
                 TextSpan(
                   text: 'VVS GmbH',
-                  style: theme.textTheme.bodyText2?.copyWith(
+                  style: TextStyle(
                     decoration: TextDecoration.underline,
+                    color: theme.primaryColor,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {

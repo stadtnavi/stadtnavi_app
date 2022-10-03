@@ -47,7 +47,7 @@ class InfoMessage extends StatelessWidget {
                     isErrorMessage ? Icons.warning : Icons.info,
                     color: isErrorMessage
                         ? const Color(0xffdc2251)
-                        : theme.primaryColor,
+                        : theme.colorScheme.primary,
                     size: 17,
                   ),
                   const SizedBox(width: 5),

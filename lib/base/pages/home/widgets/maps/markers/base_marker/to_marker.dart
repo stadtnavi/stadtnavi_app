@@ -24,7 +24,7 @@ class ToMarker extends StatelessWidget {
             const Icon(Icons.location_on, size: 23, color: Colors.white),
             Icon(
               Icons.location_on,
-              color: theme.colorScheme.secondary,
+              color: theme.colorScheme.primary,
               size: 20,
             ),
           ],

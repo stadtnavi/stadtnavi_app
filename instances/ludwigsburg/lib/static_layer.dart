@@ -39,14 +39,15 @@ final List<CustomLayerContainer> customLayersLudwigsburg = [
         '3',
         url: 'https://node21-iot.apps.okd.swlb.de/radservice.json',
         isOnline: true,
+        nameDE: 'RadSERVICE Stationen',
       ),
       StaticTileLayers.bicycleNetworkLayer,
     ],
   ),
   CustomLayerContainer(
     name: (context) => TrufiBaseLocalization.of(context).localeName == "en"
-        ? "Sharing Offers"
-        : "Sharing Angebote",
+        ? "Sharing"
+        : "Sharing-Angebote",
     icon: (context) => const Icon(
       Icons.bike_scooter,
       color: Colors.grey,
@@ -84,7 +85,8 @@ final List<CustomLayerContainer> customLayersLudwigsburg = [
         isOnline: true,
       ),
       StaticTileLayers.cifsLayer,
-      StaticTileLayers.weatherLayer,
+      // Hide "Straßenwetter" Layer
+      // StaticTileLayers.weatherLayer,
       Layer(
         LayerIds.lorawanGateways,
         '3',

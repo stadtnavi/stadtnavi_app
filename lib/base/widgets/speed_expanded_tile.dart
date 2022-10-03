@@ -33,6 +33,8 @@ class SpeedExpansionTile extends StatelessWidget {
           ),
         ],
       ),
+      collapsedIconColor: theme.colorScheme.primary,
+      iconColor: theme.colorScheme.primary,
       children: dataSpeeds
           .map(
             (dataSpeed) => Container(

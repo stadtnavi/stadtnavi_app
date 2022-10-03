@@ -19,7 +19,11 @@ import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 List<List<TrufiMenuItem>> stadtnaviMenuItems({
   required UrlSocialMedia? defaultUrls,
   required String impressumUrl,
+  required String appName,
+  required String cityName,
+  required String urlShareApp,
   required Uri reportDefectsUri,
+  List<MenuItem>? extraItems,
 }) {
   return [
     [
@@ -40,6 +44,7 @@ List<List<TrufiMenuItem>> stadtnaviMenuItems({
           return localization.menuConnections;
         },
       ),
+      if (extraItems != null) ...extraItems,
       MenuPageItem(
         id: SavedPlacesPage.route,
         selectedIcon: (context) => Icon(
@@ -56,7 +61,7 @@ List<List<TrufiMenuItem>> stadtnaviMenuItems({
           final localization = SavedPlacesLocalization.of(context);
           return localization.menuYourPlaces;
         },
-      )
+      ),
     ],
     [
       ReportDefectsButton(
@@ -99,12 +104,16 @@ List<List<TrufiMenuItem>> stadtnaviMenuItems({
         ),
         name: (context) => Localizations.localeOf(context).languageCode == "en"
             ? "About this service"
-            : "Über diesen Service",
+            : "Über diesen Dienst",
       ),
       if (defaultUrls != null && defaultUrls.existUrl)
         stadtNaviSocialMedia(defaultUrls),
       RateApp(),
-      AppShareButtonMenu(),
+      AppShareButtonMenu(
+        appName: appName,
+        cityName: cityName,
+        urlShareApp: urlShareApp,
+      ),
     ],
     [menuLanguage(), ImpressumMedia(impressumUrl)]
   ];

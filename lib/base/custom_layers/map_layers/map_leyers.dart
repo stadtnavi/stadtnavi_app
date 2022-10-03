@@ -133,6 +133,13 @@ class CustomTileProvider extends TileProvider {
   }
 
   Future<void> _fetchPBF(Coords<num> coords) async {
+    await CityBikesLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
     await StopsLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
@@ -141,13 +148,6 @@ class CustomTileProvider extends TileProvider {
       log("$error");
     });
     await ParkingLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    await CityBikesLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
       coords.y.toInt(),

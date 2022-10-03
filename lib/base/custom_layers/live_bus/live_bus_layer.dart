@@ -67,7 +67,7 @@ class LiveBusLayer extends CustomLayer {
       for (final MqttReceivedMessage<MqttMessage> input in inputs) {
         final message = input.payload as MqttPublishMessage;
         final payload = MqttPublishPayload.bytesToStringAsString(
-          message.payload.message!,
+          message.payload.message,
         );
         //  1=gtfsrt
         //  2=vp
@@ -160,7 +160,11 @@ class LiveBusLayer extends CustomLayer {
                           final panelCubit = context.read<PanelCubit>();
                           panelCubit.setPanel(
                             CustomMarkerPanel(
-                              panel: (context, onFetchPlan) =>
+                              panel: (
+                                context,
+                                onFetchPlan, {
+                                isOnlyDestination,
+                              }) =>
                                   LiveBusMarkerModal(
                                 mainElement: element,
                                 onLiveBusStateChangeContainer:

@@ -7,7 +7,7 @@ import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bicycle_network/bicycle_network_model.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bicycle_network/parking_zones_icons.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bicycle_network/bicycle_network_icons.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/custom_polyline_layer.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:flutter_svg/svg.dart';
@@ -124,7 +124,7 @@ class BicycleNetworkLayer extends CustomLayer {
   @override
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? "Parking zones" : "Parkplätze";
+    return localeName == "en" ? "Bicycle network" : "Radnetz Ludwigsburg";
   }
 
   @override
