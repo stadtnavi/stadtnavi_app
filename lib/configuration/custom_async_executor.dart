@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:async_executor/async_executor.dart';
-import 'package:flare_flutter/flare_actor.dart';
+import 'package:rive/rive.dart';
 import 'package:trufi_core/base/widgets/alerts/fetch_error_handler.dart';
 
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
@@ -14,9 +14,9 @@ AsyncExecutor customAsyncExecutor = AsyncExecutor(
       barrierDismissible: false,
       onWillPop: false,
       builder: (context) {
-        return const FlareActor(
-          "assets/images/loading.flr",
-          animation: "Trufi Drive",
+        return const RiveAnimation.asset(
+          'assets/images/loading.riv',
+          animations: ["Trufi Drive"],
         );
       },
     );

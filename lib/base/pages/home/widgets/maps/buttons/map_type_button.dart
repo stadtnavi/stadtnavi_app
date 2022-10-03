@@ -302,7 +302,7 @@ class _BuildMapTypeOptionButton extends StatelessWidget {
                   border: Border.all(
                     width: 2.0,
                     color: active
-                        ? theme.colorScheme.secondary
+                        ? theme.colorScheme.primary
                         : Colors.transparent,
                   ),
                   borderRadius: BorderRadius.circular(8.0)),
@@ -317,7 +317,7 @@ class _BuildMapTypeOptionButton extends StatelessWidget {
                 label,
                 style: TextStyle(
                     fontSize: theme.textTheme.caption?.fontSize,
-                    color: active ? theme.colorScheme.secondary : Colors.grey),
+                    color: active ? theme.primaryColor : Colors.grey),
               ),
             ),
           ],

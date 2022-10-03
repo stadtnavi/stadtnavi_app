@@ -33,7 +33,7 @@ extension CityBikeLayerIdsExtension on CityBikeLayerIds {
     CityBikeLayerIds.cargoBike: 'cargo-bike',
     CityBikeLayerIds.carSharing: 'car-sharing',
     CityBikeLayerIds.regiorad: 'regiorad',
-    CityBikeLayerIds.scooter: 'tier_LUDWIGSBURG',
+    CityBikeLayerIds.scooter: 'tier_ludwigsburg',
   };
 
   static final images = <CityBikeLayerIds, SvgPicture>{

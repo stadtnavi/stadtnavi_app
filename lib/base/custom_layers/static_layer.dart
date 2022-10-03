@@ -1,5 +1,5 @@
 import 'package:stadtnavi_core/base/custom_layers/live_bus/live_bus_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bicycle_network/parkings_zones_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bicycle_network/bicycle_network_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';

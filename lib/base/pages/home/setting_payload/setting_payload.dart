@@ -15,6 +15,7 @@ class SettingPayload extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final homePageState = context.watch<MapRouteCubit>().state;
     return Row(
       children: [
@@ -24,7 +25,11 @@ class SettingPayload extends StatelessWidget {
           ),
         ),
         if (homePageState.isPlacesDefined)
-          Container(width: 1, height: 25, color: Colors.white),
+          Container(
+            width: 1,
+            height: 25,
+            color: theme.appBarTheme.foregroundColor!,
+          ),
         if (homePageState.isPlacesDefined)
           MapSettingButton(onFetchPlan: onFetchPlan)
         else

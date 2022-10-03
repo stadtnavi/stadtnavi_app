@@ -67,7 +67,7 @@ class CustomStopTile extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.info,
-                                color: theme.primaryColor,
+                                color: theme.colorScheme.primary,
                                 size: 17,
                               ),
                               const SizedBox(width: 5),

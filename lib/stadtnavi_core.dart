@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/map_leyers.dart';
 import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/online_search_location.dart';
 import 'package:stadtnavi_core/configuration/attribution_map.dart';
@@ -11,6 +12,7 @@ import 'package:stadtnavi_core/default_stadtnavi_values.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
+import 'package:trufi_core/base/widgets/drawer/menu/menu_item.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 import 'package:trufi_core/trufi_core.dart';
 import 'package:trufi_core/trufi_router.dart';
@@ -32,6 +34,12 @@ class StadtnaviApp extends StatelessWidget {
   final UrlSocialMedia urlSocialMedia;
   final TrufiBaseTheme? trufiBaseTheme;
 
+  // TODO we need improve these params
+  final List<MenuItem>? extraDrawerItems;
+  final RouterBuilder? extraRoutes;
+  final List<BlocProvider>? extraBlocs;
+  final WidgetBuilder? extraFloatingMapButtons;
+
   const StadtnaviApp({
     Key? key,
     required this.appNameTitle,
@@ -49,6 +57,10 @@ class StadtnaviApp extends StatelessWidget {
     required this.layersContainer,
     required this.urlSocialMedia,
     this.trufiBaseTheme,
+    this.extraDrawerItems,
+    this.extraRoutes,
+    this.extraBlocs,
+    this.extraFloatingMapButtons,
   }) : super(key: key);
 
   @override
@@ -74,6 +86,7 @@ class StadtnaviApp extends StatelessWidget {
           MapLayer(MapLayerIds.satellite),
           MapLayer(MapLayerIds.bike),
         ],
+        extraBlocs: extraBlocs,
       ),
       trufiRouter: TrufiRouter(
         routerDelegate: DefaultStadtnaviValues.routerDelegate(
@@ -92,6 +105,9 @@ class StadtnaviApp extends StatelessWidget {
           urlImpressum: urlImpressum,
           reportDefectsUri: reportDefectsUri,
           asyncExecutor: customAsyncExecutor,
+          extraDrawerItems: extraDrawerItems,
+          extraRoutes: extraRoutes,
+          extraFloatingMapButtons: extraFloatingMapButtons,
         ),
       ),
     );

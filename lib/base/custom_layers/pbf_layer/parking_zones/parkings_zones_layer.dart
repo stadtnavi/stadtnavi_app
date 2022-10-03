@@ -92,7 +92,12 @@ class ParkingZonesLayer extends CustomLayer {
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context, onFetchPlan) => ParkingZoneModal(
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
+                                ParkingZoneModal(
                               element: element,
                             ),
                             positon: element.coordinates,
@@ -155,7 +160,7 @@ class ParkingZonesLayer extends CustomLayer {
   @override
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? "Parking zones" : "Parkplätze";
+    return localeName == "en" ? "Parking zones" : "Parkzonen";
   }
 
   @override

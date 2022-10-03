@@ -50,9 +50,9 @@ class HomeAppBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.menu,
-                      color: Colors.white,
+                      color: theme.appBarTheme.foregroundColor,
                     ),
                     splashRadius: 24,
                     iconSize: 24,

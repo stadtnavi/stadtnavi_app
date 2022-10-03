@@ -74,7 +74,11 @@ class CityBikesLayer extends CustomLayer {
                           final panelCubit = context.read<PanelCubit>();
                           panelCubit.setPanel(
                             CustomMarkerPanel(
-                              panel: (context, onFetchPlan) =>
+                              panel: (
+                                context,
+                                onFetchPlan, {
+                                isOnlyDestination,
+                              }) =>
                                   element.id == "cargobike-herrenberg"
                                       ? CargoBikeMarkerModal(
                                           element: element,
@@ -99,7 +103,8 @@ class CityBikesLayer extends CustomLayer {
                               child: element.type?.imageStop,
                             ),
                             if (element.extraInfo?.bikesAvailable != null &&
-                                element.extraInfo!.bikesAvailable! >= 0 && element.type != CityBikeLayerIds.carSharing)
+                                element.extraInfo!.bikesAvailable! >= 0 &&
+                                element.type != CityBikeLayerIds.carSharing)
                               Positioned(
                                 right: markerSize / 5,
                                 child: Container(

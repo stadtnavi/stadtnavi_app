@@ -1,5 +1,6 @@
 part of 'plan_entity.dart';
 
+// ignore: must_be_immutable
 class PlanItineraryLeg extends Equatable {
   PlanItineraryLeg({
     required this.points,

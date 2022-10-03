@@ -64,7 +64,11 @@ class BikeParkLayer extends CustomLayer {
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context, onFetchPlan) =>
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
                                 CitybikeMarkerModal(
                               element: element,
                               onFetchPlan: onFetchPlan,
@@ -144,7 +148,7 @@ class BikeParkLayer extends CustomLayer {
   @override
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? "Bike parking spaces" : "Fahrradparkplätze";
+    return localeName == "en" ? "Bike parking spaces" : "Fahrradstellplätze";
   }
 
   @override

@@ -16,12 +16,16 @@ class Layer extends CustomLayer {
   List<CustomMarker> customMarkers = [];
   final LayerIds layerId;
   final String? url;
+  final String? nameEN;
+  final String? nameDE;
   final bool isOnline;
   bool _isFetching = false;
   Layer(
     this.layerId,
     String weight, {
     this.url,
+    this.nameEN,
+    this.nameDE,
     this.isOnline = false,
   }) : super(layerId.enumString, weight) {
     load();
@@ -93,7 +97,12 @@ class Layer extends CustomLayer {
                         final panelCubit = context.read<PanelCubit>();
                         panelCubit.setPanel(
                           CustomMarkerPanel(
-                            panel: (context, onFetchPlan) => CustomMarkerModal(
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
+                                CustomMarkerModal(
                               element: element,
                               onFetchPlan: onFetchPlan,
                             ),
@@ -136,8 +145,8 @@ class Layer extends CustomLayer {
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
     return localeName == "en"
-        ? layerId.enumToStringEN()
-        : layerId.enumToStringDE();
+        ? nameEN ?? layerId.enumToStringEN()
+        : nameDE ?? layerId.enumToStringDE();
   }
 
   @override

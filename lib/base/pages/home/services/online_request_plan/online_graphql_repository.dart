@@ -3,17 +3,17 @@ import 'package:stadtnavi_core/base/models/othermodel/enums/mode.dart';
 import 'package:stadtnavi_core/base/models/othermodel/plan.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
-import 'package:stadtnavi_core/base/pages/home/services/online_request_plan/plan2.dart';
+import 'package:stadtnavi_core/base/pages/home/services/online_request_plan/graphql_plan_repository.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import '../../../../models/othermodel/modes_transport.dart';
 
 class OnlineGraphQLRepository {
   final String graphQLEndPoint;
-  final GraphQLPlanRepository2 _graphQLPlanRepository;
+  final GraphQLPlanRepository _graphQLPlanRepository;
 
   OnlineGraphQLRepository({
     required this.graphQLEndPoint,
-  }) : _graphQLPlanRepository = GraphQLPlanRepository2(graphQLEndPoint);
+  }) : _graphQLPlanRepository = GraphQLPlanRepository(graphQLEndPoint);
 
   Future<PlanEntity> fetchAdvancedPlan({
     required TrufiLocation from,

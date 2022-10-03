@@ -11,10 +11,12 @@ import 'package:url_launcher/url_launcher.dart';
 class ParkingStateUpdater extends StatefulWidget {
   final ParkingFeature parkingFeature;
   final void Function() onFetchPlan;
+  final bool isOnlyDestination;
   const ParkingStateUpdater({
     Key? key,
     required this.parkingFeature,
     required this.onFetchPlan,
+    this.isOnlyDestination = false,
   }) : super(key: key);
 
   @override
@@ -69,6 +71,7 @@ class _ParkingStateUpdaterState extends State<ParkingStateUpdater> {
             child: ParkingMarkerModal(
               parkingFeature: updatedParkingFeature!,
               onFetchPlan: widget.onFetchPlan,
+              isOnlyDestination: widget.isOnlyDestination,
             ),
           )
         else if (loading)
@@ -124,10 +127,12 @@ class _ParkingStateUpdaterState extends State<ParkingStateUpdater> {
 class ParkingMarkerModal extends StatelessWidget {
   final ParkingFeature parkingFeature;
   final void Function() onFetchPlan;
+  final bool isOnlyDestination;
   const ParkingMarkerModal({
     Key? key,
     required this.parkingFeature,
     required this.onFetchPlan,
+    this.isOnlyDestination = false,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -259,6 +264,7 @@ class ParkingMarkerModal extends StatelessWidget {
         ),
         CustomLocationSelector(
           onFetchPlan: onFetchPlan,
+          isOnlyDestination: isOnlyDestination,
           locationData: LocationDetail(
             parkingFeature.name ?? "",
             "",

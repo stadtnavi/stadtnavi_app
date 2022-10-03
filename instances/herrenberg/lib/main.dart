@@ -8,29 +8,21 @@ import 'package:latlong2/latlong.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layer_local_storage.dart';
-import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
-import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
-import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/stadtnavi_core.dart';
+import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
 
-import 'package:trufi_core/base/utils/graphql_client/hive_init.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
+import 'package:trufi_core/base/utils/certificates_letsencrypt_android.dart';
 
 const baseDomain = "api.stadtnavi.de";
 String openTripPlannerUrl =
     "https://$baseDomain/routing/v1/router/index/graphql";
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initHiveForFlutter(boxes: [
-    ...listPathsHive,
-    MapRouteCubit.path,
-    MapModesCubit.path,
-    SettingFetchCubit.path,
-    CustomLayerLocalStorage.path,
-  ]);
+  await CertificatedLetsencryptAndroid.workAroundCertificated();
+  await initHiveForFlutter();
   await _migrationOldData();
   runApp(
     StadtnaviApp(
