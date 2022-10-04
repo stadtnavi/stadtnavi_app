@@ -41,7 +41,7 @@ class _ParkingOverviewMapState extends State<ParkingOverviewMap>
     final localization = TrufiBaseLocalization.of(context);
     final panelCubit = context.watch<PanelCubit>();
     final mapConfiguration = context.read<MapConfigurationCubit>().state;
-    trufiMapController.mapController.onReady.then((value) {
+    trufiMapController.onReady.then((value) {
       if (panelCubit.state.panel != null) {
         trufiMapController.move(
           center: panelCubit.state.panel!.positon,

@@ -23,7 +23,7 @@ List<List<TrufiMenuItem>> stadtnaviMenuItems({
   required String cityName,
   required String urlShareApp,
   required Uri reportDefectsUri,
-  List<MenuItem>? extraItems,
+  List<TrufiMenuItem>? extraItems,
 }) {
   return [
     [

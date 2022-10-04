@@ -111,7 +111,7 @@ abstract class DefaultStadtnaviValues {
     required String urlImpressum,
     required Uri reportDefectsUri,
     UrlSocialMedia? urlSocialMedia,
-    List<MenuItem>? extraDrawerItems,
+    List<TrufiMenuItem>? extraDrawerItems,
     RouterBuilder? extraRoutes,
     WidgetBuilder? extraFloatingMapButtons,
   }) {

@@ -35,7 +35,7 @@ class StadtnaviApp extends StatelessWidget {
   final TrufiBaseTheme? trufiBaseTheme;
 
   // TODO we need improve these params
-  final List<MenuItem>? extraDrawerItems;
+  final List<TrufiMenuItem>? extraDrawerItems;
   final RouterBuilder? extraRoutes;
   final List<BlocProvider>? extraBlocs;
   final WidgetBuilder? extraFloatingMapButtons;

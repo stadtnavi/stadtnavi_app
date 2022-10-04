@@ -82,7 +82,7 @@ class RateApp extends TrufiMenuItem {
             });
 }
 
-class AppShareButtonMenu extends MenuItem {
+class AppShareButtonMenu extends TrufiMenuItem {
   AppShareButtonMenu({
     required String appName,
     required String cityName,

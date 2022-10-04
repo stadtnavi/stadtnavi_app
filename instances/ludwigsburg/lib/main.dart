@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:ludwigsburg/components/share_itinerary_button.dart';
-import 'package:ludwigsburg/configuration_routes.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 import 'package:stadtnavi_core/base/pages/home/setting_payload/setting_panel/setting_panel.dart';
 import 'package:stadtnavi_core/consts.dart';
+import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layer_local_storage.dart';
+import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
 
@@ -14,6 +16,8 @@ import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/utils/certificates_letsencrypt_android.dart';
 
 import 'branding_ludwigsburg.dart';
+import 'components/share_itinerary_button.dart';
+import 'configuration_routes.dart';
 import 'static_layer.dart';
 
 void main() async {
@@ -35,7 +39,8 @@ void main() async {
       urlShareApp: 'https://stadtnavi.swlb.de/',
       urlRepository: 'https://github.com/trufi-association/trufi-app',
       urlImpressum: 'https://www.ludwigsburg.de/LB2020/impressum.html',
-      reportDefectsUri: Uri.parse('https://www.ludwigsburg.de/start/rathaus+und+service/maengelmelder.html'),
+      reportDefectsUri: Uri.parse(
+          'https://www.ludwigsburg.de/start/rathaus+und+service/maengelmelder.html'),
       layersContainer: customLayersLudwigsburg,
       urlSocialMedia: const UrlSocialMedia(
         urlFacebook: 'https://de-de.facebook.com/ludwigsburg/',

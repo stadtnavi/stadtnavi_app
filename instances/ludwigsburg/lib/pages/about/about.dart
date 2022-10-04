@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:ludwigsburg/pages/about/about_section.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:trufi_core/base/pages/about/translations/about_localizations.dart';
 import 'package:trufi_core/base/utils/packge_info_platform.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
+
+import 'about_section.dart';
 
 class AboutPage extends StatelessWidget {
   static const String route = "/About";
