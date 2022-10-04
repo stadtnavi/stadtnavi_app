@@ -84,7 +84,7 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
     _localStorage.save(state.layersSatus);
   }
 
-  List<LayerOptions> activeCustomLayers(int zoom, {String? showLayerById}) {
+  List<Widget> activeCustomLayers(int zoom, {String? showLayerById}) {
     List<CustomLayer> listSort = state.layers;
     if (showLayerById != null) {
       listSort =
@@ -97,8 +97,8 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
 
     listSort.sort((a, b) => a.weight.compareTo(b.weight));
 
-    List<LayerOptions> listPriority = [];
-    LayerOptions? layer;
+    List<Widget> listPriority = [];
+    Widget? layer;
     for (CustomLayer customL in listSort) {
       layer = customL.buildLayerOptionsPriority(zoom);
       if (layer != null) {

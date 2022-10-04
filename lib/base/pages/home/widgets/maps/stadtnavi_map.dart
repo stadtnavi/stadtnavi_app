@@ -57,7 +57,6 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
               return FlutterMap(
                 mapController: widget.trufiMapController.mapController,
                 options: MapOptions(
-                  plugins: [CustomPolylineMapPlugin()],
                   interactiveFlags: InteractiveFlag.drag |
                       InteractiveFlag.flingAnimation |
                       InteractiveFlag.pinchMove |
@@ -69,6 +68,11 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
                   onTap: widget.onTap,
                   onLongPress: widget.onLongPress,
                   center: mapConfiguratiom.center,
+                  onMapReady: () {
+                    if (!widget.trufiMapController.readyCompleter.isCompleted) {
+                      widget.trufiMapController.readyCompleter.complete();
+                    }
+                  },
                   onPositionChanged: (
                     MapPosition position,
                     bool hasGesture,
@@ -87,7 +91,7 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
                     });
                   },
                 ),
-                layers: [
+                children: [
                   ...currentMapType.currentMapTileProvider
                       .buildTileLayerOptions(),
                   mapConfiguratiom.markersConfiguration

@@ -53,6 +53,7 @@ class ParkingZonesLayer extends CustomLayer {
                   color: element.backgroundcolor,
                   borderStrokeWidth: 1.5,
                   borderColor: element.borderColor,
+                  isFilled: true,
                 ),
               )
               .toList()

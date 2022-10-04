@@ -100,9 +100,9 @@ class BicycleNetworkLayer extends CustomLayer {
       default:
         markerSize = zoom != null && zoom > 12 ? -0.5 : null;
     }
-    return CustomPolylineLayerOptions(
+    return CustomPolylineLayer(
       polylineCulling: true,
-      polylines: markerSize != null
+      polylineOpts: markerSize != null
           ? _listlist
               .map((e) => CustomPolyline(
                     points: e.coordinates,

@@ -4,46 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 // ignore: implementation_imports
 import 'package:flutter_map/src/map/map.dart';
+import 'package:flutter_map/src/map/flutter_map_state.dart';
 import 'package:latlong2/latlong.dart';
-
-class CustomPolylineMapPlugin extends MapPlugin {
-  @override
-  Widget createLayer(
-      LayerOptions options, MapState mapState, Stream<void> stream) {
-    if (options is CustomPolylineLayerOptions) {
-      return CustomPolylineLayer(options, mapState, stream);
-    }
-    throw (StateError("""
-Can't find correct layer for $options. Perhaps when you create your FlutterMap you need something like this:
-
-    options: new MapOptions(plugins: [MyFlutterMapPlugin()])"""));
-  }
-
-  @override
-  bool supportsLayer(LayerOptions options) {
-    return options is CustomPolylineLayerOptions;
-  }
-}
-
-class CustomPolylineLayerOptions extends LayerOptions {
-  final List<CustomPolyline> polylines;
-  final bool polylineCulling;
-
-  CustomPolylineLayerOptions({
-    Key? key,
-    this.polylines = const [],
-    this.polylineCulling = false,
-    // ignore: prefer_void_to_null
-    Stream<Null>? rebuild,
-  }) : super(key: key, rebuild: rebuild) {
-    if (polylineCulling) {
-      for (var polyline in polylines) {
-        polyline.boundingBox = LatLngBounds.fromPoints(
-            polyline.points.fold([], (i, j) => [...i, ...j]));
-      }
-    }
-  }
-}
 
 class CustomPolyline {
   final List<List<LatLng>> points;
@@ -70,41 +32,42 @@ class CustomPolyline {
 }
 
 class CustomPolylineLayer extends StatelessWidget {
-  final CustomPolylineLayer polylineOpts;
-  final MapState map;
-  final Stream<void>? stream;
+  final List<CustomPolyline> polylineOpts;
+  final bool polylineCulling;
 
-  CustomPolylineLayer(this.polylineOpts, this.map, this.stream)
-      : super(key: polylineOpts.key);
+  CustomPolylineLayer({
+    super.key,
+    this.polylineOpts = const [],
+    this.polylineCulling = false,
+  }) {
+    if (polylineCulling) {
+      for (var polyline in polylineOpts) {
+        polyline.boundingBox = LatLngBounds.fromPoints(
+            polyline.points.fold([], (i, j) => [...i, ...j]));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints bc) {
+        final map = FlutterMapState.maybeOf(context)!;
         final size = Size(bc.maxWidth, bc.maxHeight);
-        return _build(context, size);
-      },
-    );
-  }
-
-  Widget _build(BuildContext context, Size size) {
-    return StreamBuilder<void>(
-      stream: stream,
-      builder: (BuildContext context, _) {
         var polylines = <Widget>[];
 
-        for (CustomPolyline polylineOpt in polylineOpts.polylines) {
+        for (CustomPolyline polylineOpt in polylineOpts) {
           for (var element in polylineOpt.offsets) {
             element.clear();
           }
 
-          if (polylineOpts.polylineCulling &&
+          if (polylineCulling &&
               !polylineOpt.boundingBox.isOverlapping(map.bounds)) {
             // skip this polyline as it's offscreen
             continue;
           }
 
-          _fillOffsets(polylineOpt.offsets, polylineOpt.points);
+          _fillOffsets(polylineOpt.offsets, polylineOpt.points, map);
 
           polylines.add(CustomPaint(
             painter: CustomPolylinePainter(polylineOpt),
@@ -119,19 +82,21 @@ class CustomPolylineLayer extends StatelessWidget {
     );
   }
 
-  void _fillOffsets(
-      final List<List<Offset>> offsets, final List<List<LatLng>> points) {
+  void _fillOffsets(final List<List<Offset>> offsets,
+      final List<List<LatLng>> points, FlutterMapState map) {
     for (var j = 0, len = points.length; j < len; ++j) {
       List<LatLng> tempList = points[j];
       List<Offset> tempListOffsets = [];
       for (var i = 0, len = tempList.length; i < len; ++i) {
         var point = tempList[i];
-        var pos = map.project(point);
-        pos = pos.multiplyBy(map.getZoomScale(map.zoom, map.zoom)) -
-            map.getPixelOrigin();
-        tempListOffsets.add(Offset(pos.x.toDouble(), pos.y.toDouble()));
+
+        final offset = map.getOffsetFromOrigin(point);
+        // var pos = map.project(point);
+        // pos = pos.multiplyBy(map.getZoomScale(map.zoom, map.zoom)) -
+        //     map.getPixelOrigin();
+        tempListOffsets.add(offset);
         if (i > 0) {
-          tempListOffsets.add(Offset(pos.x.toDouble(), pos.y.toDouble()));
+          tempListOffsets.add(offset);
         }
       }
       offsets.add(tempListOffsets);

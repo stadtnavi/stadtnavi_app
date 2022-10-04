@@ -56,21 +56,20 @@ class CifsLayer extends CustomLayer {
         polylineSize = zoom != null && zoom > 18 ? 8 : null;
     }
     final markersList = _pbfMarkers.values.toList();
-    return GroupLayerOptions(
-      group: polylineSize != null
-          ? [
-              PolylineLayer(
-                polylines: markersList
-                    .map((e) => Polyline(
-                          points: e.polyline.reversed.toList(),
-                          color: Colors.red.withOpacity(.8),
-                          isDotted: true,
-                          strokeWidth: polylineSize!,
-                        ))
-                    .toList(),
-              ),
-            ]
-          : [],
+    return Stack(
+      children: [
+        if (polylineSize != null)
+          PolylineLayer(
+            polylines: markersList
+                .map((e) => Polyline(
+                      points: e.polyline.reversed.toList(),
+                      color: Colors.red.withOpacity(.8),
+                      isDotted: true,
+                      strokeWidth: polylineSize!,
+                    ))
+                .toList(),
+          ),
+      ],
     );
   }
 
@@ -100,35 +99,35 @@ class CifsLayer extends CustomLayer {
         markerSize = zoom > 18 ? 35 : null;
     }
     final markersList = _pbfMarkers.values.toList();
-    return MarkerLayerOptions(
-      markers: markerSize != null
-          ? [
-              ...markersList
-                  .map((element) => Marker(
-                        height: markerSize!,
-                        width: markerSize,
-                        point: element.startPoint,
-                        anchorPos: AnchorPos.align(AnchorAlign.center),
-                        builder: (context) => _CifsFeatureMarker(
-                          element: element,
-                          point: element.startPoint,
-                        ),
-                      ))
-                  .toList(),
-              ...markersList
-                  .map((element) => Marker(
-                        height: markerSize!,
-                        width: markerSize,
-                        point: element.endPoint,
-                        anchorPos: AnchorPos.align(AnchorAlign.center),
-                        builder: (context) => _CifsFeatureMarker(
-                          element: element,
-                          point: element.endPoint,
-                        ),
-                      ))
-                  .toList(),
-            ]
-          : [],
+    return MarkerLayer(
+      markers: [
+        if (markerSize != null)
+          ...markersList
+              .map((element) => Marker(
+                    height: markerSize!,
+                    width: markerSize,
+                    point: element.startPoint,
+                    anchorPos: AnchorPos.align(AnchorAlign.center),
+                    builder: (context) => _CifsFeatureMarker(
+                      element: element,
+                      point: element.startPoint,
+                    ),
+                  ))
+              .toList(),
+        if (markerSize != null)
+          ...markersList
+              .map((element) => Marker(
+                    height: markerSize!,
+                    width: markerSize,
+                    point: element.endPoint,
+                    anchorPos: AnchorPos.align(AnchorAlign.center),
+                    builder: (context) => _CifsFeatureMarker(
+                      element: element,
+                      point: element.endPoint,
+                    ),
+                  ))
+              .toList(),
+      ],
     );
   }
 
