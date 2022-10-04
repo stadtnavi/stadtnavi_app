@@ -45,7 +45,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       _fetchStopData().then(
         (value) => _trufiMapController.onReady.then(
           (value) => setState(() {

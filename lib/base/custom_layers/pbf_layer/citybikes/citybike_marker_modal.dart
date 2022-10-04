@@ -33,7 +33,7 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       loadData();
     });
   }
@@ -42,7 +42,7 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
   void didUpdateWidget(covariant CitybikeMarkerModal oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.element != widget.element) {
-      WidgetsBinding.instance?.addPostFrameCallback(
+      WidgetsBinding.instance.addPostFrameCallback(
         (_) => loadData(),
       );
     }
@@ -220,7 +220,7 @@ class _CargobikeMarkerModalState extends State<CargoBikeMarkerModal> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       loadData();
     });
   }

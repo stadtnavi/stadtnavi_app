@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/local_json_layer/custom_marker_enum.dart';

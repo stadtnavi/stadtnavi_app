@@ -29,7 +29,7 @@ class _ModeTransportScreen extends State<ModeTransportScreen>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       final mapRouteState = context.read<MapRouteCubit>().state;
       final mapModesCubit = context.read<MapModesCubit>();
       final mapModesState = mapModesCubit.state;

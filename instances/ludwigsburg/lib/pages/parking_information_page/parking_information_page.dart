@@ -58,7 +58,7 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       loadData();
     });
   }

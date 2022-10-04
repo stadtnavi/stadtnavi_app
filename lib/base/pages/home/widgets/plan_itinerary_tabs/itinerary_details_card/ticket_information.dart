@@ -34,7 +34,7 @@ class _TicketInformationState extends State<TicketInformation> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((_) => {loadFares()});
+    WidgetsBinding.instance.addPostFrameCallback((_) => {loadFares()});
   }
 
   @override

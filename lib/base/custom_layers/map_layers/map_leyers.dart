@@ -76,7 +76,7 @@ Map<MapLayerIds, List<Widget>> mapLayerOptions = {
       tileProvider: CustomTileProvider(),
       urlTemplate:
           "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
-      subdomains: ["a", "b", "c"],
+      subdomains: const ["a", "b", "c"],
     ),
   ],
 };

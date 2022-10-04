@@ -10,10 +10,6 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.da
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 
 import 'pbf_layer/bike_parks/bike_parks_layer.dart';
-import 'pbf_layer/cifs/cifs_layer.dart';
-import 'pbf_layer/parking/parkings_layer.dart';
-import 'pbf_layer/stops/stops_enum.dart';
-import 'pbf_layer/weather/weather_layer.dart';
 
 class StaticTileLayers {
   static Map<StopsLayerIds, StopsLayer> stopsLayers = {

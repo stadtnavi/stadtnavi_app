@@ -46,12 +46,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       final mapRouteCubit = context.read<MapRouteCubit>();
       final mapRouteState = mapRouteCubit.state;
       repaintMap(mapRouteCubit, mapRouteState);
     });
-    WidgetsBinding.instance?.addPostFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback(
       (duration) => processUniLink(),
     );
   }

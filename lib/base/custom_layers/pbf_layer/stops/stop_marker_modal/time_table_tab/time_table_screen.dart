@@ -32,7 +32,7 @@ class _TimeTableScreenState extends State<TimeTableScreen>
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       _fetchStopData();
     });
   }

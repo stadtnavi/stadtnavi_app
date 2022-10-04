@@ -30,7 +30,7 @@ class _RightNowScreenState extends State<RightNowScreen>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       _fetchStopData();
     });
   }

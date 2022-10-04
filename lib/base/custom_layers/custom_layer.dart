@@ -1,4 +1,3 @@
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter/material.dart';
 
 abstract class CustomLayer {
