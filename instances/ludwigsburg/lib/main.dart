@@ -1,16 +1,23 @@
+import 'dart:async';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:ludwigsburg/firebase_options.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 import 'package:stadtnavi_core/base/pages/home/setting_payload/setting_panel/setting_panel.dart';
 import 'package:stadtnavi_core/consts.dart';
 import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
+import 'package:stadtnavi_core/stadtnavi_screen_helper.dart';
 
+import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/utils/certificates_letsencrypt_android.dart';
-
+import 'package:trufi_core/base/widgets/alerts/base_build_alert.dart';
 import 'branding_ludwigsburg.dart';
 import 'components/share_itinerary_button.dart';
 import 'configuration_routes.dart';
@@ -19,6 +26,23 @@ import 'static_layer.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CertificatedLetsencryptAndroid.workAroundCertificated();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  FirebaseMessaging.instance.getToken().then((value) {
+    print(value);
+  }).catchError((error) => {print("$error")});
+  await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  ).catchError((error) => {print("$error")});
   await initHiveForFlutter();
   // TODO we need to improve disable fetch method
   WeatherLayer.isdisable = true;
@@ -26,6 +50,7 @@ void main() async {
   SettingPanel.enableCarpool = false;
   runApp(
     StadtnaviApp(
+      appLifecycleReactorHandler: AppLifecycleReactorHandlerNotifications(),
       appName: 'stadtnavi',
       appNameTitle: 'stadtnavi|ludwigsburg',
       cityName: 'Ludwigsburg',
@@ -59,4 +84,52 @@ void main() async {
       extraFloatingMapButtons: extraButtons,
     ),
   );
+}
+
+class AppLifecycleReactorHandlerNotifications
+    implements AppLifecycleReactorHandler {
+  StreamSubscription<RemoteMessage>? _onMessageSubscription;
+  StreamSubscription<RemoteMessage>? _onMessageOpenedAppSubscription;
+  @override
+  void onInitState(context) {
+    _onMessageOpenedAppSubscription =
+        FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        showTrufiDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text('${message.notification!.title}'),
+                content: Text('${message.notification!.body}'),
+              );
+            });
+      }
+    });
+    _onMessageSubscription =
+        FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      if (message.notification != null) {
+        showTrufiDialog(
+            context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text('${message.notification!.title}'),
+                content: Text('${message.notification!.body}'),
+                actions: [
+                  OKButton(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                    },
+                  )
+                ],
+              );
+            });
+      }
+    });
+  }
+
+  @override
+  void onDispose() {
+    _onMessageOpenedAppSubscription?.cancel();
+    _onMessageSubscription?.cancel();
+  }
 }

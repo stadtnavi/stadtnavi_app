@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "605813972051",
+    "project_id": "stadtnavi-ludwigsburg",
+    "storage_bucket": "stadtnavi-ludwigsburg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:605813972051:android:6760c435e592311742faa6",
+        "android_client_info": {
+          "package_name": "de.stadtnavi.ludwigsburg"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "605813972051-9bg7f70msgmgqvoavod9g1cr3d50cman.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuYN21_ZuGO-hkipcfmF0WP7hGohQ6aOY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "605813972051-9bg7f70msgmgqvoavod9g1cr3d50cman.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "605813972051-bkf2c7a7u27oubdh20tj71dckrvnqqo3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "de.stadtnavi.herrenberg"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

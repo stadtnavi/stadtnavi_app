@@ -9,6 +9,7 @@ import 'package:stadtnavi_core/configuration/attribution_map.dart';
 import 'package:stadtnavi_core/configuration/custom_async_executor.dart';
 import 'package:stadtnavi_core/configuration/custom_marker_configuration.dart';
 import 'package:stadtnavi_core/default_stadtnavi_values.dart';
+import 'package:stadtnavi_core/stadtnavi_screen_helper.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
@@ -40,6 +41,7 @@ class StadtnaviApp extends StatelessWidget {
   final List<BlocProvider>? extraBlocs;
   final WidgetBuilder? extraFloatingMapButtons;
 
+  final AppLifecycleReactorHandler? appLifecycleReactorHandler;
   const StadtnaviApp({
     Key? key,
     required this.appNameTitle,
@@ -61,6 +63,7 @@ class StadtnaviApp extends StatelessWidget {
     this.extraRoutes,
     this.extraBlocs,
     this.extraFloatingMapButtons,
+     this.appLifecycleReactorHandler,
   }) : super(key: key);
 
   @override
@@ -90,6 +93,7 @@ class StadtnaviApp extends StatelessWidget {
       ),
       trufiRouter: TrufiRouter(
         routerDelegate: DefaultStadtnaviValues.routerDelegate(
+          appLifecycleReactorHandler: appLifecycleReactorHandler,
           appName: appName,
           cityName: cityName,
           backgroundImageBuilder: (_) {
