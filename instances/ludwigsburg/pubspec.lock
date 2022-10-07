@@ -904,9 +904,11 @@ packages:
   trufi_core:
     dependency: transitive
     description:
-      path: "../../../trufi-core"
-      relative: true
-    source: path
+      path: "."
+      ref: "3.0.0-lts"
+      resolved-ref: d8e4d927ff56ec7f140c77d2aa1a8f508ad5d53d
+      url: "https://github.com/trufi-association/trufi-core.git"
+    source: git
     version: "3.0.0"
   tuple:
     dependency: transitive

@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ludwigsburg/firebase_options.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 import 'package:stadtnavi_core/base/pages/home/setting_payload/setting_panel/setting_panel.dart';
 import 'package:stadtnavi_core/consts.dart';
@@ -33,16 +34,20 @@ void main() async {
 
   FirebaseMessaging.instance.getToken().then((value) {
     print(value);
-  }).catchError((error) => {print("$error")});
-  await messaging.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  ).catchError((error) => {print("$error")});
+  }).catchError((error) {
+    print("$error");
+  });
+  await messaging
+      .requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      )
+      .catchError((error) => {print("$error")});
   await initHiveForFlutter();
   // TODO we need to improve disable fetch method
   WeatherLayer.isdisable = true;
@@ -108,22 +113,14 @@ class AppLifecycleReactorHandlerNotifications
     _onMessageSubscription =
         FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (message.notification != null) {
-        showTrufiDialog(
-            context: context,
-            builder: (_) {
-              return AlertDialog(
-                title: Text('${message.notification!.title}'),
-                content: Text('${message.notification!.body}'),
-                actions: [
-                  OKButton(
-                    onPressed: () async {
-                      Navigator.pop(context);
-                    },
-                  )
-                ],
-              );
-            });
+        showNotification(context, message.notification!.title ?? "",
+            message.notification!.body ?? "");
       }
+    });
+    handlerOnStartNotifications(context)
+        .then((value) => null)
+        .catchError((error) {
+      print("$error");
     });
   }
 
@@ -131,5 +128,38 @@ class AppLifecycleReactorHandlerNotifications
   void onDispose() {
     _onMessageOpenedAppSubscription?.cancel();
     _onMessageSubscription?.cancel();
+  }
+
+  Future<void> handlerOnStartNotifications(BuildContext context) async {
+    final response = await http.get(Uri.parse(
+        'https://us-central1-stadtnavi-ludwigsburg.cloudfunctions.net/onStartNotifications'));
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final notifications = data["notifications"] as List;
+      if (notifications.isNotEmpty) {
+        final notification = notifications[0];
+        showNotification(context, notification["title"], notification["body"]);
+      }
+    }
+  }
+
+  showNotification(BuildContext context, String title, String body) {
+    showTrufiDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(body),
+          actions: [
+            OKButton(
+              onPressed: () async {
+                Navigator.pop(_);
+              },
+            )
+          ],
+        );
+      },
+    );
   }
 }
