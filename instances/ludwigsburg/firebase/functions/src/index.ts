@@ -10,18 +10,17 @@ export const onStartNotifications = functions.https.onRequest((request, response
         title: string
         body: string
     } = { 
-        id:"003",
+        id:"006",
         title: `Herzlich willkommen in Ludwigsburg!`, 
         body: `Durch zahlreiche Veranstaltungen am Wochenende rechnen wir mit einem erhöhten Verkehrsaufkommen.
 
-        Nutzen Sie nach Möglichkeit die öffentlichen Verkehrsmittel oder das Fahrrad. Am Sonntag zwischen 13:00 und 18:00 Uhr wird der Bus-Takt für Sie verdichtet.
+Nutzen Sie nach Möglichkeit die öffentlichen Verkehrsmittel oder das Fahrrad. Am Sonntag zwischen 13:00 und 18:00 Uhr wird der Bus-Takt für Sie verdichtet.
         
-        Falls Sie mit dem Auto anreisen, finden Sie in der App zahlreiche ausgewiesene Parkmöglichkeiten.
+Falls Sie mit dem Auto anreisen, finden Sie in der App zahlreiche ausgewiesene Parkmöglichkeiten.
         
          
         
-        Wir freuen uns auf Ihren Besuch!
-        onStartTest
+Wir freuen uns auf Ihren Besuch!
         `
      }
      const data={notifications:[notification]}
