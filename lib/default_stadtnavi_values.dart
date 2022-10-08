@@ -114,7 +114,7 @@ abstract class DefaultStadtnaviValues {
     List<TrufiMenuItem>? extraDrawerItems,
     RouterBuilder? extraRoutes,
     WidgetBuilder? extraFloatingMapButtons,
-     AppLifecycleReactorHandler? appLifecycleReactorHandler,
+    AppLifecycleReactorHandler? appLifecycleReactorHandler,
   }) {
     generateDrawer(String currentRoute) {
       return (BuildContext _) => StadtnaviDrawer(
@@ -158,20 +158,17 @@ abstract class DefaultStadtnaviValues {
                   ),
                 ),
             SavedPlacesPage.route: (route) => StadtnaviNoAnimationPage(
-                  appLifecycleReactorHandler: appLifecycleReactorHandler,
                   child: SavedPlacesPage(
                     drawerBuilder: generateDrawer(SavedPlacesPage.route),
                   ),
                 ),
             FeedbackPage.route: (route) => StadtnaviNoAnimationPage(
-                  appLifecycleReactorHandler: appLifecycleReactorHandler,
                   child: FeedbackPage(
                     urlFeedback: urlFeedback,
                     drawerBuilder: generateDrawer(FeedbackPage.route),
                   ),
                 ),
             AboutPage.route: (route) => StadtnaviNoAnimationPage(
-                  appLifecycleReactorHandler: appLifecycleReactorHandler,
                   child: AboutPage(
                     appName: appName,
                     cityName: cityName,

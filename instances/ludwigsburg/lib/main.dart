@@ -7,8 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ludwigsburg/firebase_options.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 import 'package:stadtnavi_core/base/pages/home/setting_payload/setting_panel/setting_panel.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:stadtnavi_core/consts.dart';
 import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
@@ -113,7 +115,7 @@ class AppLifecycleReactorHandlerNotifications
     _onMessageSubscription =
         FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (message.notification != null) {
-        showNotification(context, message.notification!.title ?? "",
+        showNotification(context, null, message.notification!.title ?? "",
             message.notification!.body ?? "");
       }
     });
@@ -139,12 +141,29 @@ class AppLifecycleReactorHandlerNotifications
       final notifications = data["notifications"] as List;
       if (notifications.isNotEmpty) {
         final notification = notifications[0];
-        showNotification(context, notification["title"], notification["body"]);
+        final notificationId = notification["id"];
+        if (await showShowNotification(notificationId)) {
+          showNotification(context, notificationId, notification["title"],
+              notification["body"]);
+        }
       }
     }
   }
 
-  showNotification(BuildContext context, String title, String body) {
+  Future<bool> showShowNotification(String? id) async {
+    if (id == null) return true;
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    final flag = _prefs.getString(id);
+    return flag == null;
+  }
+
+  Future makeDoNotShowAgain(String id) async {
+    final SharedPreferences _prefs = await SharedPreferences.getInstance();
+    _prefs.setString(id, id);
+  }
+
+  showNotification(
+      BuildContext context, String? id, String title, String body) {
     showTrufiDialog(
       context: context,
       builder: (_) {
@@ -152,14 +171,41 @@ class AppLifecycleReactorHandlerNotifications
           title: Text(title),
           content: Text(body),
           actions: [
-            OKButton(
-              onPressed: () async {
+            NotShowAgain(
+              onPressed: () {
                 Navigator.pop(_);
+                if (id != null) makeDoNotShowAgain(id).catchError((error) {});
               },
-            )
+            ),
+            const OKButton()
           ],
         );
       },
+    );
+  }
+}
+
+class NotShowAgain extends StatelessWidget {
+  final VoidCallback? onPressed;
+
+  const NotShowAgain({
+    Key? key,
+    this.onPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final localization = StadtnaviBaseLocalization.of(context);
+    final theme = Theme.of(context);
+    return TextButton(
+      onPressed: onPressed ?? () => Navigator.pop(context),
+      child: Text(
+        localization.notShowAgain,
+        style: TextStyle(
+          color: theme.colorScheme.secondary,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 }

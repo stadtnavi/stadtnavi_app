@@ -10,7 +10,7 @@ export const onStartNotifications = functions.https.onRequest((request, response
         title: string
         body: string
     } = { 
-        id:"001",
+        id:"003",
         title: `Herzlich willkommen in Ludwigsburg!`, 
         body: `Durch zahlreiche Veranstaltungen am Wochenende rechnen wir mit einem erhöhten Verkehrsaufkommen.
 
