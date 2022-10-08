@@ -63,7 +63,7 @@ void main() async {
       cityName: 'Ludwigsburg',
       center: LatLng(48.895195, 9.188647),
       otpGraphqlEndpoint: openTripPlannerUrl,
-      urlFeedback: 'https://stadtnavi.de/feedback/',
+      urlFeedback: 'mailto:b.hofmann@ludwigsburg.de?subject=Feedback',
       urlShareApp: 'https://stadtnavi.swlb.de/',
       urlRepository: 'https://github.com/trufi-association/trufi-app',
       urlImpressum: 'https://www.ludwigsburg.de/LB2020/impressum.html',
