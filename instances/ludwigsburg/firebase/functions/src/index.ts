@@ -6,9 +6,11 @@ import * as functions from "firebase-functions";
 export const onStartNotifications = functions.https.onRequest((request, response) => {
     functions.logger.info("Hello logs!", { structuredData: true });
     const notification: {
+        id:string
         title: string
         body: string
     } = { 
+        id:"001",
         title: `Herzlich willkommen in Ludwigsburg!`, 
         body: `Durch zahlreiche Veranstaltungen am Wochenende rechnen wir mit einem erhöhten Verkehrsaufkommen.
 
@@ -18,7 +20,9 @@ export const onStartNotifications = functions.https.onRequest((request, response
         
          
         
-        Wir freuen uns auf Ihren Besuch!`
+        Wir freuen uns auf Ihren Besuch!
+        onStartTest
+        `
      }
      const data={notifications:[notification]}
     response.send(data);
