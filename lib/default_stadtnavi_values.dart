@@ -83,7 +83,7 @@ abstract class DefaultStadtnaviValues {
         ),
       ),
       BlocProvider<SettingFetchCubit>(
-        create: (context) => SettingFetchCubit(),
+        create: (context) => SettingFetchCubit(isDateReset: true),
       ),
       BlocProvider<CustomLayersCubit>(
         create: (context) => CustomLayersCubit(layersContainer),

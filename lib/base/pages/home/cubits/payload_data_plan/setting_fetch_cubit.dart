@@ -26,11 +26,9 @@ class SettingFetchCubit extends Cubit<SettingFetchState> {
     if (jsonString != null && jsonString.isNotEmpty) {
       final payloadDataPlanState = SettingFetchState.fromJson(
           jsonDecode(jsonString) as Map<String, dynamic>);
-      emit(
-        isDateReset
-            ? payloadDataPlanState.copyWithDateNull()
-            : payloadDataPlanState,
-      );
+      if (isDateReset) {
+        emit(payloadDataPlanState.copyWithDateNull(arriveBy: false));
+      }
     }
   }
 
