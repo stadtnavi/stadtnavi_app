@@ -1,6 +1,6 @@
 part of 'setting_fetch_cubit.dart';
 
-final initPayloadDataPlanState = SettingFetchState(
+const initPayloadDataPlanState = SettingFetchState(
   typeWalkingSpeed: WalkingSpeed.average,
   avoidWalking: false,
   transportModes: defaultTransportModes,
@@ -13,7 +13,7 @@ final initPayloadDataPlanState = SettingFetchState(
   includeCarSuggestions: true,
   wheelchair: false,
   arriveBy: false,
-  date: DateTime.now(),
+  date: null,
 );
 
 @immutable
