@@ -23,7 +23,7 @@ class CityBikeFeature {
     final properties = geoJsonPoint?.properties ?? <String, VectorTileValue>{};
     String? id = properties['id']?.dartStringValue;
     String? networks = properties['networks']?.dartStringValue;
-    if (networks == null || networks == 'cargo-bike') {
+    if (networks == null) {
       return null;
     }
     CityBikeLayerIds? type = properties['networks'] != null
