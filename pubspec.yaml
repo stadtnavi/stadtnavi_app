@@ -18,7 +18,7 @@ dependencies:
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
-      ref: 3.0.0-lts
+      ref: 3.1.0-lts
   vector_tile: ^1.0.0
   rive: ^0.9.0
 

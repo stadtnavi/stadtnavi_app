@@ -807,8 +807,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "3.0.0-lts"
-      resolved-ref: d8e4d927ff56ec7f140c77d2aa1a8f508ad5d53d
+      ref: "3.1.0-lts"
+      resolved-ref: "8d2293e42f651a5d9b94afe625a9f1996bd51761"
       url: "https://github.com/trufi-association/trufi-core.git"
     source: git
     version: "3.0.0"
