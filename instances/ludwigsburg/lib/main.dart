@@ -16,6 +16,7 @@ import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
 import 'package:stadtnavi_core/stadtnavi_screen_helper.dart';
 
+import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
@@ -55,6 +56,11 @@ void main() async {
   WeatherLayer.isdisable = true;
   // TODO we need to improve enableCarpool
   SettingPanel.enableCarpool = false;
+  // TODO we need to improve TransportMode Configuration
+  TransportModeConfiguration.configure(transportColors: {
+    TransportMode.bicycle: const Color(0xffffc200),
+  });
+
   runApp(
     StadtnaviApp(
       appLifecycleReactorHandler: AppLifecycleReactorHandlerNotifications(),
