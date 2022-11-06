@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
@@ -79,7 +78,7 @@ class BicycleNetworkLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions buildLayerOptions(int? zoom) {
+  Widget buildLayerOptions(int? zoom) {
     if (_listlist.isEmpty) {
       load();
     }
@@ -100,9 +99,9 @@ class BicycleNetworkLayer extends CustomLayer {
       default:
         markerSize = zoom != null && zoom > 12 ? -0.5 : null;
     }
-    return CustomPolylineLayerOptions(
+    return CustomPolylineLayer(
       polylineCulling: true,
-      polylines: markerSize != null
+      polylineOpts: markerSize != null
           ? _listlist
               .map((e) => CustomPolyline(
                     points: e.coordinates,
@@ -117,7 +116,7 @@ class BicycleNetworkLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions? buildLayerOptionsPriority(int zoom) {
+  Widget? buildLayerOptionsPriority(int zoom) {
     return null;
   }
 

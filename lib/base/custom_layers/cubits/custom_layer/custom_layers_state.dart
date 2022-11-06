@@ -11,7 +11,7 @@ class CustomLayersState extends Equatable {
   CustomLayersState copyWith({
     Map<String, bool>? layersSatus,
     List<CustomLayer>? layers,
-    LayerOptions? layer,
+    Widget? layer,
   }) {
     return CustomLayersState(
       layersSatus: layersSatus ?? this.layersSatus,

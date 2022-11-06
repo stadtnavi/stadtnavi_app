@@ -17,6 +17,7 @@ import 'package:stadtnavi_core/base/pages/saved_places/saved_places.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:stadtnavi_core/configuration/drawer/menu_items_stadtnavi.dart';
 import 'package:stadtnavi_core/configuration/trufi_drawer.dart';
+import 'package:stadtnavi_core/stadtnavi_screen_helper.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
@@ -27,7 +28,6 @@ import 'package:trufi_core/base/pages/saved_places/repository/search_location_re
 import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/menu_item.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
-import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 import 'package:trufi_core/base/blocs/localization/trufi_localization_cubit.dart';
 import 'package:trufi_core/base/pages/saved_places/search_locations_cubit/search_locations_cubit.dart';
 import 'package:trufi_core/base/pages/transport_list/route_transports_cubit/route_transports_cubit.dart';
@@ -83,7 +83,7 @@ abstract class DefaultStadtnaviValues {
         ),
       ),
       BlocProvider<SettingFetchCubit>(
-        create: (context) => SettingFetchCubit(),
+        create: (context) => SettingFetchCubit(isDateReset: true),
       ),
       BlocProvider<CustomLayersCubit>(
         create: (context) => CustomLayersCubit(layersContainer),
@@ -111,9 +111,10 @@ abstract class DefaultStadtnaviValues {
     required String urlImpressum,
     required Uri reportDefectsUri,
     UrlSocialMedia? urlSocialMedia,
-    List<MenuItem>? extraDrawerItems,
+    List<TrufiMenuItem>? extraDrawerItems,
     RouterBuilder? extraRoutes,
     WidgetBuilder? extraFloatingMapButtons,
+    AppLifecycleReactorHandler? appLifecycleReactorHandler,
   }) {
     generateDrawer(String currentRoute) {
       return (BuildContext _) => StadtnaviDrawer(
@@ -139,7 +140,8 @@ abstract class DefaultStadtnaviValues {
         return RouteMap(
           onUnknownRoute: (_) => const Redirect(HomePage.route),
           routes: {
-            HomePage.route: (route) => NoAnimationPage(
+            HomePage.route: (route) => StadtnaviNoAnimationPage(
+                  appLifecycleReactorHandler: appLifecycleReactorHandler,
                   child: HomePage(
                     asyncExecutor: asyncExecutor ?? AsyncExecutor(),
                     mapBuilder: (
@@ -155,18 +157,18 @@ abstract class DefaultStadtnaviValues {
                     drawerBuilder: generateDrawer(HomePage.route),
                   ),
                 ),
-            SavedPlacesPage.route: (route) => NoAnimationPage(
+            SavedPlacesPage.route: (route) => StadtnaviNoAnimationPage(
                   child: SavedPlacesPage(
                     drawerBuilder: generateDrawer(SavedPlacesPage.route),
                   ),
                 ),
-            FeedbackPage.route: (route) => NoAnimationPage(
+            FeedbackPage.route: (route) => StadtnaviNoAnimationPage(
                   child: FeedbackPage(
                     urlFeedback: urlFeedback,
                     drawerBuilder: generateDrawer(FeedbackPage.route),
                   ),
                 ),
-            AboutPage.route: (route) => NoAnimationPage(
+            AboutPage.route: (route) => StadtnaviNoAnimationPage(
                   child: AboutPage(
                     appName: appName,
                     cityName: cityName,

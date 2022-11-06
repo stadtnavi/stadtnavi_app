@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter/material.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/local_json_layer/custom_marker_enum.dart';
@@ -83,7 +83,7 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
     _localStorage.save(state.layersSatus);
   }
 
-  List<LayerOptions> activeCustomLayers(int zoom, {String? showLayerById}) {
+  List<Widget> activeCustomLayers(int zoom, {String? showLayerById}) {
     List<CustomLayer> listSort = state.layers;
     if (showLayerById != null) {
       listSort =
@@ -96,8 +96,8 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
 
     listSort.sort((a, b) => a.weight.compareTo(b.weight));
 
-    List<LayerOptions> listPriority = [];
-    LayerOptions? layer;
+    List<Widget> listPriority = [];
+    Widget? layer;
     for (CustomLayer customL in listSort) {
       layer = customL.buildLayerOptionsPriority(zoom);
       if (layer != null) {

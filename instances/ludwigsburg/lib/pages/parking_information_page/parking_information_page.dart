@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:ludwigsburg/pages/parking_information_page/parking_overview_map.dart';
+import 'parking_information_cubit/parking_information_cubit.dart';
+import 'parking_overview_map.dart';
 import 'package:routemaster/routemaster.dart';
 
-import 'package:ludwigsburg/pages/parking_information_page/parking_information_cubit/parking_information_cubit.dart';
+// import 'package:ludwigsburg/pages/parking_information_page/parking_information_cubit/parking_information_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_icons.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
@@ -23,7 +24,7 @@ import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 
 class ParkingInformationPage extends StatefulWidget {
   static const String route = "/ParkingInformation";
-  static MenuItem menuItemDrawer = MenuPageItem(
+  static TrufiMenuItem menuItemDrawer = MenuPageItem(
     id: route,
     selectedIcon: (context) => Icon(
       Icons.location_on_outlined,
@@ -57,7 +58,7 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       loadData();
     });
   }

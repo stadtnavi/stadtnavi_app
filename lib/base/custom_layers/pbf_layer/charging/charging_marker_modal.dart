@@ -35,7 +35,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       loadData();
     });
   }
@@ -44,7 +44,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
   void didUpdateWidget(covariant ChargingMarkerModal oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.element != widget.element) {
-      WidgetsBinding.instance?.addPostFrameCallback(
+      WidgetsBinding.instance.addPostFrameCallback(
         (_) => loadData(),
       );
     }

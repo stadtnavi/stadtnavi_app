@@ -63,7 +63,7 @@ class Layer extends CustomLayer {
   }
 
   @override
-  LayerOptions buildLayerOptions(int? zoom) {
+  Widget buildLayerOptions(int? zoom) {
     if (customMarkers.isEmpty) {
       load();
     }
@@ -84,7 +84,7 @@ class Layer extends CustomLayer {
       default:
         markerSize = zoom != null && zoom > 18 ? 35 : null;
     }
-    return MarkerLayerOptions(
+    return MarkerLayer(
       markers: markerSize != null
           ? customMarkers
               .map((element) => Marker(
@@ -137,7 +137,7 @@ class Layer extends CustomLayer {
   }
 
   @override
-  LayerOptions? buildLayerOptionsPriority(int zoom) {
+  Widget? buildLayerOptionsPriority(int zoom) {
     return null;
   }
 

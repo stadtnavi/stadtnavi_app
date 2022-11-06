@@ -31,7 +31,7 @@ class _ParkingStateUpdaterState extends State<ParkingStateUpdater> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       load();
     });
   }
@@ -40,7 +40,7 @@ class _ParkingStateUpdaterState extends State<ParkingStateUpdater> {
   void didUpdateWidget(covariant ParkingStateUpdater oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.parkingFeature.id != widget.parkingFeature.id) {
-      WidgetsBinding.instance?.addPostFrameCallback(
+      WidgetsBinding.instance.addPostFrameCallback(
         (_) {
           load();
         },

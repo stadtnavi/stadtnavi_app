@@ -64,7 +64,7 @@ class ChooseLocationPageState extends State<ChooseLocationPage>
       mapConfiguratiom.markersConfiguration,
     );
     if (widget.position != null) {
-      trufiMapController.mapController.onReady.then(
+      trufiMapController.onReady.then(
         (value) => trufiMapController.move(
           center: widget.position!,
           zoom: mapConfiguratiom.chooseLocationZoom,
@@ -72,7 +72,7 @@ class ChooseLocationPageState extends State<ChooseLocationPage>
         ),
       );
     }
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       loadData(widget.position ?? mapConfiguratiom.center);
     });
   }

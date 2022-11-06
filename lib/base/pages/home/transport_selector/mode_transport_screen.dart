@@ -29,7 +29,7 @@ class _ModeTransportScreen extends State<ModeTransportScreen>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       final mapRouteState = context.read<MapRouteCubit>().state;
       final mapModesCubit = context.read<MapModesCubit>();
       final mapModesState = mapModesCubit.state;
@@ -48,7 +48,7 @@ class _ModeTransportScreen extends State<ModeTransportScreen>
           children: [
             BlocListener<MapModesCubit, MapModesState>(
               listener: (buildContext, state) {
-                trufiMapController.mapController.onReady.then((_) {
+                trufiMapController.onReady.then((_) {
                   repaintMap(mapRouteState, mapModesCubit, state);
                 });
               },

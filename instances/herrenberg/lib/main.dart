@@ -2,12 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:herrenberg/branding_herrenberg.dart';
-import 'package:herrenberg/static_layer.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
 
@@ -15,6 +12,9 @@ import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/utils/certificates_letsencrypt_android.dart';
+
+import 'branding_herrenberg.dart';
+import 'static_layer.dart';
 
 const baseDomain = "api.stadtnavi.de";
 String openTripPlannerUrl =

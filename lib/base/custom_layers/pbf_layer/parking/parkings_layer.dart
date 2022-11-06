@@ -34,7 +34,7 @@ class ParkingLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions buildLayerOptions(int? zoom) {
+  Widget buildLayerOptions(int? zoom) {
     double? markerSize;
     switch (zoom) {
       case 15:
@@ -57,7 +57,7 @@ class ParkingLayer extends CustomLayer {
     markersList.sort(
       (b, a) => a.position.latitude.compareTo(b.position.latitude),
     );
-    return MarkerLayerOptions(
+    return MarkerLayer(
       markers: markerSize != null
           ? markersList
               .map((element) => Marker(
@@ -158,7 +158,7 @@ class ParkingLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions? buildLayerOptionsPriority(int zoom) {
+  Widget? buildLayerOptionsPriority(int zoom) {
     return null;
   }
 

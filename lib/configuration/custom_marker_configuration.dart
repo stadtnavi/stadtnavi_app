@@ -63,18 +63,18 @@ class CustomMarkerConfiguration implements MarkerConfiguration {
   }
 
   @override
-  MarkerLayerOptions buildFromMarkerLayerOptions(LatLng point) {
-    return MarkerLayerOptions(markers: [buildFromMarker(point)]);
+  MarkerLayer buildFromMarkerLayerOptions(LatLng point) {
+    return MarkerLayer(markers: [buildFromMarker(point)]);
   }
 
   @override
-  MarkerLayerOptions buildToMarkerLayerOptions(LatLng point) {
-    return MarkerLayerOptions(markers: [buildToMarker(point)]);
+  MarkerLayer buildToMarkerLayerOptions(LatLng point) {
+    return MarkerLayer(markers: [buildToMarker(point)]);
   }
 
   @override
-  MarkerLayerOptions buildYourLocationMarkerLayerOptions(LatLng? point) {
-    return MarkerLayerOptions(markers: [buildYourLocationMarker(point)]);
+  MarkerLayer buildYourLocationMarkerLayerOptions(LatLng? point) {
+    return MarkerLayer(markers: [buildYourLocationMarker(point)]);
   }
 
   Widget _buildMarker(Widget marker) {

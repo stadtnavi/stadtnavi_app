@@ -52,19 +52,19 @@ extension LayerIdsToString on MapLayerIds {
   }
 }
 
-Map<MapLayerIds, List<LayerOptions>> mapLayerOptions = {
+Map<MapLayerIds, List<Widget>> mapLayerOptions = {
   MapLayerIds.streets: [
-    TileLayerOptions(
+    TileLayer(
       tileProvider: CustomTileProvider(),
       urlTemplate: "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
     ),
   ],
   MapLayerIds.satellite: [
-    TileLayerOptions(
+    TileLayer(
       tileProvider: CustomTileProvider(),
       urlTemplate: "https://api.stadtnavi.de/tiles/orthophoto/{z}/{x}/{y}.jpg",
     ),
-    TileLayerOptions(
+    TileLayer(
       tileProvider: CustomTileProvider(),
       backgroundColor: Colors.transparent,
       urlTemplate:
@@ -72,11 +72,11 @@ Map<MapLayerIds, List<LayerOptions>> mapLayerOptions = {
     ),
   ],
   MapLayerIds.bike: [
-    TileLayerOptions(
+    TileLayer(
       tileProvider: CustomTileProvider(),
       urlTemplate:
           "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
-      subdomains: ["a", "b", "c"],
+      subdomains: const ["a", "b", "c"],
     ),
   ],
 };
@@ -96,7 +96,7 @@ class MapLayer extends MapTileProvider {
   }) : super();
 
   @override
-  List<LayerOptions> buildTileLayerOptions() {
+  List<Widget> buildTileLayerOptions() {
     return mapLayerOptions[mapLayerId]!;
   }
 
@@ -124,7 +124,7 @@ class CustomTileProvider extends TileProvider {
     this.headers = const {"Referer": "https://herrenberg.stadtnavi.de/"},
   });
   @override
-  ImageProvider getImage(Coords<num> coords, TileLayerOptions options) {
+  ImageProvider getImage(Coords<num> coords, TileLayer options) {
     if (coords.z.toInt() > 12) {
       _fetchPBF(coords);
     }

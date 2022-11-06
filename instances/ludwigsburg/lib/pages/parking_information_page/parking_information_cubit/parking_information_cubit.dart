@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:ludwigsburg/pages/parking_information_page/services/parking_information_services.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
+import '../services/parking_information_services.dart';
 
 part 'parking_information_state.dart';
 

@@ -3,8 +3,7 @@ import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
 import 'package:vector_tile/vector_tile.dart';
 
-import 'package:ludwigsburg/pages/parking_information_page/services/park_queries.dart'
-    as pattern_query;
+import 'park_queries.dart' as pattern_query;
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
 import 'package:stadtnavi_core/base/models/othermodel/vehicle_parking.dart';
 import 'package:stadtnavi_core/consts.dart';

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
@@ -35,7 +33,7 @@ class CityBikesLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions buildLayerOptions(int? zoom) {
+  Widget buildLayerOptions(int? zoom) {
     double? markerSize;
     switch (zoom) {
       case 15:
@@ -58,7 +56,7 @@ class CityBikesLayer extends CustomLayer {
     markersList.sort(
       (b, a) => a.position.latitude.compareTo(b.position.latitude),
     );
-    return MarkerLayerOptions(
+    return MarkerLayer(
       markers: markerSize != null
           ? markersList
               .map((element) => Marker(
@@ -164,7 +162,7 @@ class CityBikesLayer extends CustomLayer {
   }
 
   @override
-  LayerOptions? buildLayerOptionsPriority(int zoom) {
+  Widget? buildLayerOptionsPriority(int zoom) {
     return null;
   }
 
@@ -237,7 +235,7 @@ class _SharingMarkerUpdaterState extends State<SharingMarkerUpdater> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       loadData();
     });
   }

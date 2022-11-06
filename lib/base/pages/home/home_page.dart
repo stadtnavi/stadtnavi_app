@@ -46,12 +46,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       final mapRouteCubit = context.read<MapRouteCubit>();
       final mapRouteState = mapRouteCubit.state;
       repaintMap(mapRouteCubit, mapRouteState);
     });
-    WidgetsBinding.instance?.addPostFrameCallback(
+    WidgetsBinding.instance.addPostFrameCallback(
       (duration) => processUniLink(),
     );
   }
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
     final panelCubit = context.watch<PanelCubit>();
     final theme = Theme.of(context);
-    trufiMapController.mapController.onReady.then((value) {
+    trufiMapController.onReady.then((value) {
       if (panelCubit.state.panel != null) {
         trufiMapController.move(
           center: panelCubit.state.panel!.positon,
@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               children: [
                 BlocListener<MapRouteCubit, MapRouteState>(
                   listener: (buildContext, state) {
-                    trufiMapController.mapController.onReady.then((_) {
+                    trufiMapController.onReady.then((_) {
                       repaintMap(mapRouteCubit, state);
                     });
                   },

@@ -45,9 +45,9 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance?.addPostFrameCallback((duration) {
+    WidgetsBinding.instance.addPostFrameCallback((duration) {
       _fetchStopData().then(
-        (value) => _trufiMapController.mapController.onReady.then(
+        (value) => _trufiMapController.onReady.then(
           (value) => setState(() {
             needsCameraUpdate = true;
             _trufiMapController.moveBounds(
@@ -91,7 +91,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                   StadtnaviMap(
                     trufiMapController: _trufiMapController,
                     layerOptionsBuilder: (context) => [
-                      PolylineLayerOptions(
+                      PolylineLayer(
                         polylines: [
                           Polyline(
                             points: routePoints,
@@ -103,12 +103,12 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                           ),
                         ],
                       ),
-                      MarkerLayerOptions(
+                      MarkerLayer(
                         markers: [
                           ...stopsLocations.map((e) => buildTransferMarker(e))
                         ],
                       ),
-                      MarkerLayerOptions(markers: [
+                      MarkerLayer(markers: [
                         if (stopsLocations.isNotEmpty)
                           mapConfiguratiom.markersConfiguration
                               .buildFromMarker(stopsLocations[0]),

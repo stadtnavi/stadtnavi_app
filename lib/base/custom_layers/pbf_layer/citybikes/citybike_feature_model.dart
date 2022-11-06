@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybike_data_fetch.dart';
@@ -25,7 +23,7 @@ class CityBikeFeature {
     final properties = geoJsonPoint?.properties ?? <String, VectorTileValue>{};
     String? id = properties['id']?.dartStringValue;
     String? networks = properties['networks']?.dartStringValue;
-    if (networks == null || networks == 'cargo-bike') {
+    if (networks == null) {
       return null;
     }
     CityBikeLayerIds? type = properties['networks'] != null
