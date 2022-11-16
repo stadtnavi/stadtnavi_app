@@ -72,7 +72,7 @@ void main() async {
       urlFeedback: 'mailto:b.hofmann@ludwigsburg.de?subject=Feedback',
       urlShareApp: 'https://stadtnavi.swlb.de/',
       urlRepository: 'https://github.com/trufi-association/trufi-app',
-      urlImpressum: 'https://www.ludwigsburg.de/LB2020/impressum.html',
+      urlImpressum: 'https://www.ludwigsburg.de/stadtnavi-impressum',
       reportDefectsUri: Uri.parse(
           'https://www.ludwigsburg.de/start/rathaus+und+service/maengelmelder.html'),
       layersContainer: customLayersLudwigsburg,
