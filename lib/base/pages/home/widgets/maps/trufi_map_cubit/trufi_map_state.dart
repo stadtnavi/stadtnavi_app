@@ -2,16 +2,12 @@ part of 'trufi_map_cubit.dart';
 
 @immutable
 class TrufiMapState extends Equatable {
-  final MarkerLayer? fromMarkerLayer;
-  final MarkerLayer? toMarkerLayer;
   final MarkerLayer? unselectedMarkersLayer;
   final PolylineLayer? unselectedPolylinesLayer;
   final MarkerLayer? selectedMarkersLayer;
   final PolylineLayer? selectedPolylinesLayer;
 
   const TrufiMapState({
-    this.fromMarkerLayer,
-    this.toMarkerLayer,
     this.unselectedMarkersLayer,
     this.unselectedPolylinesLayer,
     this.selectedMarkersLayer,
@@ -27,8 +23,6 @@ class TrufiMapState extends Equatable {
     PolylineLayer? selectedPolylinesLayer,
   }) {
     return TrufiMapState(
-      fromMarkerLayer: fromMarkerLayer ?? this.fromMarkerLayer,
-      toMarkerLayer: toMarkerLayer ?? this.toMarkerLayer,
       unselectedMarkersLayer:
           unselectedMarkersLayer ?? this.unselectedMarkersLayer,
       unselectedPolylinesLayer:
@@ -41,8 +35,6 @@ class TrufiMapState extends Equatable {
 
   @override
   List<Object?> get props => [
-        fromMarkerLayer,
-        toMarkerLayer,
         unselectedMarkersLayer,
         unselectedPolylinesLayer,
         selectedMarkersLayer,

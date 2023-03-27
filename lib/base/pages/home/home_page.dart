@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:async_executor/async_executor.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
@@ -13,6 +14,7 @@ import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/truf
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/custom_itinerary.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
+import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/widgets/custom_scrollable_container.dart';
@@ -40,20 +42,42 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with TickerProviderStateMixin, WidgetsBindingObserver {
   final TrufiMapController trufiMapController = TrufiMapController();
+  StreamSubscription<LatLng?>? locationStreamSubscription;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((duration) {
       final mapRouteCubit = context.read<MapRouteCubit>();
       final mapRouteState = mapRouteCubit.state;
       repaintMap(mapRouteCubit, mapRouteState);
+      moveMyLocation(mapRouteState);
     });
     WidgetsBinding.instance.addPostFrameCallback(
       (duration) => processUniLink(),
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      final mapRouteState = context.read<MapRouteCubit>().state;
+      moveMyLocation(mapRouteState);
+    }
+    if (state == AppLifecycleState.inactive) {
+      locationStreamSubscription?.cancel();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   Future<void> processUniLink() async {
@@ -143,16 +167,18 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       context,
                       trufiMapController,
                     ),
-                    panel: mapRouteCubit.state.plan != null
-                        ? CustomItinerary(
-                            trufiMapController: trufiMapController,
-                          )
+                    panel: panelCubit.state.panel == null
+                        ? mapRouteCubit.state.plan == null
+                            ? null
+                            : CustomItinerary(
+                                trufiMapController: trufiMapController,
+                              )
                         : panelCubit.state.panel?.panel(context, () {
                             panelCubit.cleanPanel();
                             _callFetchPlan(context);
                           }),
                     bottomPadding: panelCubit.state.panel?.minSize ?? 0,
-                    onClose: mapRouteCubit.state.plan != null
+                    onClose: panelCubit.state.panel == null
                         ? null
                         : panelCubit.cleanPanel,
                   ),
@@ -200,6 +226,25 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           });
     } else {
       trufiMapController.cleanMap();
+    }
+  }
+
+  void moveMyLocation(MapRouteState mapRouteState) async {
+    if (mapRouteState.plan == null) {
+      final mapConfiguration = context.read<MapConfigurationCubit>().state;
+      locationStreamSubscription = GPSLocationProvider().streamLocation.listen(
+        (currentLocation) {
+          if (currentLocation != null) {
+            trufiMapController.moveToYourLocation(
+              location: currentLocation,
+              context: context,
+              zoom: mapConfiguration.chooseLocationZoom,
+              tickerProvider: this,
+            );
+            locationStreamSubscription?.cancel();
+          }
+        },
+      );
     }
   }
 

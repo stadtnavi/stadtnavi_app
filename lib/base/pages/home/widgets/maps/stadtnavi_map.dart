@@ -4,9 +4,9 @@ import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/map_legend.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/map_type_button.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/your_location_button.dart';
-import 'package:stadtnavi_core/base/pages/home/widgets/maps/custom_polyline_layer.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
@@ -93,14 +93,14 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
                 ),
                 children: [
                   ...currentMapType.currentMapTileProvider
-                      .buildTileLayerOptions(),
-                  mapConfiguratiom.markersConfiguration
-                      .buildYourLocationMarkerLayerOptions(currentLocation),
+                      .buildTileLayerOptions(context),
                   ...customLayersCubit.activeCustomLayers(
                     mapZoom,
+                    widget.layerOptionsBuilder(context),
                     showLayerById: widget.showLayerById,
                   ),
-                  ...widget.layerOptionsBuilder(context),
+                  mapConfiguratiom.markersConfiguration
+                      .buildYourLocationMarkerLayerOptions(currentLocation),
                 ],
               );
             }),
@@ -131,6 +131,12 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
           left: 10,
           child: mapConfiguratiom.mapAttributionBuilder!(context),
         ),
+        // DiHerre
+        // const Positioned(
+        //     top: 59.5,
+        //     right: 15.0,
+        //   child: MapLegend(),
+        // ),
       ],
     );
   }
