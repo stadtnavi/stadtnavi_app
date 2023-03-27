@@ -47,7 +47,7 @@ class ParkingZonePoligonModel {
       backgroundcolor: Color(
         int.tryParse(codeColor) ?? 0xffffffff,
       ).withOpacity(
-        map['style']?['fillOpacity']?.toDouble() ?? 1.0,
+        map['style']?['fillOpacity']?.toDouble() ?? 0.2,
       ),
       weight: map['style']?['weight']?.toDouble() ?? 1.0,
       dashArray: map['style']?['dashArray'],

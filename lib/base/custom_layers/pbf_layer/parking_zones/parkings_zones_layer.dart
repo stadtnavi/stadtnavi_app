@@ -130,8 +130,8 @@ class ParkingZonesLayer extends CustomLayer {
     _isFetching = true;
     final uri = Uri(
       scheme: "https",
-      host: 'node21-iot.apps.okd.swlb.de',
-      path: "/parkzonen.json",
+      host: 'stadtnavi.swlb.de',
+      path: "/assets/geojson/lb-layers/parkzonen.json",
     );
     try {
       final response = await http.get(uri);
@@ -140,7 +140,8 @@ class ParkingZonesLayer extends CustomLayer {
           "Server Error ParkZone $uri with ${response.statusCode}",
         );
       }
-      final body = jsonDecode(response.body);
+      final body =
+          jsonDecode(utf8.decode(response.bodyBytes, allowMalformed: true));
       final List features = body["features"] as List;
       for (Map<String, dynamic> x in features) {
         if (x['geometry']?['type'] == 'Polygon') {

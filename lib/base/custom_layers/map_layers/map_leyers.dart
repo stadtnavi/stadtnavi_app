@@ -1,13 +1,16 @@
 import 'dart:developer';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_parks_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 
@@ -52,37 +55,53 @@ extension LayerIdsToString on MapLayerIds {
   }
 }
 
-Map<MapLayerIds, List<Widget>> mapLayerOptions = {
-  MapLayerIds.streets: [
-    TileLayer(
-      tileProvider: CustomTileProvider(),
-      urlTemplate: "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
-    ),
-  ],
-  MapLayerIds.satellite: [
-    TileLayer(
-      tileProvider: CustomTileProvider(),
-      urlTemplate: "https://api.stadtnavi.de/tiles/orthophoto/{z}/{x}/{y}.jpg",
-    ),
-    TileLayer(
-      tileProvider: CustomTileProvider(),
-      backgroundColor: Colors.transparent,
-      urlTemplate:
-          "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
-    ),
-  ],
-  MapLayerIds.bike: [
-    TileLayer(
-      tileProvider: CustomTileProvider(),
-      urlTemplate:
-          "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
-      subdomains: const ["a", "b", "c"],
-    ),
-  ],
-};
+List<Widget> mapLayerOptions2(MapLayerIds id, BuildContext context) {
+  switch (id) {
+    case MapLayerIds.streets:
+      return [
+        TileLayer(
+          tileProvider: CustomTileProvider(context: context),
+          urlTemplate: "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
+        ),
+      ];
+    case MapLayerIds.satellite:
+      return [
+        TileLayer(
+          tileProvider: CustomTileProvider(context: context),
+          urlTemplate:
+              "https://api.stadtnavi.de/tiles/orthophoto/{z}/{x}/{y}.jpg",
+        ),
+        TileLayer(
+          tileProvider: CustomTileProvider(context: context),
+          backgroundColor: Colors.transparent,
+          urlTemplate:
+              "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
+        ),
+      ];
+    case MapLayerIds.bike:
+      return [
+        TileLayer(
+          tileProvider: CustomTileProvider(context: context),
+          // DiHerre
+          // urlTemplate:
+          //     "https://tiles.stadtnavi.eu/bicycle/{z}/{x}/{y}@2x.png",
+          // DiLud
+          urlTemplate:
+              "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
+          subdomains: const ["a", "b", "c"],
+        ),
+      ];
+    default:
+      return [];
+  }
+}
+
 Map<MapLayerIds, String> layerImage = {
   MapLayerIds.streets: "assets/images/maptype-streets.png",
   MapLayerIds.satellite: "assets/images/maptype-satellite.png",
+  // DiHerre
+  // MapLayerIds.bike: "assets/images/maptype-bicycle.png",
+  // DiLud
   MapLayerIds.bike: "assets/images/maptype-terrain.png",
 };
 
@@ -96,8 +115,8 @@ class MapLayer extends MapTileProvider {
   }) : super();
 
   @override
-  List<Widget> buildTileLayerOptions() {
-    return mapLayerOptions[mapLayerId]!;
+  List<Widget> buildTileLayerOptions(BuildContext context) {
+    return mapLayerOptions2(mapLayerId, context);
   }
 
   @override
@@ -120,9 +139,10 @@ class MapLayer extends MapTileProvider {
 
 class CustomTileProvider extends TileProvider {
   Map<String, String> headers;
-  CustomTileProvider({
-    this.headers = const {"Referer": "https://herrenberg.stadtnavi.de/"},
-  });
+  BuildContext context;
+  CustomTileProvider(
+      {this.headers = const {"Referer": "https://herrenberg.stadtnavi.de/"},
+      required this.context});
   @override
   ImageProvider getImage(Coords<num> coords, TileLayer options) {
     if (coords.z.toInt() > 12) {
@@ -133,6 +153,8 @@ class CustomTileProvider extends TileProvider {
   }
 
   Future<void> _fetchPBF(Coords<num> coords) async {
+    final layersStatus = context.read<CustomLayersCubit>().state.layersSatus;
+    // if (layersStatus["Sharing"] ?? false) {
     await CityBikesLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
@@ -140,6 +162,9 @@ class CustomTileProvider extends TileProvider {
     ).catchError((error) {
       log("$error");
     });
+    // }
+    // if (StopsLayerIds.values
+    //     .any((element) => layersStatus[element.enumToString()] ?? false)) {
     await StopsLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
@@ -147,6 +172,8 @@ class CustomTileProvider extends TileProvider {
     ).catchError((error) {
       log("$error");
     });
+    // }
+    // if (layersStatus["Parking"] ?? false) {
     await ParkingLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
@@ -154,6 +181,8 @@ class CustomTileProvider extends TileProvider {
     ).catchError((error) {
       log("$error");
     });
+    // }
+    // if (layersStatus["Bike Parking Space"] ?? false) {
     await BikeParkLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
@@ -161,6 +190,9 @@ class CustomTileProvider extends TileProvider {
     ).catchError((error) {
       log("$error");
     });
+    // }
+
+    // if (layersStatus["Roadworks"] ?? false) {
     await CifsLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
@@ -168,6 +200,9 @@ class CustomTileProvider extends TileProvider {
     ).catchError((error) {
       log("$error");
     });
+    // }
+
+    // if (layersStatus["Road Weather"] ?? false) {
     await WeatherLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
@@ -175,6 +210,8 @@ class CustomTileProvider extends TileProvider {
     ).catchError((error) {
       log("$error");
     });
+    // }
+    // if (layersStatus["Charging"] ?? false) {
     await ChargingLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
@@ -182,5 +219,6 @@ class CustomTileProvider extends TileProvider {
     ).catchError((error) {
       log("$error");
     });
+    // }
   }
 }

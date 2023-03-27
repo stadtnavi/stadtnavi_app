@@ -123,7 +123,7 @@ class ParkingFeature {
   bool? markerState() {
     if (state == 'closed' ||
         availabilityCarPlacesCapacity == 0 ||
-        freeDisabled == 0) {
+        (freeDisabled == 0 && false)) {
       return false;
     } else {
       bool? isAvailible;
