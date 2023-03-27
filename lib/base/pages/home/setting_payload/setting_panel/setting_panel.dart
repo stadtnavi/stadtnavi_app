@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/other_icons.dart';
@@ -10,7 +11,7 @@ import 'package:stadtnavi_core/base/widgets/speed_expanded_tile.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
-class SettingPanel extends StatelessWidget {
+class SettingPanel extends StatefulWidget {
   static const String route = "/setting-panel";
   static const Divider _divider = Divider(thickness: 2);
   static const Divider _dividerWeight = Divider(thickness: 10);
@@ -20,6 +21,31 @@ class SettingPanel extends StatelessWidget {
   const SettingPanel({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<SettingPanel> createState() => _SettingPanelState();
+}
+
+class _SettingPanelState extends State<SettingPanel> {
+  @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor, context: context);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    final payloadDataPlanCubit = context.read<SettingFetchCubit>();
+    if (!stopDefaultButtonEvent) {
+      Navigator.of(context).pop(payloadDataPlanCubit.state);
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +89,14 @@ class SettingPanel extends StatelessWidget {
                       payloadDataPlanCubit.setWalkingSpeed(selected);
                     },
                   ),
-                  _divider,
+                  SettingPanel._divider,
                   CustomSwitchTile(
                     title: localization.settingPanelAvoidWalking,
                     value: state.avoidWalking,
                     onChanged: (value) => payloadDataPlanCubit.setAvoidWalking(
                         avoidWalking: value),
                   ),
-                  _dividerWeight,
+                  SettingPanel._dividerWeight,
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
@@ -94,7 +120,7 @@ class SettingPanel extends StatelessWidget {
                       payloadDataPlanCubit.setTransportMode(TransportMode.bus);
                     },
                   ),
-                  _divider,
+                  SettingPanel._divider,
                   CustomSwitchTile(
                     title: localizationBase.instructionVehicleCommuterTrain,
                     secondary: Container(
@@ -110,7 +136,7 @@ class SettingPanel extends StatelessWidget {
                       payloadDataPlanCubit.setTransportMode(TransportMode.rail);
                     },
                   ),
-                  _divider,
+                  SettingPanel._divider,
                   CustomSwitchTile(
                     title: localizationBase.instructionVehicleMetro,
                     secondary: Container(
@@ -127,8 +153,8 @@ class SettingPanel extends StatelessWidget {
                           .setTransportMode(TransportMode.subway);
                     },
                   ),
-                  if (enableCarpool) _divider,
-                  if (enableCarpool)
+                  if (SettingPanel.enableCarpool) SettingPanel._divider,
+                  if (SettingPanel.enableCarpool)
                     CustomSwitchTile(
                       title: localizationBase.instructionVehicleCarpool,
                       secondary: SizedBox(
@@ -143,7 +169,7 @@ class SettingPanel extends StatelessWidget {
                             .setTransportMode(TransportMode.carPool);
                       },
                     ),
-                  _divider,
+                  SettingPanel._divider,
                   CustomSwitchTile(
                     title: localization.instructionVehicleSharing,
                     secondary: SizedBox(
@@ -280,7 +306,7 @@ class SettingPanel extends StatelessWidget {
                     onChanged: (value) => payloadDataPlanCubit
                         .setAvoidTransfers(avoidTransfers: value),
                   ),
-                  _dividerWeight,
+                  SettingPanel._dividerWeight,
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
@@ -316,7 +342,7 @@ class SettingPanel extends StatelessWidget {
                       payloadDataPlanCubit.setBikingSpeed(selected);
                     },
                   ),
-                  _divider,
+                  SettingPanel._divider,
                   CustomSwitchTile(
                     title: localization.settingPanelMyModesTransportParkRide,
                     secondary: SizedBox(
@@ -328,7 +354,7 @@ class SettingPanel extends StatelessWidget {
                     onChanged: (value) =>
                         payloadDataPlanCubit.setParkRide(parkRide: value),
                   ),
-                  _divider,
+                  SettingPanel._divider,
                   CustomSwitchTile(
                     title: localizationBase.instructionVehicleCar,
                     secondary: SizedBox(
@@ -340,7 +366,7 @@ class SettingPanel extends StatelessWidget {
                     onChanged: (value) => payloadDataPlanCubit
                         .setIncludeCarSuggestions(includeCarSuggestions: value),
                   ),
-                  _dividerWeight,
+                  SettingPanel._dividerWeight,
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(

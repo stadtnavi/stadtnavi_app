@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
+
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
@@ -200,13 +202,38 @@ class __CustomExpansionPanelState extends State<_CustomExpansionPanel> {
   }
 }
 
-class _MapOptionsPage extends StatelessWidget {
+class _MapOptionsPage extends StatefulWidget {
   final Widget child;
 
   const _MapOptionsPage({
     Key? key,
     required this.child,
   }) : super(key: key);
+
+  @override
+  State<_MapOptionsPage> createState() => _MapOptionsPageState();
+}
+
+class _MapOptionsPageState extends State<_MapOptionsPage> {
+  @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor, context: context);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    if (!stopDefaultButtonEvent) {
+      Navigator.of(context).pop();
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     final localization = StadtnaviBaseLocalization.of(context);
@@ -214,7 +241,7 @@ class _MapOptionsPage extends StatelessWidget {
         appBar: AppBar(
           title: Text(localization.commonMapSettings),
         ),
-        body: child);
+        body: widget.child);
   }
 }
 
@@ -301,9 +328,8 @@ class _BuildMapTypeOptionButton extends StatelessWidget {
               decoration: BoxDecoration(
                   border: Border.all(
                     width: 2.0,
-                    color: active
-                        ? theme.colorScheme.primary
-                        : Colors.transparent,
+                    color:
+                        active ? theme.colorScheme.primary : Colors.transparent,
                   ),
                   borderRadius: BorderRadius.circular(8.0)),
               child: ClipRRect(
