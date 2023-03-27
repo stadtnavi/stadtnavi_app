@@ -58,6 +58,7 @@ void main() async {
   SettingPanel.enableCarpool = false;
   // TODO we need to improve TransportMode Configuration
   TransportModeConfiguration.configure(transportColors: {
+    TransportMode.walk: const Color(0xffFECC01),
     TransportMode.bicycle: const Color(0xffffc200),
   });
 

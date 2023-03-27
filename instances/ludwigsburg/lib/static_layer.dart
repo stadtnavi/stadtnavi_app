@@ -37,7 +37,7 @@ final List<CustomLayerContainer> customLayersLudwigsburg = [
       Layer(
         LayerIds.bicycleInfrastructure,
         '3',
-        url: 'https://node21-iot.apps.okd.swlb.de/radservice.json',
+        url: 'https://stadtnavi.swlb.de/assets/geojson/lb-layers/radservice.json',
         isOnline: true,
         nameDE: 'RadSERVICE Stationen',
       ),
@@ -81,18 +81,18 @@ final List<CustomLayerContainer> customLayersLudwigsburg = [
       Layer(
         LayerIds.publicToilets,
         '3',
-        url: 'https://node21-iot.apps.okd.swlb.de/nettetoilette.json',
+        url: 'https://stadtnavi.swlb.de/assets/geojson/lb-layers/nettetoilette.json',
         isOnline: true,
       ),
       StaticTileLayers.cifsLayer,
       // Hide "Straßenwetter" Layer
-      // StaticTileLayers.weatherLayer,
-      Layer(
-        LayerIds.lorawanGateways,
-        '3',
-        url: 'https://node21-iot.apps.okd.swlb.de/lora.json',
-        isOnline: true,
-      ),
+      StaticTileLayers.weatherLayer,
+      // Layer(
+      //   LayerIds.lorawanGateways,
+      //   '3',
+      //   url: 'https://herrenberg.stadtnavi.de/assets/geojson/hb-layers/lorawan-gateways.geojson',
+      //   isOnline: true,
+      // ),
     ],
   ),
 ];
