@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.2"
+  back_button_interceptor:
+    dependency: transitive
+    description:
+      name: back_button_interceptor
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.0.2"
   bloc:
     dependency: transitive
     description:
@@ -497,6 +504,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  lodash_flutter:
+    dependency: transitive
+    description:
+      name: lodash_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   maps_toolkit:
     dependency: transitive
     description:
@@ -960,11 +974,9 @@ packages:
   trufi_core:
     dependency: transitive
     description:
-      path: "."
-      ref: "3.1.0-lts"
-      resolved-ref: "8d2293e42f651a5d9b94afe625a9f1996bd51761"
-      url: "https://github.com/trufi-association/trufi-core.git"
-    source: git
+      path: "../../../trufi-core"
+      relative: true
+    source: path
     version: "3.0.0"
   tuple:
     dependency: transitive
