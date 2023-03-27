@@ -17,12 +17,10 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get itineraryMissingPrice => 'Keine Preisangabe möglich';
 
   @override
-  String get itineraryPriceOnlyPublicTransport =>
-      'Preisauskunft nur für ÖPNV gültig.';
+  String get itineraryPriceOnlyPublicTransport => 'Preisauskunft nur für ÖPNV gültig.';
 
   @override
-  String get copyrightsPriceProvider =>
-      'Tarifauskünfte werden durch die Nahverkehrsgesellschaft Baden-Württemberg mbH (NVBW) zur Verfügung gestellt. Alle Angaben ohne Gewähr.';
+  String get copyrightsPriceProvider => 'Tarifauskünfte werden durch die Nahverkehrsgesellschaft Baden-Württemberg mbH (NVBW) zur Verfügung gestellt. Alle Angaben ohne Gewähr.';
 
   @override
   String get fareTicketName => 'Regulär';
@@ -91,48 +89,37 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get commonDeparture => 'Abfahrt';
 
   @override
-  String get infoMessageDestinationOutsideService =>
-      'Leider konnte keine Route an diesen Zielort gefunden werden. Der Zielort befindet sich außerhalb des abgedeckten Gebietes. Bitte ändern Sie den Zielort.';
+  String get infoMessageDestinationOutsideService => 'Leider konnte keine Route an diesen Zielort gefunden werden. Der Zielort befindet sich außerhalb des abgedeckten Gebietes. Bitte ändern Sie den Zielort.';
 
   @override
-  String get infoMessageNoRouteMsg =>
-      'Wir konnten leider keine Reisevorschläge für diese Strecke finden. Bitte versuchen Sie den Abfahrts- oder Zielort zu ändern.';
+  String get infoMessageNoRouteMsg => 'Wir konnten leider keine Reisevorschläge für diese Strecke finden. Bitte versuchen Sie den Abfahrts- oder Zielort zu ändern.';
 
   @override
-  String get infoMessageNoRouteMsgWithChanges =>
-      'Leider wurden keine Reiseoptionen zu Ihrer Anfrage gefunden. Passen Sie Ihre Einstellungen, Abfahrt- oder Zielort an.';
+  String get infoMessageNoRouteMsgWithChanges => 'Leider wurden keine Reiseoptionen zu Ihrer Anfrage gefunden. Passen Sie Ihre Einstellungen, Abfahrt- oder Zielort an.';
 
   @override
-  String get infoMessageNoRouteOriginNearDestination =>
-      'Keine Reisevorschläge gefunden, da Abfahrts- und Zielort übereinstimmen.';
+  String get infoMessageNoRouteOriginNearDestination => 'Keine Reisevorschläge gefunden, da Abfahrts- und Zielort übereinstimmen.';
 
   @override
-  String get infoMessageNoRouteOriginSameAsDestination =>
-      'Die Entfernung zwischen Start und Ziel ist sehr gering. Bitte ändern Sie einen dieser Orte.';
+  String get infoMessageNoRouteOriginSameAsDestination => 'Die Entfernung zwischen Start und Ziel ist sehr gering. Bitte ändern Sie einen dieser Orte.';
 
   @override
-  String get infoMessageNoRouteShowingAlternativeOptions =>
-      'Keine Routenvorschläge mit Ihren Einstelllungen gefunden. Stattdessen haben wird die folgenden Reiseoptionen gefunden:';
+  String get infoMessageNoRouteShowingAlternativeOptions => 'Keine Routenvorschläge mit Ihren Einstelllungen gefunden. Stattdessen haben wird die folgenden Reiseoptionen gefunden:';
 
   @override
-  String get infoMessageOnlyCyclingRoutes =>
-      'Ihre Suche ergab nur Fahrrad-Routen.';
+  String get infoMessageOnlyCyclingRoutes => 'Ihre Suche ergab nur Fahrrad-Routen.';
 
   @override
-  String get infoMessageOnlyWalkingCyclingRoutes =>
-      'Ihre Suche ergab nur Fußweg- und Fahrrad-Routen.';
+  String get infoMessageOnlyWalkingCyclingRoutes => 'Ihre Suche ergab nur Fußweg- und Fahrrad-Routen.';
 
   @override
-  String get infoMessageOnlyWalkingRoutes =>
-      'Ihre Suche ergab nur Fußweg-Routen.';
+  String get infoMessageOnlyWalkingRoutes => 'Ihre Suche ergab nur Fußweg-Routen.';
 
   @override
-  String get infoMessageOriginOutsideService =>
-      'Leider konnte keine Route von diesem Startort gefunden werden. Der Startort befindet sich außerhalb des abgedeckten Gebietes. Bitte ändern Sie den Startort.';
+  String get infoMessageOriginOutsideService => 'Leider konnte keine Route von diesem Startort gefunden werden. Der Startort befindet sich außerhalb des abgedeckten Gebietes. Bitte ändern Sie den Startort.';
 
   @override
-  String get infoMessageUseNationalServicePrefix =>
-      'Wir empfehlen, dass Sie den überregionalen Routenplaner nutzen,';
+  String get infoMessageUseNationalServicePrefix => 'Wir empfehlen, dass Sie den überregionalen Routenplaner nutzen,';
 
   @override
   String get bikeRentalBikeStation => 'Leihrad-Station';
@@ -150,15 +137,13 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get commonOnDemandTaxi => 'Fahrt buchen';
 
   @override
-  String get carParkCloseCapacityMessage =>
-      'Dieser Parkplatz ist fast ausgebucht. Bitte planen Sie zusätzliche Zeit für Ihre Anfahrt ein.';
+  String get carParkCloseCapacityMessage => 'Dieser Parkplatz ist fast ausgebucht. Bitte planen Sie zusätzliche Zeit für Ihre Anfahrt ein.';
 
   @override
   String get carParkExcludeFull => 'Volle Parkplätze ausschließen';
 
   @override
-  String get bikeRentalNetworkFreeFloating =>
-      'Ziel ist keine Rückgabestation. Ausleihe kann hier nicht abgeschlossen werden. Anbieterabhängig fallen weiter Gebühren bis zur Rückgabe an einer Station an.';
+  String get bikeRentalNetworkFreeFloating => 'Ziel ist keine Rückgabestation. Ausleihe kann hier nicht abgeschlossen werden. Anbieterabhängig fallen weiter Gebühren bis zur Rückgabe an einer Station an.';
 
   @override
   String get fetchMoreItinerariesLaterDeparturesTitle => 'Später';
@@ -173,6 +158,30 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get instructionVehicleTaxi => 'Ruftaxi';
 
   @override
+  String get mapLegendBicycleParking => 'Fahrradparkplatz';
+
+  @override
+  String get mapLegendCoveredBicycleParking => 'überdachter Fahrradparkplatz';
+
+  @override
+  String get mapLegendLockableBicycleParking => 'abschließbarer Fahrradparkplatz';
+
+  @override
+  String get mapLegendBicycleRepairFacility => 'Fahrradreperatur';
+
+  @override
+  String get mapLegendBikeLane => 'Fahrradweg';
+
+  @override
+  String get mapLegendMajorCyclingRoute => 'überregionaler Radweg';
+
+  @override
+  String get mapLegendLocalCyclingRoute => 'lokaler Radweg';
+
+  @override
+  String get notShowAgain => 'Nicht mehr anzeigen';
+
+  @override
   String get mapTypeLabel => 'Kartentyp';
 
   @override
@@ -185,12 +194,10 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get bikePark => 'Fahrrad abstellen';
 
   @override
-  String get itinerarySummaryBikeParkTitle =>
-      'Fahrrad abstellen und weiterfahren';
+  String get itinerarySummaryBikeParkTitle => 'Fahrrad abstellen und weiterfahren';
 
   @override
-  String get itinerarySummaryBikeAndPublicRailSubwayTitle =>
-      'Nehmen Sie Ihr Rad mit in den Zug oder die bahn';
+  String get itinerarySummaryBikeAndPublicRailSubwayTitle => 'Nehmen Sie Ihr Rad mit in den Zug oder die bahn';
 
   @override
   String departureBikeStation(Object departureStop, Object departureTime) {
@@ -205,7 +212,4 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get commonPlatform => 'Plattform';
-
-  @override
-  String get notShowAgain => "Nicht mehr anzeigen";
 }

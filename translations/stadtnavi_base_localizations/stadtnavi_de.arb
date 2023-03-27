@@ -203,6 +203,14 @@
   "@instructionVehicleTaxi": {
       "description": "Vehicle name (onCar)"
   },
+  "mapLegendBicycleParking": "Fahrradparkplatz",
+  "mapLegendCoveredBicycleParking": "überdachter Fahrradparkplatz",
+  "mapLegendLockableBicycleParking": "abschließbarer Fahrradparkplatz",
+  "mapLegendBicycleRepairFacility": "Fahrradreperatur",
+  "mapLegendBikeLane": "Fahrradweg",
+  "mapLegendMajorCyclingRoute": "überregionaler Radweg",
+  "mapLegendLocalCyclingRoute": "lokaler Radweg",
+  "notShowAgain": "Nicht mehr anzeigen",
   "mapTypeLabel": "Kartentyp",
   "@mapTypeLabel": {
       "description": "Label for the Map types"

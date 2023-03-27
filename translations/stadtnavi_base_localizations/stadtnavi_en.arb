@@ -203,6 +203,14 @@
   "@instructionVehicleTaxi": {
       "description": "Vehicle name (onCar)"
   },
+  "mapLegendBicycleParking": "bicycle parking",
+  "mapLegendCoveredBicycleParking": "covered bicycle parking",
+  "mapLegendLockableBicycleParking": "lockable bicycle parking",
+  "mapLegendBicycleRepairFacility": "bicycle repair facility",
+  "mapLegendBikeLane": "bike lane",
+  "mapLegendMajorCyclingRoute": "major cycling route",
+  "mapLegendLocalCyclingRoute": "local cycling route",
+  "notShowAgain": "Do not show again",
   "mapTypeLabel": "Map Type",
   "@mapTypeLabel": {
       "description": "Label for the Map types"
