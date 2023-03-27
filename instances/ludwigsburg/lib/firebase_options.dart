@@ -50,20 +50,20 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDuYN21_ZuGO-hkipcfmF0WP7hGohQ6aOY',
-    appId: '1:605813972051:android:6760c435e592311742faa6',
-    messagingSenderId: '605813972051',
-    projectId: 'stadtnavi-ludwigsburg',
-    storageBucket: 'stadtnavi-ludwigsburg.appspot.com',
+    apiKey: 'AIzaSyD-e0JTbDH04UAZlyUj47LoJQBDBYW29dk',
+    appId: '1:275011808952:android:ee8e3e38d0fc339f3b4e4d',
+    messagingSenderId: '275011808952',
+    projectId: 'stadtnavi-ludwigsburg-internal',
+    storageBucket: 'stadtnavi-ludwigsburg-internal.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC3I7Udby7aspJKIHOb-ZPhQMwU4gmpMhk',
-    appId: '1:605813972051:ios:6fbb0f8e8e4e742142faa6',
-    messagingSenderId: '605813972051',
-    projectId: 'stadtnavi-ludwigsburg',
-    storageBucket: 'stadtnavi-ludwigsburg.appspot.com',
-    iosClientId: '605813972051-9niud7u7b03b5648qmkinhtp2r1tr84d.apps.googleusercontent.com',
-    iosBundleId: 'de.stadtnavi.ludwigsburg',
+    apiKey: 'AIzaSyCcgFCaVZfg8QbSEBRKTZFYA0jyJ1hbj3o',
+    appId: '1:275011808952:ios:e6927cc919f7e4d23b4e4d',
+    messagingSenderId: '275011808952',
+    projectId: 'stadtnavi-ludwigsburg-internal',
+    storageBucket: 'stadtnavi-ludwigsburg-internal.appspot.com',
+    iosClientId: '275011808952-rcap9mvaqk8nsl57d1tpgkhaik4u958n.apps.googleusercontent.com',
+    iosBundleId: 'de.stadtnavi.ludwigsburg.internal',
   );
 }

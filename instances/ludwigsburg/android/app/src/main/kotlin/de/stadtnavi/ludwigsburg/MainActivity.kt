@@ -1,4 +1,4 @@
-package de.stadtnavi.ludwigsburg
+package de.stadtnavi.ludwigsburg.internal
 
 import io.flutter.embedding.android.FlutterActivity
 
