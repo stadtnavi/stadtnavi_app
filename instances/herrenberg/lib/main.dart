@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
 
+import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
@@ -24,6 +25,11 @@ void main() async {
   await CertificatedLetsencryptAndroid.workAroundCertificated();
   await initHiveForFlutter();
   await _migrationOldData();
+  // TODO we need to improve TransportMode Configuration
+  TransportModeConfiguration.configure(transportColors: {
+    TransportMode.bicycle: const Color(0xffFECC01),
+    TransportMode.walk: const Color(0xffFECC01),
+  });
   runApp(
     StadtnaviApp(
       appName: 'stadtnavi',
