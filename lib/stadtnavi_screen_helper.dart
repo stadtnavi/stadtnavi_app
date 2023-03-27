@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +10,7 @@ import 'package:trufi_core/base/widgets/screen/transition_page.dart';
 class StadtnaviNoAnimationPage<T> extends TransitionPage<T> {
   StadtnaviNoAnimationPage({
     required Widget child,
+    String? restorationId,
     AppLifecycleReactorHandler? appLifecycleReactorHandler,
   }) : super(
           child: Builder(builder: (context) {
@@ -20,6 +23,9 @@ class StadtnaviNoAnimationPage<T> extends TransitionPage<T> {
           }),
           pushTransition: PageTransition.none,
           popTransition: PageTransition.none,
+          key: ObjectKey(restorationId),
+          name: restorationId,
+          restorationId: restorationId,
         );
 }
 
