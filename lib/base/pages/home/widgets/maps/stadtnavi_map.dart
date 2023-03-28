@@ -131,12 +131,12 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
           left: 10,
           child: mapConfiguratiom.mapAttributionBuilder!(context),
         ),
-        // DiHerre
-        // const Positioned(
-        //     top: 59.5,
-        //     right: 15.0,
-        //   child: MapLegend(),
-        // ),
+        // if()
+        const Positioned(
+            top: 59.5,
+            right: 15.0,
+          child: MapLegend(),
+        ),
       ],
     );
   }

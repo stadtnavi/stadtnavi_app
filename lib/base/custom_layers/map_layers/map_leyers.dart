@@ -10,7 +10,6 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_la
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 
@@ -21,6 +20,7 @@ enum MapLayerIds {
   streets,
   satellite,
   bike,
+  terrain,
 }
 
 extension LayerIdsToString on MapLayerIds {
@@ -29,6 +29,7 @@ extension LayerIdsToString on MapLayerIds {
       MapLayerIds.streets: "Streets",
       MapLayerIds.satellite: "Satellite",
       MapLayerIds.bike: "Bike",
+      MapLayerIds.terrain: "Terrain",
     };
 
     return enumStrings[this]!;
@@ -39,6 +40,7 @@ extension LayerIdsToString on MapLayerIds {
       MapLayerIds.streets: "Straßen",
       MapLayerIds.satellite: "Satellit",
       MapLayerIds.bike: "Fahrrad",
+      MapLayerIds.terrain: "Fahrrad",
     };
 
     return enumStrings[this]!;
@@ -49,13 +51,14 @@ extension LayerIdsToString on MapLayerIds {
       MapLayerIds.streets: "Streets",
       MapLayerIds.satellite: "Satellite",
       MapLayerIds.bike: "Bike",
+      MapLayerIds.terrain: "Bike",
     };
 
     return enumStrings[this]!;
   }
 }
 
-List<Widget> mapLayerOptions2(MapLayerIds id, BuildContext context) {
+List<Widget> mapLayerOptions(MapLayerIds id, BuildContext context) {
   switch (id) {
     case MapLayerIds.streets:
       return [
@@ -82,10 +85,15 @@ List<Widget> mapLayerOptions2(MapLayerIds id, BuildContext context) {
       return [
         TileLayer(
           tileProvider: CustomTileProvider(context: context),
-          // DiHerre
-          // urlTemplate:
-          //     "https://tiles.stadtnavi.eu/bicycle/{z}/{x}/{y}@2x.png",
-          // DiLud
+          urlTemplate:
+              "https://tiles.stadtnavi.eu/bicycle/{z}/{x}/{y}@2x.png",
+          subdomains: const ["a", "b", "c"],
+        ),
+      ];
+    case MapLayerIds.terrain:
+      return [
+        TileLayer(
+          tileProvider: CustomTileProvider(context: context),
           urlTemplate:
               "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
           subdomains: const ["a", "b", "c"],
@@ -99,10 +107,8 @@ List<Widget> mapLayerOptions2(MapLayerIds id, BuildContext context) {
 Map<MapLayerIds, String> layerImage = {
   MapLayerIds.streets: "assets/images/maptype-streets.png",
   MapLayerIds.satellite: "assets/images/maptype-satellite.png",
-  // DiHerre
-  // MapLayerIds.bike: "assets/images/maptype-bicycle.png",
-  // DiLud
-  MapLayerIds.bike: "assets/images/maptype-terrain.png",
+  MapLayerIds.bike: "assets/images/maptype-bicycle.png",
+  MapLayerIds.terrain: "assets/images/maptype-terrain.png",
 };
 
 class MapLayer extends MapTileProvider {
@@ -116,7 +122,7 @@ class MapLayer extends MapTileProvider {
 
   @override
   List<Widget> buildTileLayerOptions(BuildContext context) {
-    return mapLayerOptions2(mapLayerId, context);
+    return mapLayerOptions(mapLayerId, context);
   }
 
   @override

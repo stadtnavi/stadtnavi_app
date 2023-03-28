@@ -12,6 +12,7 @@ import 'package:stadtnavi_core/default_stadtnavi_values.dart';
 import 'package:stadtnavi_core/stadtnavi_screen_helper.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
+import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/menu_item.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
@@ -34,6 +35,7 @@ class StadtnaviApp extends StatelessWidget {
   final List<CustomLayerContainer> layersContainer;
   final UrlSocialMedia urlSocialMedia;
   final TrufiBaseTheme? trufiBaseTheme;
+  final List<MapTileProvider>? mapTileProviders;
 
   // TODO we need improve these params
   final List<TrufiMenuItem>? extraDrawerItems;
@@ -59,11 +61,12 @@ class StadtnaviApp extends StatelessWidget {
     required this.layersContainer,
     required this.urlSocialMedia,
     this.trufiBaseTheme,
+    this.mapTileProviders,
     this.extraDrawerItems,
     this.extraRoutes,
     this.extraBlocs,
     this.extraFloatingMapButtons,
-     this.appLifecycleReactorHandler,
+    this.appLifecycleReactorHandler,
   }) : super(key: key);
 
   @override
@@ -84,11 +87,12 @@ class StadtnaviApp extends StatelessWidget {
           queryParameters: searchLocationQueryParameters,
         ),
         layersContainer: layersContainer,
-        mapTileProviders: [
-          MapLayer(MapLayerIds.streets),
-          MapLayer(MapLayerIds.satellite),
-          MapLayer(MapLayerIds.bike),
-        ],
+        mapTileProviders: mapTileProviders ??
+            [
+              MapLayer(MapLayerIds.streets),
+              MapLayer(MapLayerIds.satellite),
+              MapLayer(MapLayerIds.bike),
+            ],
         extraBlocs: extraBlocs,
       ),
       trufiRouter: TrufiRouter(

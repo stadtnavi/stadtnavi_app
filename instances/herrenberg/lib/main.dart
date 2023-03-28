@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:herrenberg/lifecycle_reactor_handler_notifications.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +33,7 @@ void main() async {
   });
   runApp(
     StadtnaviApp(
+      appLifecycleReactorHandler: AppLifecycleReactorHandlerNotifications(),
       appName: 'stadtnavi',
       appNameTitle: 'stadtnavi|Herrenberg',
       cityName: 'Herrenberg',
