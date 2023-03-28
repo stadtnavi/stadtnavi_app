@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>275011808952-rcap9mvaqk8nsl57d1tpgkhaik4u958n.apps.googleusercontent.com</string>
+	<string>605813972051-9niud7u7b03b5648qmkinhtp2r1tr84d.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.275011808952-rcap9mvaqk8nsl57d1tpgkhaik4u958n</string>
+	<string>com.googleusercontent.apps.605813972051-9niud7u7b03b5648qmkinhtp2r1tr84d</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCcgFCaVZfg8QbSEBRKTZFYA0jyJ1hbj3o</string>
+	<string>AIzaSyC3I7Udby7aspJKIHOb-ZPhQMwU4gmpMhk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>275011808952</string>
+	<string>605813972051</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>de.stadtnavi.ludwigsburg.internal</string>
+	<string>de.stadtnavi.ludwigsburg</string>
 	<key>PROJECT_ID</key>
-	<string>stadtnavi-ludwigsburg-internal</string>
+	<string>stadtnavi-ludwigsburg</string>
 	<key>STORAGE_BUCKET</key>
-	<string>stadtnavi-ludwigsburg-internal.appspot.com</string>
+	<string>stadtnavi-ludwigsburg.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:275011808952:ios:e6927cc919f7e4d23b4e4d</string>
+	<string>1:605813972051:ios:6fbb0f8e8e4e742142faa6</string>
 </dict>
 </plist>
