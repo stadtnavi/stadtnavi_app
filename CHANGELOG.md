@@ -1,3 +1,6 @@
+## 1.8.4
+🎉 Update Add Note #352
+
 ## 1.8.3
 🎉 Delete Accesibility Radio Button and Add Note #352
 
