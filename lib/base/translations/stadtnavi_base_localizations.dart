@@ -501,6 +501,12 @@ abstract class StadtnaviBaseLocalization {
   /// **'Track'**
   String get commonTrack;
 
+  /// No description provided for @mapLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'map legend'**
+  String get mapLegend;
+
   /// General Platform  label
   ///
   /// In en, this message translates to:

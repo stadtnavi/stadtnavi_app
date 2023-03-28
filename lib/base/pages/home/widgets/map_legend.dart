@@ -70,7 +70,7 @@ class _MapLegendState extends State<MapLegend> {
                           ),
                   ),
                   title: Text(
-                    isExpanded ? "map legend" : " ",
+                    isExpanded ? stLocalization.mapLegend : " ",
                     style: const TextStyle(fontWeight: FontWeight.w400),
                     maxLines: 1,
                   ),

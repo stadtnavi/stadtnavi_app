@@ -211,5 +211,8 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get commonTrack => 'Track';
 
   @override
+  String get mapLegend => 'map legend';
+
+  @override
   String get commonPlatform => 'Platform';
 }

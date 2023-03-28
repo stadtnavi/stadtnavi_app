@@ -249,6 +249,7 @@
   },
   "commonSettings": "Settings",
   "commonTrack": "Track",
+  "mapLegend": "map legend",
   "@commonTrack": {
       "description": "General Track  label"
   },
