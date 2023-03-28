@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:herrenberg/firebase_options.dart';
 import 'package:herrenberg/lifecycle_reactor_handler_notifications.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:hive/hive.dart';
@@ -24,6 +27,27 @@ String openTripPlannerUrl =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CertificatedLetsencryptAndroid.workAroundCertificated();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  FirebaseMessaging.instance.getToken().then((value) {
+    print(value);
+  }).catchError((error) {
+    print("$error");
+  });
+  await messaging
+      .requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      )
+      .catchError((error) => {print("$error")});
   await initHiveForFlutter();
   await _migrationOldData();
   // TODO we need to improve TransportMode Configuration
