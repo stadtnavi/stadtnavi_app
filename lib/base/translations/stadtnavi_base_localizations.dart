@@ -213,6 +213,12 @@ abstract class StadtnaviBaseLocalization {
   /// **'Accessibility'**
   String get settingPanelAccessibility;
 
+  /// Accessibility details configuration panel label
+  ///
+  /// In en, this message translates to:
+  /// **'Due to a lack of data on accessibility, we are currently unable to provide information on accessible routes.'**
+  String get settingPanelAccessibilityDetails;
+
   /// Wheelchair configuration panel label
   ///
   /// In en, this message translates to:

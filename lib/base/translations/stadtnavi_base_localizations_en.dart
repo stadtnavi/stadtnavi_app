@@ -65,6 +65,9 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get settingPanelAccessibility => 'Accessibility';
 
   @override
+  String get settingPanelAccessibilityDetails => 'Due to a lack of data on accessibility, we are currently unable to provide information on accessible routes.';
+
+  @override
   String get settingPanelWheelchair => 'Wheelchair';
 
   @override

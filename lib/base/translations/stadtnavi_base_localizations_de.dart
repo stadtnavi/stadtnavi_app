@@ -65,6 +65,9 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get settingPanelAccessibility => 'Barrierefreiheit';
 
   @override
+  String get settingPanelAccessibilityDetails => 'Aufgrund fehlender Daten zur Barrierefreiheit können wir derzeit leider keine barrierefreien Routen beauskunften.';
+
+  @override
   String get settingPanelWheelchair => 'Rollstuhlgerecht';
 
   @override

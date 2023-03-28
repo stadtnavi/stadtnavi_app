@@ -79,6 +79,10 @@
   "@settingPanelAccessibility": {
     "description": "Accessibility configuration panel label"
   },
+  "settingPanelAccessibilityDetails": "Aufgrund fehlender Daten zur Barrierefreiheit können wir derzeit leider keine barrierefreien Routen beauskunften.",
+  "@settingPanelAccessibilityDetails": {
+    "description": "Accessibility details configuration panel label"
+  },
   "settingPanelWheelchair": "Rollstuhlgerecht",
   "@settingPanelWheelchair": {
     "description": "Wheelchair configuration panel label"

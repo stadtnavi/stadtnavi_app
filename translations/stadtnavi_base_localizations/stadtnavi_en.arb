@@ -79,6 +79,10 @@
   "@settingPanelAccessibility": {
     "description": "Accessibility configuration panel label"
   },
+  "settingPanelAccessibilityDetails": "Due to a lack of data on accessibility, we are currently unable to provide information on accessible routes.",
+  "@settingPanelAccessibilityDetails": {
+    "description": "Accessibility details configuration panel label"
+  },
   "settingPanelWheelchair": "Wheelchair",
   "@settingPanelWheelchair": {
     "description": "Wheelchair configuration panel label"
