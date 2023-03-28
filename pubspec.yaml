@@ -16,7 +16,9 @@ dependencies:
   mqtt_client: ^9.7.2
   skeleton_animation: ^0.1.4
   trufi_core:
-    path: ../trufi-core
+    git:
+      url: https://github.com/trufi-association/trufi-core.git
+      ref: 3.2.0-stadtnavi-lts
   back_button_interceptor: ^6.0.2
   lodash_flutter: ^0.0.3
   vector_tile: ^1.0.0
