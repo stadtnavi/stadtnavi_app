@@ -34,7 +34,7 @@ class SimpleOpeningHours {
 
   /// Returns if the OpeningHours match on given Date
   bool isOpenOn(DateTime date) {
-    int testday = date.weekday;
+    int testday = date.weekday - 1;
     List<String> times = [];
     times = openingHours.values.toList()[testday];
     bool isOpen = false;
