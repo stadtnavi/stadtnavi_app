@@ -141,6 +141,7 @@ abstract class DefaultStadtnaviValues {
           onUnknownRoute: (_) => const Redirect(HomePage.route),
           routes: {
             HomePage.route: (route) => StadtnaviNoAnimationPage(
+                  restorationId: HomePage.route,
                   appLifecycleReactorHandler: appLifecycleReactorHandler,
                   child: HomePage(
                     asyncExecutor: asyncExecutor ?? AsyncExecutor(),

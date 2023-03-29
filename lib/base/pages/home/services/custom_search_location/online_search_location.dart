@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/search_location_utils.dart';
 
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/pages/home/services/exception/fetch_online_exception.dart';
@@ -19,12 +20,12 @@ class OnlineSearchLocation implements SearchLocationRepository {
   const OnlineSearchLocation({
     this.queryParameters = const {},
   });
-
   @override
   Future<List<TrufiPlace>> fetchLocations(
     String query, {
     int limit = 15,
     String? correlationId,
+    String? lang = "en",
   }) async {
     final extraQueryParameters = queryParameters ?? {};
     final Uri request = Uri.parse(
@@ -37,7 +38,7 @@ class OnlineSearchLocation implements SearchLocationRepository {
       "boundary.rect.max_lon": "8.530883",
       "focus.point.lat": "48.5957",
       "focus.point.lon": "8.8675",
-      "lang": Intl.getCurrentLocale().split("_")[0],
+      "lang": lang,
       "sources": "oa,osm,gtfshb",
       "layers": "station,venue,address,street",
       ...extraQueryParameters
@@ -46,9 +47,19 @@ class OnlineSearchLocation implements SearchLocationRepository {
     if (response.statusCode != 200) {
       throw "Not found locations";
     } else {
-      utf8.decode(response.bodyBytes);
-      return _parseLocation(
-          jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>);
+      final json = jsonDecode(utf8.decode(response.bodyBytes));
+      final dataJson = List<Map<String, dynamic>>.from(json["features"]);
+
+      final dataw = uniqByLabel(dataJson);
+      final dataSorted = sortSearchResults(
+          RegExp(r'(^[0-9]+[a-z]?$|^[yuleapinkrtdz]$|(^m[12]?b?$))',
+              caseSensitive: true),
+          [...dataw],
+          query);
+      final res = dataSorted.map((x) => LocationModel.fromJson(x));
+      final trufiLocationList =
+          res.map<TrufiLocation>((e) => e.toTrufiLocation()).toList();
+      return trufiLocationList;
     }
   }
 
@@ -60,14 +71,6 @@ class OnlineSearchLocation implements SearchLocationRepository {
     } on Exception catch (e) {
       throw FetchOnlineRequestException(e);
     }
-  }
-
-  List<TrufiLocation> _parseLocation(Map<String, dynamic> json) {
-    final list = List<LocationModel>.from((json["features"] as List)
-        .map((x) => LocationModel.fromJson(x as Map<String, dynamic>)));
-    final trufiLocationList =
-        list.map<TrufiLocation>((e) => e.toTrufiLocation()).toList();
-    return trufiLocationList;
   }
 
   @override

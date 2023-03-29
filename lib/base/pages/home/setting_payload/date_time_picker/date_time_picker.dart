@@ -1,3 +1,4 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
@@ -46,12 +47,21 @@ class _DateTimePickerState extends State<DateTimePicker>
         });
       }
     });
+    BackButtonInterceptor.add(myInterceptor, context: context);
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    if (!stopDefaultButtonEvent) {
+      Navigator.of(context).pop();
+    }
+    return true;
   }
 
   @override

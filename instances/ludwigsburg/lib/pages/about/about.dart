@@ -8,7 +8,7 @@ import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 import 'about_section.dart';
 
 class AboutPage extends StatelessWidget {
-  static const String route = "/About";
+  static const String route = "/Home/About";
 
   const AboutPage({
     Key? key,

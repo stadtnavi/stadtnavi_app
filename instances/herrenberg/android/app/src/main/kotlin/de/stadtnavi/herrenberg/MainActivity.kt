@@ -1,4 +1,4 @@
-package de.stadtnavi.herrenberg
+package de.stadtnavi.herrenberg.internal
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
 import 'package:async/async.dart';
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,6 +77,7 @@ class ChooseLocationPageState extends State<ChooseLocationPage>
     WidgetsBinding.instance.addPostFrameCallback((duration) {
       loadData(widget.position ?? mapConfiguratiom.center);
     });
+    BackButtonInterceptor.add(myInterceptor, context: context);
   }
 
   Timer? timer;
@@ -91,7 +94,15 @@ class ChooseLocationPageState extends State<ChooseLocationPage>
   @override
   void dispose() {
     timer?.cancel();
+    BackButtonInterceptor.remove(myInterceptor);
     super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    if (!stopDefaultButtonEvent) {
+      Navigator.pop(context);
+    }
+    return true;
   }
 
   @override
@@ -100,137 +111,144 @@ class ChooseLocationPageState extends State<ChooseLocationPage>
     final localization = TrufiBaseLocalization.of(context);
     final localizationSP = SavedPlacesLocalization.of(context);
     // final trufiConfiguration = context.read<ConfigurationCubit>().state;
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: theme.appBarTheme.foregroundColor),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RichText(
-              maxLines: 2,
-              text: TextSpan(
-                text: localization.chooseLocationPageTitle,
-                style: TextStyle(
-                  color: theme.appBarTheme.foregroundColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            RichText(
-              maxLines: 2,
-              text: TextSpan(
-                text: localization.chooseLocationPageSubtitle,
-                style: TextStyle(
-                    color: theme.appBarTheme.foregroundColor, fontSize: 13),
-              ),
-            ),
-          ],
-        ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                TrufiMap(
-                  trufiMapController: trufiMapController,
-                  layerOptionsBuilder: (context) => [],
-                  onPositionChanged: (mapPosition, hasGesture) {
-                    setState(() {
-                      position = mapPosition;
-                    });
-                    if (mapPosition.center != null) {
-                      debounce(() => loadData(mapPosition.center!));
-                    }
-                  },
-                ),
-                Positioned.fill(
-                  child: Center(
-                    child: SizedBox(
-                      height: 30,
-                      width: 30,
-                      child: _chooseOnMapMarker,
-                    ),
+    return Center(
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: theme.appBarTheme.foregroundColor),
+          leading: BackButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              RichText(
+                maxLines: 2,
+                text: TextSpan(
+                  text: localization.chooseLocationPageTitle,
+                  style: TextStyle(
+                    color: theme.appBarTheme.foregroundColor,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ],
-            ),
+              ),
+              RichText(
+                maxLines: 2,
+                text: TextSpan(
+                  text: localization.chooseLocationPageSubtitle,
+                  style: TextStyle(
+                      color: theme.appBarTheme.foregroundColor, fontSize: 13),
+                ),
+              ),
+            ],
           ),
-          if (loading) const LinearProgressIndicator(),
-          Container(
-            color: theme.cardColor,
-            padding: const EdgeInsets.all(10),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  locationData != null
-                      ? locationData!.description != ""
-                          ? locationData!.description
-                          : localization.commonUnkownPlace
-                      : localization.commonLoading,
-                  style: const TextStyle(fontSize: 17),
-                ),
-                Text(
-                  locationData?.street ?? "",
-                  style: TextStyle(color: hintTextColor(theme)),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    if (loading)
-                      OutlinedButton(
-                        onPressed: () async {
-                          if (position?.center != null) {
-                            Navigator.of(context).pop(
-                              LocationDetail(
-                                '',
-                                '',
-                                position!.center!,
-                              ),
-                            );
-                          }
-                        },
-                        child: SizedBox(
-                          width: 140,
-                          child: Text(
-                            localizationSP.chooseNowLabel,
-                            style: TextStyle(color: theme.primaryColor),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                          ),
-                        ),
-                      )
-                    else
-                      OutlinedButton(
-                        onPressed: () async {
-                          if (locationData != null) {
-                            Navigator.of(context).pop(locationData);
-                          }
-                        },
-                        child: SizedBox(
-                          width: 140,
-                          child: Text(
-                            localization.commonConfirmLocation,
-                            style: TextStyle(
-                                color: locationData != null
-                                    ? theme.primaryColor
-                                    : Colors.grey),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                          ),
-                        ),
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  TrufiMap(
+                    trufiMapController: trufiMapController,
+                    layerOptionsBuilder: (context) => [],
+                    onPositionChanged: (mapPosition, hasGesture) {
+                      setState(() {
+                        position = mapPosition;
+                      });
+                      if (mapPosition.center != null) {
+                        debounce(() => loadData(mapPosition.center!));
+                      }
+                    },
+                  ),
+                  Positioned.fill(
+                    child: Center(
+                      child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: _chooseOnMapMarker,
                       ),
-                  ],
-                ),
-              ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          )
-        ],
+            if (loading) const LinearProgressIndicator(),
+            Container(
+              color: theme.cardColor,
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    locationData != null
+                        ? locationData!.description != ""
+                            ? locationData!.description
+                            : localization.commonUnkownPlace
+                        : localization.commonLoading,
+                    style: const TextStyle(fontSize: 17),
+                  ),
+                  Text(
+                    locationData?.street ?? "",
+                    style: TextStyle(color: hintTextColor(theme)),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      if (loading)
+                        OutlinedButton(
+                          onPressed: () async {
+                            if (position?.center != null) {
+                              Navigator.of(context).pop(
+                                LocationDetail(
+                                  '',
+                                  '',
+                                  position!.center!,
+                                ),
+                              );
+                            }
+                          },
+                          child: SizedBox(
+                            width: 140,
+                            child: Text(
+                              localizationSP.chooseNowLabel,
+                              style: TextStyle(color: theme.primaryColor),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                            ),
+                          ),
+                        )
+                      else
+                        OutlinedButton(
+                          onPressed: () async {
+                            if (locationData != null) {
+                              Navigator.of(context).pop(locationData);
+                            }
+                          },
+                          child: SizedBox(
+                            width: 140,
+                            child: Text(
+                              localization.commonConfirmLocation,
+                              style: TextStyle(
+                                  color: locationData != null
+                                      ? theme.primaryColor
+                                      : Colors.grey),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -23,7 +23,7 @@ import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 
 class ParkingInformationPage extends StatefulWidget {
-  static const String route = "/ParkingInformation";
+  static const String route = "/Home/ParkingInformation";
   static TrufiMenuItem menuItemDrawer = MenuPageItem(
     id: route,
     selectedIcon: (context) => Icon(

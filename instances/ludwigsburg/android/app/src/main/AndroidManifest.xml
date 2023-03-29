@@ -1,8 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.stadtnavi.ludwigsburg">
+    package="de.stadtnavi.ludwigsburg.internal">
    <uses-permission android:name="android.permission.INTERNET"/>
    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+   <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+   <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
    <queries>
      <intent>
        <action android:name="android.intent.action.VIEW" />
@@ -22,7 +24,7 @@
      </intent>
    </queries>
    <application
-        android:label="stadtnavi Ludwigsburg"
+        android:label="stadtnavi Ludwigsburg Test"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

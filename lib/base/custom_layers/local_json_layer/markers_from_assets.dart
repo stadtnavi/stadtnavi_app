@@ -50,7 +50,8 @@ Future<List<CustomMarker>> markersFromUrl(String path) async {
       "Server Error ParkZone $uri with ${response.statusCode}",
     );
   }
-  final body = jsonDecode(response.body);
+  final body =
+      jsonDecode(utf8.decode(response.bodyBytes, allowMalformed: true));
   final List features = body["features"] as List;
   for (final feature in features) {
     final properties = feature["properties"];
@@ -62,8 +63,8 @@ Future<List<CustomMarker>> markersFromUrl(String path) async {
     }
     final coordinate = feature["geometry"]["coordinates"];
     final position = LatLng(
-      (coordinate[1]as num).toDouble(),
-      (coordinate[0]as num).toDouble(),
+      (coordinate[1] as num).toDouble(),
+      (coordinate[0] as num).toDouble(),
     );
     markers.add(CustomMarker(
       id: properties["id"] as String?,

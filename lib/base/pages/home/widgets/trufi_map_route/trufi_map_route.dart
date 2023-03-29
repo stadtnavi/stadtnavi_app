@@ -59,8 +59,6 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
                   state.selectedPolylinesLayer!,
                 if (state.selectedMarkersLayer != null)
                   state.selectedMarkersLayer!,
-                if (state.fromMarkerLayer != null) state.fromMarkerLayer!,
-                if (state.toMarkerLayer != null) state.toMarkerLayer!,
                 MarkerLayer(markers: [
                   if (mapRouteState.fromPlace != null)
                     mapConfiguratiom.markersConfiguration
@@ -72,14 +70,16 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
                 ]),
               ],
               onTap: (_, point) {
-                if (widget.trufiMapController.state.unselectedPolylinesLayer !=
-                    null) {
-                  _handleOnMapTap(context, point);
-                } else {
+                
                   onMapPress(context, point);
-                }
+                // if (widget.trufiMapController.state.unselectedPolylinesLayer !=
+                //     null) {
+                //   _handleOnMapTap(context, point);
+                // } else {
+                //   onMapPress(context, point);
+                // }
               },
-              onLongPress: (_, point) => onMapPress(context, point),
+              onLongPress: (_, point) => onLongMapPress(context, point),
               onPositionChanged: _handleOnMapPositionChanged,
               floatingActionButtons: Column(
                 children: [
@@ -123,7 +123,7 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
     }
   }
 
-  void onMapPress(BuildContext context, LatLng location) {
+  void onLongMapPress(BuildContext context, LatLng location) {
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
     final panelCubit = context.read<PanelCubit>();
     panelCubit.cleanPanel();
@@ -144,6 +144,11 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
         tempMarker = null;
       });
     });
+  }
+
+  void onMapPress(BuildContext context, LatLng location) {
+    final panelCubit = context.read<PanelCubit>();
+    panelCubit.cleanPanel();
   }
 
   Future<void> _showBottomMarkerModal({

@@ -1,3 +1,4 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,6 +27,29 @@ class BottomSheetItineraries extends StatefulWidget {
 class _BottomSheetItinerariesState extends State<BottomSheetItineraries>
     with TickerProviderStateMixin {
   bool showDetail = false;
+
+  @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor, context: context);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    if (showDetail) {
+      setState(() {
+        showDetail = false;
+      });
+    } else if (!stopDefaultButtonEvent) {
+      Navigator.pop(context);
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,8 +108,7 @@ class _BottomSheetItinerariesState extends State<BottomSheetItineraries>
                             child: Text(
                               localization
                                   .itinerarySummaryBikeAndPublicRailSubwayTitle,
-                              style: theme.primaryTextTheme.bodyText1
-                                  ?.copyWith(
+                              style: theme.primaryTextTheme.bodyText1?.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
                             ),

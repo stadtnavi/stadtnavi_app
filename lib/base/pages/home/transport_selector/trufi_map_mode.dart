@@ -48,8 +48,6 @@ class _TrufiMapModeState extends State<TrufiMapMode>
                   state.selectedPolylinesLayer!,
                 if (state.selectedMarkersLayer != null)
                   state.selectedMarkersLayer!,
-                if (state.fromMarkerLayer != null) state.fromMarkerLayer!,
-                if (state.toMarkerLayer != null) state.toMarkerLayer!,
                 MarkerLayer(markers: [
                   if (mapRouteState.fromPlace != null)
                     mapConfiguratiom.markersConfiguration

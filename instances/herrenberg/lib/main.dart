@@ -1,13 +1,18 @@
 import 'dart:convert';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:herrenberg/firebase_options.dart';
+import 'package:herrenberg/lifecycle_reactor_handler_notifications.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
 
+import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
@@ -22,10 +27,37 @@ String openTripPlannerUrl =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CertificatedLetsencryptAndroid.workAroundCertificated();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  FirebaseMessaging.instance.getToken().then((value) {
+    print(value);
+  }).catchError((error) {
+    print("$error");
+  });
+  await messaging
+      .requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
+      )
+      .catchError((error) => {print("$error")});
   await initHiveForFlutter();
   await _migrationOldData();
+  // TODO we need to improve TransportMode Configuration
+  TransportModeConfiguration.configure(transportColors: {
+    TransportMode.bicycle: const Color(0xffFECC01),
+    TransportMode.walk: const Color(0xffFECC01),
+  });
   runApp(
     StadtnaviApp(
+      appLifecycleReactorHandler: AppLifecycleReactorHandlerNotifications(),
       appName: 'stadtnavi',
       appNameTitle: 'stadtnavi|Herrenberg',
       cityName: 'Herrenberg',

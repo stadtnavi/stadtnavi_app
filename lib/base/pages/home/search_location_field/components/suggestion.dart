@@ -1,6 +1,10 @@
+import 'dart:developer';
+
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/widgets/choose_location.dart';
+import 'package:stadtnavi_core/configuration/icons.dart';
 
 import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/const/consts.dart';
@@ -12,7 +16,7 @@ import 'package:trufi_core/base/utils/util_icons/icons.dart';
 import 'package:trufi_core/base/widgets/location_search_delegate/favorite_button.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 
-class SuggestionList extends StatelessWidget {
+class SuggestionList extends StatefulWidget {
   final String query;
   final bool isOrigin;
   final ValueChanged<TrufiLocation> onSelected;
@@ -28,6 +32,30 @@ class SuggestionList extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<SuggestionList> createState() => _SuggestionListState();
+}
+
+class _SuggestionListState extends State<SuggestionList> {
+  @override
+  void initState() {
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor, context: context);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent, RouteInfo info) {
+    if (!stopDefaultButtonEvent) {
+      Navigator.pop(context);
+    }
+    return true;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final searchLocationsCubit = context.watch<SearchLocationsCubit>();
     return SafeArea(
@@ -40,11 +68,11 @@ class SuggestionList extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
             child: CustomScrollView(
               slivers: [
-                _BuildYourLocation(onSelected),
+                _BuildYourLocation(widget.onSelected),
                 _BuildChooseOnMap(
-                    onSelectedMap: onSelectedMap,
-                    isOrigin: isOrigin),
-                if (query.isEmpty)
+                    onSelectedMap: widget.onSelectedMap,
+                    isOrigin: widget.isOrigin),
+                if (widget.query.isEmpty)
                   _BuildYourPlaces(
                     title: localizationSP.menuYourPlaces,
                     places: [
@@ -53,34 +81,35 @@ class SuggestionList extends StatelessWidget {
                           .toList(),
                       ...searchLocationsCubit.state.myPlaces
                     ],
-                    onSelected: onSelected,
+                    onSelected: widget.onSelected,
                   ),
-                if (query.isEmpty)
+                if (widget.query.isEmpty)
                   _BuildObjectList(
                     title: localizationSP.searchTitleFavorites,
                     iconData: Icons.place,
                     places: searchLocationsCubit.state.favoritePlaces,
-                    onSelected: onSelected,
-                    onStreetTapped: onStreetTapped,
+                    onSelected: widget.onSelected,
+                    onStreetTapped: widget.onStreetTapped,
                   ),
-                if (query.isEmpty)
+                if (widget.query.isEmpty)
                   _BuildObjectList(
                     title: localizationSP.searchTitleRecent,
                     iconData: Icons.history,
                     places: searchLocationsCubit.getHistoryList(),
-                    onSelected: onSelected,
-                    onStreetTapped: onStreetTapped,
+                    onSelected: widget.onSelected,
+                    onStreetTapped: widget.onStreetTapped,
                   ),
-                if (query.isNotEmpty)
+                if (widget.query.isNotEmpty)
                   _BuildFutureBuilder(
                     title: localizationSP.searchTitleResults,
                     future: searchLocationsCubit.fetchLocations(
-                      query,
+                      widget.query,
+                      lang: Localizations.localeOf(context).languageCode,
                     ),
                     iconData: Icons.place,
                     isVisibleWhenEmpty: true,
-                    onSelected: onSelected,
-                    onStreetTapped: onStreetTapped,
+                    onSelected: widget.onSelected,
+                    onStreetTapped: widget.onStreetTapped,
                   ),
               ],
             ),
@@ -131,6 +160,10 @@ class _BuildFutureBuilder extends StatelessWidget {
                   Theme.of(context).colorScheme.secondary),
             ),
           );
+        }
+        if (snapshot.data!.isEmpty) {
+          return _BuildErrorList(
+              title: title, error: localization.commonNoResults);
         }
         // No results
         final int count =
@@ -218,7 +251,8 @@ class _BuildYourPlaces extends StatelessWidget {
                 onTap: () {
                   onSelected(location);
                 },
-                iconData: typeToIconData(location.type,color: theme.iconTheme.color),
+                iconData: typeToIconDataStadtnavi(location.type,
+                    color: theme.iconTheme.color),
                 title: location.displayName(localizationSP),
                 subtitle: location.address,
               ),
@@ -264,7 +298,8 @@ class _BuildObjectList extends StatelessWidget {
                 searchLocationsCubit.insertHistoryPlace(object);
                 onSelected(object);
               },
-              iconData: typeToIconData(object.type,color: theme.iconTheme.color),
+              iconData: typeToIconDataStadtnavi(object.type,
+                  color: theme.iconTheme.color),
               title: object.displayName(localizationSP),
               subtitle: object.address,
               trailing: FavoriteButton(

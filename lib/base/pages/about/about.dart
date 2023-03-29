@@ -7,7 +7,7 @@ import 'package:trufi_core/base/utils/packge_info_platform.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 
 class AboutPage extends StatelessWidget {
-  static const String route = "/About";
+  static const String route = "/Home/About";
 
   const AboutPage({
     Key? key,
@@ -95,6 +95,7 @@ class AboutPage extends StatelessWidget {
                             ],
                           ),
                         ),
+                        useRootNavigator: true
                       );
                     },
                     child: Text(localization.aboutLicenses),

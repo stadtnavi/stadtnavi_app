@@ -3,7 +3,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:trufi_core/base/pages/feedback/translations/feedback_localizations.dart';
 
 class FeedbackPage extends StatelessWidget {
-  static const String route = "/Feedback";
+  static const String route = "/Home/Feedback";
   final String urlFeedback;
   final Widget Function(BuildContext) drawerBuilder;
 

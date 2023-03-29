@@ -17,12 +17,10 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get itineraryMissingPrice => 'No price information';
 
   @override
-  String get itineraryPriceOnlyPublicTransport =>
-      'Price only valid for public transport part of the journey.';
+  String get itineraryPriceOnlyPublicTransport => 'Price only valid for public transport part of the journey.';
 
   @override
-  String get copyrightsPriceProvider =>
-      'Fare information provided by Nahverkehrsgesellschaft Baden-Württemberg mbH (NVBW). No liability for the correctness of the information.';
+  String get copyrightsPriceProvider => 'Fare information provided by Nahverkehrsgesellschaft Baden-Württemberg mbH (NVBW). No liability for the correctness of the information.';
 
   @override
   String get fareTicketName => 'Adult';
@@ -91,48 +89,37 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get commonDeparture => 'Departure';
 
   @override
-  String get infoMessageDestinationOutsideService =>
-      'No route suggestions were found because the destination is outside the service area.';
+  String get infoMessageDestinationOutsideService => 'No route suggestions were found because the destination is outside the service area.';
 
   @override
-  String get infoMessageNoRouteMsg =>
-      'Unfortunately, no route suggestions were found.';
+  String get infoMessageNoRouteMsg => 'Unfortunately, no route suggestions were found.';
 
   @override
-  String get infoMessageNoRouteMsgWithChanges =>
-      'Unfortunately, no route suggestions were found. Please check your search settings or try changing the origin or destination.';
+  String get infoMessageNoRouteMsgWithChanges => 'Unfortunately, no route suggestions were found. Please check your search settings or try changing the origin or destination.';
 
   @override
-  String get infoMessageNoRouteOriginNearDestination =>
-      'No route suggestions were found because the origin and destination are the same.';
+  String get infoMessageNoRouteOriginNearDestination => 'No route suggestions were found because the origin and destination are the same.';
 
   @override
-  String get infoMessageNoRouteOriginSameAsDestination =>
-      'No route suggestions were found because the origin and destination are very close to each other.';
+  String get infoMessageNoRouteOriginSameAsDestination => 'No route suggestions were found because the origin and destination are very close to each other.';
 
   @override
-  String get infoMessageNoRouteShowingAlternativeOptions =>
-      'No route suggestions were found with the your settings. However, we found the following route options:';
+  String get infoMessageNoRouteShowingAlternativeOptions => 'No route suggestions were found with the your settings. However, we found the following route options:';
 
   @override
-  String get infoMessageOnlyCyclingRoutes =>
-      'Your search returned only cycling routes.';
+  String get infoMessageOnlyCyclingRoutes => 'Your search returned only cycling routes.';
 
   @override
-  String get infoMessageOnlyWalkingCyclingRoutes =>
-      'Your search returned only walking and cycling routes.';
+  String get infoMessageOnlyWalkingCyclingRoutes => 'Your search returned only walking and cycling routes.';
 
   @override
-  String get infoMessageOnlyWalkingRoutes =>
-      'Your search returned only walking routes.';
+  String get infoMessageOnlyWalkingRoutes => 'Your search returned only walking routes.';
 
   @override
-  String get infoMessageOriginOutsideService =>
-      'No route suggestions were found because the origin is outside the service area.';
+  String get infoMessageOriginOutsideService => 'No route suggestions were found because the origin is outside the service area.';
 
   @override
-  String get infoMessageUseNationalServicePrefix =>
-      'We recommend you try the national journey planner,';
+  String get infoMessageUseNationalServicePrefix => 'We recommend you try the national journey planner,';
 
   @override
   String get bikeRentalBikeStation => 'Bike station';
@@ -150,15 +137,13 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get commonOnDemandTaxi => 'Book a trip';
 
   @override
-  String get carParkCloseCapacityMessage =>
-      'This car park is close to capacity. Please allow additional time for you journey.';
+  String get carParkCloseCapacityMessage => 'This car park is close to capacity. Please allow additional time for you journey.';
 
   @override
   String get carParkExcludeFull => 'Exclude full car parks';
 
   @override
-  String get bikeRentalNetworkFreeFloating =>
-      'Destination is not a designated drop-off area. Rental cannot be completed here. Please check terms & conditions for additional fees.';
+  String get bikeRentalNetworkFreeFloating => 'Destination is not a designated drop-off area. Rental cannot be completed here. Please check terms & conditions for additional fees.';
 
   @override
   String get fetchMoreItinerariesLaterDeparturesTitle => 'Later departures';
@@ -173,6 +158,30 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get instructionVehicleTaxi => 'Taxi';
 
   @override
+  String get mapLegendBicycleParking => 'bicycle parking';
+
+  @override
+  String get mapLegendCoveredBicycleParking => 'covered bicycle parking';
+
+  @override
+  String get mapLegendLockableBicycleParking => 'lockable bicycle parking';
+
+  @override
+  String get mapLegendBicycleRepairFacility => 'bicycle repair facility';
+
+  @override
+  String get mapLegendBikeLane => 'bike lane';
+
+  @override
+  String get mapLegendMajorCyclingRoute => 'major cycling route';
+
+  @override
+  String get mapLegendLocalCyclingRoute => 'local cycling route';
+
+  @override
+  String get notShowAgain => 'Do not show again';
+
+  @override
   String get mapTypeLabel => 'Map Type';
 
   @override
@@ -185,12 +194,10 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get bikePark => 'Park & Ride for bikes';
 
   @override
-  String get itinerarySummaryBikeParkTitle =>
-      'Leave your bike at a Park & Ride';
+  String get itinerarySummaryBikeParkTitle => 'Leave your bike at a Park & Ride';
 
   @override
-  String get itinerarySummaryBikeAndPublicRailSubwayTitle =>
-      'Take your bike with you on the train or to metro';
+  String get itinerarySummaryBikeAndPublicRailSubwayTitle => 'Take your bike with you on the train or to metro';
 
   @override
   String departureBikeStation(Object departureStop, Object departureTime) {
@@ -204,8 +211,8 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get commonTrack => 'Track';
 
   @override
-  String get commonPlatform => 'Platform';
+  String get mapLegend => 'map legend';
 
   @override
-  String get notShowAgain => "Do not show again";
+  String get commonPlatform => 'Platform';
 }
