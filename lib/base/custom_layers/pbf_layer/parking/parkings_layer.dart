@@ -34,6 +34,11 @@ class ParkingLayer extends CustomLayer {
   }
 
   @override
+  List<Marker>? buildLayerMarkersPriority(int? zoom) {
+    return [];
+  }
+
+  @override
   Widget buildLayerOptions(int? zoom) {
     double? markerSize;
     switch (zoom) {
@@ -59,83 +64,51 @@ class ParkingLayer extends CustomLayer {
     );
     return MarkerLayer(
       markers: markerSize != null
-          ? markersList
-              .map((element) => Marker(
-                    height: markerSize!,
-                    width: markerSize,
-                    point: element.position,
-                    anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) => GestureDetector(
-                      onTap: () {
-                        final panelCubit = context.read<PanelCubit>();
-                        panelCubit.setPanel(
-                          CustomMarkerPanel(
-                            panel: (
-                              context,
-                              onFetchPlan, {
-                              isOnlyDestination,
-                            }) =>
-                                ParkingStateUpdater(
-                              parkingFeature: element,
-                              onFetchPlan: onFetchPlan,
-                              isOnlyDestination: isOnlyDestination ?? false,
-                            ),
-                            positon: element.position,
-                            minSize: 50,
-                          ),
-                        );
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: markerSize! / 5,
-                              top: markerSize / 5,
-                            ),
-                            child: SvgPicture.string(
-                              parkingMarkerIcons[element.type] ?? "",
-                            ),
-                          ),
-                          if (element.markerState() != null)
-                            if (element.markerState()!)
-                              Positioned(
-                                child: Container(
-                                  height: markerSize / 2,
-                                  width: markerSize / 2,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.check,
-                                      size: markerSize / 3,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            else
-                              Container(
-                                height: markerSize / 2,
-                                width: markerSize / 2,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.close,
-                                    size: markerSize / 3,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )
-                        ],
+          ? markersList.map((element) {
+              final availabilityParking = element.markerState();
+              return Marker(
+                height: markerSize!,
+                width: markerSize,
+                point: element.position,
+                anchorPos: AnchorPos.align(AnchorAlign.center),
+                builder: (context) => GestureDetector(
+                  onTap: () {
+                    final panelCubit = context.read<PanelCubit>();
+                    panelCubit.setPanel(
+                      CustomMarkerPanel(
+                        panel: (
+                          context,
+                          onFetchPlan, {
+                          isOnlyDestination,
+                        }) =>
+                            ParkingStateUpdater(
+                          parkingFeature: element,
+                          onFetchPlan: onFetchPlan,
+                          isOnlyDestination: isOnlyDestination ?? false,
+                        ),
+                        positon: element.position,
+                        minSize: 50,
                       ),
-                    ),
-                  ))
-              .toList()
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: markerSize! / 5,
+                          top: markerSize / 5,
+                        ),
+                        child: SvgPicture.string(
+                          parkingMarkerIcons[element.type] ?? "",
+                        ),
+                      ),
+                      if (availabilityParking != null)
+                        availabilityParking.getImage(size: markerSize / 2),
+                    ],
+                  ),
+                ),
+              );
+            }).toList()
           : zoom != null && zoom > 11
               ? markersList
                   .map(

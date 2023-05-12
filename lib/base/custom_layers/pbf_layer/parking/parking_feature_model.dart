@@ -1,7 +1,41 @@
+import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_icons.dart';
 import 'package:vector_tile/vector_tile.dart';
 
 import 'parkings_enum.dart';
+
+enum AvailabilityParking {
+  availability,
+  partial,
+  unavailability,
+}
+
+extension AvailabilityParkingExtension on AvailabilityParking {
+  static Widget? _images(AvailabilityParking transportMode) {
+    switch (transportMode) {
+      case AvailabilityParking.availability:
+        return SvgPicture.string(availabilityIcon);
+      case AvailabilityParking.partial:
+        return SvgPicture.string(partialAvailabilityIcon);
+      case AvailabilityParking.unavailability:
+        return SvgPicture.string(unavailabilityIcon);
+      default:
+        return null;
+    }
+  }
+
+  Widget getImage({double size = 24}) {
+    return SizedBox(
+      width: size,
+      height: size,
+      child: FittedBox(
+        child: _images(this) ?? Container(),
+      ),
+    );
+  }
+}
 
 class ParkingFeature {
   final GeoJsonPoint? geoJsonPoint;
@@ -120,23 +154,56 @@ class ParkingFeature {
     );
   }
 
-  bool? markerState() {
+  static AvailabilityParking? Function({
+    String? state,
+    int? availabilityCarPlacesCapacity,
+    int? carPlacesCapacity,
+    int? freeDisabled,
+    int? totalDisabled,
+  }) calculateAvailavility = _defaultCalculateAvailavility;
+
+  static AvailabilityParking? _defaultCalculateAvailavility({
+    String? state,
+    int? availabilityCarPlacesCapacity,
+    int? carPlacesCapacity,
+    int? freeDisabled,
+    int? totalDisabled,
+  }) {
     if (state == 'closed' ||
         availabilityCarPlacesCapacity == 0 ||
         (freeDisabled == 0 && false)) {
-      return false;
+      return AvailabilityParking.unavailability;
     } else {
-      bool? isAvailible;
+      AvailabilityParking? isAvailible;
       if (carPlacesCapacity != null && availabilityCarPlacesCapacity != null) {
-        isAvailible =
-            (isAvailible ?? false) || availabilityCarPlacesCapacity! > 0;
-      }
-      if (totalDisabled != null && freeDisabled != null) {
-        isAvailible = (isAvailible ?? false) || freeDisabled! > 0;
+        isAvailible = _selectAvailavility(
+            carPlacesCapacity, availabilityCarPlacesCapacity);
+      } else if (totalDisabled != null && freeDisabled != null) {
+        isAvailible = freeDisabled > 0
+            ? AvailabilityParking.availability
+            : AvailabilityParking.unavailability;
       }
       return isAvailible;
     }
   }
+
+  static AvailabilityParking _selectAvailavility(
+      int capacity, int availabilityCapacity) {
+    final percentage = (availabilityCapacity / capacity) * 100;
+    if (percentage > 25) {
+      return AvailabilityParking.availability;
+    } else {
+      return AvailabilityParking.partial;
+    }
+  }
+
+  AvailabilityParking? markerState() => calculateAvailavility(
+        state: state,
+        availabilityCarPlacesCapacity: availabilityCarPlacesCapacity,
+        carPlacesCapacity: carPlacesCapacity,
+        freeDisabled: freeDisabled,
+        totalDisabled: totalDisabled,
+      );
 
   ParkingFeature copyWith({
     GeoJsonPoint? geoJsonPoint,
