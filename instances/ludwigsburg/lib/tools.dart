@@ -1,6 +1,6 @@
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
+import 'package:stadtnavi_core/base/custom_layers/models/enums.dart';
 
-AvailabilityParking? calculateParkingAvailavilityLB({
+AvailabilityState? calculateParkingAvailavilityLB({
   String? state,
   int? availabilityCarPlacesCapacity,
   int? carPlacesCapacity,
@@ -10,9 +10,9 @@ AvailabilityParking? calculateParkingAvailavilityLB({
   if (state == 'closed' ||
       availabilityCarPlacesCapacity == 0 ||
       (freeDisabled == 0 && false)) {
-    return AvailabilityParking.unavailability;
+    return AvailabilityState.unavailability;
   } else {
-    AvailabilityParking? isAvailible;
+    AvailabilityState? isAvailible;
     if (carPlacesCapacity != null && availabilityCarPlacesCapacity != null) {
       isAvailible = _selectAvailavility(
         carPlacesCapacity,
@@ -20,18 +20,18 @@ AvailabilityParking? calculateParkingAvailavilityLB({
       );
     } else if (totalDisabled != null && freeDisabled != null) {
       isAvailible = freeDisabled > 0
-          ? AvailabilityParking.availability
-          : AvailabilityParking.unavailability;
+          ? AvailabilityState.availability
+          : AvailabilityState.unavailability;
     }
     return isAvailible;
   }
 }
 
-AvailabilityParking _selectAvailavility(int capacity, int availabilityCapacity) {
+AvailabilityState _selectAvailavility(int capacity, int availabilityCapacity) {
   final percentage = (availabilityCapacity / capacity) * 100;
   if (percentage > 15) {
-    return AvailabilityParking.availability;
+    return AvailabilityState.availability;
   } else {
-    return AvailabilityParking.partial;
+    return AvailabilityState.partial;
   }
 }

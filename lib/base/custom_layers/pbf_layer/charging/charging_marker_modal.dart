@@ -131,7 +131,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                                     ),
                                   ),
                                   Text(
-                                    "${chargingTypeName[e.standard] ?? e.standard} - ${e.maxAmperage} kW",
+                                    "${chargingTypeName[e.standard] ?? e.standard} - ${e.maxElectricPower} kW",
                                   ),
                                 ],
                               ),
@@ -140,7 +140,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                       ),
                       const Text("|"),
                       Text(
-                        widget.element.capacityUnknown == 0
+                        chargingItem?.showCapacity == 0
                             ? localeName == "en"
                                 ? "${widget.element.available} of ${widget.element.capacity} charging slots available"
                                 : "${widget.element.available} von ${widget.element.capacity} Ladeplätzen frei"
@@ -155,7 +155,8 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                   ),
                 ),
                 const Divider(height: 10),
-                if (chargingItem?.capabilities != null)
+                if (chargingItem?.capabilities != null &&
+                    chargingItem!.capabilities.isNotEmpty)
                   Row(
                     children: [
                       const Icon(
@@ -202,7 +203,8 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                   ],
                 ),
                 if (chargingItem!.evses != null &&
-                    chargingItem!.evses!.isNotEmpty)
+                    chargingItem!.evses!.isNotEmpty &&
+                    chargingItem!.evses!.first.phone != null)
                   GestureDetector(
                     onTap: chargingItem?.evses?.first.phone != null
                         ? () {

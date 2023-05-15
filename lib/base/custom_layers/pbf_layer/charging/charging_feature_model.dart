@@ -1,4 +1,5 @@
 import 'package:latlong2/latlong.dart';
+import 'package:stadtnavi_core/base/custom_layers/models/enums.dart';
 import 'package:vector_tile/vector_tile.dart';
 
 import 'charging_enum.dart';
@@ -36,8 +37,12 @@ class ChargingFeature {
     int? available = properties['ca']?.dartIntValue?.toInt();
 
     int? tb = properties['tb']?.dartIntValue?.toInt();
+    int? cs = properties['cs']?.dartIntValue?.toInt();
 
     int? capacityUnknown = properties['cu']?.dartIntValue?.toInt();
+
+    int? capacityUnknownTotal =
+        capacityUnknown != null ? capacityUnknown + (cs ?? 0) : cs;
 
     ChargingLayerIds? type;
 
@@ -48,7 +53,7 @@ class ChargingFeature {
       capacity: capacity,
       available: available,
       tb: tb,
-      capacityUnknown: capacityUnknown,
+      capacityUnknown: capacityUnknownTotal,
       type: type,
       position: LatLng(
         geoJsonPoint!.geometry!.coordinates[1],
@@ -56,4 +61,19 @@ class ChargingFeature {
       ),
     );
   }
+
+  AvailabilityState? getAvailabilityStatus() {
+    if (capacity == capacityUnknown) {
+      return null;
+    }
+    if (available == null) return null;
+    if (available! > 1) {
+      return AvailabilityState.availability;
+    }
+    if (available == 1) {
+      return AvailabilityState.partial;
+    }
+    return AvailabilityState.unavailability;
+  }
+
 }
