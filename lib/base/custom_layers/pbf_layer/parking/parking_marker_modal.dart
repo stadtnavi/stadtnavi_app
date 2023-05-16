@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_icons.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/simple_opening_hours.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -162,6 +164,7 @@ class ParkingMarkerModal extends StatelessWidget {
           ? "${parkingFeature.freeDisabled} of ${parkingFeature.totalDisabled} wheelchair-accessible parking spaces available"
           : "${parkingFeature.freeDisabled} von ${parkingFeature.totalDisabled} rollstuhlgerechten Parkplätzen vorhanden";
     }
+    final isOpenParking = parkingFeature.sOpeningHours?.isOpenNow() ?? false;
     return ListView(
       children: [
         Container(
@@ -184,7 +187,7 @@ class ParkingMarkerModal extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -202,33 +205,7 @@ class ParkingMarkerModal extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-              if (parkingFeature.openingHours != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Divider(),
-                    Text(
-                      localeName == 'en' ? "OPENING HOURS" : "ÖFFNUNGSZEITEN",
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      localeName == 'en'
-                          ? parkingFeature.openingHours
-                                  ?.replaceAll("; ", "\n") ??
-                              ''
-                          : _parseAbbreviationDE(parkingFeature.openingHours
-                                  ?.replaceAll("; ", "\n") ??
-                              ''),
-                      style: const TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              if (parkingFeature.note != null)
+              if (parkingFeature.note != null && parkingFeature.note != "")
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -241,6 +218,14 @@ class ParkingMarkerModal extends StatelessWidget {
                     ),
                   ],
                 ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                child: OpeningTimeTable(
+                  openingHours: parkingFeature.sOpeningHours!,
+                  isOpenParking: isOpenParking,
+                  currentOpeningTime: parkingFeature.getCurrentOpeningTime(),
+                ),
+              ),
               if (parkingFeature.url != null)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -275,20 +260,111 @@ class ParkingMarkerModal extends StatelessWidget {
     );
   }
 
-  String _parseAbbreviationDE(String msg) {
-    final weekDaysEn = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-    final weekDaysDe = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
-    String parsedDe = msg;
-    for (var i = 0; i < weekDaysEn.length; i++) {
-      parsedDe = parsedDe.replaceAll(weekDaysEn[i], weekDaysDe[i]);
-    }
-    if (parsedDe.contains('PH off')) {
-      parsedDe =
-          parsedDe.replaceAll('PH off', 'Gesetzlicher Feiertag Geschlossen');
-    } else {
-      parsedDe = parsedDe.replaceAll('PH', 'Gesetzlicher Feiertag');
-    }
+}
 
-    return parsedDe;
+class OpeningTimeTable extends StatefulWidget {
+  final SimpleOpeningHours openingHours;
+  final bool isOpenParking;
+  final String? currentOpeningTime;
+  const OpeningTimeTable({
+    super.key,
+    required this.openingHours,
+    required this.isOpenParking,
+    this.currentOpeningTime,
+  });
+
+  @override
+  State<OpeningTimeTable> createState() => _OpeningTimeTableState();
+}
+
+class _OpeningTimeTableState extends State<OpeningTimeTable> {
+  @override
+  Widget build(BuildContext context) {
+    final localizationST = StadtnaviBaseLocalization.of(context);
+    final theme = Theme.of(context);
+    final isAlwaysOpen = widget.openingHours.inp == '24/7';
+    final weekday = DateTime.now().weekday;
+    return Column(
+      children: [
+        ExpansionTile(
+          textColor: Colors.black,
+          collapsedIconColor: Colors.black,
+          iconColor: Colors.red,
+          tilePadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+          childrenPadding:
+              const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+          title: Row(
+            children: [
+              const Icon(
+                Icons.access_time,
+                size: 20,
+                color: Colors.grey,
+              ),
+              const SizedBox(
+                width: 8,
+              ),
+              Text(
+                "${localizationST.commonNow} ",
+                style: theme.textTheme.bodyText2,
+              ),
+              widget.isOpenParking
+                  ? Text(
+                      "${localizationST.commonOpen} : ${widget.currentOpeningTime}",
+                      style: theme.textTheme.bodyText2,
+                    )
+                  : Text(
+                      localizationST.commonClosed,
+                      style: theme.textTheme.bodyText2
+                          ?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+            ],
+          ),
+          children: [
+            isAlwaysOpen
+                ? Text(
+                    localizationST.commonOpenAlways,
+                  )
+                : Column(
+                    children: widget.openingHours.openingHours.entries.map(
+                      (day) {
+                        bool isBold = widget.openingHours.openingHours.keys
+                                .toList()[weekday - 1] ==
+                            day.key;
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                SimpleOpeningHours.getDayName(
+                                    day.key, localizationST),
+                                style: TextStyle(
+                                  fontWeight: isBold ? FontWeight.bold : null,
+                                ),
+                              ),
+                              Column(
+                                children: day.value.isNotEmpty
+                                    ? day.value
+                                        .map((e) => Text(
+                                              e,
+                                              style: TextStyle(
+                                                fontWeight: isBold
+                                                    ? FontWeight.bold
+                                                    : null,
+                                              ),
+                                            ))
+                                        .toList()
+                                    : [Text(localizationST.commonClosed)],
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ).toList(),
+                  ),
+          ],
+        ),
+      ],
+    );
   }
 }

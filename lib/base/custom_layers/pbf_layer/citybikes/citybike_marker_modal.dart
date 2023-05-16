@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -47,6 +48,7 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -228,6 +230,7 @@ class _CargobikeMarkerModalState extends State<CargoBikeMarkerModal> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localizationST = StadtnaviBaseLocalization.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
     return ListView(
       children: [
@@ -291,7 +294,7 @@ class _CargobikeMarkerModalState extends State<CargoBikeMarkerModal> {
                   width: 5,
                 ),
                 Text(
-                  languageCode == "en" ? "Open 24/7" : "Durchgängig geöffnet",
+                  localizationST.commonOpenAlways,
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 12,

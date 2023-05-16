@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/models/enums.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
@@ -223,7 +224,6 @@ class ParkingLayer extends CustomLayer {
     for (final VectorTileLayer layer in tile.layers) {
       for (final VectorTileFeature feature in layer.features) {
         feature.decodeGeometry();
-
         if (feature.geometryType == GeometryType.Point) {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final ParkingFeature? pointFeature =

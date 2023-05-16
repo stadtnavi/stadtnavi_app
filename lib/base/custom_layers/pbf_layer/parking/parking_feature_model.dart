@@ -1,4 +1,5 @@
 import 'package:latlong2/latlong.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/simple_opening_hours.dart';
 import 'package:vector_tile/vector_tile.dart';
 
 import '../../models/enums.dart';
@@ -27,6 +28,7 @@ class ParkingFeature {
   final int? totalDisabled;
   final int? freeDisabled;
   final ParkingsLayerIds? type;
+  final SimpleOpeningHours? sOpeningHours;
 
   final LatLng position;
   ParkingFeature({
@@ -51,6 +53,7 @@ class ParkingFeature {
     required this.totalDisabled,
     required this.freeDisabled,
     required this.type,
+    required this.sOpeningHours,
     required this.position,
   });
   // ignore: prefer_constructors_over_static_methods
@@ -114,6 +117,8 @@ class ParkingFeature {
       totalDisabled: totalDisabled,
       freeDisabled: freeDisabled,
       type: type,
+      sOpeningHours:
+          openingHours != null ? SimpleOpeningHours(openingHours) : null,
       position: LatLng(
         geoJsonPoint?.geometry?.coordinates[1] ?? 0,
         geoJsonPoint?.geometry?.coordinates[0] ?? 0,
@@ -127,6 +132,7 @@ class ParkingFeature {
     int? carPlacesCapacity,
     int? freeDisabled,
     int? totalDisabled,
+    SimpleOpeningHours? sOpeningHours,
   }) calculateAvailavility = _defaultCalculateAvailavility;
 
   static AvailabilityState? _defaultCalculateAvailavility({
@@ -135,10 +141,12 @@ class ParkingFeature {
     int? carPlacesCapacity,
     int? freeDisabled,
     int? totalDisabled,
+    SimpleOpeningHours? sOpeningHours,
   }) {
     if (state == 'closed' ||
         availabilityCarPlacesCapacity == 0 ||
-        (freeDisabled == 0 && false)) {
+        (freeDisabled == 0 && false) ||
+        !(sOpeningHours?.isOpenNow() ?? true)) {
       return AvailabilityState.unavailability;
     } else {
       AvailabilityState? isAvailible;
@@ -170,7 +178,13 @@ class ParkingFeature {
         carPlacesCapacity: carPlacesCapacity,
         freeDisabled: freeDisabled,
         totalDisabled: totalDisabled,
+        sOpeningHours: sOpeningHours,
       );
+
+  String getCurrentOpeningTime() {
+    final weekday = DateTime.now().weekday;
+    return sOpeningHours!.openingHours.values.toList()[weekday-1].join(",");
+  }
 
   ParkingFeature copyWith({
     GeoJsonPoint? geoJsonPoint,
@@ -194,6 +208,7 @@ class ParkingFeature {
     int? totalDisabled,
     int? freeDisabled,
     ParkingsLayerIds? type,
+    SimpleOpeningHours? sOpeningHours,
     LatLng? position,
   }) {
     return ParkingFeature(
@@ -220,6 +235,7 @@ class ParkingFeature {
           availabilityCarPlacesCapacity ?? this.availabilityCarPlacesCapacity,
       totalDisabled: totalDisabled ?? this.totalDisabled,
       freeDisabled: freeDisabled ?? this.freeDisabled,
+      sOpeningHours: sOpeningHours ?? this.sOpeningHours,
       type: type ?? this.type,
       position: position ?? this.position,
     );

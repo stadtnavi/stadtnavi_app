@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -53,6 +54,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localizationST = StadtnaviBaseLocalization.of(context);
     final localeName = TrufiBaseLocalization.of(context).localeName;
     return ListView(
       children: [
@@ -100,9 +102,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                         width: 5,
                       ),
                       Text(
-                        localeName == "en"
-                            ? "Open 24/7"
-                            : "Durchgängig geöffnet",
+                        localizationST.commonOpenAlways,
                         style: TextStyle(
                           color: theme.textTheme.bodyText1?.color,
                         ),
