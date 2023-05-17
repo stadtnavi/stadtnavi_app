@@ -52,8 +52,9 @@ class MapModesCubit extends Cubit<MapModesState> {
     required TrufiLocation to,
     required SettingFetchState advancedOptions,
   }) async {
-    emit(state.copyWith(
+    emit(state.copyWithNullable(
       isFetchingModes: true,
+      modesTransport: const Optional.value(null),
     ));
     final modesTransportEntity = await _fetchPlanModesState(
       from: from,

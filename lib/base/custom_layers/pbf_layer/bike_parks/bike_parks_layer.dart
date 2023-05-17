@@ -19,12 +19,77 @@ import 'citybike_marker_modal.dart';
 class BikeParkLayer extends CustomLayer {
   final Map<String, BikeParkFeature> _pbfMarkers = {};
 
+  Map<String, BikeParkFeature> get data => _pbfMarkers;
+
   BikeParkLayer(String id, String weight) : super(id, weight);
+  
   void addMarker(BikeParkFeature pointFeature) {
     if (_pbfMarkers[pointFeature.id] == null) {
       _pbfMarkers[pointFeature.id] = pointFeature;
       refresh();
     }
+  }
+
+  @override
+  List<Marker>? buildLayerMarkersPriority(int? zoom) {
+    double? markerSize;
+    switch (zoom) {
+      case 15:
+        markerSize = null;
+        break;
+      case 16:
+        markerSize = null;
+        break;
+      case 17:
+        markerSize = 25;
+        break;
+      case 18:
+        markerSize = 30;
+        break;
+      default:
+        markerSize = zoom != null && zoom > 18 ? 35 : null;
+    }
+    final markersList = _pbfMarkers.values.toList();
+    // avoid vertical wrong overlapping
+    markersList.sort(
+      (b, a) => a.position.latitude.compareTo(b.position.latitude),
+    );
+    return markerSize != null
+        ? markersList
+            .map((element) => Marker(
+                  key: Key("$id:${element.id}"),
+                  height: markerSize! * .8,
+                  width: markerSize * .8,
+                  point: element.position,
+                  anchorPos: AnchorPos.align(AnchorAlign.center),
+                  builder: (context) => GestureDetector(
+                    onTap: () {
+                      final panelCubit = context.read<PanelCubit>();
+                      panelCubit.setPanel(
+                        CustomMarkerPanel(
+                          panel: (
+                            context,
+                            onFetchPlan, {
+                            isOnlyDestination,
+                          }) =>
+                              CitybikeMarkerModal(
+                            element: element,
+                            onFetchPlan: onFetchPlan,
+                          ),
+                          positon: element.position,
+                          minSize: 50,
+                        ),
+                      );
+                    },
+                    child: bikeParkMarkerIcons[element.type] != null
+                        ? SvgPicture.string(
+                            bikeParkMarkerIcons[element.type]!,
+                          )
+                        : const Icon(Icons.error),
+                  ),
+                ))
+            .toList()
+        : [];
   }
 
   @override
@@ -109,66 +174,12 @@ class BikeParkLayer extends CustomLayer {
 
   @override
   Widget? buildLayerOptionsPriority(int zoom) {
-    double? markerSize;
-    switch (zoom) {
-      case 15:
-        markerSize = null;
-        break;
-      case 16:
-        markerSize = null;
-        break;
-      case 17:
-        markerSize = 25;
-        break;
-      case 18:
-        markerSize = 30;
-        break;
-      default:
-        markerSize = zoom != null && zoom > 18 ? 35 : null;
-    }
-    final markersList = _pbfMarkers.values.toList();
-    // avoid vertical wrong overlapping
-    markersList.sort(
-      (b, a) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return MarkerLayer(
-      markers: markerSize != null
-          ? markersList
-              .map((element) => Marker(
-                    height: markerSize! * .8,
-                    width: markerSize * .8,
-                    point: element.position,
-                    anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) => GestureDetector(
-                      onTap: () {
-                        final panelCubit = context.read<PanelCubit>();
-                        panelCubit.setPanel(
-                          CustomMarkerPanel(
-                            panel: (
-                              context,
-                              onFetchPlan, {
-                              isOnlyDestination,
-                            }) =>
-                                CitybikeMarkerModal(
-                              element: element,
-                              onFetchPlan: onFetchPlan,
-                            ),
-                            positon: element.position,
-                            minSize: 50,
-                          ),
-                        );
-                      },
-                      child: bikeParkMarkerIcons[element.type] != null
-                          ? SvgPicture.string(
-                              bikeParkMarkerIcons[element.type]!,
-                              color: Colors.transparent,
-                            )
-                          : Container(),
-                    ),
-                  ))
-              .toList()
-          : [],
-    );
+    return null;
+  }
+
+  @override
+  Widget? buildLayerOptionsBackground(int? zoom) {
+    return null;
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {

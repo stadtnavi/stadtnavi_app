@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:http/http.dart' as http;
@@ -19,6 +21,8 @@ import 'citybikes_icon.dart';
 class CityBikesLayer extends CustomLayer {
   final Map<String, CityBikeFeature> _pbfMarkers = {};
 
+  Map<String, CityBikeFeature> get data => _pbfMarkers;
+
   CityBikesLayer(String layerId, String weight) : super(layerId, weight);
   void addMarker(CityBikeFeature pointFeature) {
     if (_pbfMarkers[pointFeature.id] == null) {
@@ -30,6 +34,120 @@ class CityBikesLayer extends CustomLayer {
   void forceAddMarker(CityBikeFeature pointFeature) {
     _pbfMarkers[pointFeature.id] = pointFeature;
     refresh();
+  }
+
+  @override
+  List<Marker>? buildLayerMarkersPriority(int? zoom) {
+    double? markerSize;
+    switch (zoom) {
+      case 15:
+        markerSize = 15;
+        break;
+      case 16:
+        markerSize = 20;
+        break;
+      case 17:
+        markerSize = 25;
+        break;
+      case 18:
+        markerSize = 30;
+        break;
+      default:
+        markerSize = zoom != null && zoom > 18 ? 35 : null;
+    }
+    final markersList = _pbfMarkers.values.toList();
+    // avoid vertical wrong overlapping
+    markersList.sort(
+      (b, a) => a.position.latitude.compareTo(b.position.latitude),
+    );
+    return markerSize != null
+        ? markersList
+            .map((element) => Marker(
+                key: Key("$id:${element.id}"),
+                height: markerSize! + 5,
+                width: markerSize + 5,
+                point: element.position,
+                anchorPos: AnchorPos.align(AnchorAlign.top),
+                builder: (context) {
+                  return GestureDetector(
+                    onTap: () {
+                      final panelCubit = context.read<PanelCubit>();
+                      panelCubit.setPanel(
+                        CustomMarkerPanel(
+                          panel: (
+                            context,
+                            onFetchPlan, {
+                            isOnlyDestination,
+                          }) =>
+                              element.id == "cargobike-herrenberg"
+                                  ? CargoBikeMarkerModal(
+                                      element: element,
+                                      onFetchPlan: onFetchPlan,
+                                    )
+                                  : CitybikeMarkerModal(
+                                      element: element,
+                                      onFetchPlan: onFetchPlan,
+                                    ),
+                          positon: element.position,
+                          minSize: 50,
+                        ),
+                      );
+                    },
+                    child: SharingMarkerUpdater(
+                      element: element,
+                      addMarker: forceAddMarker,
+                      child: Stack(
+                        children: [
+                          Container(
+                            height: markerSize,
+                            width: markerSize,
+                            margin: EdgeInsets.only(top: markerSize! / 5),
+                            child: element.type?.imageStop,
+                          ),
+                          if (element.extraInfo?.bikesAvailable != null &&
+                              element.extraInfo!.bikesAvailable! >= 0 &&
+                              element.type != CityBikeLayerIds.carSharing)
+                            Positioned(
+                              right: markerSize / 5,
+                              child: Container(
+                                height: markerSize / 1.7,
+                                width: markerSize / 1.7,
+                                decoration: BoxDecoration(
+                                  color: element.id == "cargobike-herrenberg" ||
+                                          element.extraInfo!.bikesAvailable! ==
+                                              0
+                                      ? Colors.red
+                                      : element.extraInfo!.bikesAvailable! > 4
+                                          ? const Color(0xff448A54)
+                                          : Colors.orange,
+                                  borderRadius: BorderRadius.circular(100),
+                                  border: Border.all(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "${element.extraInfo!.bikesAvailable}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: markerSize / 2.5,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                        ],
+                      ),
+                    ),
+                  );
+                }))
+            .toList()
+        : [];
+  }
+
+  @override
+  Widget? buildLayerOptionsBackground(int? zoom) {
+    return null;
   }
 
   @override
@@ -162,74 +280,7 @@ class CityBikesLayer extends CustomLayer {
 
   @override
   Widget? buildLayerOptionsPriority(int zoom) {
-    double? markerSize;
-    switch (zoom) {
-      case 15:
-        markerSize = 15;
-        break;
-      case 16:
-        markerSize = 20;
-        break;
-      case 17:
-        markerSize = 25;
-        break;
-      case 18:
-        markerSize = 30;
-        break;
-      default:
-        markerSize = zoom != null && zoom > 18 ? 35 : null;
-    }
-    final markersList = _pbfMarkers.values.toList();
-    // avoid vertical wrong overlapping
-    markersList.sort(
-      (b, a) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return MarkerLayer(
-      markers: markerSize != null
-          ? markersList
-              .map((element) => Marker(
-                    height: markerSize! + 5,
-                    width: markerSize,
-                    point: element.position,
-                    anchorPos: AnchorPos.align(AnchorAlign.top),
-                    builder: (context) => SharingMarkerUpdater(
-                      element: element,
-                      addMarker: forceAddMarker,
-                      child: GestureDetector(
-                        onTap: () {
-                          final panelCubit = context.read<PanelCubit>();
-                          panelCubit.setPanel(
-                            CustomMarkerPanel(
-                              panel: (
-                                context,
-                                onFetchPlan, {
-                                isOnlyDestination,
-                              }) =>
-                                  element.id == "cargobike-herrenberg"
-                                      ? CargoBikeMarkerModal(
-                                          element: element,
-                                          onFetchPlan: onFetchPlan,
-                                        )
-                                      : CitybikeMarkerModal(
-                                          element: element,
-                                          onFetchPlan: onFetchPlan,
-                                        ),
-                              positon: element.position,
-                              minSize: 50,
-                            ),
-                          );
-                        },
-                        child: Container(
-                          height: markerSize,
-                          width: markerSize,
-                          color: Colors.transparent,
-                        ),
-                      ),
-                    ),
-                  ))
-              .toList()
-          : [],
-    );
+    return null;
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {

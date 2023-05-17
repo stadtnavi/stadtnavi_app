@@ -121,6 +121,16 @@ class LiveBusLayer extends CustomLayer {
   }
 
   @override
+  List<Marker>? buildLayerMarkersPriority(int? zoom) {
+    return [];
+  }
+
+  @override
+  Widget? buildLayerOptionsBackground(int? zoom) {
+    return null;
+  }
+
+  @override
   Widget buildLayerOptions(int? zoom) {
     double? markerSize;
     switch (zoom) {
@@ -229,77 +239,7 @@ class LiveBusLayer extends CustomLayer {
 
   @override
   Widget? buildLayerOptionsPriority(int zoom) {
-    double? markerSize;
-    switch (zoom) {
-      case 15:
-        markerSize = 15;
-        break;
-      case 16:
-        markerSize = 20;
-        break;
-      case 17:
-        markerSize = 25;
-        break;
-      case 18:
-        markerSize = 30;
-        break;
-      default:
-        markerSize = zoom != null && zoom > 18 ? 35 : null;
-    }
-    final markersList = _pbfMarkers.values.toList();
-    return MarkerLayer(
-      markers: markerSize != null
-          ? markersList
-              .map((element) => Marker(
-                    height: markerSize! * 1.5,
-                    width: markerSize * 1.5,
-                    point: element.position,
-                    anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) => GestureDetector(
-                      onTap: () {
-                        onLiveBusStateChangeContainer =
-                            OnLiveBusStateChangeContainer(
-                          element.id,
-                          () {
-                            onLiveBusStateChangeContainer = null;
-                          },
-                        );
-                        final panelCubit = context.read<PanelCubit>();
-                        panelCubit.setPanel(
-                          CustomMarkerPanel(
-                            panel: (
-                              context,
-                              onFetchPlan, {
-                              isOnlyDestination,
-                            }) =>
-                                LiveBusMarkerModal(
-                              mainElement: element,
-                              onLiveBusStateChangeContainer:
-                                  onLiveBusStateChangeContainer,
-                            ),
-                            positon: element.position,
-                            minSize: 50,
-                          ),
-                        );
-                      },
-                      child: element.bearing != null
-                          ? Transform.rotate(
-                              angle: element.bearing! * pi / 180,
-                              child: SvgPicture.string(
-                                """
-                                <svg version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill="red" d="M50 0L32.4 14.08A40 40 0 0 0 10 50a40 40 0 0 0 40 40 40 40 0 0 0 40-40 40 40 0 0 0-22.398-35.918L50 0z" />
-                                </svg>
-                              """,
-                              color: Colors.transparent,
-                              ),
-                            )
-                          : Container(),
-                    ),
-                  ))
-              .toList()
-          : [],
-    );
+    return null;
   }
 
   @override

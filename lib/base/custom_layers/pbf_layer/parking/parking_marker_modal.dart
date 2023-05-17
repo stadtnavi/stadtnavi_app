@@ -218,14 +218,15 @@ class ParkingMarkerModal extends StatelessWidget {
                     ),
                   ],
                 ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: OpeningTimeTable(
-                  openingHours: parkingFeature.sOpeningHours!,
-                  isOpenParking: isOpenParking,
-                  currentOpeningTime: parkingFeature.getCurrentOpeningTime(),
+              if (parkingFeature.sOpeningHours != null)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12.0),
+                  child: OpeningTimeTable(
+                    openingHours: parkingFeature.sOpeningHours!,
+                    isOpenParking: isOpenParking,
+                    currentOpeningTime: parkingFeature.getCurrentOpeningTime(),
+                  ),
                 ),
-              ),
               if (parkingFeature.url != null)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -259,7 +260,6 @@ class ParkingMarkerModal extends StatelessWidget {
       ],
     );
   }
-
 }
 
 class OpeningTimeTable extends StatefulWidget {

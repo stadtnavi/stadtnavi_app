@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:lodash_flutter/lodash_flutter.dart';
 import 'package:equatable/equatable.dart';
 import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/icons.dart';
+import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/location_model.dart';
 
 class SearchData extends Equatable {
   final List<Map<String, dynamic>> data;
@@ -139,6 +140,10 @@ List<String> getNameLabel(Map<String, dynamic> suggestion,
   return data.whereType<String>().toList();
 }
 
+// TODO need debounce = 300
+// const debouncedSearch = debounce(getSearchResults, 300, {
+//   leading: true,
+// });
 List<Map<String, dynamic>> sortSearchResults(
   RegExp lineRegexp,
   List<Map<String, dynamic>> results,

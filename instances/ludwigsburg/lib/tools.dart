@@ -1,4 +1,5 @@
 import 'package:stadtnavi_core/base/custom_layers/models/enums.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/simple_opening_hours.dart';
 
 AvailabilityState? calculateParkingAvailavilityLB({
   String? state,
@@ -6,10 +7,12 @@ AvailabilityState? calculateParkingAvailavilityLB({
   int? carPlacesCapacity,
   int? freeDisabled,
   int? totalDisabled,
+  SimpleOpeningHours? sOpeningHours,
 }) {
   if (state == 'closed' ||
       availabilityCarPlacesCapacity == 0 ||
-      (freeDisabled == 0 && false)) {
+      (freeDisabled == 0 && false) ||
+      !(sOpeningHours?.isOpenNow() ?? true)) {
     return AvailabilityState.unavailability;
   } else {
     AvailabilityState? isAvailible;
