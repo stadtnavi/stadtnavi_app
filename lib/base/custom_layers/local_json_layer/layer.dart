@@ -152,7 +152,62 @@ class Layer extends CustomLayer {
 
   @override
   Widget? buildLayerOptionsPriority(int zoom) {
-    return null;
+    if (customMarkers.isEmpty) {
+      load();
+    }
+    double? markerSize;
+    switch (zoom) {
+      case 15:
+        markerSize = 15;
+        break;
+      case 16:
+        markerSize = 20;
+        break;
+      case 17:
+        markerSize = 25;
+        break;
+      case 18:
+        markerSize = 30;
+        break;
+      default:
+        markerSize = zoom != null && zoom > 18 ? 35 : null;
+    }
+    return MarkerLayer(
+      markers: markerSize != null
+          ? customMarkers
+              .map((element) => Marker(
+                    height: markerSize!,
+                    width: markerSize,
+                    point: element.position,
+                    anchorPos: AnchorPos.align(AnchorAlign.center),
+                    builder: (context) => GestureDetector(
+                      onTap: () {
+                        final panelCubit = context.read<PanelCubit>();
+                        panelCubit.setPanel(
+                          CustomMarkerPanel(
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
+                                CustomMarkerModal(
+                              element: element,
+                              onFetchPlan: onFetchPlan,
+                            ),
+                            positon: element.position,
+                            minSize: 50,
+                          ),
+                        );
+                      },
+                      child: SvgPicture.string(
+                        element.image,
+                        color: Colors.transparent,
+                      ),
+                    ),
+                  ))
+              .toList()
+          : [],
+    );
   }
 
   @override
