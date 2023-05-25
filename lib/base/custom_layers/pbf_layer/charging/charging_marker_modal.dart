@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -53,6 +54,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final localizationST = StadtnaviBaseLocalization.of(context);
     final localeName = TrufiBaseLocalization.of(context).localeName;
     return ListView(
       children: [
@@ -100,9 +102,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                         width: 5,
                       ),
                       Text(
-                        localeName == "en"
-                            ? "Open 24/7"
-                            : "Durchgängig geöffnet",
+                        localizationST.commonOpenAlways,
                         style: TextStyle(
                           color: theme.textTheme.bodyText1?.color,
                         ),
@@ -131,7 +131,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                                     ),
                                   ),
                                   Text(
-                                    "${chargingTypeName[e.standard] ?? e.standard} - ${e.maxAmperage} kW",
+                                    "${chargingTypeName[e.standard] ?? e.standard} - ${e.maxElectricPower} kW",
                                   ),
                                 ],
                               ),
@@ -140,7 +140,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                       ),
                       const Text("|"),
                       Text(
-                        widget.element.capacityUnknown == 0
+                        chargingItem?.showCapacity == 0
                             ? localeName == "en"
                                 ? "${widget.element.available} of ${widget.element.capacity} charging slots available"
                                 : "${widget.element.available} von ${widget.element.capacity} Ladeplätzen frei"
@@ -155,7 +155,8 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                   ),
                 ),
                 const Divider(height: 10),
-                if (chargingItem?.capabilities != null)
+                if (chargingItem?.capabilities != null &&
+                    chargingItem!.capabilities.isNotEmpty)
                   Row(
                     children: [
                       const Icon(
@@ -202,7 +203,8 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                   ],
                 ),
                 if (chargingItem!.evses != null &&
-                    chargingItem!.evses!.isNotEmpty)
+                    chargingItem!.evses!.isNotEmpty &&
+                    chargingItem!.evses!.first.phone != null)
                   GestureDetector(
                     onTap: chargingItem?.evses?.first.phone != null
                         ? () {

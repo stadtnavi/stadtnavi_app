@@ -56,9 +56,9 @@ class OnlineSearchLocation implements SearchLocationRepository {
               caseSensitive: true),
           [...dataw],
           query);
-      final res = dataSorted.map((x) => LocationModel.fromJson(x));
-      final trufiLocationList =
-          res.map<TrufiLocation>((e) => e.toTrufiLocation()).toList();
+      final trufiLocationList = dataSorted
+          .map((x) => LocationModel.fromJson(x).toTrufiLocation())
+          .toList();
       return trufiLocationList;
     }
   }

@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -43,7 +46,10 @@ extension StopsLayerIdsIdsToString on StopsLayerIds {
 class StopsLayer extends CustomLayer {
   final Map<String, StopFeature> _pbfMarkers = {};
 
+  Map<String, StopFeature> get data => _pbfMarkers;
+
   final StopsLayerIds layerId;
+  
   StopsLayer(this.layerId, String weight)
       : super(layerId.enumToString(), weight);
 
@@ -52,6 +58,69 @@ class StopsLayer extends CustomLayer {
       _pbfMarkers[pointFeature.gtfsId!] = pointFeature;
       refresh();
     }
+  }
+
+  @override
+  List<Marker>? buildLayerMarkersPriority(int? zoom) {
+    double? markerSize;
+
+    switch (zoom) {
+      case 15:
+        markerSize = 15;
+        break;
+      case 16:
+        markerSize = 20;
+        break;
+      case 17:
+        markerSize = 25;
+        break;
+      case 18:
+        markerSize = 30;
+        break;
+      default:
+        markerSize = (zoom != null && zoom > 18) ? 35 : null;
+    }
+    final markersList = _pbfMarkers.values.toList();
+    // avoid vertical wrong overlapping
+    markersList.sort(
+      (b, a) => a.position.latitude.compareTo(b.position.latitude),
+    );
+    return markerSize != null
+        ? markersList
+            .map((element) => Marker(
+                  key: Key("$id:${element.gtfsId}"),
+                  height: markerSize! + 5,
+                  width: markerSize + 5,
+                  point: element.position,
+                  anchorPos: AnchorPos.align(AnchorAlign.top),
+                  builder: (context) => GestureDetector(
+                    onTap: () {
+                      final panelCubit = context.read<PanelCubit>();
+                      panelCubit.setPanel(
+                        CustomMarkerPanel(
+                          panel: (
+                            context,
+                            _, {
+                            isOnlyDestination,
+                          }) =>
+                              StopMarkerModal(
+                            stopFeature: element,
+                          ),
+                          positon: element.position,
+                          minSize: 130,
+                        ),
+                      );
+                    },
+                    child: SvgPicture.string(stopsIcons[element.type] ?? ''),
+                  ),
+                ))
+            .toList()
+        : [];
+  }
+
+  @override
+  Widget? buildLayerOptionsBackground(int? zoom) {
+    return null;
   }
 
   @override

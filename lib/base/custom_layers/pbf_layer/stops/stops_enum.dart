@@ -26,3 +26,13 @@ StopsLayerIds stopsLayerIdsstringToEnum(String id) {
   };
   return enumStrings[id] ?? StopsLayerIds.bus;
 }
+
+String stopsLayerIdsEnumToString(StopsLayerIds id) {
+  final Map<StopsLayerIds, String> enumStrings = {
+    StopsLayerIds.bus: "BUS",
+    StopsLayerIds.carpool: "CARPOOL",
+    StopsLayerIds.rail: "RAIL",
+    StopsLayerIds.subway: "SUBWAY",
+  };
+  return enumStrings[id] ?? "BUS";
+}
