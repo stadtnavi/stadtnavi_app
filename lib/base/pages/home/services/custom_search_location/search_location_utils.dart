@@ -139,6 +139,10 @@ List<String> getNameLabel(Map<String, dynamic> suggestion,
   return data.whereType<String>().toList();
 }
 
+// TODO need debounce = 300
+// const debouncedSearch = debounce(getSearchResults, 300, {
+//   leading: true,
+// });
 List<Map<String, dynamic>> sortSearchResults(
   RegExp lineRegexp,
   List<Map<String, dynamic>> results,

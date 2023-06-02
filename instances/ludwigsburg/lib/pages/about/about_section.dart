@@ -61,8 +61,7 @@ class AboutSection extends StatelessWidget {
                   text: isLanguageEn
                       ? 'available via GitHub'
                       : 'auf GitHub verfügbar',
-                  style: TextStyle(
-                    color: theme.colorScheme.primary,
+                  style: const TextStyle(
                     decoration: TextDecoration.underline,
                   ),
                   recognizer: TapGestureRecognizer()
@@ -123,8 +122,7 @@ class AboutSection extends StatelessWidget {
                           ),
                           TextSpan(
                             text: 'Github',
-                            style: TextStyle(
-                              color: theme.colorScheme.primary,
+                            style: const TextStyle(
                               decoration: TextDecoration.underline,
                             ),
                             recognizer: TapGestureRecognizer()
@@ -164,9 +162,8 @@ class AboutSection extends StatelessWidget {
                   text: isLanguageEn
                       ? 'OpenStreetMap Contributors'
                       : 'OpenStreetMap Mitwirkende',
-                  style: TextStyle(
+                  style: const TextStyle(
                     decoration: TextDecoration.underline,
-                    color: theme.colorScheme.primary,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
@@ -192,9 +189,8 @@ class AboutSection extends StatelessWidget {
               children: <TextSpan>[
                 TextSpan(
                   text: 'NVBW GmbH',
-                  style: TextStyle(
+                  style: const TextStyle(
                     decoration: TextDecoration.underline,
-                    color: theme.colorScheme.primary,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {
@@ -210,9 +206,8 @@ class AboutSection extends StatelessWidget {
                 ),
                 TextSpan(
                   text: 'VVS GmbH',
-                  style: TextStyle(
+                  style: const TextStyle(
                     decoration: TextDecoration.underline,
-                    color: theme.colorScheme.primary,
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () async {

@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/models/enums.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
@@ -18,7 +19,10 @@ import 'parking_icons.dart';
 class ParkingLayer extends CustomLayer {
   final Map<String, ParkingFeature> _pbfMarkers = {};
 
+  Map<String, ParkingFeature> get data => _pbfMarkers;
+
   ParkingLayer(String id, String weight) : super(id, weight);
+
   void addMarker(ParkingFeature pointFeature) {
     if (pointFeature.id != null && _pbfMarkers[pointFeature.id] == null) {
       _pbfMarkers[pointFeature.id!] = pointFeature;
@@ -26,11 +30,83 @@ class ParkingLayer extends CustomLayer {
     }
   }
 
-  void forceAddMarker(ParkingFeature pointFeature) {
-    if (pointFeature.id != null) {
-      _pbfMarkers[pointFeature.id!] = pointFeature;
-      refresh();
+  // void forceAddMarker(ParkingFeature pointFeature) {
+  //   if (pointFeature.id != null) {
+  //     _pbfMarkers[pointFeature.id!] = pointFeature;
+  //     refresh();
+  //   }
+  // }
+
+  @override
+  List<Marker>? buildLayerMarkersPriority(int? zoom) {
+    double? markerSize;
+    switch (zoom) {
+      case 15:
+        markerSize = 15;
+        break;
+      case 16:
+        markerSize = 20;
+        break;
+      case 17:
+        markerSize = 25;
+        break;
+      case 18:
+        markerSize = 30;
+        break;
+      default:
+        markerSize = zoom != null && zoom > 18 ? 35 : null;
     }
+    final markersList = _pbfMarkers.values.toList();
+    // avoid vertical wrong overlapping
+    markersList.sort(
+      (b, a) => a.position.latitude.compareTo(b.position.latitude),
+    );
+    return markerSize != null
+        ? markersList
+            .map((element) => Marker(
+                  key: Key("$id:${element.id}"),
+                  height: markerSize!,
+                  width: markerSize,
+                  point: element.position,
+                  anchorPos: AnchorPos.align(AnchorAlign.center),
+                  builder: (context) => GestureDetector(
+                    onTap: () {
+                      final panelCubit = context.read<PanelCubit>();
+                      panelCubit.setPanel(
+                        CustomMarkerPanel(
+                          panel: (
+                            context,
+                            onFetchPlan, {
+                            isOnlyDestination,
+                          }) =>
+                              ParkingStateUpdater(
+                            parkingFeature: element,
+                            onFetchPlan: onFetchPlan,
+                            isOnlyDestination: isOnlyDestination ?? false,
+                          ),
+                          positon: element.position,
+                          minSize: 50,
+                        ),
+                      );
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(
+                        left: markerSize! / 5,
+                        top: markerSize / 5,
+                      ),
+                      child: SvgPicture.string(
+                        parkingMarkerIcons[element.type] ?? "",
+                      ),
+                    ),
+                  ),
+                ))
+            .toList()
+        : [];
+  }
+
+  @override
+  Widget? buildLayerOptionsBackground(int? zoom) {
+    return null;
   }
 
   @override
@@ -59,83 +135,51 @@ class ParkingLayer extends CustomLayer {
     );
     return MarkerLayer(
       markers: markerSize != null
-          ? markersList
-              .map((element) => Marker(
-                    height: markerSize!,
-                    width: markerSize,
-                    point: element.position,
-                    anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) => GestureDetector(
-                      onTap: () {
-                        final panelCubit = context.read<PanelCubit>();
-                        panelCubit.setPanel(
-                          CustomMarkerPanel(
-                            panel: (
-                              context,
-                              onFetchPlan, {
-                              isOnlyDestination,
-                            }) =>
-                                ParkingStateUpdater(
-                              parkingFeature: element,
-                              onFetchPlan: onFetchPlan,
-                              isOnlyDestination: isOnlyDestination ?? false,
-                            ),
-                            positon: element.position,
-                            minSize: 50,
-                          ),
-                        );
-                      },
-                      child: Stack(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: markerSize! / 5,
-                              top: markerSize / 5,
-                            ),
-                            child: SvgPicture.string(
-                              parkingMarkerIcons[element.type] ?? "",
-                            ),
-                          ),
-                          if (element.markerState() != null)
-                            if (element.markerState()!)
-                              Positioned(
-                                child: Container(
-                                  height: markerSize / 2,
-                                  width: markerSize / 2,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(100),
-                                  ),
-                                  child: Center(
-                                    child: Icon(
-                                      Icons.check,
-                                      size: markerSize / 3,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            else
-                              Container(
-                                height: markerSize / 2,
-                                width: markerSize / 2,
-                                decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(100),
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.close,
-                                    size: markerSize / 3,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )
-                        ],
+          ? markersList.map((element) {
+              final availabilityParking = element.markerState();
+              return Marker(
+                height: markerSize!,
+                width: markerSize,
+                point: element.position,
+                anchorPos: AnchorPos.align(AnchorAlign.center),
+                builder: (context) => GestureDetector(
+                  onTap: () {
+                    final panelCubit = context.read<PanelCubit>();
+                    panelCubit.setPanel(
+                      CustomMarkerPanel(
+                        panel: (
+                          context,
+                          onFetchPlan, {
+                          isOnlyDestination,
+                        }) =>
+                            ParkingStateUpdater(
+                          parkingFeature: element,
+                          onFetchPlan: onFetchPlan,
+                          isOnlyDestination: isOnlyDestination ?? false,
+                        ),
+                        positon: element.position,
+                        minSize: 50,
                       ),
-                    ),
-                  ))
-              .toList()
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: markerSize! / 5,
+                          top: markerSize / 5,
+                        ),
+                        child: SvgPicture.string(
+                          parkingMarkerIcons[element.type] ?? "",
+                        ),
+                      ),
+                      if (availabilityParking != null)
+                        availabilityParking.getImage(size: markerSize / 2),
+                    ],
+                  ),
+                ),
+              );
+            }).toList()
           : zoom != null && zoom > 11
               ? markersList
                   .map(
@@ -250,7 +294,6 @@ class ParkingLayer extends CustomLayer {
     for (final VectorTileLayer layer in tile.layers) {
       for (final VectorTileFeature feature in layer.features) {
         feature.decodeGeometry();
-
         if (feature.geometryType == GeometryType.Point) {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final ParkingFeature? pointFeature =

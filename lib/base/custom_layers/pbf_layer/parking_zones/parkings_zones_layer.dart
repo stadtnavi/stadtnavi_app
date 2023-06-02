@@ -22,7 +22,13 @@ class ParkingZonesLayer extends CustomLayer {
   }
 
   @override
-  Widget buildLayerOptions(int? zoom) {
+  List<Marker>? buildLayerMarkersPriority(int? zoom) {
+    // No required
+    return [];
+  }
+
+  @override
+  Widget? buildLayerOptionsBackground(int? zoom) {
     if (_parkingZonePoligons.isEmpty) {
       load();
     }
@@ -59,6 +65,11 @@ class ParkingZonesLayer extends CustomLayer {
               .toList()
           : [],
     );
+  }
+
+  @override
+  Widget buildLayerOptions(int? zoom) {
+    return PolygonLayer();
   }
 
   @override

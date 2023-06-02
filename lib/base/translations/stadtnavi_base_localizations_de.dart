@@ -215,4 +215,40 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get commonPlatform => 'Plattform';
+
+  @override
+  String get weekdayMO => 'Montag';
+
+  @override
+  String get weekdayTU => 'Dienstag';
+
+  @override
+  String get weekdayWE => 'Mittwoch';
+
+  @override
+  String get weekdayTH => 'Donnerstag';
+
+  @override
+  String get weekdayFR => 'Freitag';
+
+  @override
+  String get weekdaySA => 'Samstag';
+
+  @override
+  String get weekdaySU => 'Sonntag';
+
+  @override
+  String get weekdayPH => 'Gesetzlicher Feiertag';
+
+  @override
+  String get commonNow => 'Jetzt';
+
+  @override
+  String get commonClosed => 'Geschlossen';
+
+  @override
+  String get commonOpen => 'Geöffnet';
+
+  @override
+  String get commonOpenAlways => 'Durchgängig geöffnet';
 }

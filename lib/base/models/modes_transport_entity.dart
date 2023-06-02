@@ -146,10 +146,11 @@ class ModesTransportEntity extends Equatable {
       ]) ??
       carParkPlan?.copyWith(type: 'carPlan');
 
+  // Always show the walk plan to the user,
   bool get existWalkPlan =>
-      (walkPlan?.itineraries?.isNotEmpty ?? false) &&
-      (walkPlan!.itineraries![0].walkDistance) <
-          SettingFetchState.maxWalkDistance;
+      (walkPlan?.itineraries?.isNotEmpty ?? false) && true;
+      // (walkPlan!.itineraries![0].walkDistance) <
+      //     SettingFetchState.maxWalkDistance;
 
   bool get existBikePlan =>
       (bikePlan?.itineraries?.isNotEmpty ?? false) &&

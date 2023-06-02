@@ -66,6 +66,17 @@ class Layer extends CustomLayer {
   }
 
   @override
+  List<Marker>? buildLayerMarkersPriority(int? zoom) {
+    // No required
+    return [];
+  }
+
+  @override
+  Widget? buildLayerOptionsBackground(int? zoom) {
+    return null;
+  }
+
+  @override
   Widget buildLayerOptions(int? zoom) {
     if (customMarkers.isEmpty) {
       load();

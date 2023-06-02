@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.stadtnavi.herrenberg">
+    package="de.stadtnavi.herrenberg.internal">
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -24,7 +24,7 @@
       </intent>
     </queries>
    <application
-        android:label="stadtnavi"
+        android:label="stadtnavi Test"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

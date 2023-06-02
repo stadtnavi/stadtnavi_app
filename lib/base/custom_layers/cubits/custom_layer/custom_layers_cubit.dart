@@ -6,6 +6,7 @@ import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/local_json_layer/custom_marker_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/local_json_layer/layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
+import 'package:flutter_map/plugin_api.dart';
 import 'custom_layer_local_storage.dart';
 part 'custom_layers_state.dart';
 
@@ -83,9 +84,24 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
     _localStorage.save(state.layersSatus);
   }
 
+  List<Marker> markers(
+    int zoom,
+  ) {
+    List<CustomLayer> listSort = state.layers
+        .where((element) => state.layersSatus[element.id] ?? false)
+        .toList();
+
+    listSort.sort((a, b) => a.weight.compareTo(b.weight));
+    final allList = listSort
+        .map((element) => element.buildLayerMarkersPriority(zoom))
+        .toList();
+    return allList.expand((list) => list ?? <Marker>[]).toList();
+  }
+
   List<Widget> activeCustomLayers(
     int zoom,
     List<Widget> layersMid, {
+    required Widget layersUnderMid,
     String? showLayerById,
   }) {
     List<CustomLayer> listSort = state.layers;
@@ -109,12 +125,22 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
       }
     }
 
+    List<Widget> listBackground = [];
+    Widget? layerBackground;
+    for (CustomLayer customL in listSort) {
+      layerBackground = customL.buildLayerOptionsBackground(zoom);
+      if (layerBackground != null) {
+        listBackground.add(layerBackground);
+      }
+    }
     return zoom > 12
         ? [
+            ...listBackground,
+            ...layersMid,
             ...listSort
                 .map((element) => element.buildLayerOptions(zoom))
                 .toList(),
-            ...layersMid,
+            layersUnderMid,
             ...listPriority,
           ]
         : layersMid;

@@ -22,7 +22,7 @@ class GraphQLPlanRepository {
   final GraphQLClient client;
 
   GraphQLPlanRepository(String endpoint) : client = getClient(endpoint);
-  
+
   Future<Plan> fetchPlanAdvanced({
     required TrufiLocation fromLocation,
     required TrufiLocation toLocation,
@@ -139,9 +139,11 @@ class GraphQLPlanRepository {
           'bikeParkModes': parsebikeParkModes(advancedOptions.transportModes),
           'carMode': parseCarMode(toLocation.latLng),
           'bikeandPublicDisableRemainingWeightHeuristic': false,
+          // Always show the walk plan to the user,
           'shouldMakeWalkQuery': shouldMakeAllQuery &&
               !advancedOptions.wheelchair &&
-              linearDistance < SettingFetchState.maxWalkDistance,
+              // linearDistance < SettingFetchState.maxWalkDistance,
+              true,
           'shouldMakeBikeQuery': shouldMakeAllQuery &&
               !advancedOptions.wheelchair &&
               linearDistance < SettingFetchState.suggestBikeMaxDistance &&

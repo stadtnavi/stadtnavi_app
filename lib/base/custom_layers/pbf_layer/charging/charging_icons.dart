@@ -6,12 +6,3 @@ const String chargingIcon = """
   <circle fill="#00b096" cx="21.93" cy="22.47" r="1.22" class="cls-1" />
 </svg>
 """;
-
-const String charginIconPoorAvailability = """
-<svg id="icon-icon_poor-availability" viewBox="0 0 24 24" enable-background="new 0 0 24 24">
-	<circle fill="#FF9000" cx="12" cy="12" r="12"/>
-	<path opacity="0.1" d="M12,2c5.514,0,10,4.486,10,10s-4.486,10-10,10S2,17.514,2,12S6.486,2,12,2 M12,0C5.373,0,0,5.373,0,12
-		s5.373,12,12,12s12-5.373,12-12S18.627,0,12,0L12,0z"/>
-	<polygon fill="#FFFFFF" points="14,14 8,14 8,12 12,12 12,5 14,5 "/>
-</svg>
-""";

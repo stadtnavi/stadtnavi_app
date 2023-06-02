@@ -512,6 +512,78 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'Platform'**
   String get commonPlatform;
+
+  /// No description provided for @weekdayMO.
+  ///
+  /// In en, this message translates to:
+  /// **'Monday'**
+  String get weekdayMO;
+
+  /// No description provided for @weekdayTU.
+  ///
+  /// In en, this message translates to:
+  /// **'Tuesday'**
+  String get weekdayTU;
+
+  /// No description provided for @weekdayWE.
+  ///
+  /// In en, this message translates to:
+  /// **'Wednesday'**
+  String get weekdayWE;
+
+  /// No description provided for @weekdayTH.
+  ///
+  /// In en, this message translates to:
+  /// **'Thursday'**
+  String get weekdayTH;
+
+  /// No description provided for @weekdayFR.
+  ///
+  /// In en, this message translates to:
+  /// **'Friday'**
+  String get weekdayFR;
+
+  /// No description provided for @weekdaySA.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturday'**
+  String get weekdaySA;
+
+  /// No description provided for @weekdaySU.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunday'**
+  String get weekdaySU;
+
+  /// No description provided for @weekdayPH.
+  ///
+  /// In en, this message translates to:
+  /// **'Public holiday'**
+  String get weekdayPH;
+
+  /// No description provided for @commonNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Now'**
+  String get commonNow;
+
+  /// No description provided for @commonClosed.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get commonClosed;
+
+  /// No description provided for @commonOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get commonOpen;
+
+  /// No description provided for @commonOpenAlways.
+  ///
+  /// In en, this message translates to:
+  /// **'Open 24/7'**
+  String get commonOpenAlways;
 }
 
 class _StadtnaviBaseLocalizationDelegate extends LocalizationsDelegate<StadtnaviBaseLocalization> {

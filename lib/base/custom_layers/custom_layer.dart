@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/plugin_api.dart';
 
 abstract class CustomLayer {
   final String id;
@@ -11,8 +12,10 @@ abstract class CustomLayer {
   }
 
   Widget buildLayerOptions(int zoom);
+  Widget? buildLayerOptionsBackground(int zoom);
 
   Widget? buildLayerOptionsPriority(int zoom);
+  List<Marker>? buildLayerMarkersPriority(int zoom);
 
   String name(BuildContext context);
 

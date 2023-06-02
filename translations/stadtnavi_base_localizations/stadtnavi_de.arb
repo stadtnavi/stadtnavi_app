@@ -257,6 +257,18 @@
   "@commonPlatform": {
       "description": "General Platform  label"
   },
+  "weekdayMO": "Montag",
+  "weekdayTU": "Dienstag",
+  "weekdayWE": "Mittwoch",
+  "weekdayTH": "Donnerstag",
+  "weekdayFR": "Freitag",
+  "weekdaySA": "Samstag",
+  "weekdaySU": "Sonntag",
+  "weekdayPH": "Gesetzlicher Feiertag",
+  "commonNow": "Jetzt",
+  "commonClosed": "Geschlossen",
+  "commonOpen": "Geöffnet",
+  "commonOpenAlways": "Durchgängig geöffnet",
   "@commonSettings": {
     "description": "General Settings label"
   }

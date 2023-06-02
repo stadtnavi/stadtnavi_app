@@ -8,6 +8,7 @@ import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart'
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/utils/trufi_map_utils.dart';
@@ -70,8 +71,7 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
                 ]),
               ],
               onTap: (_, point) {
-                
-                  onMapPress(context, point);
+                onMapPress(context, point);
                 // if (widget.trufiMapController.state.unselectedPolylinesLayer !=
                 //     null) {
                 //   _handleOnMapTap(context, point);
@@ -85,7 +85,8 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
                 children: [
                   CropButton(
                       key: _cropButtonKey, onPressed: _handleOnCropPressed),
-                  if (widget.extraFloatingMapButtons != null) widget.extraFloatingMapButtons!(context)
+                  if (widget.extraFloatingMapButtons != null)
+                    widget.extraFloatingMapButtons!(context)
                 ],
               ),
             );
@@ -168,6 +169,7 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
 
   Future<void> _callFetchPlan(BuildContext context) async {
     final mapRouteCubit = context.read<MapRouteCubit>();
+    final mapModesCubit = context.read<MapModesCubit>();
     final settingFetchState = context.read<SettingFetchCubit>().state;
     final mapRouteState = mapRouteCubit.state;
     if (mapRouteState.toPlace == null || mapRouteState.fromPlace == null) {
@@ -175,9 +177,17 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
     }
     widget.asyncExecutor.run(
       context: context,
-      onExecute: () async =>
-          await mapRouteCubit.fetchPlan(advancedOptions: settingFetchState),
-      onFinish: (_) {},
+      onExecute: () async {
+        await mapModesCubit.reset();
+        await mapRouteCubit.fetchPlan(advancedOptions: settingFetchState);
+      },
+      onFinish: (_) {
+        mapModesCubit.fetchModesPlans(
+          from: mapRouteState.fromPlace!,
+          to: mapRouteState.toPlace!,
+          advancedOptions: settingFetchState,
+        );
+      },
     );
   }
 }
