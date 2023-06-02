@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
@@ -81,12 +79,7 @@ class BicycleNetworkLayer extends CustomLayer {
   }
 
   @override
-  List<Marker>? buildLayerMarkersPriority(int? zoom) {
-    return [];
-  }
-
-  @override
-  Widget? buildLayerOptionsBackground(int? zoom) {
+  Widget buildLayerOptions(int? zoom) {
     if (_listlist.isEmpty) {
       load();
     }
@@ -121,11 +114,6 @@ class BicycleNetworkLayer extends CustomLayer {
               .toList()
           : [],
     );
-  }
-
-  @override
-  Widget buildLayerOptions(int? zoom) {
-    return PolygonLayer();
   }
 
   @override

@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ludwigsburg/firebase_options.dart';
 import 'package:ludwigsburg/lifecycle_reactor_handler_notifications.dart';
-import 'package:ludwigsburg/tools.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/map_leyers.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 import 'package:stadtnavi_core/base/pages/home/setting_payload/setting_panel/setting_panel.dart';
 import 'package:stadtnavi_core/consts.dart';
@@ -47,7 +45,7 @@ void main() async {
       )
       .catchError((error) => {print("$error")});
   await initHiveForFlutter();
-  // TODO we need to improve disable fetch˜ method
+  // TODO we need to improve disable fetch method
   WeatherLayer.isdisable = true;
   // TODO we need to improve enableCarpool
   SettingPanel.enableCarpool = false;
@@ -56,8 +54,6 @@ void main() async {
     TransportMode.walk: const Color(0xffFECC01),
     TransportMode.bicycle: const Color(0xffffc200),
   });
-  // TODO we need to improve ParkingFeature.calculateAvailavility
-  ParkingFeature.calculateAvailavility = calculateParkingAvailavilityLB;
 
   runApp(
     StadtnaviApp(

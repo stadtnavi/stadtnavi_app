@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:stadtnavi_core/base/custom_layers/models/enums.dart';
 import 'parking_information_cubit/parking_information_cubit.dart';
 import 'parking_overview_map.dart';
 import 'package:routemaster/routemaster.dart';
 
+// import 'package:ludwigsburg/pages/parking_information_page/parking_information_cubit/parking_information_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_icons.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
@@ -147,7 +147,6 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
                             ? "${parking.freeDisabled} of ${parking.totalDisabled} wheelchair-accessible parking spaces available"
                             : "${parking.freeDisabled} von ${parking.totalDisabled} rollstuhlgerechten Parkplätzen vorhanden";
                       }
-                      final availabilityParking = parking.markerState();
                       return Column(
                         children: [
                           ListTile(
@@ -195,8 +194,40 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
                                     "${spaces ?? ''}${spaces != null && disabledSpaces != null ? '\n' : ''}${disabledSpaces ?? ''}",
                                   )
                                 : null,
-                            trailing: (availabilityParking != null)
-                                ? availabilityParking.getImage(size: 25)
+                            trailing: (parking.markerState() != null)
+                                ? (parking.markerState()!)
+                                    ? Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.check,
+                                            size: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )
+                                    : Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius:
+                                              BorderRadius.circular(100),
+                                        ),
+                                        child: const Center(
+                                          child: Icon(
+                                            Icons.close,
+                                            size: 20,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      )
                                 : null,
                           ),
                           const Divider(

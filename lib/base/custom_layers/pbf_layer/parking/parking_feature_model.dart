@@ -1,8 +1,6 @@
 import 'package:latlong2/latlong.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/simple_opening_hours.dart';
 import 'package:vector_tile/vector_tile.dart';
 
-import '../../models/enums.dart';
 import 'parkings_enum.dart';
 
 class ParkingFeature {
@@ -28,7 +26,6 @@ class ParkingFeature {
   final int? totalDisabled;
   final int? freeDisabled;
   final ParkingsLayerIds? type;
-  final SimpleOpeningHours? sOpeningHours;
 
   final LatLng position;
   ParkingFeature({
@@ -53,7 +50,6 @@ class ParkingFeature {
     required this.totalDisabled,
     required this.freeDisabled,
     required this.type,
-    required this.sOpeningHours,
     required this.position,
   });
   // ignore: prefer_constructors_over_static_methods
@@ -117,8 +113,6 @@ class ParkingFeature {
       totalDisabled: totalDisabled,
       freeDisabled: freeDisabled,
       type: type,
-      sOpeningHours:
-          openingHours != null ? SimpleOpeningHours(openingHours) : null,
       position: LatLng(
         geoJsonPoint?.geometry?.coordinates[1] ?? 0,
         geoJsonPoint?.geometry?.coordinates[0] ?? 0,
@@ -126,64 +120,22 @@ class ParkingFeature {
     );
   }
 
-  static AvailabilityState? Function({
-    String? state,
-    int? availabilityCarPlacesCapacity,
-    int? carPlacesCapacity,
-    int? freeDisabled,
-    int? totalDisabled,
-    SimpleOpeningHours? sOpeningHours,
-  }) calculateAvailavility = _defaultCalculateAvailavility;
-
-  static AvailabilityState? _defaultCalculateAvailavility({
-    String? state,
-    int? availabilityCarPlacesCapacity,
-    int? carPlacesCapacity,
-    int? freeDisabled,
-    int? totalDisabled,
-    SimpleOpeningHours? sOpeningHours,
-  }) {
+  bool? markerState() {
     if (state == 'closed' ||
         availabilityCarPlacesCapacity == 0 ||
-        (freeDisabled == 0 && false) ||
-        !(sOpeningHours?.isOpenNow() ?? true)) {
-      return AvailabilityState.unavailability;
+        (freeDisabled == 0 && false)) {
+      return false;
     } else {
-      AvailabilityState? isAvailible;
+      bool? isAvailible;
       if (carPlacesCapacity != null && availabilityCarPlacesCapacity != null) {
-        isAvailible = _selectAvailavility(
-            carPlacesCapacity, availabilityCarPlacesCapacity);
-      } else if (totalDisabled != null && freeDisabled != null) {
-        isAvailible = freeDisabled > 0
-            ? AvailabilityState.availability
-            : AvailabilityState.unavailability;
+        isAvailible =
+            (isAvailible ?? false) || availabilityCarPlacesCapacity! > 0;
+      }
+      if (totalDisabled != null && freeDisabled != null) {
+        isAvailible = (isAvailible ?? false) || freeDisabled! > 0;
       }
       return isAvailible;
     }
-  }
-
-  static AvailabilityState _selectAvailavility(
-      int capacity, int availabilityCapacity) {
-    final percentage = (availabilityCapacity / capacity) * 100;
-    if (percentage > 25) {
-      return AvailabilityState.availability;
-    } else {
-      return AvailabilityState.partial;
-    }
-  }
-
-  AvailabilityState? markerState() => calculateAvailavility(
-        state: state,
-        availabilityCarPlacesCapacity: availabilityCarPlacesCapacity,
-        carPlacesCapacity: carPlacesCapacity,
-        freeDisabled: freeDisabled,
-        totalDisabled: totalDisabled,
-        sOpeningHours: sOpeningHours,
-      );
-
-  String getCurrentOpeningTime() {
-    final weekday = DateTime.now().weekday;
-    return sOpeningHours!.openingHours.values.toList()[weekday-1].join(",");
   }
 
   ParkingFeature copyWith({
@@ -208,7 +160,6 @@ class ParkingFeature {
     int? totalDisabled,
     int? freeDisabled,
     ParkingsLayerIds? type,
-    SimpleOpeningHours? sOpeningHours,
     LatLng? position,
   }) {
     return ParkingFeature(
@@ -235,7 +186,6 @@ class ParkingFeature {
           availabilityCarPlacesCapacity ?? this.availabilityCarPlacesCapacity,
       totalDisabled: totalDisabled ?? this.totalDisabled,
       freeDisabled: freeDisabled ?? this.freeDisabled,
-      sOpeningHours: sOpeningHours ?? this.sOpeningHours,
       type: type ?? this.type,
       position: position ?? this.position,
     );

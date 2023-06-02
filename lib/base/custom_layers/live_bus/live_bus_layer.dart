@@ -121,16 +121,6 @@ class LiveBusLayer extends CustomLayer {
   }
 
   @override
-  List<Marker>? buildLayerMarkersPriority(int? zoom) {
-    return [];
-  }
-
-  @override
-  Widget? buildLayerOptionsBackground(int? zoom) {
-    return null;
-  }
-
-  @override
   Widget buildLayerOptions(int? zoom) {
     double? markerSize;
     switch (zoom) {

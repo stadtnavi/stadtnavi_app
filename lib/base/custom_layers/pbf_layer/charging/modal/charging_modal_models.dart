@@ -12,7 +12,7 @@ class ChargingItem {
   Set<String> capabilities = {};
   ChargingItem.fromJson(Map map)
       : uid = map["uid"]?.toString(),
-        name = (map["name"] ?? map["address"]).toString(),
+        name = map["name"]?.toString(),
         address = map["address"]?.toString() ?? "",
         city = map["city"]?.toString() ?? "",
         postalCode = map["postal_code"]?.toString() ?? "",
@@ -24,32 +24,21 @@ class ChargingItem {
     for (final detail in evses ?? []) {
       if (detail.connectors == null) return;
       for (final item in detail.connectors!) {
-        final maxElectricPower = item["max_electric_power"] is num
-            ? ((item["max_electric_power"] / 1000) as double).floor().toString()
-            : '';
         connectors[item["standard"].toString()] = ChargingConnector(
           item["standard"]?.toString() ?? '',
-          maxElectricPower,
+          item["max_amperage"]?.toString() ?? '',
         );
       }
       capabilities.addAll(detail.capabilities ?? []);
     }
   }
-
-  int get showCapacity {
-    return (evses ?? [])
-        .where(
-          (evse) => evse.status == 'UNKNOWN' || evse.status == 'STATIC',
-        )
-        .length;
-  }
 }
 
 class ChargingConnector {
   final String standard;
-  final String maxElectricPower;
+  final String maxAmperage;
 
-  ChargingConnector(this.standard, this.maxElectricPower);
+  ChargingConnector(this.standard, this.maxAmperage);
 }
 
 class ChargingDetail {

@@ -258,10 +258,8 @@ class _HomePageState extends State<HomePage>
     }
     widget.asyncExecutor.run(
       context: context,
-      onExecute: () async {
-        await mapModesCubit.reset();
-        await mapRouteCubit.fetchPlan(advancedOptions: settingFetchState);
-      },
+      onExecute: () async =>
+          await mapRouteCubit.fetchPlan(advancedOptions: settingFetchState),
       onFinish: (_) {
         mapModesCubit.fetchModesPlans(
           from: mapRouteState.fromPlace!,

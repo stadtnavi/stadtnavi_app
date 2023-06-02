@@ -85,7 +85,8 @@ List<Widget> mapLayerOptions(MapLayerIds id, BuildContext context) {
       return [
         TileLayer(
           tileProvider: CustomTileProvider(context: context),
-          urlTemplate: "https://tiles.stadtnavi.eu/bicycle/{z}/{x}/{y}@2x.png",
+          urlTemplate:
+              "https://tiles.stadtnavi.eu/bicycle/{z}/{x}/{y}@2x.png",
           subdomains: const ["a", "b", "c"],
         ),
       ];
@@ -158,9 +159,8 @@ class CustomTileProvider extends TileProvider {
   }
 
   Future<void> _fetchPBF(Coords<num> coords) async {
-    // final layersStatus = context.read<CustomLayersCubit>().state.layersSatus;
+    final layersStatus = context.read<CustomLayersCubit>().state.layersSatus;
     // if (layersStatus["Sharing"] ?? false) {
-    log("Tile coords: ${coords.z} ${coords.x} ${coords.y}");
     await CityBikesLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),

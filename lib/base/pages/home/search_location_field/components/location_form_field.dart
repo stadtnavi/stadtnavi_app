@@ -5,7 +5,7 @@ import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
-class LocationFormField extends StatefulWidget {
+class LocationFormField extends StatelessWidget {
   const LocationFormField({
     Key? key,
     required this.hintText,
@@ -24,36 +24,16 @@ class LocationFormField extends StatefulWidget {
   final TrufiLocation? value;
   final Widget? leading;
   final Widget? trailing;
-
-  @override
-  State<LocationFormField> createState() => _LocationFormFieldState();
-}
-
-class _LocationFormFieldState extends State<LocationFormField> {
-  late ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final localization = TrufiBaseLocalization.of(context);
     final localizationSP = SavedPlacesLocalization.of(context);
     return Row(
       children: [
-        if (widget.leading != null)
+        if (leading != null)
           SizedBox(
             width: 40.0,
-            child: widget.leading,
+            child: leading,
           ),
         Expanded(
           child: GestureDetector(
@@ -62,18 +42,15 @@ class _LocationFormFieldState extends State<LocationFormField> {
               final TrufiLocation? location = await showSearch<TrufiLocation?>(
                 context: context,
                 delegate: LocationSearchDelegate(
-                  isOrigin: widget.isOrigin,
-                  hint: widget.isOrigin
+                  isOrigin: isOrigin,
+                  hint: isOrigin
                       ? localization.searchHintOrigin
                       : localization.searchHintDestination,
                 ),
               );
               // Check result
               if (location != null) {
-                widget.onSaved(location);
-                if (widget.value != location) {
-                  _scrollController.jumpTo(0);
-                }
+                onSaved(location);
               }
             },
             child: Container(
@@ -87,38 +64,38 @@ class _LocationFormFieldState extends State<LocationFormField> {
               ),
               child: Row(
                 children: <Widget>[
-                  SizedBox(height: 24.0, child: widget.textLeadingImage),
+                  SizedBox(height: 24.0, child: textLeadingImage),
                   Flexible(
-                    child: SingleChildScrollView(
-                      controller: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      child: Container(
-                        padding: const EdgeInsets.all(4.0),
-                        child: widget.value != null
-                            ? Text(
-                                "${widget.value?.displayName(localizationSP)}${widget.value?.address?.isNotEmpty ?? false ? ", ${widget.value?.address}" : ""}",
+                    child: Container(
+                      padding: const EdgeInsets.all(4.0),
+                      child: RichText(
+                        maxLines: 1,
+                        text: value != null
+                            ? TextSpan(
                                 style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500),
+                                text:
+                                    "${value?.displayName(localizationSP)}${value?.address != null ? ", ${value?.address}" : ""}",
                               )
-                            : Text(
-                                widget.hintText,
+                            : TextSpan(
                                 style: const TextStyle(
                                   color: Colors.black54,
                                 ),
+                                text: hintText,
                               ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
           ),
         ),
-        if (widget.trailing != null)
+        if (trailing != null)
           SizedBox(
             width: 40.0,
-            child: widget.trailing,
+            child: trailing,
           )
       ],
     );
