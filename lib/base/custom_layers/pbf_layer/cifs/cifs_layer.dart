@@ -44,6 +44,7 @@ class CifsLayer extends CustomLayer {
   @override
   Widget buildLayerOptions(int? zoom) {
     double? polylineSize;
+    double? markerSize;
     switch (zoom) {
       case 13:
         polylineSize = 3;
@@ -64,29 +65,8 @@ class CifsLayer extends CustomLayer {
         polylineSize = 8;
         break;
       default:
-        polylineSize = zoom != null && zoom > 18 ? 8 : null;
+        polylineSize = (zoom != null && zoom > 18) ? 8 : null;
     }
-    final markersList = _pbfMarkers.values.toList();
-    return Stack(
-      children: [
-        if (polylineSize != null)
-          PolylineLayer(
-            polylines: markersList
-                .map((e) => Polyline(
-                      points: e.polyline.reversed.toList(),
-                      color: Colors.red.withOpacity(.8),
-                      isDotted: true,
-                      strokeWidth: polylineSize!,
-                    ))
-                .toList(),
-          ),
-      ],
-    );
-  }
-
-  @override
-  Widget? buildLayerOptionsPriority(int zoom) {
-    double? markerSize;
     switch (zoom) {
       case 13:
         markerSize = 15;
@@ -107,39 +87,59 @@ class CifsLayer extends CustomLayer {
         markerSize = 30;
         break;
       default:
-        markerSize = zoom > 18 ? 35 : null;
+        markerSize = (zoom != null && zoom > 18) ? 35 : null;
     }
     final markersList = _pbfMarkers.values.toList();
-    return MarkerLayer(
-      markers: [
-        if (markerSize != null)
-          ...markersList
-              .map((element) => Marker(
-                    height: markerSize!,
-                    width: markerSize,
-                    point: element.startPoint,
-                    anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) => _CifsFeatureMarker(
-                      element: element,
-                      point: element.startPoint,
-                    ),
-                  ))
-              .toList(),
-        if (markerSize != null)
-          ...markersList
-              .map((element) => Marker(
-                    height: markerSize!,
-                    width: markerSize,
-                    point: element.endPoint,
-                    anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) => _CifsFeatureMarker(
-                      element: element,
-                      point: element.endPoint,
-                    ),
-                  ))
-              .toList(),
+    return Stack(
+      children: [
+        if (polylineSize != null)
+          PolylineLayer(
+            polylines: markersList
+                .map((e) => Polyline(
+                      points: e.polyline.reversed.toList(),
+                      color: Colors.red.withOpacity(.8),
+                      isDotted: true,
+                      strokeWidth: polylineSize!,
+                    ))
+                .toList(),
+          ),
+        MarkerLayer(
+          markers: [
+            if (markerSize != null)
+              ...markersList
+                  .map((element) => Marker(
+                        height: markerSize!,
+                        width: markerSize,
+                        point: element.startPoint,
+                        anchorPos: AnchorPos.align(AnchorAlign.center),
+                        builder: (context) => _CifsFeatureMarker(
+                          element: element,
+                          point: element.startPoint,
+                        ),
+                      ))
+                  .toList(),
+            if (markerSize != null)
+              ...markersList
+                  .map((element) => Marker(
+                        height: markerSize!,
+                        width: markerSize,
+                        point: element.endPoint,
+                        anchorPos: AnchorPos.align(AnchorAlign.center),
+                        builder: (context) => _CifsFeatureMarker(
+                          element: element,
+                          point: element.endPoint,
+                        ),
+                      ))
+                  .toList(),
+          ],
+        ),
       ],
     );
+  }
+
+  @override
+  Widget? buildLayerOptionsPriority(int zoom) {
+    return null;
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {

@@ -213,70 +213,7 @@ class ChargingLayer extends CustomLayer {
 
   @override
   Widget? buildLayerOptionsPriority(int zoom) {
-    double? markerSize;
-    switch (zoom) {
-      case 15:
-        markerSize = 20;
-        break;
-      case 16:
-        markerSize = 25;
-        break;
-      case 17:
-        markerSize = 30;
-        break;
-      case 18:
-        markerSize = 35;
-        break;
-      default:
-        markerSize = zoom != null && zoom > 18 ? 40 : null;
-    }
-    final markersList = _pbfMarkers.values.toList();
-    // avoid vertical wrong overlapping
-    markersList.sort(
-      (b, a) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return MarkerLayer(
-      markers: markerSize != null
-          ? markersList
-              .map((element) => Marker(
-                    height: markerSize!,
-                    width: markerSize,
-                    point: element.position,
-                    anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) => GestureDetector(
-                      onTap: () {
-                        final panelCubit = context.read<PanelCubit>();
-                        panelCubit.setPanel(
-                          CustomMarkerPanel(
-                            panel: (
-                              context,
-                              onFetchPlan, {
-                              isOnlyDestination,
-                            }) =>
-                                ChargingMarkerModal(
-                              element: element,
-                              onFetchPlan: onFetchPlan,
-                            ),
-                            positon: element.position,
-                            minSize: 50,
-                          ),
-                        );
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(
-                          left: markerSize! / 5,
-                          top: markerSize / 5,
-                        ),
-                        child: SvgPicture.string(
-                          chargingIcon,
-                          color: Colors.transparent,
-                        ),
-                      ),
-                    ),
-                  ))
-              .toList()
-          : [],
-    );
+    return null;
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {
