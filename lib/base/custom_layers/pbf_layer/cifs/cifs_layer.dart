@@ -1,17 +1,18 @@
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 
-import 'package:latlong2/latlong.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:latlong2/latlong.dart';
+import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+import 'package:vector_tile/vector_tile.dart';
+
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/bike_parks_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
 import 'package:stadtnavi_core/consts.dart';
-import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
-import 'package:vector_tile/vector_tile.dart';
 
 import 'cifs_feature_model.dart';
 import 'cifs_icons.dart';
@@ -143,7 +144,6 @@ class CifsLayer extends CustomLayer {
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {
-    // final uri = Uri.parse('https://api.stadtnavi.de/map/v1/cifs/16/34443/22534.pbf');
     final uri = Uri(
       scheme: "https",
       host: baseDomain,
