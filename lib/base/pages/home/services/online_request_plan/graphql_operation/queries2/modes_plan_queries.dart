@@ -28,11 +28,12 @@ query summaryModesPlanQuery(
   $shouldMakeOnDemandTaxiQuery: Boolean!
   $showBikeAndPublicItineraries: Boolean!
   $showBikeAndParkItineraries: Boolean!
-  $useVehicleParkingAvailabilityInformation: Boolean!
+  # TODO still to be implemented in upstream OTP
+  # $useVehicleParkingAvailabilityInformation: Boolean!
   $bikeAndPublicModes: [TransportMode!]
   $bikeParkModes: [TransportMode!]
   $carMode: [TransportMode!]
-  $bannedVehicleParkingTags: [String]
+  # $bannedVehicleParkingTags: [String]
 ) {
   walkPlan: plan(
     fromPlace: $fromPlace,
@@ -150,18 +151,20 @@ query summaryModesPlanQuery(
     itineraryFiltering: $itineraryFiltering, 
     unpreferred: $unpreferred, 
     locale: $locale,
-    useVehicleParkingAvailabilityInformation: $useVehicleParkingAvailabilityInformation,
-    bannedVehicleParkingTags: $bannedVehicleParkingTags,
+    # TODO add to upstream OTP
+    # useVehicleParkingAvailabilityInformation: $useVehicleParkingAvailabilityInformation,
+    # bannedVehicleParkingTags: $bannedVehicleParkingTags,
     ) @include(if: $shouldMakeCarQuery) {
     ...planFragment
     itineraries {
       legs {
         to {
-          vehicleParkingWithEntrance {
-            vehicleParking {
-              tags
-            }
-          }
+          # TODO still to be implemented in upstream OTP
+          # vehicleParkingWithEntrance {
+          #   vehicleParking {
+          #     tags
+          #   }
+          # }
           carPark {
             carParkId
             name
@@ -199,8 +202,9 @@ query summaryModesPlanQuery(
     unpreferred: $unpreferred,
     carReluctance: 10,
     locale: $locale,
-    useVehicleParkingAvailabilityInformation: $useVehicleParkingAvailabilityInformation,
-    bannedVehicleParkingTags: $bannedVehicleParkingTags,
+    # TODO add to upstream OTP
+    # useVehicleParkingAvailabilityInformation: $useVehicleParkingAvailabilityInformation,
+    # bannedVehicleParkingTags: $bannedVehicleParkingTags,
     ) @include(if: $shouldMakeParkRideQuery) {
     ...planFragment
     itineraries {
@@ -211,11 +215,12 @@ query summaryModesPlanQuery(
             name
             id
           }
-          vehicleParkingWithEntrance {
-            vehicleParking {
-              tags
-            }
-          }
+          # TODO still to be implemented in upstream OTP
+          # vehicleParkingWithEntrance {
+          #   vehicleParking {
+          #     tags
+          #   }
+          # }
         }
       }
     }
@@ -229,6 +234,7 @@ query summaryModesPlanQuery(
       { mode: RAIL }
       { mode: BUS }
       { mode: FLEX, qualifier: EGRESS }
+      { mode: FLEX, qualifier: ACCESS },
       { mode: FLEX, qualifier: DIRECT }
       { mode: WALK }
     ]
