@@ -1,10 +1,14 @@
 import 'dart:developer';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
 
+import 'package:flutter/material.dart';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
+import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+
+import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_parks_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_layer.dart';
@@ -12,9 +16,7 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
-
-import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
-import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+import 'package:stadtnavi_core/consts.dart';
 
 enum MapLayerIds {
   streets,
@@ -72,7 +74,7 @@ List<Widget> mapLayerOptions(MapLayerIds id, BuildContext context) {
         TileLayer(
           tileProvider: CustomTileProvider(context: context),
           urlTemplate:
-              "https://api.stadtnavi.de/tiles/orthophoto/{z}/{x}/{y}.jpg",
+              "https://tiles.stadtnavi.eu/orthophoto/{z}/{x}/{y}.jpg",
         ),
         TileLayer(
           tileProvider: CustomTileProvider(context: context),
