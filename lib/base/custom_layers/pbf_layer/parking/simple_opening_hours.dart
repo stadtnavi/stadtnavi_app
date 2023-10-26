@@ -17,7 +17,8 @@ class SimpleOpeningHours {
     parse(inp);
   }
 
-  static String getDayName(String key, StadtnaviBaseLocalization localizationST) {
+  static String getDayName(
+      String key, StadtnaviBaseLocalization localizationST) {
     final openingHours = <String, String>{
       "mo": localizationST.weekdayMO,
       "tu": localizationST.weekdayTU,
@@ -41,24 +42,36 @@ class SimpleOpeningHours {
       //TODO: times like 09:00+ are not supported here
       final timedata = time.split('-');
       if (timedata.length > 1) {
-        DateTime openTime = DateTime.parse("2016-01-01 ${timedata[0]}:00");
-        DateTime closeTime = DateTime.parse("2016-01-01 ${timedata[1]}:00");
+        final timeStart = formatTimeString(timedata[0]);
+        final timeEnd = formatTimeString(timedata[0]);
+        DateTime openTime = DateTime.parse("2016-01-01 $timeStart:00");
+        DateTime closeTime = DateTime.parse("2016-01-01 $timeEnd:00");
         DateTime currentDateTime =
             DateTime.parse("2016-01-01 ${durationToString(date)}");
         bool isDiferentDay = openTime.isAfter(closeTime);
 
         if (isDiferentDay) {
-          closeTime = DateTime.parse("2016-01-02 ${timedata[1]}:00");
+          closeTime = DateTime.parse("2016-01-02 $timeEnd:00");
         }
         bool isAdte = isDiferentDay
             ? currentDateTime.isAfter(openTime) ||
                 currentDateTime
-                    .isBefore(DateTime.parse("2016-01-01 ${timedata[1]}:00"))
+                    .isBefore(DateTime.parse("2016-01-01 $timeEnd:00"))
             : currentDateTime.isAfter(openTime);
         isOpen = isAdte && currentDateTime.isBefore(closeTime);
       }
     });
     return isOpen;
+  }
+
+  String formatTimeString(String timeString) {
+    List<String> timeParts = timeString.split(":");
+
+    String hour = timeParts[0].length == 1 ? '0${timeParts[0]}' : timeParts[0];
+
+    String formattedTimeString = "$hour:${timeParts[1]}";
+
+    return formattedTimeString;
   }
 
   String durationToString(DateTime date) {

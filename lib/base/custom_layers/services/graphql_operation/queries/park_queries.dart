@@ -22,7 +22,9 @@ const String parking = r'''
     anyCarPlaces
     detailsUrl
     note
-    openingHours
+    openingHours{
+      osm
+    }
   }
 }
 ''';
