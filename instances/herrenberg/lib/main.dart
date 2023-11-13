@@ -61,7 +61,7 @@ void main() async {
       appNameTitle: 'stadtnavi|Herrenberg',
       cityName: 'Herrenberg',
       center: LatLng(48.5950, 8.8672),
-      otpGraphqlEndpoint: openTripPlannerUrl,
+      otpGraphqlEndpoint: ApiConfig().openTripPlannerUrl,
       urlFeedback: 'https://stadtnavi.de/feedback/',
       urlShareApp: 'https://herrenberg.stadtnavi.de/',
       urlRepository: 'https://github.com/trufi-association/trufi-app',

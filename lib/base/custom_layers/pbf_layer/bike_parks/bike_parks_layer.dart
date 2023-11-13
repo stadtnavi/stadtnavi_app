@@ -1,16 +1,17 @@
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+import 'package:vector_tile/vector_tile.dart';
+
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_parks_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
 import 'package:stadtnavi_core/consts.dart';
-import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
-import 'package:vector_tile/vector_tile.dart';
 
 import 'bike_park_feature_model.dart';
 import 'bike_park_icons.dart';
@@ -185,7 +186,7 @@ class BikeParkLayer extends CustomLayer {
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: baseDomain,
+      host: ApiConfig().baseDomain,
       path: "/routing/v1/router/vectorTiles/parking/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);

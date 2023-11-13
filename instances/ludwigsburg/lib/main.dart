@@ -61,7 +61,7 @@ void main() async {
   // TODO we need to improve ParkingFeature.calculateAvailavility
   ParkingFeature.calculateAvailavility = calculateParkingAvailavilityLB;
 
-  runApp(
+    runApp(
     StadtnaviApp(
       appLifecycleReactorHandler: AppLifecycleReactorHandlerNotifications(
         onStartNotificationsURL:
@@ -71,7 +71,7 @@ void main() async {
       appNameTitle: 'stadtnavi|ludwigsburg',
       cityName: 'Ludwigsburg',
       center: LatLng(48.895195, 9.188647),
-      otpGraphqlEndpoint: openTripPlannerUrl,
+      otpGraphqlEndpoint: ApiConfig().openTripPlannerUrl,
       urlFeedback: 'mailto:b.hofmann@ludwigsburg.de?subject=Feedback',
       urlShareApp: 'https://stadtnavi.swlb.de/',
       urlRepository: 'https://github.com/trufi-association/trufi-app',

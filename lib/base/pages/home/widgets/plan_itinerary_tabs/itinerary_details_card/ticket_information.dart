@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+
 import 'package:skeleton_animation/skeleton_animation.dart';
+import 'package:trufi_core/base/models/enums/transport_mode.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:stadtnavi_core/base/models/othermodel/fare_component.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:stadtnavi_core/base/models/utils/fare_utils.dart';
+import 'package:stadtnavi_core/base/models/utils/geo_utils.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/custom_text_button.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/widgets/info_message.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:stadtnavi_core/consts.dart';
-import 'package:trufi_core/base/models/enums/transport_mode.dart';
-import 'package:stadtnavi_core/base/models/utils/geo_utils.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class TicketInformation extends StatefulWidget {
   final PlanItinerary itinerary;
@@ -130,7 +132,7 @@ class _TicketInformationState extends State<TicketInformation> {
   Future<void> loadFares() async {
     if (widget.itinerary.compressLegs.isNotEmpty &&
         widget.itinerary.compressLegs.any((leg) => leg.transitLeg)) {
-      final String? faresUrl = faresURL;
+      final String? faresUrl = ApiConfig().faresURL;
       if (faresUrl?.isEmpty ?? true) return;
       setState(() {
         fetchError = null;

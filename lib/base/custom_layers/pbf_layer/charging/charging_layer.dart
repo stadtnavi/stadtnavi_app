@@ -220,7 +220,7 @@ class ChargingLayer extends CustomLayer {
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: baseDomain,
+      host: ApiConfig().baseDomain,
       path: "/tiles/charging-stations/$z/$x/$y.mvt",
     );
     final response = await http.get(uri);

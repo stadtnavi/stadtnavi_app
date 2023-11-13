@@ -1,14 +1,14 @@
 import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
 import 'package:http/http.dart' as http;
+import 'package:trufi_core/base/utils/graphql_client/graphql_client.dart';
 import 'package:vector_tile/vector_tile.dart';
 
-import 'park_queries.dart' as pattern_query;
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
 import 'package:stadtnavi_core/base/models/othermodel/vehicle_parking.dart';
 import 'package:stadtnavi_core/consts.dart';
 
-import 'package:trufi_core/base/utils/graphql_client/graphql_client.dart';
+import 'park_queries.dart' as pattern_query;
 
 class ParkingInformationServices {
   final GraphQLClient client;
@@ -38,7 +38,7 @@ class ParkingInformationServices {
   }) async {
     final uri = Uri(
       scheme: "https",
-      host: baseDomain,
+      host: ApiConfig().baseDomain,
       path: "/routing/v1/router/vectorTiles/parking/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);

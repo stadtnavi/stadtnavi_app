@@ -146,7 +146,7 @@ class CifsLayer extends CustomLayer {
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: baseDomain,
+      host: ApiConfig().baseDomain,
       path: "/map/v1/cifs/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);

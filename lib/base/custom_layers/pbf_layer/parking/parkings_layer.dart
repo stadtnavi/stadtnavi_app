@@ -224,7 +224,7 @@ class ParkingLayer extends CustomLayer {
     valY = y;
     final uri = Uri(
       scheme: "https",
-      host: baseDomain,
+      host: ApiConfig().baseDomain,
       path: "/routing/v1/router/vectorTiles/parking/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);
