@@ -43,7 +43,7 @@ class SimpleOpeningHours {
       final timedata = time.split('-');
       if (timedata.length > 1) {
         final timeStart = formatTimeString(timedata[0]);
-        final timeEnd = formatTimeString(timedata[0]);
+        final timeEnd = formatTimeString(timedata[1]);
         DateTime openTime = DateTime.parse("2016-01-01 $timeStart:00");
         DateTime closeTime = DateTime.parse("2016-01-01 $timeEnd:00");
         DateTime currentDateTime =
