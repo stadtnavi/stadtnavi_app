@@ -205,6 +205,9 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   }
 
   @override
+  String get commonTotalDistance => 'Gesamtstrecke';
+
+  @override
   String get commonSettings => 'Einstellungen';
 
   @override

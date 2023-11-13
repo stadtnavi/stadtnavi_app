@@ -247,6 +247,7 @@
       },
       "description": "Departure Bike Station detail Time and Stop"
   },
+  "commonTotalDistance": "Gesamtstrecke",
   "commonSettings": "Einstellungen",
   "commonTrack": "Gleis",
   "mapLegend": "Legende",

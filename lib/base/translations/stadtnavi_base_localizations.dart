@@ -489,6 +489,12 @@ abstract class StadtnaviBaseLocalization {
   /// **'Departure at {departureTime} from {departureStop} bike station'**
   String departureBikeStation(Object departureStop, Object departureTime);
 
+  /// No description provided for @commonTotalDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Total distance'**
+  String get commonTotalDistance;
+
   /// General Settings label
   ///
   /// In en, this message translates to:
