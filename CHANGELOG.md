@@ -1,3 +1,11 @@
+## 1.8.2
+🎉 Support for Flutter 3.3.3
+🎉 Supported OTP 2.4
+🎉 Load geojson layers from external resources.
+🎉 Create internal testing for Herrenberg and Ludwigsburg in AppStore and PlayStore.
+🎉 Change the domain server from 'api.dev.stadtnavi.eu' to 'api.stadtnavi.de' on December 28, 2023, ensuring all connections are updated and functional after the switch
+🎉 Bugfix: On sunday, all parkings are shown in the with closed badge
+
 ## 1.7.0
 🎉 Support for Flutter 3.3.3
 🎉 Support trufi-core_v3.2.0-stadtnavi-lts
