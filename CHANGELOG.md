@@ -1,3 +1,6 @@
+## 1.8.3
+🎉 Delete Accesibility Radio Button and Add Note #352
+
 ## 1.8.2
 🎉 Support for Flutter 3.3.3
 🎉 Supported OTP 2.4
