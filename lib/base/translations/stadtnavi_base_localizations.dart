@@ -216,7 +216,7 @@ abstract class StadtnaviBaseLocalization {
   /// Accessibility details configuration panel label
   ///
   /// In en, this message translates to:
-  /// **'Due to a lack of data on accessibility, we are currently unable to provide information on accessible routes.'**
+  /// **'Due to a lack of data on accessibility, we are unfortunately unable to provide any barrier-free routes at the moment.'**
   String get settingPanelAccessibilityDetails;
 
   /// Wheelchair configuration panel label

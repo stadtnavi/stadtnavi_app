@@ -79,7 +79,7 @@
   "@settingPanelAccessibility": {
     "description": "Accessibility configuration panel label"
   },
-  "settingPanelAccessibilityDetails": "Due to a lack of data on accessibility, we are currently unable to provide information on accessible routes.",
+  "settingPanelAccessibilityDetails": "Due to a lack of data on accessibility, we are unfortunately unable to provide any barrier-free routes at the moment.",
   "@settingPanelAccessibilityDetails": {
     "description": "Accessibility details configuration panel label"
   },
