@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_svg/svg.dart';
+import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/local_json_layer/custom_marker_enum.dart';
@@ -7,7 +9,6 @@ import 'package:stadtnavi_core/base/custom_layers/local_json_layer/layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_icons.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
-import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
 final List<CustomLayerContainer> customLayersHerrenberg = [
   CustomLayerContainer(
@@ -38,6 +39,8 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
       Layer(
         LayerIds.bicycleInfrastructure,
         '3',
+        url: 'https://data.mfdz.de/hbg/dt-layers/bicycleinfrastructure.geojson',
+        isOnline: true,
       ),
     ],
   ),
@@ -78,12 +81,16 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
       Layer(
         LayerIds.publicToilets,
         '3',
+        url: 'https://data.mfdz.de/hbg/dt-layers/toilet.geojson',
+        isOnline: true,
       ),
       StaticTileLayers.cifsLayer,
       StaticTileLayers.weatherLayer,
       Layer(
         LayerIds.lorawanGateways,
         '3',
+        url: 'https://data.mfdz.de/hbg/dt-layers/lorawan-gateways.geojson',
+        isOnline: true,
       ),
     ],
   ),

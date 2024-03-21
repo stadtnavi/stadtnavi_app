@@ -36,7 +36,7 @@ String displayDistanceWithLocale(
   }
   return localization.instructionDistanceKm(
       formatOneDecimals(localeName: localization.localeName)
-          .format((tempMeters / 1000).round() * 10));
+          .format((tempMeters / 10000).round() * 10));
 }
 
 double estimateDistance(LatLng from, LatLng to,

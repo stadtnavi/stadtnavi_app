@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+import 'package:vector_tile/vector_tile.dart';
+
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/models/enums.dart';
@@ -10,8 +14,6 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_mark
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
 import 'package:stadtnavi_core/consts.dart';
-import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
-import 'package:vector_tile/vector_tile.dart';
 
 import 'parking_feature_model.dart';
 import 'parking_icons.dart';
@@ -62,34 +64,37 @@ class ParkingLayer extends CustomLayer {
       (b, a) => a.position.latitude.compareTo(b.position.latitude),
     );
     return markerSize != null
-        ? markersList
-            .map((element) => Marker(
-                  key: Key("$id:${element.id}"),
-                  height: markerSize!,
-                  width: markerSize,
-                  point: element.position,
-                  anchorPos: AnchorPos.align(AnchorAlign.center),
-                  builder: (context) => GestureDetector(
-                    onTap: () {
-                      final panelCubit = context.read<PanelCubit>();
-                      panelCubit.setPanel(
-                        CustomMarkerPanel(
-                          panel: (
-                            context,
-                            onFetchPlan, {
-                            isOnlyDestination,
-                          }) =>
-                              ParkingStateUpdater(
-                            parkingFeature: element,
-                            onFetchPlan: onFetchPlan,
-                            isOnlyDestination: isOnlyDestination ?? false,
-                          ),
-                          positon: element.position,
-                          minSize: 50,
-                        ),
-                      );
-                    },
-                    child: Container(
+        ? markersList.map((element) {
+            final availabilityParking = element.markerState();
+            return Marker(
+              key: Key("$id:${element.id}"),
+              height: markerSize!,
+              width: markerSize,
+              point: element.position,
+              anchorPos: AnchorPos.align(AnchorAlign.center),
+              builder: (context) => GestureDetector(
+                onTap: () {
+                  final panelCubit = context.read<PanelCubit>();
+                  panelCubit.setPanel(
+                    CustomMarkerPanel(
+                      panel: (
+                        context,
+                        onFetchPlan, {
+                        isOnlyDestination,
+                      }) =>
+                          ParkingStateUpdater(
+                        parkingFeature: element,
+                        onFetchPlan: onFetchPlan,
+                        isOnlyDestination: isOnlyDestination ?? false,
+                      ),
+                      positon: element.position,
+                      minSize: 50,
+                    ),
+                  );
+                },
+                child: Stack(
+                  children: [
+                    Container(
                       margin: EdgeInsets.only(
                         left: markerSize! / 5,
                         top: markerSize / 5,
@@ -98,9 +103,13 @@ class ParkingLayer extends CustomLayer {
                         parkingMarkerIcons[element.type] ?? "",
                       ),
                     ),
-                  ),
-                ))
-            .toList()
+                    if (availabilityParking != null)
+                      availabilityParking.getImage(size: markerSize / 2),
+                  ],
+                ),
+              ),
+            );
+          }).toList()
         : [];
   }
 
@@ -215,7 +224,7 @@ class ParkingLayer extends CustomLayer {
     valY = y;
     final uri = Uri(
       scheme: "https",
-      host: baseDomain,
+      host: ApiConfig().baseDomain,
       path: "/routing/v1/router/vectorTiles/parking/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);

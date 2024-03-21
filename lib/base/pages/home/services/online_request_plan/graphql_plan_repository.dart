@@ -2,15 +2,16 @@ import 'dart:async';
 
 import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
+import 'package:trufi_core/base/models/enums/transport_mode.dart';
+import 'package:trufi_core/base/models/trufi_place.dart';
+import 'package:trufi_core/base/utils/graphql_client/graphql_client.dart';
+import 'package:trufi_core/base/utils/graphql_client/graphql_utils.dart';
+
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
 import 'package:stadtnavi_core/base/models/othermodel/modes_transport.dart';
 import 'package:stadtnavi_core/base/models/othermodel/plan.dart';
 import 'package:stadtnavi_core/base/models/utils/geo_utils.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
-import 'package:trufi_core/base/models/enums/transport_mode.dart';
-import 'package:trufi_core/base/models/trufi_place.dart';
-import 'package:trufi_core/base/utils/graphql_client/graphql_client.dart';
-import 'package:trufi_core/base/utils/graphql_client/graphql_utils.dart';
 
 import 'graphql_operation/fragments2/plan_fragment.dart' as plan_fragment;
 import 'graphql_operation/queries2/modes_plan_queries.dart'

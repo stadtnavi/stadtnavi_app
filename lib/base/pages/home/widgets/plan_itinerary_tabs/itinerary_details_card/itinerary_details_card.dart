@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
+import 'package:trufi_core/base/models/enums/transport_mode.dart';
+import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
+import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/ticket_information.dart';
-
-import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
-import 'package:trufi_core/base/models/enums/transport_mode.dart';
-import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 
 import 'bar_itinerary_details.dart';
 import 'line_dash_components.dart';
@@ -27,6 +29,9 @@ class ItineraryDetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final localizationBase = TrufiBaseLocalization.of(context);
+    final localizationSB = StadtnaviBaseLocalization.of(context);
     final localization = SavedPlacesLocalization.of(context);
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
     final mapRouteCubit = context.read<MapRouteCubit>();
@@ -62,7 +67,7 @@ class ItineraryDetailsCard extends StatelessWidget {
               ),
             ),
             ListView.builder(
-              padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+              padding: const EdgeInsets.fromLTRB(15, 10, 15, 20),
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: sizeLegs,
@@ -162,7 +167,7 @@ class ItineraryDetailsCard extends StatelessWidget {
                       ),
 
                     // toDashLine
-                    if (index == sizeLegs - 1)
+                    if (index == sizeLegs - 1) ...[
                       DashLinePlace(
                         date: itinerary.endTimeHHmm.toString(),
                         location:
@@ -186,6 +191,29 @@ class ItineraryDetailsCard extends StatelessWidget {
                           ],
                         ),
                       ),
+                      const SizedBox(height: 16),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: RichText(
+                          softWrap: false,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: '${localizationSB.commonTotalDistance}: ',
+                                style: theme.textTheme.bodyText2,
+                              ),
+                              TextSpan(
+                                text: itinerary
+                                    .getDistanceString(localizationBase),
+                                style: theme.textTheme.bodyText2?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ]
                   ],
                 );
               },

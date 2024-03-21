@@ -65,6 +65,9 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get settingPanelAccessibility => 'Accessibility';
 
   @override
+  String get settingPanelAccessibilityDetails => 'Due to a lack of data on accessibility, we are unfortunately unable to provide any barrier-free routes at the moment.';
+
+  @override
   String get settingPanelWheelchair => 'Wheelchair';
 
   @override
@@ -203,6 +206,9 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String departureBikeStation(Object departureStop, Object departureTime) {
     return 'Departure at $departureTime from $departureStop bike station';
   }
+
+  @override
+  String get commonTotalDistance => 'Total distance';
 
   @override
   String get commonSettings => 'Settings';

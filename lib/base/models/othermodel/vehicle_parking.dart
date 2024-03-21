@@ -48,7 +48,7 @@ class VehicleParking {
         vehicleParkingId: json['vehicleParkingId'] as String?,
         detailsUrl: json['detailsUrl'] as String?,
         note: json['note'] as String?,
-        openingHours: json['openingHours'] as String?,
+        openingHours: json['openingHours']?['osm'] as String?,
       );
 
   Map<String, dynamic> toMap() => {
@@ -63,6 +63,8 @@ class VehicleParking {
         'vehicleParkingId': vehicleParkingId,
         'detailsUrl': detailsUrl,
         'note': note,
-        'openingHours': openingHours,
+        'openingHours': {
+          'osm': openingHours
+        },
       };
 }

@@ -13,10 +13,6 @@ class PlanItinerary extends Equatable {
   static int _distanceForLegs(List<PlanItineraryLeg> legs) =>
       legs.fold<int>(0, (distance, leg) => distance += leg.distance.ceil());
 
-  static int _timeForLegs(List<PlanItineraryLeg> legs) =>
-      (legs.fold<double>(0, (time, leg) => time += leg.duration.inSeconds) / 60)
-          .ceil();
-
   PlanItinerary({
     this.legs = const [],
     required this.startTime,
@@ -26,8 +22,7 @@ class PlanItinerary extends Equatable {
     required this.walkDistance,
     required this.arrivedAtDestinationWithRentedBicycle,
     this.isOnlyShowItinerary = false,
-  })  : distance = _distanceForLegs(legs),
-        time = _timeForLegs(legs);
+  })  : distance = _distanceForLegs(legs);
 
   final List<PlanItineraryLeg> legs;
   final DateTime startTime;
@@ -39,7 +34,6 @@ class PlanItinerary extends Equatable {
   final bool isOnlyShowItinerary;
 
   final int distance;
-  final int time;
 
   factory PlanItinerary.fromJson(Map<String, dynamic> json) {
     return PlanItinerary(

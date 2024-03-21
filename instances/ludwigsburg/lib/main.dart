@@ -1,10 +1,16 @@
+import 'package:flutter/material.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:ludwigsburg/firebase_options.dart';
 import 'package:ludwigsburg/lifecycle_reactor_handler_notifications.dart';
 import 'package:ludwigsburg/tools.dart';
+import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
+import 'package:trufi_core/base/models/enums/transport_mode.dart';
+import 'package:trufi_core/base/utils/certificates_letsencrypt_android.dart';
+import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
+
 import 'package:stadtnavi_core/base/custom_layers/map_layers/map_leyers.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
@@ -13,10 +19,6 @@ import 'package:stadtnavi_core/consts.dart';
 import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
 
-import 'package:trufi_core/base/models/enums/transport_mode.dart';
-import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
-import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
-import 'package:trufi_core/base/utils/certificates_letsencrypt_android.dart';
 import 'branding_ludwigsburg.dart';
 import 'components/share_itinerary_button.dart';
 import 'configuration_routes.dart';
@@ -59,7 +61,7 @@ void main() async {
   // TODO we need to improve ParkingFeature.calculateAvailavility
   ParkingFeature.calculateAvailavility = calculateParkingAvailavilityLB;
 
-  runApp(
+    runApp(
     StadtnaviApp(
       appLifecycleReactorHandler: AppLifecycleReactorHandlerNotifications(
         onStartNotificationsURL:
@@ -69,8 +71,8 @@ void main() async {
       appNameTitle: 'stadtnavi|ludwigsburg',
       cityName: 'Ludwigsburg',
       center: LatLng(48.895195, 9.188647),
-      otpGraphqlEndpoint: openTripPlannerUrl,
-      urlFeedback: 'mailto:b.hofmann@ludwigsburg.de?subject=Feedback',
+      otpGraphqlEndpoint: ApiConfig().openTripPlannerUrl,
+      urlFeedback: 'mailto:j.franz@ludwigsburg.de?subject=Feedback',
       urlShareApp: 'https://stadtnavi.swlb.de/',
       urlRepository: 'https://github.com/trufi-association/trufi-app',
       urlImpressum: 'https://www.ludwigsburg.de/stadtnavi-impressum',

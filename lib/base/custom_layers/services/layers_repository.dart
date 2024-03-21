@@ -3,6 +3,9 @@ import 'dart:async';
 import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
 import 'package:intl/intl.dart';
+import 'package:trufi_core/base/utils/graphql_client/graphql_client.dart';
+import 'package:trufi_core/base/utils/graphql_client/graphql_utils.dart';
+
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybike_data_fetch.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_data_fetch.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/models_otp/bike_rental_station.dart';
@@ -10,8 +13,6 @@ import 'package:stadtnavi_core/base/custom_layers/services/models_otp/bike_renta
 // import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_data_fetch.dart';
 import 'package:stadtnavi_core/base/models/othermodel/vehicle_parking.dart';
 import 'package:stadtnavi_core/consts.dart';
-import 'package:trufi_core/base/utils/graphql_client/graphql_client.dart';
-import 'package:trufi_core/base/utils/graphql_client/graphql_utils.dart';
 
 import 'graphql_operation/fragment/pattern_fragments.dart' as pattern_fragments;
 import 'graphql_operation/fragment/stop_fragments.dart' as stops_fragments;
@@ -22,7 +23,7 @@ import 'models_otp/pattern.dart';
 import 'models_otp/stop.dart';
 
 class LayersRepository {
-  static GraphQLClient client = getClient(openTripPlannerUrl);
+  static GraphQLClient client = getClient(ApiConfig().openTripPlannerUrl);
 
   LayersRepository();
 

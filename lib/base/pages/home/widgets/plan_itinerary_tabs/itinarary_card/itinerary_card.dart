@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:stadtnavi_core/base/models/plan_entity.dart';
-import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinarary_card/itinerary_summary_advanced.dart';
-
 import 'package:trufi_core/base/const/styles.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+
+import 'package:stadtnavi_core/base/models/plan_entity.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinarary_card/itinerary_summary_advanced.dart';
 
 class ItineraryCard extends StatelessWidget {
   final PlanItinerary itinerary;
@@ -53,26 +53,13 @@ class ItineraryCard extends StatelessWidget {
                         ?.copyWith(fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(width: 8),
-                  RichText(
+                  Text(
+                    itinerary.durationFormat(localizationBase),
                     textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: itinerary.durationFormat(localizationBase),
-                          style: theme.textTheme.bodyText2?.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        TextSpan(
-                          text:
-                              " (${itinerary.getDistanceString(localizationBase)})",
-                          style: TextStyle(
-                            color: theme.primaryColor,
-                          ),
-                        )
-                      ],
+                    style: theme.textTheme.bodyText2?.copyWith(
+                      fontWeight: FontWeight.w500,
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
