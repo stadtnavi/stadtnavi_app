@@ -1,3 +1,6 @@
+## 1.8.5
+🎉 Fixed a display issue on iPhone 12 mini where departure times were shown without minutes. 
+
 ## 1.8.4
 🎉 Update Add Note #352
 

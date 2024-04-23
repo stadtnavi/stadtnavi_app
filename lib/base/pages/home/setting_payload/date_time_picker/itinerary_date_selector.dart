@@ -64,10 +64,11 @@ class ItineraryDateSelector extends StatelessWidget {
                         : "${localization.commonDeparture}  ${payloadDataPlanCubit.state.date!.customFormat(languageCode)}",
                 style: TextStyle(
                   fontSize: 15,
+                  height: 0,
                   color: theme.appBarTheme.foregroundColor!,
                 ),
                 textAlign: TextAlign.center,
-                maxLines: 1,
+                maxLines: 2,
               ),
             ),
             Icon(
