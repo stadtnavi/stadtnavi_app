@@ -293,8 +293,8 @@ class CarDash extends StatelessWidget {
                 ),
                 Center(
                   child: ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(primary: theme.colorScheme.primary),
+                    style: ElevatedButton.styleFrom(
+                        primary: theme.colorScheme.primary),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -602,11 +602,12 @@ class SeparatorPlace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(width: 47),
+          SizedBox(width: (45 * textScaleFactor) + 2),
           if (separator != null)
             SizedBox(
               height: height,
@@ -669,13 +670,14 @@ class DashLinePlace extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textScaleFactor = MediaQuery.of(context).textScaleFactor;
     return IntrinsicHeight(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 45,
+            width: 45 * textScaleFactor,
             child: Text(
               date,
               style: const TextStyle(
