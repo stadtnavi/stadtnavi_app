@@ -1,3 +1,7 @@
+## 1.8.6
+🎉 Fixed missing Roadworks in Roadworks-Layer.
+🎉 Fixed dynamic size-text(scaleFactor) in departure-time itinerary.
+
 ## 1.8.5
 🎉 Fixed a display issue on iPhone 12 mini where departure times were shown without minutes. 
 
