@@ -59,7 +59,7 @@ class CifsFeature {
             properties['subtype']!.dartStringValue ?? '')
         : null;
     final List<LatLng> polyline = [];
-    final polylineList = (locationPolyline ?? '').split(" ");
+    final polylineList = (locationPolyline?.trim() ?? '').split(" ");
     for (int i = 0; i < polylineList.length; i += 2) {
       polyline.add(
         LatLng(

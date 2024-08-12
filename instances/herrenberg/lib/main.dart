@@ -1,29 +1,28 @@
 import 'dart:convert';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:herrenberg/firebase_options.dart';
 import 'package:herrenberg/lifecycle_reactor_handler_notifications.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:hive/hive.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stadtnavi_core/stadtnavi_core.dart';
-import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
-
-import 'package:trufi_core/base/models/enums/transport_mode.dart';
-import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
+import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/utils/certificates_letsencrypt_android.dart';
+import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
+
+import 'package:stadtnavi_core/consts.dart';
+import 'package:stadtnavi_core/stadtnavi_core.dart';
+import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
 
 import 'branding_herrenberg.dart';
 import 'static_layer.dart';
 
-const baseDomain = "api.stadtnavi.de";
-String openTripPlannerUrl =
-    "https://$baseDomain/routing/v1/router/index/graphql";
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CertificatedLetsencryptAndroid.workAroundCertificated();
@@ -62,7 +61,7 @@ void main() async {
       appNameTitle: 'stadtnavi|Herrenberg',
       cityName: 'Herrenberg',
       center: LatLng(48.5950, 8.8672),
-      otpGraphqlEndpoint: openTripPlannerUrl,
+      otpGraphqlEndpoint: ApiConfig().openTripPlannerUrl,
       urlFeedback: 'https://stadtnavi.de/feedback/',
       urlShareApp: 'https://herrenberg.stadtnavi.de/',
       urlRepository: 'https://github.com/trufi-association/trufi-app',

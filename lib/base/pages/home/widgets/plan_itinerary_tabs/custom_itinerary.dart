@@ -1,19 +1,19 @@
-import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trufi_core/base/widgets/alerts/fetch_error_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
-import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
 import 'package:stadtnavi_core/base/models/enums/plan_info_box.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinarary_card/itinerary_card.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/itinerary_details_card.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/widgets/info_message.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
-
-import 'package:trufi_core/base/widgets/alerts/fetch_error_handler.dart';
 
 class CustomItinerary extends StatefulWidget {
   final TrufiMapController trufiMapController;

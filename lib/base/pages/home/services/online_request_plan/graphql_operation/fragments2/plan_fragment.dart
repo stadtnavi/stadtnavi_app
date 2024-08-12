@@ -116,11 +116,12 @@ fragment planFragment on Plan {
         lon
         name
         vertexType
-        vehicleParkingWithEntrance {
-          vehicleParking {
-            tags
-          }
-        }
+        # TODO still to be implemented in upstream OTP
+        # vehicleParkingWithEntrance {
+        #   vehicleParking {
+        #     tags
+        #   }
+        # }
         bikeRentalStation {
           lat
           lon

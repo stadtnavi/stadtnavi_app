@@ -213,6 +213,12 @@ abstract class StadtnaviBaseLocalization {
   /// **'Accessibility'**
   String get settingPanelAccessibility;
 
+  /// Accessibility details configuration panel label
+  ///
+  /// In en, this message translates to:
+  /// **'Due to a lack of data on accessibility, we are unfortunately unable to provide any barrier-free routes at the moment.'**
+  String get settingPanelAccessibilityDetails;
+
   /// Wheelchair configuration panel label
   ///
   /// In en, this message translates to:
@@ -488,6 +494,12 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'Departure at {departureTime} from {departureStop} bike station'**
   String departureBikeStation(Object departureStop, Object departureTime);
+
+  /// No description provided for @commonTotalDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Total distance'**
+  String get commonTotalDistance;
 
   /// General Settings label
   ///

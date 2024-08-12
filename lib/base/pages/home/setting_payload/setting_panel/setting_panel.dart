@@ -374,16 +374,9 @@ class _SettingPanelState extends State<SettingPanel> {
                       style: theme.textTheme.bodyText1,
                     ),
                   ),
-                  CustomSwitchTile(
-                    title: localization.settingPanelWheelchair,
-                    secondary: SizedBox(
-                      height: 35,
-                      width: 35,
-                      child: wheelChairSvg,
-                    ),
-                    value: state.wheelchair,
-                    onChanged: (value) =>
-                        payloadDataPlanCubit.setWheelChair(wheelchair: value),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(localization.settingPanelAccessibilityDetails),
                   ),
                   const SizedBox(height: 10),
                 ],

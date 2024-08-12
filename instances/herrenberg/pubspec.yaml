@@ -15,7 +15,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.7.3+67
+version: 1.8.6+76
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
@@ -31,8 +31,8 @@ dependencies:
     sdk: flutter
   stadtnavi_core:
     path: ../../../stadtnavi_app
-  firebase_messaging: ^14.3.0
-  firebase_core: ^2.8.0
+  firebase_messaging: ^14.6.9
+  firebase_core: ^2.17.0
   shared_preferences: ^2.0.15
 
   # The following adds the Cupertino Icons font to your application.
