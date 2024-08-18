@@ -1,3 +1,7 @@
+## 2.0.0
+🎉 Support for Flutter 3.22.4
+🎉 Support trufi-core_v4.0.0-stadtnavi-lts
+
 ## 1.8.6
 🎉 Fixed missing Roadworks in Roadworks-Layer.
 🎉 Fixed dynamic size-text(scaleFactor) in departure-time itinerary.

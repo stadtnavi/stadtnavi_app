@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/maps/cache_map_tiles.dart';
 import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
@@ -14,7 +15,6 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
-
 
 enum MapLayerIds {
   streets,
@@ -58,51 +58,6 @@ extension LayerIdsToString on MapLayerIds {
   }
 }
 
-List<Widget> mapLayerOptions(MapLayerIds id, BuildContext context) {
-  switch (id) {
-    case MapLayerIds.streets:
-      return [
-        TileLayer(
-          tileProvider: CustomTileProvider(context: context),
-          urlTemplate: "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
-        ),
-      ];
-    case MapLayerIds.satellite:
-      return [
-        TileLayer(
-          tileProvider: CustomTileProvider(context: context),
-          urlTemplate:
-              "https://tiles.stadtnavi.eu/orthophoto/{z}/{x}/{y}.jpg",
-        ),
-        TileLayer(
-          tileProvider: CustomTileProvider(context: context),
-          // backgroundColor: Colors.transparent,
-          urlTemplate:
-              "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
-        ),
-      ];
-    case MapLayerIds.bike:
-      return [
-        TileLayer(
-          tileProvider: CustomTileProvider(context: context),
-          urlTemplate: "https://tiles.stadtnavi.eu/bicycle/{z}/{x}/{y}@2x.png",
-          subdomains: const ["a", "b", "c"],
-        ),
-      ];
-    case MapLayerIds.terrain:
-      return [
-        TileLayer(
-          tileProvider: CustomTileProvider(context: context),
-          urlTemplate:
-              "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
-          subdomains: const ["a", "b", "c"],
-        ),
-      ];
-    default:
-      return [];
-  }
-}
-
 Map<MapLayerIds, String> layerImage = {
   MapLayerIds.streets: "assets/images/maptype-streets.png",
   MapLayerIds.satellite: "assets/images/maptype-satellite.png",
@@ -140,91 +95,208 @@ class MapLayer extends MapTileProvider {
         ? mapLayerId.enumToStringEN()
         : mapLayerId.enumToStringDE();
   }
+
+  List<Widget> mapLayerOptions(MapLayerIds id, BuildContext context) {
+    switch (id) {
+      case MapLayerIds.streets:
+        return [
+          TileLayer(
+            tileProvider: CustomTileProvider(context: context),
+            urlTemplate:
+                "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
+          ),
+        ];
+      case MapLayerIds.satellite:
+        return [
+          TileLayer(
+            tileProvider: CustomTileProvider(context: context),
+            urlTemplate:
+                "https://tiles.stadtnavi.eu/orthophoto/{z}/{x}/{y}.jpg",
+          ),
+          TileLayer(
+            tileProvider: CustomTileProvider(context: context),
+            // backgroundColor: Colors.transparent,
+            urlTemplate:
+                "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
+          ),
+        ];
+      case MapLayerIds.bike:
+        return [
+          TileLayer(
+            tileProvider: CustomTileProvider(context: context),
+            urlTemplate:
+                "https://tiles.stadtnavi.eu/bicycle/{z}/{x}/{y}@2x.png",
+            subdomains: const ["a", "b", "c"],
+          ),
+        ];
+      case MapLayerIds.terrain:
+        return [
+          TileLayer(
+            tileProvider: CustomTileProvider(context: context),
+            urlTemplate:
+                "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
+            subdomains: const ["a", "b", "c"],
+          ),
+        ];
+      default:
+        return [];
+    }
+  }
 }
 
 class CustomTileProvider extends TileProvider {
-  Map<String, String> headers;
-  BuildContext context;
-  CustomTileProvider(
-      {this.headers = const {"Referer": "https://herrenberg.stadtnavi.de/"},
-      required this.context});
+  final Map<String, String> customHeaders;
+  final BuildContext context;
+  CustomTileProvider({
+    this.customHeaders = const {"Referer": "https://herrenberg.stadtnavi.de/"},
+    required this.context,
+  });
   @override
   ImageProvider getImage(TileCoordinates coords, TileLayer options) {
     if (coords.z.toInt() > 12) {
       _fetchPBF(coords);
     }
-    return CachedNetworkImageProvider(getTileUrl(coords, options),
-        headers: headers);
+    return CachedNetworkImageProvider(
+      getTileUrl(coords, options),
+      headers: customHeaders,
+    );
   }
 
   Future<void> _fetchPBF(TileCoordinates coords) async {
     // final layersStatus = context.read<CustomLayersCubit>().state.layersSatus;
     // if (layersStatus["Sharing"] ?? false) {
-    log("Tile coords: ${coords.z} ${coords.x} ${coords.y}");
-    await CityBikesLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
-    // if (StopsLayerIds.values
-    //     .any((element) => layersStatus[element.enumToString()] ?? false)) {
-    await StopsLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
-    // if (layersStatus["Parking"] ?? false) {
-    await ParkingLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
-    // if (layersStatus["Bike Parking Space"] ?? false) {
-    await BikeParkLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
+    // log("Tile coords: ${coords.z} ${coords.x} ${coords.y}");
+    Future.wait([
+      CityBikesLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ).catchError((error) {
+        log("$error");
+      }),
+      // }
+      // if (StopsLayerIds.values
+      //     .any((element) => layersStatus[element.enumToString()] ?? false)) {
+      StopsLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ).catchError((error) {
+        log("$error");
+      }),
+      // }
+      // if (layersStatus["Parking"] ?? false) {
+      ParkingLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ).catchError((error) {
+        log("$error");
+      }),
+      // }
+      // if (layersStatus["Bike Parking Space"] ?? false) {
+      BikeParkLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ).catchError((error) {
+        log("$error");
+      }),
+      // }
 
-    // if (layersStatus["Roadworks"] ?? false) {
-    await CifsLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
+      // if (layersStatus["Roadworks"] ?? false) {
+      CifsLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ).catchError((error) {
+        log("$error");
+      }),
+      // }
 
-    // if (layersStatus["Road Weather"] ?? false) {
-    await WeatherLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
-    // if (layersStatus["Charging"] ?? false) {
-    await ChargingLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
+      // if (layersStatus["Road Weather"] ?? false) {
+      WeatherLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ).catchError((error) {
+        log("$error");
+      }),
+      // }
+      // if (layersStatus["Charging"] ?? false) {
+      ChargingLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ).catchError((error) {
+        log("$error");
+      }),
+      // }
+    ]);
+    // await CityBikesLayer.fetchPBF(
+    //   coords.z.toInt(),
+    //   coords.x.toInt(),
+    //   coords.y.toInt(),
+    // ).catchError((error) {
+    //   log("$error");
+    // });
+    // // }
+    // // if (StopsLayerIds.values
+    // //     .any((element) => layersStatus[element.enumToString()] ?? false)) {
+    // await StopsLayer.fetchPBF(
+    //   coords.z.toInt(),
+    //   coords.x.toInt(),
+    //   coords.y.toInt(),
+    // ).catchError((error) {
+    //   log("$error");
+    // });
+    // // }
+    // // if (layersStatus["Parking"] ?? false) {
+    // await ParkingLayer.fetchPBF(
+    //   coords.z.toInt(),
+    //   coords.x.toInt(),
+    //   coords.y.toInt(),
+    // ).catchError((error) {
+    //   log("$error");
+    // });
+    // // }
+    // // if (layersStatus["Bike Parking Space"] ?? false) {
+    // await BikeParkLayer.fetchPBF(
+    //   coords.z.toInt(),
+    //   coords.x.toInt(),
+    //   coords.y.toInt(),
+    // ).catchError((error) {
+    //   log("$error");
+    // });
+    // // }
+
+    // // if (layersStatus["Roadworks"] ?? false) {
+    // await CifsLayer.fetchPBF(
+    //   coords.z.toInt(),
+    //   coords.x.toInt(),
+    //   coords.y.toInt(),
+    // ).catchError((error) {
+    //   log("$error");
+    // });
+    // // }
+
+    // // if (layersStatus["Road Weather"] ?? false) {
+    // await WeatherLayer.fetchPBF(
+    //   coords.z.toInt(),
+    //   coords.x.toInt(),
+    //   coords.y.toInt(),
+    // ).catchError((error) {
+    //   log("$error");
+    // });
+    // // }
+    // // if (layersStatus["Charging"] ?? false) {
+    // await ChargingLayer.fetchPBF(
+    //   coords.z.toInt(),
+    //   coords.x.toInt(),
+    //   coords.y.toInt(),
+    // ).catchError((error) {
+    //   log("$error");
+    // });
+    // // }
   }
 }

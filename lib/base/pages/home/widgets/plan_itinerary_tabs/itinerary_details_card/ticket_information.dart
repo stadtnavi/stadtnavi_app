@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-import 'package:skeleton_animation/skeleton_animation.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -165,36 +165,63 @@ class _LoadingTIcketSkeleton extends StatelessWidget {
   const _LoadingTIcketSkeleton({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          children: [
-            Skeleton(
-              padding: 2,
-              width: 170,
-              height: 18,
-              textColor: Colors.grey[300],
-              borderRadius: BorderRadius.circular(5),
+    return Skeletonizer(
+      enabled: true,
+      switchAnimationConfig: SwitchAnimationConfig(
+        duration: Duration(milliseconds: 50),
+      ),
+      textBoneBorderRadius: TextBoneBorderRadius(BorderRadius.circular(0)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(2),
+                  child: Skeleton.leaf(
+                    child: Card(
+                      elevation: 0,
+                  shadowColor: Colors.transparent,
+                      margin: EdgeInsets.zero,
+                      child: Container(
+                        height: 18,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(2),
+                  child: Skeleton.leaf(
+                    child: Card(
+                  shadowColor: Colors.transparent,
+                      margin: EdgeInsets.zero,
+                      elevation: 0,
+                      child: Container(
+                        height: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Skeleton(
-              padding: 2,
-              width: 170,
-              height: 18,
-              textColor: Colors.grey[300],
-              borderRadius: BorderRadius.circular(5),
-            ),
-          ],
-        ),
-        Flexible(
-          child: Skeleton(
-            padding: 2,
-            height: 40,
-            textColor: Colors.grey[300],
-            borderRadius: BorderRadius.circular(5),
           ),
-        ),
-      ],
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(2),
+              child: Skeleton.leaf(
+                child: Card(
+                  shadowColor: Colors.transparent,
+                  margin: EdgeInsets.zero,
+                  child: Container(
+                    height: 40,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

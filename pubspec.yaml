@@ -14,7 +14,7 @@ dependencies:
     sdk: flutter
   maps_toolkit: ^3.0.0
   mqtt_client: ^10.5.1
-  skeleton_animation: ^0.1.4
+  skeletonizer: ^1.4.2
   trufi_core:
     path: ../trufi-core
   # trufi_core:

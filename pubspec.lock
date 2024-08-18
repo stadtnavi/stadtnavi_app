@@ -805,14 +805,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
-  skeleton_animation:
+  skeletonizer:
     dependency: "direct main"
     description:
-      name: skeleton_animation
-      sha256: ee829687768b52f5ccd288a03674d0b38f988da4b19c0da66012c877b398fe8f
+      name: skeletonizer
+      sha256: "3b202e4fa9c49b017d368fb0e570d4952bcd19972b67b2face071bdd68abbfae"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.4"
+    version: "1.4.2"
   sky_engine:
     dependency: transitive
     description: flutter
