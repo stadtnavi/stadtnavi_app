@@ -124,7 +124,7 @@ class _TimeTableScreenState extends State<TimeTableScreen>
                                   languageCode == 'en'
                                       ? "Departures by hour (minutes/route)"
                                       : "Abfahrten nach Stunde (Minuten / Strecke)",
-                                  style: theme.textTheme.bodyText1?.copyWith(
+                                  style: theme.textTheme. bodyLarge?.copyWith(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -134,7 +134,7 @@ class _TimeTableScreenState extends State<TimeTableScreen>
                           ),
                         Text(
                           stoptimesByDay![stopTimeKey]?[0].hourTime ?? '',
-                          style: theme.textTheme.bodyText1?.copyWith(
+                          style: theme.textTheme. bodyLarge?.copyWith(
                               fontSize: 20, fontWeight: FontWeight.w700),
                         ),
                         const SizedBox(height: 5),
@@ -146,7 +146,7 @@ class _TimeTableScreenState extends State<TimeTableScreen>
                                               const EdgeInsets.only(right: 15),
                                           child: Text(
                                             "${e.minuteTime}/${e.name}",
-                                            style: theme.textTheme.bodyText1
+                                            style: theme.textTheme. bodyLarge
                                                 ?.copyWith(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w500,

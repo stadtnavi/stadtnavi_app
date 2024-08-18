@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -107,25 +106,29 @@ class BicycleNetworkLayer extends CustomLayer {
       default:
         markerSize = zoom != null && zoom > 12 ? -0.5 : null;
     }
-    return CustomPolylineLayer(
-      polylineCulling: true,
-      polylineOpts: markerSize != null
-          ? _listlist
-              .map((e) => CustomPolyline(
-                    points: e.coordinates,
-                    strokeWidth: e.weight + markerSize!,
-                    color: e.color,
-                    borderColor: e.color,
-                    isDotted: e.dashArray != null,
-                  ))
-              .toList()
-          : [],
-    );
+    return null;
+    // TODO review PolylineLayer
+    // return CustomPolylineLayer(
+    //   polylineCulling: true,
+    //   polylineOpts: markerSize != null
+    //       ? _listlist
+    //           .map((e) => CustomPolyline(
+    //                 points: e.coordinates,
+    //                 strokeWidth: e.weight + markerSize!,
+    //                 color: e.color,
+    //                 borderColor: e.color,
+    //                 isDotted: e.dashArray != null,
+    //               ))
+    //           .toList()
+    //       : [],
+    // );
   }
 
   @override
   Widget buildLayerOptions(int? zoom) {
-    return PolygonLayer();
+    return PolygonLayer<Object>(
+      polygons: [],
+    );
   }
 
   @override

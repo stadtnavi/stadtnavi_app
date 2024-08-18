@@ -51,7 +51,7 @@ class CitybikeMarkerModal extends StatelessWidget {
                 Text(
                   "${element.bicyclePlacesCapacity} ${languageCode == 'en' ? 'parking spaces' : 'Stellplätze'}",
                   style: TextStyle(
-                    color: theme.textTheme.bodyText1?.color,
+                    color: theme.textTheme. bodyLarge?.color,
                   ),
                 ),
             ],

@@ -36,7 +36,9 @@ class _TicketInformationState extends State<TicketInformation> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => {loadFares()});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadFares();
+    });
   }
 
   @override
@@ -71,7 +73,7 @@ class _TicketInformationState extends State<TicketInformation> {
                         fares!.length > 1
                             ? '${localization.itineraryTicketsTitle}:'
                             : '${localization.itineraryTicketTitle}:',
-                        style: theme.primaryTextTheme.bodyText1?.copyWith(
+                        style: theme.primaryTextTheme.bodyLarge?.copyWith(
                           color: Colors.grey[600],
                         ),
                       ),
@@ -79,11 +81,11 @@ class _TicketInformationState extends State<TicketInformation> {
                         children: [
                           Text(
                             localization.fareTicketName,
-                            style: theme.primaryTextTheme.bodyText1,
+                            style: theme.primaryTextTheme.bodyLarge,
                           ),
                           Text(
                             ' ${formatTwoDecimals(localeName: localization.localeName).format((fares![0]!.cents ?? 0) / 100)} €',
-                            style: theme.primaryTextTheme.bodyText1?.copyWith(
+                            style: theme.primaryTextTheme.bodyLarge?.copyWith(
                               color: Colors.grey[600],
                             ),
                           ),
@@ -112,7 +114,7 @@ class _TicketInformationState extends State<TicketInformation> {
                 padding: const EdgeInsets.only(top: 7),
                 child: Text(
                   localization.copyrightsPriceProvider,
-                  style: theme.primaryTextTheme.bodyText1
+                  style: theme.primaryTextTheme.bodyLarge
                       ?.copyWith(fontSize: 12, color: Colors.grey[600]),
                   textAlign: TextAlign.left,
                 ),

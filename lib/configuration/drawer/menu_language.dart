@@ -28,7 +28,7 @@ TrufiMenuItem menuLanguage() {
               value: value,
               child: Text(
                 TrufiLocalizationCubit.localeDisplayName(value),
-                style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
               ),

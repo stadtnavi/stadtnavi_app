@@ -101,7 +101,7 @@ class _SettingPanelState extends State<SettingPanel> {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       localization.settingPanelTransportModes,
-                      style: theme.textTheme.bodyText1,
+                      style: theme.textTheme. bodyLarge,
                     ),
                   ),
                   CustomSwitchTile(
@@ -197,7 +197,7 @@ class _SettingPanelState extends State<SettingPanel> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 5),
                             child: Text(localization.commonCitybikes,
-                                style: theme.textTheme.bodyText1),
+                                style: theme.textTheme. bodyLarge),
                           ),
                           if (BikeRentalNetwork.cargoBike.visible)
                             CustomSwitchTile(
@@ -311,7 +311,7 @@ class _SettingPanelState extends State<SettingPanel> {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       localization.settingPanelMyModesTransport,
-                      style: theme.textTheme.bodyText1,
+                      style: theme.textTheme. bodyLarge,
                     ),
                   ),
                   CustomSwitchTile(
@@ -371,7 +371,7 @@ class _SettingPanelState extends State<SettingPanel> {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       localization.settingPanelAccessibility,
-                      style: theme.textTheme.bodyText1,
+                      style: theme.textTheme. bodyLarge,
                     ),
                   ),
                   Container(

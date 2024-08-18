@@ -3,7 +3,7 @@ import 'package:trufi_core/base/widgets/drawer/menu/menu_item.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:app_review/app_review.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 String aboutIcon = """
 <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000">
@@ -78,7 +78,7 @@ class RateApp extends TrufiMenuItem {
                 ),
             selectedIcon: (context) => const Icon(Icons.receipt_rounded),
             onClick: (context, _) async {
-              AppReview.writeReview;
+              await InAppReview.instance.requestReview();
             });
 }
 

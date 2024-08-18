@@ -1,12 +1,6 @@
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:lodash_flutter/lodash_flutter.dart';
 import 'package:equatable/equatable.dart';
-import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/icons.dart';
-import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/location_model.dart';
 
 class SearchData extends Equatable {
   final List<Map<String, dynamic>> data;

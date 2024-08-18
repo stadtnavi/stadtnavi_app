@@ -74,7 +74,7 @@ class _DateTimePickerState extends State<DateTimePicker>
           (MediaQuery.of(context).orientation == Orientation.portrait
               ? 0.35
               : 0.6),
-      color: theme.backgroundColor,
+      color: theme.colorScheme.surface,
       child: Column(
         children: [
           Row(
@@ -88,7 +88,7 @@ class _DateTimePickerState extends State<DateTimePicker>
                     child: Text(
                       localization.commonLeavingNow,
                       style: _styleOptions.copyWith(
-                        color: theme.textTheme.bodyText1?.color,
+                        color: theme.textTheme. bodyLarge?.color,
                         fontWeight: FontWeight.w400,
                       ),
                       textAlign: TextAlign.center,
@@ -159,7 +159,7 @@ class _DateTimePickerState extends State<DateTimePicker>
                       },
                       child: Text(
                         localizationBase.commonCancel.toUpperCase(),
-                        style: theme.textTheme.bodyText2,
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ),
                   ),

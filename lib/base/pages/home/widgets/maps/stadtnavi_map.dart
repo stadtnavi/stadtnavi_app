@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/plugin_api.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_cluster_2/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
@@ -87,24 +85,26 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
               return FlutterMap(
                 mapController: widget.trufiMapController.mapController,
                 options: MapOptions(
-                  interactiveFlags: InteractiveFlag.drag |
-                      InteractiveFlag.flingAnimation |
-                      InteractiveFlag.pinchMove |
-                      InteractiveFlag.pinchZoom |
-                      InteractiveFlag.doubleTapZoom,
+                  interactionOptions: InteractionOptions(
+                    flags: InteractiveFlag.drag |
+                        InteractiveFlag.flingAnimation |
+                        InteractiveFlag.pinchMove |
+                        InteractiveFlag.pinchZoom |
+                        InteractiveFlag.doubleTapZoom,
+                  ),
                   minZoom: mapConfiguratiom.onlineMinZoom,
                   maxZoom: mapConfiguratiom.onlineMaxZoom,
-                  zoom: mapConfiguratiom.onlineZoom,
+                  initialZoom: mapConfiguratiom.onlineZoom,
                   onTap: widget.onTap,
                   onLongPress: widget.onLongPress,
-                  center: mapConfiguratiom.center,
+                  initialCenter: mapConfiguratiom.center,
                   onMapReady: () {
                     if (!widget.trufiMapController.readyCompleter.isCompleted) {
                       widget.trufiMapController.readyCompleter.complete();
                     }
                   },
                   onPositionChanged: (
-                    MapPosition position,
+                    MapCamera position,
                     bool hasGesture,
                   ) {
                     if (widget.onPositionChanged != null) {
@@ -114,7 +114,7 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
                     }
                     // fix render issue
                     Future.delayed(Duration.zero, () {
-                      final int zoom = position.zoom?.round() ?? 0;
+                      final int zoom = position.zoom.round();
                       if (mapZoom != zoom) {
                         setState(() => mapZoom = zoom);
                       }
@@ -133,27 +133,27 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
                       options: MarkerClusterLayerOptions(
                         builder: (context, markers) {
                           return Container();
-                          return Container(
-                            color: Colors.transparent,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                // borderRadius: BorderRadius.circular(20),
-                                color: Colors.transparent,
-                                border: Border.all(
-                                  color: Colors.black,
-                                  width: 2,
-                                ),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  markers.length.toString(),
-                                  style: const TextStyle(color: Colors.black),
-                                ),
-                              ),
-                            ),
-                          );
+                          // return Container(
+                          //   color: Colors.transparent,
+                          //   child: Container(
+                          //     decoration: BoxDecoration(
+                          //       // borderRadius: BorderRadius.circular(20),
+                          //       color: Colors.transparent,
+                          //       border: Border.all(
+                          //         color: Colors.black,
+                          //         width: 2,
+                          //       ),
+                          //     ),
+                          //     child: Center(
+                          //       child: Text(
+                          //         markers.length.toString(),
+                          //         style: const TextStyle(color: Colors.black),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // );
                         },
-                        anchor: AnchorPos.align(AnchorAlign.center),
+                        alignment: Alignment.center,
                         maxClusterRadius: clusterSize ?? 80,
                         size: markerClusterSize ?? const Size(30, 30),
                         centerMarkerOnClick: false,

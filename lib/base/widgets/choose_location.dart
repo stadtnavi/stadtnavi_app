@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:async/async.dart';
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 
@@ -50,7 +48,7 @@ class ChooseLocationPage extends StatefulWidget {
 class ChooseLocationPageState extends State<ChooseLocationPage>
     with TickerProviderStateMixin {
   final TrufiMapController trufiMapController = TrufiMapController();
-  MapPosition? position;
+  LatLng? position;
   Widget? _chooseOnMapMarker;
 
   bool loading = true;
@@ -156,11 +154,9 @@ class ChooseLocationPageState extends State<ChooseLocationPage>
                     layerOptionsBuilder: (context) => [],
                     onPositionChanged: (mapPosition, hasGesture) {
                       setState(() {
-                        position = mapPosition;
+                        position = mapPosition.center;
                       });
-                      if (mapPosition.center != null) {
-                        debounce(() => loadData(mapPosition.center!));
-                      }
+                      debounce(() => loadData(mapPosition.center));
                     },
                   ),
                   Positioned.fill(
@@ -202,12 +198,12 @@ class ChooseLocationPageState extends State<ChooseLocationPage>
                       if (loading)
                         OutlinedButton(
                           onPressed: () async {
-                            if (position?.center != null) {
+                            if (position != null) {
                               Navigator.of(context).pop(
                                 LocationDetail(
                                   '',
                                   '',
-                                  position!.center!,
+                                  position!,
                                 ),
                               );
                             }

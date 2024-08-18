@@ -42,14 +42,14 @@ class BottomStopsDetails extends StatelessWidget {
               Text(
                 getTransportMode(mode: routeOtp.mode?.name ?? '')
                     .getTranslate(localization),
-                style: theme.textTheme.bodyText2?.copyWith(
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
                 ' - ${routeOtp.shortName ?? ''}',
-                style: theme.textTheme.bodyText2?.copyWith(
+                style: theme.textTheme.bodyMedium?.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),

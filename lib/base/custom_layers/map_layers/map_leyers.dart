@@ -3,12 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
-import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_parks_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_layer.dart';
@@ -16,7 +14,7 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
-import 'package:stadtnavi_core/consts.dart';
+
 
 enum MapLayerIds {
   streets,
@@ -78,7 +76,7 @@ List<Widget> mapLayerOptions(MapLayerIds id, BuildContext context) {
         ),
         TileLayer(
           tileProvider: CustomTileProvider(context: context),
-          backgroundColor: Colors.transparent,
+          // backgroundColor: Colors.transparent,
           urlTemplate:
               "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
         ),
@@ -151,7 +149,7 @@ class CustomTileProvider extends TileProvider {
       {this.headers = const {"Referer": "https://herrenberg.stadtnavi.de/"},
       required this.context});
   @override
-  ImageProvider getImage(Coords<num> coords, TileLayer options) {
+  ImageProvider getImage(TileCoordinates coords, TileLayer options) {
     if (coords.z.toInt() > 12) {
       _fetchPBF(coords);
     }
@@ -159,7 +157,7 @@ class CustomTileProvider extends TileProvider {
         headers: headers);
   }
 
-  Future<void> _fetchPBF(Coords<num> coords) async {
+  Future<void> _fetchPBF(TileCoordinates coords) async {
     // final layersStatus = context.read<CustomLayersCubit>().state.layersSatus;
     // if (layersStatus["Sharing"] ?? false) {
     log("Tile coords: ${coords.z} ${coords.x} ${coords.y}");

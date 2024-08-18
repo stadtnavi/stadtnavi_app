@@ -66,7 +66,7 @@ class _CityBikeFeatureTileState extends State<CityBikeFeatureTile> {
                         Text(
                           widget.element.type?.getTranslate(languageCode) ?? '',
                           style: TextStyle(
-                            color: theme.textTheme.bodyText1?.color
+                            color: theme.textTheme. bodyLarge?.color
                                 ?.withOpacity(.5),
                             fontSize: 14,
                           ),

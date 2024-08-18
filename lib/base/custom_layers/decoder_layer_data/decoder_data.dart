@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map_marker_cluster/src/node/marker_node.dart';
+import 'package:flutter_map_marker_cluster_2/src/node/marker_node.dart';
 import 'package:stadtnavi_core/base/custom_layers/decoder_layer_data/bike_park_feature_tile.dart';
 import 'package:stadtnavi_core/base/custom_layers/decoder_layer_data/charging_feature_tile.dart';
 import 'package:stadtnavi_core/base/custom_layers/decoder_layer_data/city_bike_feature_tile.dart';
@@ -32,7 +32,8 @@ class ShowOverlappingData extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5),
             child: InkWell(
               onTap: () {
-                final data = markerNode.builder(context) as GestureDetector;
+                final data = (markerNode.child as Builder).build(context)
+                    as GestureDetector;
                 data.onTap!();
                 Navigator.of(context).pop();
               },

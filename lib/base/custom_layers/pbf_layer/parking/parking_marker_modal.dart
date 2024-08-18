@@ -305,16 +305,16 @@ class _OpeningTimeTableState extends State<OpeningTimeTable> {
               ),
               Text(
                 "${localizationST.commonNow} ",
-                style: theme.textTheme.bodyText2,
+                style: theme.textTheme.bodyMedium,
               ),
               widget.isOpenParking
                   ? Text(
                       "${localizationST.commonOpen} : ${widget.currentOpeningTime}",
-                      style: theme.textTheme.bodyText2,
+                      style: theme.textTheme.bodyMedium,
                     )
                   : Text(
                       localizationST.commonClosed,
-                      style: theme.textTheme.bodyText2
+                      style: theme.textTheme.bodyMedium
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
             ],

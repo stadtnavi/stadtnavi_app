@@ -90,7 +90,7 @@ class _BottomSheetItinerariesState extends State<BottomSheetItineraries>
                                 vertical: 8, horizontal: 10),
                             child: Text(
                               localization.itinerarySummaryBikeParkTitle,
-                              style: theme.primaryTextTheme.bodyText1?.copyWith(
+                              style: theme.primaryTextTheme. bodyLarge?.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -108,7 +108,7 @@ class _BottomSheetItinerariesState extends State<BottomSheetItineraries>
                             child: Text(
                               localization
                                   .itinerarySummaryBikeAndPublicRailSubwayTitle,
-                              style: theme.primaryTextTheme.bodyText1?.copyWith(
+                              style: theme.primaryTextTheme. bodyLarge?.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
