@@ -1,5 +1,5 @@
 ## 2.0.0
-🎉 Support for Flutter 3.22.4
+🎉 Support for Flutter 3.24.0
 🎉 Support trufi-core_v4.0.0-stadtnavi-lts
 
 ## 1.8.6
