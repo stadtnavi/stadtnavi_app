@@ -25,7 +25,7 @@ class AboutSection extends StatelessWidget {
         Text(
           isLanguageEn ? 'About this service' : 'Über diesen Dienst',
           style: theme.textTheme.subtitle1?.copyWith(
-              color: theme.textTheme.bodyText1?.color,
+              color: theme.textTheme. bodyLarge?.color,
               fontWeight: FontWeight.w700),
         ),
         Padding(
@@ -34,7 +34,7 @@ class AboutSection extends StatelessWidget {
             isLanguageEn
                 ? '$appName $cityName is a travel planning application for the city of $cityName and its surroundings. This service includes public transport, footpaths, cycling, street and parking information, charging infrastructure and sharing offerings. The mobility offerings are connected through intermodal routing.'
                 : '$appName $cityName ist eine Reiseplanungs-Anwendung für die Stadt $cityName und Umgebung. Dieser Dienst umfasst ÖPNV, Fußwege, Radverkehr, Straßen- und Parkplatzinformationen, Ladeinfrastruktur und Sharing-Angebote. Mobilitätsangebote werden durch intermodales Routing miteinander vernetzt.',
-            style: theme.textTheme.bodyText1,
+            style: theme.textTheme. bodyLarge,
           ),
         ),
         Padding(
@@ -42,7 +42,7 @@ class AboutSection extends StatelessWidget {
           child: Text(
             isLanguageEn ? 'Contribute' : 'Mitmachen',
             style: theme.textTheme.subtitle1?.copyWith(
-                color: theme.textTheme.bodyText1?.color,
+                color: theme.textTheme. bodyLarge?.color,
                 fontWeight: FontWeight.w700),
           ),
         ),
@@ -50,7 +50,7 @@ class AboutSection extends StatelessWidget {
           padding: _padding,
           child: RichText(
             text: TextSpan(
-              style: theme.textTheme.bodyText1,
+              style: theme.textTheme. bodyLarge,
               children: [
                 TextSpan(
                   text: isLanguageEn
@@ -94,7 +94,7 @@ class AboutSection extends StatelessWidget {
           child: Text(
             isLanguageEn ? 'Digitransit platform' : 'Digitransit Plattform',
             style: theme.textTheme.subtitle1?.copyWith(
-                color: theme.textTheme.bodyText1?.color,
+                color: theme.textTheme. bodyLarge?.color,
                 fontWeight: FontWeight.w700),
           ),
         ),
@@ -103,18 +103,18 @@ class AboutSection extends StatelessWidget {
           child: isLanguageEn
               ? Text(
                   'The Digitransit service platform is an open source routing platform developed by HSL and Traficom. It builds on OpenTripPlanner by Conveyal. Enhancements by Transportkollektiv and MITFAHR|DE|ZENTRALE. All software is open source. Thanks to everybody working on this!',
-                  style: theme.textTheme.bodyText1,
+                  style: theme.textTheme. bodyLarge,
                 )
               : Column(
                   children: [
                     Text(
                       'Dieser Dienst basiert auf der Digitransit Platform und dem Backend-Dienst OpenTripPlanner. Alle Software ist unter einer offenen Lizenzen verfügbar. Vielen Dank an alle Beteiligten.',
-                      style: theme.textTheme.bodyText1,
+                      style: theme.textTheme. bodyLarge,
                     ),
                     const SizedBox(height: 16),
                     RichText(
                       text: TextSpan(
-                        style: theme.textTheme.bodyText1,
+                        style: theme.textTheme. bodyLarge,
                         children: [
                           const TextSpan(
                             text:
@@ -147,7 +147,7 @@ class AboutSection extends StatelessWidget {
           child: Text(
             isLanguageEn ? 'Data sources' : 'Datenquellen',
             style: theme.textTheme.subtitle1?.copyWith(
-                color: theme.textTheme.bodyText1?.color,
+                color: theme.textTheme. bodyLarge?.color,
                 fontWeight: FontWeight.w700),
           ),
         ),
@@ -156,7 +156,7 @@ class AboutSection extends StatelessWidget {
           child: RichText(
             text: TextSpan(
               text: isLanguageEn ? 'Map data: © ' : 'Kartendaten: © ',
-              style: theme.textTheme.bodyText1,
+              style: theme.textTheme. bodyLarge,
               children: <TextSpan>[
                 TextSpan(
                   text: isLanguageEn
@@ -185,7 +185,7 @@ class AboutSection extends StatelessWidget {
               text: isLanguageEn
                   ? 'Public transit data: Datasets by '
                   : 'ÖPNV-Daten: Datensätze der ',
-              style: theme.textTheme.bodyText1,
+              style: theme.textTheme. bodyLarge,
               children: <TextSpan>[
                 TextSpan(
                   text: 'NVBW GmbH',
@@ -202,7 +202,7 @@ class AboutSection extends StatelessWidget {
                 ),
                 TextSpan(
                   text: isLanguageEn ? ' and ' : ' und der ',
-                  style: theme.textTheme.bodyText1,
+                  style: theme.textTheme. bodyLarge,
                 ),
                 TextSpan(
                   text: 'VVS GmbH',
@@ -221,7 +221,7 @@ class AboutSection extends StatelessWidget {
                   text: isLanguageEn
                       ? ', Shapes (d.h. Geometries of transit routes) enhanced with OpenStreetMap data © OpenStreetMap contributors'
                       : ', Shapes (d.h. Geometrien der Streckenverläufe) jeweils angereichert mit OpenStreetMap-Daten © OpenStreetMap Mitwirkende',
-                  style: theme.textTheme.bodyText1,
+                  style: theme.textTheme. bodyLarge,
                 ),
               ],
             ),
@@ -233,7 +233,7 @@ class AboutSection extends StatelessWidget {
             isLanguageEn
                 ? 'No responsibility is accepted for the accuracy of this information.'
                 : 'Alle Angaben ohne Gewähr.',
-            style: theme.textTheme.bodyText1,
+            style: theme.textTheme. bodyLarge,
           ),
         ),
       ],

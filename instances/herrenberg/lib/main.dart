@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:firebase_app_installations/firebase_app_installations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -31,11 +33,25 @@ void main() async {
   );
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
+  log("getToken");
+  // final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
+  // if (apnsToken != null) {
+  //   log("apnsToken: $apnsToken");
+  // }
   FirebaseMessaging.instance.getToken().then((value) {
-    print(value);
+    log("getToken: $value");
   }).catchError((error) {
+    log("catchError");
     print("$error");
   });
+  FirebaseInstallations.instance.getId().then((e) => log(e.toString()));
+  // IOS
+  // apnsToken: 66616B652D61706E732D746F6B656E2D666F722D73696D756C61746F72
+  // getToken: eUy0rR1RVU9CpPJTc68vgf:APA91bGBUSe54uy0MyFAvBhf-1x-rWjxQ5XT6FfPbf5a2KTfIPJ-huTiuzSNPdVjh4c-8oUut_SkeDIiDoV18uW3CLL6Iif6EF7Jlj9CE-xDJvS3EnJYNuokPlqoTEYg6RekPI9GhXxE
+
+  // ANDROID
+  // getToken: e3PjGzmqTeqxrPLGwAK8_R:APA91bGr3W__eqE31jE9wTsO1tpkRP-_U_38ilalXgWvyFrIPVrMoT48DZiDbub_Dwp4GAoluNX2MXbOHhGgi7hlZbg0IB50TtSeUspUuQOirZIwTFvwH6Pu84XaUPXWYSQ4L3RgrZM3
+
   await messaging
       .requestPermission(
         alert: true,
@@ -47,6 +63,7 @@ void main() async {
         sound: true,
       )
       .catchError((error) => {print("$error")});
+
   await initHiveForFlutter();
   await _migrationOldData();
   // TODO we need to improve TransportMode Configuration
