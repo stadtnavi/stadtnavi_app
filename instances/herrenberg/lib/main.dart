@@ -32,14 +32,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-
-  log("getToken");
   // final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
   // if (apnsToken != null) {
   //   log("apnsToken: $apnsToken");
   // }
   FirebaseMessaging.instance.getToken().then((value) {
-    log("getToken: $value");
+    print("getToken: $value");
   }).catchError((error) {
     log("catchError");
     print("$error");
@@ -52,6 +50,8 @@ void main() async {
   // ANDROID
   // getToken: e3PjGzmqTeqxrPLGwAK8_R:APA91bGr3W__eqE31jE9wTsO1tpkRP-_U_38ilalXgWvyFrIPVrMoT48DZiDbub_Dwp4GAoluNX2MXbOHhGgi7hlZbg0IB50TtSeUspUuQOirZIwTFvwH6Pu84XaUPXWYSQ4L3RgrZM3
 
+  print(
+      "Firebase Installation ID: ${await FirebaseInstallations.instance.getId()}");
   await messaging
       .requestPermission(
         alert: true,
@@ -62,7 +62,7 @@ void main() async {
         provisional: false,
         sound: true,
       )
-      .catchError((error) => {print("$error")});
+      .catchError((error) => print("$error"));
 
   await initHiveForFlutter();
   await _migrationOldData();
