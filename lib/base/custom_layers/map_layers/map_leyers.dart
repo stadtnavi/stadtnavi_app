@@ -166,137 +166,70 @@ class CustomTileProvider extends TileProvider {
     // final layersStatus = context.read<CustomLayersCubit>().state.layersSatus;
     // if (layersStatus["Sharing"] ?? false) {
     // log("Tile coords: ${coords.z} ${coords.x} ${coords.y}");
-    Future.wait([
-      CityBikesLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ).catchError((error) {
-        log("$error");
-      }),
-      // }
-      // if (StopsLayerIds.values
-      //     .any((element) => layersStatus[element.enumToString()] ?? false)) {
-      StopsLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ).catchError((error) {
-        log("$error");
-      }),
-      // }
-      // if (layersStatus["Parking"] ?? false) {
-      ParkingLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ).catchError((error) {
-        log("$error");
-      }),
-      // }
-      // if (layersStatus["Bike Parking Space"] ?? false) {
-      BikeParkLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ).catchError((error) {
-        log("$error");
-      }),
-      // }
+    await CityBikesLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    // }
+    // if (StopsLayerIds.values
+    //     .any((element) => layersStatus[element.enumToString()] ?? false)) {
+    await StopsLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    // }
+    // if (layersStatus["Parking"] ?? false) {
+    await ParkingLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    // }
+    // if (layersStatus["Bike Parking Space"] ?? false) {
+    await BikeParkLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    // }
 
-      // if (layersStatus["Roadworks"] ?? false) {
-      CifsLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ).catchError((error) {
-        log("$error");
-      }),
-      // }
+    // if (layersStatus["Roadworks"] ?? false) {
+    await CifsLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    // }
 
-      // if (layersStatus["Road Weather"] ?? false) {
-      WeatherLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ).catchError((error) {
-        log("$error");
-      }),
-      // }
-      // if (layersStatus["Charging"] ?? false) {
-      ChargingLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ).catchError((error) {
-        log("$error");
-      }),
-      // }
-    ]);
-    // await CityBikesLayer.fetchPBF(
-    //   coords.z.toInt(),
-    //   coords.x.toInt(),
-    //   coords.y.toInt(),
-    // ).catchError((error) {
-    //   log("$error");
-    // });
-    // // }
-    // // if (StopsLayerIds.values
-    // //     .any((element) => layersStatus[element.enumToString()] ?? false)) {
-    // await StopsLayer.fetchPBF(
-    //   coords.z.toInt(),
-    //   coords.x.toInt(),
-    //   coords.y.toInt(),
-    // ).catchError((error) {
-    //   log("$error");
-    // });
-    // // }
-    // // if (layersStatus["Parking"] ?? false) {
-    // await ParkingLayer.fetchPBF(
-    //   coords.z.toInt(),
-    //   coords.x.toInt(),
-    //   coords.y.toInt(),
-    // ).catchError((error) {
-    //   log("$error");
-    // });
-    // // }
-    // // if (layersStatus["Bike Parking Space"] ?? false) {
-    // await BikeParkLayer.fetchPBF(
-    //   coords.z.toInt(),
-    //   coords.x.toInt(),
-    //   coords.y.toInt(),
-    // ).catchError((error) {
-    //   log("$error");
-    // });
-    // // }
-
-    // // if (layersStatus["Roadworks"] ?? false) {
-    // await CifsLayer.fetchPBF(
-    //   coords.z.toInt(),
-    //   coords.x.toInt(),
-    //   coords.y.toInt(),
-    // ).catchError((error) {
-    //   log("$error");
-    // });
-    // // }
-
-    // // if (layersStatus["Road Weather"] ?? false) {
-    // await WeatherLayer.fetchPBF(
-    //   coords.z.toInt(),
-    //   coords.x.toInt(),
-    //   coords.y.toInt(),
-    // ).catchError((error) {
-    //   log("$error");
-    // });
-    // // }
-    // // if (layersStatus["Charging"] ?? false) {
-    // await ChargingLayer.fetchPBF(
-    //   coords.z.toInt(),
-    //   coords.x.toInt(),
-    //   coords.y.toInt(),
-    // ).catchError((error) {
-    //   log("$error");
-    // });
-    // // }
+    // if (layersStatus["Road Weather"] ?? false) {
+    await WeatherLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    // }
+    // if (layersStatus["Charging"] ?? false) {
+    await ChargingLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    // }
   }
 }

@@ -1,6 +1,6 @@
-## 2.0.0
+## 3.24.0
 🎉 Support for Flutter 3.24.0
-🎉 Support trufi-core_v4.0.0-stadtnavi-lts
+🎉 Support trufi-core = 3.24.0-stadtnavi-lts
 
 ## 1.8.6
 🎉 Fixed missing Roadworks in Roadworks-Layer.
