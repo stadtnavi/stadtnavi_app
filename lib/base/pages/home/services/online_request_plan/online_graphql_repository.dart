@@ -89,6 +89,7 @@ class OnlineGraphQLRepository {
       advancedOptions: advancedOptions,
       locale: localeName,
       numItineraries: 5,
+      useStrictParams : true,
     );
     planData = planData.copyWith(
       itineraries: planData.itineraries

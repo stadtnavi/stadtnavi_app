@@ -24,6 +24,7 @@ query ItineraryQueries_ItineraryPage_Query(
   $allowedVehicleRentalNetworks: [String]
   $locale: String
   $modeWeight: InputModeWeight
+  $searchWindow: Long
 ) {
   viewer {
     plan(
@@ -49,6 +50,7 @@ query ItineraryQueries_ItineraryPage_Query(
       allowedVehicleRentalNetworks: $allowedVehicleRentalNetworks
       locale: $locale
       modeWeight: $modeWeight
+      searchWindow: $searchWindow
     ) {
       ...ItineraryPage_viewer
     }
