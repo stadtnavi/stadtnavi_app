@@ -6,9 +6,16 @@ PODS:
   - Firebase/InAppMessaging (10.29.0):
     - Firebase/CoreOnly
     - FirebaseInAppMessaging (~> 10.29.0-beta)
+  - Firebase/Installations (10.29.0):
+    - Firebase/CoreOnly
+    - FirebaseInstallations (~> 10.29.0)
   - Firebase/Messaging (10.29.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 10.29.0)
+  - firebase_app_installations (0.3.0-4):
+    - Firebase/Installations (= 10.29.0)
+    - firebase_core
+    - Flutter
   - firebase_core (3.3.0):
     - Firebase/CoreOnly (= 10.29.0)
     - Flutter
@@ -111,6 +118,7 @@ PODS:
 
 DEPENDENCIES:
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
+  - firebase_app_installations (from `.symlinks/plugins/firebase_app_installations/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_in_app_messaging (from `.symlinks/plugins/firebase_in_app_messaging/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
@@ -143,6 +151,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   device_info_plus:
     :path: ".symlinks/plugins/device_info_plus/ios"
+  firebase_app_installations:
+    :path: ".symlinks/plugins/firebase_app_installations/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_in_app_messaging:
@@ -175,6 +185,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
   Firebase: cec914dab6fd7b1bd8ab56ea07ce4e03dd251c2d
+  firebase_app_installations: 16ee69f796f492c3b9b8c4d6a0e16bfda6a09f29
   firebase_core: 57aeb91680e5d5e6df6b888064be7c785f146efb
   firebase_in_app_messaging: 0d317ae80c808e60041555ff0bb76e3a0ae5acd1
   firebase_messaging: c862b3d2b973ecc769194dc8de09bd22c77ae757
