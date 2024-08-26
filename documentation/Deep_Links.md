@@ -43,3 +43,45 @@ not installed.
 
 Unknown IDs and failed entity lookups are ignored (or use URL coordinates when
 available) without crashing.
+
+## Android `geo:` intents
+
+The Herrenberg Android app is also registered as an `ACTION_VIEW` handler for
+the standard `geo:` scheme. These intents enter through the same Router and
+`StadtnaviDeepLink` destination flow as the HTTPS links above.
+
+| Format | Example | Native behavior |
+| --- | --- | --- |
+| Direct coordinate | `geo:48.7758,9.1829` | Opens the map location panel |
+| Coordinate with zoom | `geo:48.7758,9.1829?z=15` | Opens the location; zoom hints are ignored |
+| Coordinate query | `geo:0,0?q=48.7758,9.1829` | Opens the queried coordinate |
+| Labeled coordinate query | `geo:0,0?q=48.7758,9.1829(Stuttgart)` | Opens the coordinate using the supplied label |
+| Address query | `geo:0,0?q=Breitscheidstra%C3%9Fe%2048%2C%2070176%20Stuttgart` | Resolves the address with the existing stadtnavi search and opens its highest-ranked valid result |
+
+Empty queries, malformed or out-of-range coordinates, `geo:0,0` without a
+query, duplicate `q` parameters, coordinate altitude/uncertainty components,
+and non-`geo` schemes are not handled. Other query hints, including `z`, do not
+change the native map zoom. If an address cannot be resolved, the app remains
+on Home and shows the existing no-results or connection-error message.
+
+
+
+
+
+
+test:
+
+adb shell am start -W \
+  -a android.intent.action.VIEW \
+  -c android.intent.category.BROWSABLE \
+  -d "https://herrenberg.stadtnavi.de/station/HBG%3AStation%3Aherrenberg_stadtrad_1" \
+  de.stadtnavi.herrenberg.internal
+
+  adb shell am start -W \
+  -a android.intent.action.VIEW \
+  -c android.intent.category.BROWSABLE \
+  -d "https://herrenberg.stadtnavi.de/station/HBG%3AStation%3Aherrenberg_stadtrad_1" \
+  de.stadtnavi.herrenberg.internal
+
+xcrun simctl openurl booted \
+"https://herrenberg.stadtnavi.de/haltestellen/hbg%3Ade%3A08111%3A6112%3A7%3A9"
