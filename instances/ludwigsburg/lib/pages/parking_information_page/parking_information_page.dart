@@ -110,10 +110,10 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
                 )
               else
                 Scrollbar(
-                  isAlwaysShown: true,
+                  thumbVisibility: true,
                   interactive: true,
                   thickness: 8,
-                  showTrackOnHover: true,
+                  trackVisibility: true,
                   child: ListView.builder(
                     itemCount: listTransports.length,
                     padding: const EdgeInsets.symmetric(

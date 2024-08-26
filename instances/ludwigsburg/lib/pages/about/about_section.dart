@@ -24,7 +24,7 @@ class AboutSection extends StatelessWidget {
       children: [
         Text(
           isLanguageEn ? 'About this service' : 'Über diesen Dienst',
-          style: theme.textTheme.subtitle1?.copyWith(
+          style: theme.textTheme.titleMedium?.copyWith(
               color: theme.textTheme. bodyLarge?.color,
               fontWeight: FontWeight.w700),
         ),
@@ -41,7 +41,7 @@ class AboutSection extends StatelessWidget {
           padding: _paddingPart,
           child: Text(
             isLanguageEn ? 'Contribute' : 'Mitmachen',
-            style: theme.textTheme.subtitle1?.copyWith(
+            style: theme.textTheme.titleMedium?.copyWith(
                 color: theme.textTheme. bodyLarge?.color,
                 fontWeight: FontWeight.w700),
           ),
@@ -93,7 +93,7 @@ class AboutSection extends StatelessWidget {
           padding: _paddingPart,
           child: Text(
             isLanguageEn ? 'Digitransit platform' : 'Digitransit Plattform',
-            style: theme.textTheme.subtitle1?.copyWith(
+            style: theme.textTheme.titleMedium?.copyWith(
                 color: theme.textTheme. bodyLarge?.color,
                 fontWeight: FontWeight.w700),
           ),
@@ -146,7 +146,7 @@ class AboutSection extends StatelessWidget {
           padding: _paddingPart,
           child: Text(
             isLanguageEn ? 'Data sources' : 'Datenquellen',
-            style: theme.textTheme.subtitle1?.copyWith(
+            style: theme.textTheme.titleMedium?.copyWith(
                 color: theme.textTheme. bodyLarge?.color,
                 fontWeight: FontWeight.w700),
           ),
