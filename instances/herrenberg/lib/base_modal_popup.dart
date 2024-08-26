@@ -110,6 +110,7 @@ class BaseModalPopup extends StatelessWidget {
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (imageUrl != null)
                             Container(
@@ -133,14 +134,19 @@ class BaseModalPopup extends StatelessWidget {
                               ),
                             ),
                           if (notification?.body != null)
-                            Text(notification!.body!),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                bottom: buttons.isNotEmpty ? 0 : 16,
+                              ),
+                              child: Text(notification!.body!),
+                            ),
                         ],
                       ),
                     ),
                   ),
                 )
               else
-                Expanded(
+                Flexible(
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 28),
                     child: Row(
@@ -167,8 +173,13 @@ class BaseModalPopup extends StatelessWidget {
                         if (notification?.body != null)
                           Expanded(
                             child: SingleChildScrollView(
-                              child: Text(
-                                notification!.body!,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: buttons.isNotEmpty ? 0 : 16,
+                                ),
+                                child: Text(
+                                  notification!.body!,
+                                ),
                               ),
                             ),
                           ),
