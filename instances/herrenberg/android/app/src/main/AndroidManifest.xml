@@ -22,8 +22,8 @@
         <data android:mimeType="*/*" />
       </intent>
     </queries>
-    <application
-        android:label="stadtnavi Test"
+   <application
+        android:label="stadtnavi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
