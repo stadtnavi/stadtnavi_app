@@ -80,8 +80,6 @@ class BaseModalPopup extends StatelessWidget {
                           notification?.title ?? "",
                           style: theme.textTheme.headlineSmall
                               ?.copyWith(fontWeight: FontWeight.w600),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
