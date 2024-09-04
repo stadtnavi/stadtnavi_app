@@ -15,8 +15,8 @@ class SettingPanel extends StatefulWidget {
   static const String route = "/setting-panel";
   static const Divider _divider = Divider(thickness: 2);
   static const Divider _dividerWeight = Divider(thickness: 10);
-  // TODO improve availability carpool
-  static bool enableCarpool = true;
+  // TODO improve availability carpool-funicular
+  // static bool enableFunicular = true;
 
   const SettingPanel({
     Key? key,
@@ -101,7 +101,7 @@ class _SettingPanelState extends State<SettingPanel> {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       localization.settingPanelTransportModes,
-                      style: theme.textTheme. bodyLarge,
+                      style: theme.textTheme.bodyLarge,
                     ),
                   ),
                   CustomSwitchTile(
@@ -153,8 +153,24 @@ class _SettingPanelState extends State<SettingPanel> {
                           .setTransportMode(TransportMode.subway);
                     },
                   ),
-                  if (SettingPanel.enableCarpool) SettingPanel._divider,
-                  if (SettingPanel.enableCarpool)
+                  if (TransportMode.funicular.visible) SettingPanel._divider,
+                  if (TransportMode.funicular.visible)
+                    CustomSwitchTile(
+                      title: localizationBase.instructionVehicleFunicular,
+                      secondary: SizedBox(
+                        height: 35,
+                        width: 35,
+                        child: TransportMode.funicular.getImage(),
+                      ),
+                      value: state.transportModes
+                          .contains(TransportMode.funicular),
+                      onChanged: (_) {
+                        payloadDataPlanCubit
+                            .setTransportMode(TransportMode.funicular);
+                      },
+                    ),
+                  if (TransportMode.carPool.visible) SettingPanel._divider,
+                  if (TransportMode.carPool.visible)
                     CustomSwitchTile(
                       title: localizationBase.instructionVehicleCarpool,
                       secondary: SizedBox(
@@ -197,7 +213,7 @@ class _SettingPanelState extends State<SettingPanel> {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 16.0, vertical: 5),
                             child: Text(localization.commonCitybikes,
-                                style: theme.textTheme. bodyLarge),
+                                style: theme.textTheme.bodyLarge),
                           ),
                           if (BikeRentalNetwork.cargoBike.visible)
                             CustomSwitchTile(
@@ -311,7 +327,7 @@ class _SettingPanelState extends State<SettingPanel> {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       localization.settingPanelMyModesTransport,
-                      style: theme.textTheme. bodyLarge,
+                      style: theme.textTheme.bodyLarge,
                     ),
                   ),
                   CustomSwitchTile(
@@ -371,7 +387,7 @@ class _SettingPanelState extends State<SettingPanel> {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       localization.settingPanelAccessibility,
-                      style: theme.textTheme. bodyLarge,
+                      style: theme.textTheme.bodyLarge,
                     ),
                   ),
                   Container(

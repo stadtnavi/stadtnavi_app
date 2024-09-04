@@ -34,13 +34,12 @@ void main() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   await FirebaseMessaging.instance.getAPNSToken();
   FirebaseMessaging.instance.getToken().then((value) {
-    print("getToken: $value");
+    log("getToken: $value");
   }).catchError((error) {
     log("catchError");
     print("$error");
   });
-  print(
-      "Firebase Installation ID: ${await FirebaseInstallations.instance.getId()}");
+  log("Firebase Installation ID: ${await FirebaseInstallations.instance.getId()}");
   await messaging
       .requestPermission(
         alert: true,
@@ -55,6 +54,8 @@ void main() async {
 
   await initHiveForFlutter();
   await _migrationOldData();
+  TransportModeExtension.visibleSettings[TransportMode.funicular] = true;
+  defaultTransportModes.add(TransportMode.funicular);
   // TODO we need to improve TransportMode Configuration
   TransportModeConfiguration.configure(transportColors: {
     TransportMode.bicycle: const Color(0xffFECC01),
