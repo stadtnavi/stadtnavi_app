@@ -43,9 +43,9 @@
   "@instructionVehicleSharing": {
     "description": "Vehicle name (Sharing)"
   },
-  "commonCitybikes": "Citybikes",
+  "commonCitybikes": "Rental bikes and scooters",
   "@commonCitybikes": {
-    "description": "General Citybikes label"
+    "description": "General Rental bikes and scooters label"
   },
   "instructionVehicleSharingRegioRad": "RegioRad",
   "@instructionVehicleSharingRegioRad": {
@@ -135,7 +135,7 @@
   "@infoMessageNoRouteOriginSameAsDestination": {
     "description": "Text info message No Route Origin Same As Destination for plan Fetch"
   },
-  "infoMessageNoRouteShowingAlternativeOptions": "No route suggestions were found with the your settings. However, we found the following route options:",
+  "infoMessageNoRouteShowingAlternativeOptions": "No route suggestions were found with your settings. However, we found the following route options:",
   "@infoMessageNoRouteShowingAlternativeOptions": {
     "description": "Text info message No Route Showing Alternative Options for plan Fetch"
   },
@@ -253,8 +253,10 @@
   },
   "commonTotalDistance": "Total distance",
   "commonSettings": "Settings",
-  "commonTrack": "Track",
   "mapLegend": "map legend",
+  "selectStop": "Select Stop ({sizeStops})",
+  "bicycleParking": "Bicycle parking",
+  "commonTrack": "Track",
   "@commonTrack": {
       "description": "General Track  label"
   },

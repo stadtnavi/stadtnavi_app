@@ -10,6 +10,7 @@ import 'package:stadtnavi_core/base/pages/home/widgets/map_legend.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/map_type_button.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/your_location_button.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider_cubit.dart';
@@ -50,7 +51,7 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
     final customLayersCubit = context.watch<CustomLayersCubit>();
     final currentMapType = context.watch<MapTileProviderCubit>().state;
-
+    final localizationST = StadtnaviBaseLocalization.of(context);
     int? clusterSize;
     Size? markerClusterSize;
     switch (mapZoom) {
@@ -179,7 +180,9 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                        "Select stop (${onClusterTap.markers.length})"),
+                                      localizationST.selectStop(
+                                          onClusterTap.markers.length),
+                                    ),
                                     IconButton(
                                       onPressed: () {
                                         Navigator.of(context).pop();

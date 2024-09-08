@@ -1,5 +1,7 @@
 import 'stadtnavi_base_localizations.dart';
 
+// ignore_for_file: type=lint
+
 /// The translations for English (`en`).
 class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   StadtnaviBaseLocalizationEn([String locale = 'en']) : super(locale);
@@ -38,7 +40,7 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get instructionVehicleSharing => 'Sharing';
 
   @override
-  String get commonCitybikes => 'Citybikes';
+  String get commonCitybikes => 'Rental bikes and scooters';
 
   @override
   String get instructionVehicleSharingRegioRad => 'RegioRad';
@@ -107,7 +109,7 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get infoMessageNoRouteOriginSameAsDestination => 'No route suggestions were found because the origin and destination are very close to each other.';
 
   @override
-  String get infoMessageNoRouteShowingAlternativeOptions => 'No route suggestions were found with the your settings. However, we found the following route options:';
+  String get infoMessageNoRouteShowingAlternativeOptions => 'No route suggestions were found with your settings. However, we found the following route options:';
 
   @override
   String get infoMessageOnlyCyclingRoutes => 'Your search returned only cycling routes.';
@@ -214,10 +216,18 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get commonSettings => 'Settings';
 
   @override
-  String get commonTrack => 'Track';
+  String get mapLegend => 'map legend';
 
   @override
-  String get mapLegend => 'map legend';
+  String selectStop(Object sizeStops) {
+    return 'Select Stop ($sizeStops)';
+  }
+
+  @override
+  String get bicycleParking => 'Bicycle parking';
+
+  @override
+  String get commonTrack => 'Track';
 
   @override
   String get commonPlatform => 'Platform';

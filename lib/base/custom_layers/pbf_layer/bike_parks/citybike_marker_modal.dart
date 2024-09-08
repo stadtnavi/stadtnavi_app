@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 
 import 'bike_park_feature_model.dart';
@@ -18,6 +19,7 @@ class CitybikeMarkerModal extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
+    final localizationST = StadtnaviBaseLocalization.of(context);
     return ListView(
       children: [
         Container(
@@ -34,7 +36,7 @@ class CitybikeMarkerModal extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  element.name ?? "",
+                  localizationST.bicycleParking,
                   style: const TextStyle(fontSize: 20),
                 ),
               ),
@@ -51,7 +53,7 @@ class CitybikeMarkerModal extends StatelessWidget {
                 Text(
                   "${element.bicyclePlacesCapacity} ${languageCode == 'en' ? 'parking spaces' : 'Stellplätze'}",
                   style: TextStyle(
-                    color: theme.textTheme. bodyLarge?.color,
+                    color: theme.textTheme.bodyLarge?.color,
                   ),
                 ),
             ],

@@ -8,6 +8,8 @@ import 'package:intl/intl.dart' as intl;
 import 'stadtnavi_base_localizations_de.dart';
 import 'stadtnavi_base_localizations_en.dart';
 
+// ignore_for_file: type=lint
+
 /// Callers can lookup localized strings with an instance of StadtnaviBaseLocalization
 /// returned by `StadtnaviBaseLocalization.of(context)`.
 ///
@@ -159,10 +161,10 @@ abstract class StadtnaviBaseLocalization {
   /// **'Sharing'**
   String get instructionVehicleSharing;
 
-  /// General Citybikes label
+  /// General Rental bikes and scooters label
   ///
   /// In en, this message translates to:
-  /// **'Citybikes'**
+  /// **'Rental bikes and scooters'**
   String get commonCitybikes;
 
   /// Vehicle name (RegioRad)
@@ -300,7 +302,7 @@ abstract class StadtnaviBaseLocalization {
   /// Text info message No Route Showing Alternative Options for plan Fetch
   ///
   /// In en, this message translates to:
-  /// **'No route suggestions were found with the your settings. However, we found the following route options:'**
+  /// **'No route suggestions were found with your settings. However, we found the following route options:'**
   String get infoMessageNoRouteShowingAlternativeOptions;
 
   /// Text info message Only walking and cycling Routes for plan Fetch
@@ -507,17 +509,29 @@ abstract class StadtnaviBaseLocalization {
   /// **'Settings'**
   String get commonSettings;
 
-  /// General Track  label
-  ///
-  /// In en, this message translates to:
-  /// **'Track'**
-  String get commonTrack;
-
   /// No description provided for @mapLegend.
   ///
   /// In en, this message translates to:
   /// **'map legend'**
   String get mapLegend;
+
+  /// No description provided for @selectStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Stop ({sizeStops})'**
+  String selectStop(Object sizeStops);
+
+  /// No description provided for @bicycleParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Bicycle parking'**
+  String get bicycleParking;
+
+  /// General Track  label
+  ///
+  /// In en, this message translates to:
+  /// **'Track'**
+  String get commonTrack;
 
   /// General Platform  label
   ///

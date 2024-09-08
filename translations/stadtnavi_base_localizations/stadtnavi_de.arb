@@ -39,7 +39,7 @@
   "@settingPanelTransportModes": {
     "description": "Transport Modes configuration panel label"
   },
-  "instructionVehicleSharing": "Sharing angebote",
+  "instructionVehicleSharing": "Sharing Angebote",
   "@instructionVehicleSharing": {
     "description": "Vehicle name (Sharing)"
   },
@@ -235,7 +235,7 @@
   "@itinerarySummaryBikeParkTitle": {
       "description": "Text title itinerary Summary Bike Park Title"
   },
-  "itinerarySummaryBikeAndPublicRailSubwayTitle": "Nehmen Sie Ihr Rad mit in den Zug oder die bahn",
+  "itinerarySummaryBikeAndPublicRailSubwayTitle": "Nehmen Sie Ihr Rad mit in den Zug oder die Bahn",
   "@itinerarySummaryBikeAndPublicRailSubwayTitle": {
       "description": "Text title itinerary Summary Bike And Public Rail Subway"
   },
@@ -253,8 +253,10 @@
   },
   "commonTotalDistance": "Gesamtstrecke",
   "commonSettings": "Einstellungen",
-  "commonTrack": "Gleis",
   "mapLegend": "Legende",
+  "selectStop": "Option auswählen ({sizeStops})",
+  "bicycleParking": "Fahrradabstellplatz",
+  "commonTrack": "Gleis",
   "@commonTrack": {
       "description": "General Track  label"
   },

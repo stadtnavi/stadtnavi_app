@@ -1,5 +1,7 @@
 import 'stadtnavi_base_localizations.dart';
 
+// ignore_for_file: type=lint
+
 /// The translations for German (`de`).
 class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   StadtnaviBaseLocalizationDe([String locale = 'de']) : super(locale);
@@ -35,7 +37,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get settingPanelTransportModes => 'Verkehrsmittel auswählen';
 
   @override
-  String get instructionVehicleSharing => 'Sharing angebote';
+  String get instructionVehicleSharing => 'Sharing Angebote';
 
   @override
   String get commonCitybikes => 'Leihräder und Scooter';
@@ -200,7 +202,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get itinerarySummaryBikeParkTitle => 'Fahrrad abstellen und weiterfahren';
 
   @override
-  String get itinerarySummaryBikeAndPublicRailSubwayTitle => 'Nehmen Sie Ihr Rad mit in den Zug oder die bahn';
+  String get itinerarySummaryBikeAndPublicRailSubwayTitle => 'Nehmen Sie Ihr Rad mit in den Zug oder die Bahn';
 
   @override
   String departureBikeStation(Object departureStop, Object departureTime) {
@@ -214,10 +216,18 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get commonSettings => 'Einstellungen';
 
   @override
-  String get commonTrack => 'Gleis';
+  String get mapLegend => 'Legende';
 
   @override
-  String get mapLegend => 'Legende';
+  String selectStop(Object sizeStops) {
+    return 'Option auswählen ($sizeStops)';
+  }
+
+  @override
+  String get bicycleParking => 'Fahrradabstellplatz';
+
+  @override
+  String get commonTrack => 'Gleis';
 
   @override
   String get commonPlatform => 'Plattform';
