@@ -19,9 +19,13 @@ class DateTimePicker extends StatefulWidget {
 class _DateTimePickerState extends State<DateTimePicker>
     with SingleTickerProviderStateMixin {
   static const _styleOptions = TextStyle(fontSize: 16);
-  final _nowDate = DateTime.now()
-      .roundDown(delta: const Duration(minutes: 15))
-      .add(const Duration(minutes: 15));
+  final _nowDate = DateTime.now().copyWith(
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: 0,
+  );
   late TabController _controller;
   late DateTimeConf tempDateConf;
   late DateTime initialDateTime;
