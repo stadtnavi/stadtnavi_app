@@ -31,7 +31,7 @@ class TransportSelector extends StatelessWidget {
                 TextBoneBorderRadius(BorderRadius.circular(0)),
             child: Container(
               color: Colors.grey[100],
-              height: 50,
+              height: 54,
               child: Row(
                 children: [
                   Expanded(
@@ -93,7 +93,7 @@ class TransportSelector extends StatelessWidget {
         : mapModesState.hasTransportModes
             ? Container(
                 color: Colors.grey[100],
-                height: 50,
+                height: 54,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
