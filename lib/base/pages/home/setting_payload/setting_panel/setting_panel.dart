@@ -52,7 +52,6 @@ class _SettingPanelState extends State<SettingPanel> {
     final theme = Theme.of(context);
     final localizationBase = TrufiBaseLocalization.of(context);
     final localization = StadtnaviBaseLocalization.of(context);
-
     final payloadDataPlanCubit = context.read<SettingFetchCubit>();
     return Scaffold(
       appBar: AppBar(
@@ -156,7 +155,7 @@ class _SettingPanelState extends State<SettingPanel> {
                   if (TransportMode.funicular.visible) SettingPanel._divider,
                   if (TransportMode.funicular.visible)
                     CustomSwitchTile(
-                      title: localizationBase.instructionVehicleFunicular,
+                      title: localization.instructionVehicleRackRailway,
                       secondary: SizedBox(
                         height: 35,
                         width: 35,

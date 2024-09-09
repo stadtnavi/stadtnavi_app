@@ -227,6 +227,9 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get bicycleParking => 'Bicycle parking';
 
   @override
+  String get instructionVehicleRackRailway => 'Rack railway';
+
+  @override
   String get commonTrack => 'Track';
 
   @override

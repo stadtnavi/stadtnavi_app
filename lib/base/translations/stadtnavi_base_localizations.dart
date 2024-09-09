@@ -527,6 +527,12 @@ abstract class StadtnaviBaseLocalization {
   /// **'Bicycle parking'**
   String get bicycleParking;
 
+  /// No description provided for @instructionVehicleRackRailway.
+  ///
+  /// In en, this message translates to:
+  /// **'Rack railway'**
+  String get instructionVehicleRackRailway;
+
   /// General Track  label
   ///
   /// In en, this message translates to:
