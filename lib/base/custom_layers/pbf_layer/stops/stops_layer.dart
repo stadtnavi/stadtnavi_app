@@ -1,11 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map/plugin_api.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
@@ -93,27 +89,29 @@ class StopsLayer extends CustomLayer {
                   height: markerSize! + 5,
                   width: markerSize + 5,
                   point: element.position,
-                  anchorPos: AnchorPos.align(AnchorAlign.top),
-                  builder: (context) => GestureDetector(
-                    onTap: () {
-                      final panelCubit = context.read<PanelCubit>();
-                      panelCubit.setPanel(
-                        CustomMarkerPanel(
-                          panel: (
-                            context,
-                            _, {
-                            isOnlyDestination,
-                          }) =>
-                              StopMarkerModal(
-                            stopFeature: element,
+                  alignment: Alignment.topCenter,
+                  child: Builder(builder: (context) {
+                    return GestureDetector(
+                      onTap: () {
+                        final panelCubit = context.read<PanelCubit>();
+                        panelCubit.setPanel(
+                          CustomMarkerPanel(
+                            panel: (
+                              context,
+                              _, {
+                              isOnlyDestination,
+                            }) =>
+                                StopMarkerModal(
+                              stopFeature: element,
+                            ),
+                            positon: element.position,
+                            minSize: 130,
                           ),
-                          positon: element.position,
-                          minSize: 130,
-                        ),
-                      );
-                    },
-                    child: SvgPicture.string(stopsIcons[element.type] ?? ''),
-                  ),
+                        );
+                      },
+                      child: SvgPicture.string(stopsIcons[element.type] ?? ''),
+                    );
+                  }),
                 ))
             .toList()
         : [];
@@ -155,27 +153,30 @@ class StopsLayer extends CustomLayer {
                     height: markerSize! + 5,
                     width: markerSize + 5,
                     point: element.position,
-                    anchorPos: AnchorPos.align(AnchorAlign.top),
-                    builder: (context) => GestureDetector(
-                      onTap: () {
-                        final panelCubit = context.read<PanelCubit>();
-                        panelCubit.setPanel(
-                          CustomMarkerPanel(
-                            panel: (
-                              context,
-                              _, {
-                              isOnlyDestination,
-                            }) =>
-                                StopMarkerModal(
-                              stopFeature: element,
+                    alignment: Alignment.topCenter,
+                    child: Builder(builder: (context) {
+                      return GestureDetector(
+                        onTap: () {
+                          final panelCubit = context.read<PanelCubit>();
+                          panelCubit.setPanel(
+                            CustomMarkerPanel(
+                              panel: (
+                                context,
+                                _, {
+                                isOnlyDestination,
+                              }) =>
+                                  StopMarkerModal(
+                                stopFeature: element,
+                              ),
+                              positon: element.position,
+                              minSize: 130,
                             ),
-                            positon: element.position,
-                            minSize: 130,
-                          ),
-                        );
-                      },
-                      child: SvgPicture.string(stopsIcons[element.type] ?? ''),
-                    ),
+                          );
+                        },
+                        child:
+                            SvgPicture.string(stopsIcons[element.type] ?? ''),
+                      );
+                    }),
                   ))
               .toList()
           : zoom != null && zoom > 11
@@ -185,8 +186,8 @@ class StopsLayer extends CustomLayer {
                       height: 5,
                       width: 5,
                       point: element.position,
-                      anchorPos: AnchorPos.align(AnchorAlign.center),
-                      builder: (context) => Container(
+                      alignment: Alignment.center,
+                      child: Container(
                         decoration: BoxDecoration(
                           color: stopsIconsColor[element.type] ??
                               Colors.transparent,

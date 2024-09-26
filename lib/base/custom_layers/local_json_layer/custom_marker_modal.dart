@@ -58,7 +58,7 @@ class CustomMarkerModal extends StatelessWidget {
               Text(
                 body,
                 style: TextStyle(
-                  color: theme.textTheme.bodyText1?.color,
+                  color: theme.textTheme. bodyLarge?.color,
                 ),
               ),
             ],

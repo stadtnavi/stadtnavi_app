@@ -51,8 +51,7 @@ void main() async {
   await initHiveForFlutter();
   // TODO we need to improve disable fetch˜ method
   WeatherLayer.isdisable = true;
-  // TODO we need to improve enableCarpool
-  SettingPanel.enableCarpool = false;
+  TransportModeExtension.visibleSettings[TransportMode.carPool] = false;
   // TODO we need to improve TransportMode Configuration
   TransportModeConfiguration.configure(transportColors: {
     TransportMode.walk: const Color(0xffFECC01),
@@ -61,7 +60,7 @@ void main() async {
   // TODO we need to improve ParkingFeature.calculateAvailavility
   ParkingFeature.calculateAvailavility = calculateParkingAvailavilityLB;
 
-    runApp(
+  runApp(
     StadtnaviApp(
       appLifecycleReactorHandler: AppLifecycleReactorHandlerNotifications(
         onStartNotificationsURL:

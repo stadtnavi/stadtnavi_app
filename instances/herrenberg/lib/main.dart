@@ -1,15 +1,17 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:firebase_app_installations/firebase_app_installations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:herrenberg/firebase_options.dart';
-import 'package:herrenberg/lifecycle_reactor_handler_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stadtnavi_core/notifications/lifecycle_reactor_handler_notifications.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
@@ -30,12 +32,14 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   FirebaseMessaging messaging = FirebaseMessaging.instance;
-
+  await FirebaseMessaging.instance.getAPNSToken();
   FirebaseMessaging.instance.getToken().then((value) {
-    print(value);
+    log("getToken: $value");
   }).catchError((error) {
+    log("catchError");
     print("$error");
   });
+  log("Firebase Installation ID: ${await FirebaseInstallations.instance.getId()}");
   await messaging
       .requestPermission(
         alert: true,
@@ -46,9 +50,13 @@ void main() async {
         provisional: false,
         sound: true,
       )
-      .catchError((error) => {print("$error")});
+      // ignore: invalid_return_type_for_catch_error
+      .catchError((error) => print("$error"));
+
   await initHiveForFlutter();
   await _migrationOldData();
+  TransportModeExtension.visibleSettings[TransportMode.funicular] = true;
+  defaultTransportModes.add(TransportMode.funicular);
   // TODO we need to improve TransportMode Configuration
   TransportModeConfiguration.configure(transportColors: {
     TransportMode.bicycle: const Color(0xffFECC01),
@@ -56,7 +64,10 @@ void main() async {
   });
   runApp(
     StadtnaviApp(
-      appLifecycleReactorHandler: AppLifecycleReactorHandlerNotifications(),
+      appLifecycleReactorHandler: LifecycleReactorHandlerNotifications(
+        hasInAppNotifications: true,
+        hasPushNotifications: true,
+      ),
       appName: 'stadtnavi',
       appNameTitle: 'stadtnavi|Herrenberg',
       cityName: 'Herrenberg',

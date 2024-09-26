@@ -27,8 +27,8 @@ class AboutSection extends StatelessWidget {
       children: [
         Text(
           isLanguageEn ? 'About this service' : 'Über diesen Dienst',
-          style: theme.textTheme.subtitle1?.copyWith(
-              color: theme.textTheme.bodyText1?.color,
+          style: theme.textTheme.titleMedium?.copyWith(
+              color: theme.textTheme.bodyLarge?.color,
               fontWeight: FontWeight.w700),
         ),
         Padding(
@@ -37,14 +37,14 @@ class AboutSection extends StatelessWidget {
             isLanguageEn
                 ? '$appName is a travel planning application for the city of $cityName and its surroundings. This service includes public transport, footpaths, cycling, street and parking information, charging infrastructure and sharing offerings. The mobility offerings are connected through intermodal routing.'
                 : '$appName ist eine Reiseplanungs-Anwendung für die Stadt $cityName und Umgebung. Dieser Dienst umfasst ÖPNV, Fußwege, Radverkehr, Straßen- und Parkplatzinformationen, Ladeinfrastruktur und Sharing-Angebote. Mobilitätsangebote werden durch intermodales Routing miteinander vernetzt.',
-            style: theme.textTheme.bodyText1,
+            style: theme.textTheme.bodyLarge,
           ),
         ),
         Padding(
           padding: _padding,
           child: Text(
             isLanguageEn ? 'Contribute:' : 'Mitmachen:',
-            style: theme.textTheme.bodyText1,
+            style: theme.textTheme.bodyLarge,
           ),
         ),
         Padding(
@@ -53,14 +53,14 @@ class AboutSection extends StatelessWidget {
             isLanguageEn
                 ? 'The city of $cityName has developed this app, funded by the Federal Ministry of Transport and Digital Infrastructure (BMVI), as model city. The $appName app is an open source solution and can be used, customized and further developed by other municipalities to meet individual needs (white lable solution). Participation is welcome!'
                 : 'Die Stadt $cityName hat diese App im Rahmen der Modellstadt, gefördert durch das Bundesministerium für Verkehr und digitale Infrastruktur (BMVI) entwickelt. $appName ist eine Open Source Lösung und kann von anderen Kommunen und Akteuren unter ihrem Namen und Erscheinungsbild verwendet und an individuelle Bedürfnisse angepasst und weiterentwickelt werden (White Label Lösung). Mitmachen ist gewünscht!',
-            style: theme.textTheme.bodyText1,
+            style: theme.textTheme.bodyLarge,
           ),
         ),
         Padding(
           padding: _padding,
           child: Text(
             isLanguageEn ? 'Funded by' : 'Gefördert durch',
-            style: theme.textTheme.bodyText1,
+            style: theme.textTheme.bodyLarge,
           ),
         ),
         const SizedBox(height: 16),
@@ -72,8 +72,8 @@ class AboutSection extends StatelessWidget {
           padding: _padding,
           child: Text(
             isLanguageEn ? 'Digitransit platform' : 'Digitransit Plattform',
-            style: theme.textTheme.subtitle1?.copyWith(
-                color: theme.textTheme.bodyText1?.color,
+            style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.textTheme.bodyLarge?.color,
                 fontWeight: FontWeight.w700),
           ),
         ),
@@ -83,15 +83,15 @@ class AboutSection extends StatelessWidget {
             isLanguageEn
                 ? 'This service is based on the Digitransit Platform and the backend service OpenTripPlanner. All software is available under an open license. Thanks to everyone involved.'
                 : 'Dieser Dienst basiert auf der Digitransit Platform und dem Backend-Dienst OpenTripPlanner. Alle Software ist unter einer offenen Lizenzen verfügbar. Vielen Dank an alle Beteiligten.',
-            style: theme.textTheme.bodyText1,
+            style: theme.textTheme.bodyLarge,
           ),
         ),
         Padding(
           padding: _padding,
           child: Text(
             isLanguageEn ? 'Data sources' : 'Datenquellen',
-            style: theme.textTheme.subtitle1?.copyWith(
-                color: theme.textTheme.bodyText1?.color,
+            style: theme.textTheme.titleMedium?.copyWith(
+                color: theme.textTheme.bodyLarge?.color,
                 fontWeight: FontWeight.w700),
           ),
         ),
@@ -100,7 +100,7 @@ class AboutSection extends StatelessWidget {
           child: RichText(
             text: TextSpan(
               text: isLanguageEn ? 'Card data ' : 'Kartendaten: © ',
-              style: theme.textTheme.bodyText1,
+              style: theme.textTheme.bodyLarge,
               children: <TextSpan>[
                 TextSpan(
                   text: isLanguageEn
@@ -130,7 +130,7 @@ class AboutSection extends StatelessWidget {
               text: isLanguageEn
                   ? 'ÖPNV-data: Datasets from '
                   : 'ÖPNV-Daten: Datensätze der ',
-              style: theme.textTheme.bodyText1,
+              style: theme.textTheme.bodyLarge,
               children: <TextSpan>[
                 TextSpan(
                   text: 'NVBW GmbH',
@@ -148,7 +148,7 @@ class AboutSection extends StatelessWidget {
                 ),
                 TextSpan(
                   text: isLanguageEn ? ' and ' : ' und der ',
-                  style: theme.textTheme.bodyText1,
+                  style: theme.textTheme.bodyLarge,
                 ),
                 TextSpan(
                   text: 'VVS GmbH',
@@ -168,7 +168,7 @@ class AboutSection extends StatelessWidget {
                   text: isLanguageEn
                       ? ', shapes (i.e. geometries of the routes) each enriched with OpenStreetMap data © OpenStreetMap Contributors'
                       : ', Shapes (d.h. Geometrien der Streckenverläufe) jeweils angereichert mit OpenStreetMap-Daten © OpenStreetMap Mitwirkende',
-                  style: theme.textTheme.bodyText1,
+                  style: theme.textTheme.bodyLarge,
                 ),
               ],
             ),
@@ -180,7 +180,7 @@ class AboutSection extends StatelessWidget {
             isLanguageEn
                 ? 'All statements without guarantee.'
                 : 'Alle Angaben ohne Gewähr.',
-            style: theme.textTheme.bodyText1,
+            style: theme.textTheme.bodyLarge,
           ),
         ),
       ],

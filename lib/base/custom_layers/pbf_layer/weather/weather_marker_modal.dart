@@ -47,35 +47,35 @@ class ParkingMarkerModal extends StatelessWidget {
                 Text(
                   "${isEnglishCode ? 'Air Temperature' : 'Lufttemperatur'}: ${parkingFeature.airTemperatureC} °C",
                   style: TextStyle(
-                    color: theme.textTheme.bodyText1?.color,
+                    color: theme.textTheme. bodyLarge?.color,
                   ),
                 ),
               if (parkingFeature.roadTemperatureC != null)
                 Text(
                   "${isEnglishCode ? 'Road Temperature' : 'Straßentemperatur'}:  ${parkingFeature.roadTemperatureC} °C",
                   style: TextStyle(
-                    color: theme.textTheme.bodyText1?.color,
+                    color: theme.textTheme. bodyLarge?.color,
                   ),
                 ),
               if (parkingFeature.precipitationType != null)
                 Text(
                   "${isEnglishCode ? 'Precipitation' : 'Niederschlag'}: ${parkingFeature.precipitationType}",
                   style: TextStyle(
-                    color: theme.textTheme.bodyText1?.color,
+                    color: theme.textTheme. bodyLarge?.color,
                   ),
                 ),
               if (parkingFeature.roadCondition != null)
                 Text(
                   "${isEnglishCode ? 'Condition' : 'Straßenzustand'}: ${parkingFeature.roadCondition}",
                   style: TextStyle(
-                    color: theme.textTheme.bodyText1?.color,
+                    color: theme.textTheme. bodyLarge?.color,
                   ),
                 ),
               if (parkingFeature.updatedAt != null)
                 Text(
                   "${isEnglishCode ? 'Last update' : 'Daten von'}: ${DateFormat('hh:mm a', languageCode).format(DateTime.parse(parkingFeature.updatedAt!).toLocal())}",
                   style: TextStyle(
-                    color: theme.textTheme.bodyText1?.color,
+                    color: theme.textTheme. bodyLarge?.color,
                   ),
                 ),
             ],

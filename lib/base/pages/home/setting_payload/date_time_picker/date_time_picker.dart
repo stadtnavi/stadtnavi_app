@@ -19,9 +19,13 @@ class DateTimePicker extends StatefulWidget {
 class _DateTimePickerState extends State<DateTimePicker>
     with SingleTickerProviderStateMixin {
   static const _styleOptions = TextStyle(fontSize: 16);
-  final _nowDate = DateTime.now()
-      .roundDown(delta: const Duration(minutes: 15))
-      .add(const Duration(minutes: 15));
+  final _nowDate = DateTime.now().copyWith(
+    hour: 0,
+    minute: 0,
+    second: 0,
+    millisecond: 0,
+    microsecond: 0,
+  );
   late TabController _controller;
   late DateTimeConf tempDateConf;
   late DateTime initialDateTime;
@@ -74,7 +78,7 @@ class _DateTimePickerState extends State<DateTimePicker>
           (MediaQuery.of(context).orientation == Orientation.portrait
               ? 0.35
               : 0.6),
-      color: theme.backgroundColor,
+      color: theme.colorScheme.surface,
       child: Column(
         children: [
           Row(
@@ -88,7 +92,7 @@ class _DateTimePickerState extends State<DateTimePicker>
                     child: Text(
                       localization.commonLeavingNow,
                       style: _styleOptions.copyWith(
-                        color: theme.textTheme.bodyText1?.color,
+                        color: theme.textTheme.bodyLarge?.color,
                         fontWeight: FontWeight.w400,
                       ),
                       textAlign: TextAlign.center,
@@ -134,17 +138,26 @@ class _DateTimePickerState extends State<DateTimePicker>
             ],
           ),
           Expanded(
-            child: CupertinoDatePicker(
-              key: UniqueKey(),
-              onDateTimeChanged: (picked) {
-                tempDateConf = tempDateConf.copyWith(date: picked);
-                initialDateTime = picked;
-              },
-              use24hFormat: true,
-              initialDateTime: initialDateTime,
-              minimumDate: _nowDate,
-              maximumDate: _nowDate.add(const Duration(days: 30)),
-              minuteInterval: 15,
+            child: CupertinoTheme(
+              data: CupertinoThemeData(
+                textTheme: CupertinoTextThemeData(
+                  dateTimePickerTextStyle: TextStyle(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+              ),
+              child: CupertinoDatePicker(
+                key: UniqueKey(),
+                onDateTimeChanged: (picked) {
+                  tempDateConf = tempDateConf.copyWith(date: picked);
+                  initialDateTime = picked;
+                },
+                use24hFormat: true,
+                initialDateTime: initialDateTime,
+                minimumDate: _nowDate,
+                maximumDate: _nowDate.add(const Duration(days: 30)),
+                minuteInterval: 15,
+              ),
             ),
           ),
           const Divider(height: 0, thickness: 1),
@@ -159,7 +172,7 @@ class _DateTimePickerState extends State<DateTimePicker>
                       },
                       child: Text(
                         localizationBase.commonCancel.toUpperCase(),
-                        style: theme.textTheme.bodyText2,
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ),
                   ),

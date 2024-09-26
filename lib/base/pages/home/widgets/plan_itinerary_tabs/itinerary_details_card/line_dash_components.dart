@@ -294,7 +294,7 @@ class CarDash extends StatelessWidget {
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: theme.colorScheme.primary),
+                        foregroundColor: theme.colorScheme.primary),
                     onPressed: () {
                       Navigator.push(
                         context,

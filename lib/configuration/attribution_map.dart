@@ -15,7 +15,7 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
     text: TextSpan(
       children: [
         TextSpan(
-          style: theme.textTheme.caption?.copyWith(
+          style: theme.textTheme.bodySmall?.copyWith(
             color: Colors.black,
             decoration: TextDecoration.underline,
             shadows: shadows,
@@ -28,14 +28,14 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
             },
         ),
         TextSpan(
-          style: theme.textTheme.caption?.copyWith(
+          style: theme.textTheme.bodySmall?.copyWith(
             color: Colors.black,
             shadows: shadows,
           ),
           text: languageCode == 'en' ? "Datasets by " : "Datensätze der ",
         ),
         TextSpan(
-          style: theme.textTheme.caption?.copyWith(
+          style: theme.textTheme.bodySmall?.copyWith(
             color: Colors.black,
             decoration: TextDecoration.underline,
             shadows: shadows,
@@ -47,14 +47,14 @@ Widget stadtNaviAttributionBuilder(BuildContext context) {
             },
         ),
         TextSpan(
-          style: theme.textTheme.caption?.copyWith(
+          style: theme.textTheme.bodySmall?.copyWith(
             color: Colors.black,
             shadows: shadows,
           ),
           text: languageCode == 'en' ? " and " : " und ",
         ),
         TextSpan(
-          style: theme.textTheme.caption?.copyWith(
+          style: theme.textTheme.bodySmall?.copyWith(
             color: Colors.black,
             decoration: TextDecoration.underline,
             shadows: shadows,

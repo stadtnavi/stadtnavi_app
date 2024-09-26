@@ -30,7 +30,7 @@ class LocationSearchDelegate extends SearchDelegate<TrufiLocation?> {
       ),
       hintColor: Colors.black54,
       textTheme: theme.textTheme.copyWith(
-        headline6: const TextStyle(
+        headlineSmall: const TextStyle(
           color: Colors.black,
           fontSize: 16,
         ),

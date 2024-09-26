@@ -24,7 +24,7 @@ class SpeedExpansionTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           if (isSubtitle) const SizedBox(width: 55),
-          Expanded(child: Text(title, style: theme.textTheme.bodyText1)),
+          Expanded(child: Text(title, style: theme.textTheme.bodyLarge)),
           Text(
             textSelected,
             style: TextStyle(
@@ -41,7 +41,7 @@ class SpeedExpansionTile extends StatelessWidget {
               margin:
                   const EdgeInsets.symmetric(horizontal: 20.0, vertical: 4.0),
               child: ListTile(
-                tileColor: theme.textTheme.bodyText1?.color?.withOpacity(0.05),
+                tileColor: theme.textTheme.bodyLarge?.color?.withOpacity(0.05),
                 visualDensity: VisualDensity.compact,
                 title: Text(
                   dataSpeed.name,

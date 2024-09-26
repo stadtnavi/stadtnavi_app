@@ -105,28 +105,30 @@ class Layer extends CustomLayer {
                     height: markerSize!,
                     width: markerSize,
                     point: element.position,
-                    anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) => GestureDetector(
-                      onTap: () {
-                        final panelCubit = context.read<PanelCubit>();
-                        panelCubit.setPanel(
-                          CustomMarkerPanel(
-                            panel: (
-                              context,
-                              onFetchPlan, {
-                              isOnlyDestination,
-                            }) =>
-                                CustomMarkerModal(
-                              element: element,
-                              onFetchPlan: onFetchPlan,
+                    alignment: Alignment.center,
+                    child: Builder(builder: (context) {
+                      return GestureDetector(
+                        onTap: () {
+                          final panelCubit = context.read<PanelCubit>();
+                          panelCubit.setPanel(
+                            CustomMarkerPanel(
+                              panel: (
+                                context,
+                                onFetchPlan, {
+                                isOnlyDestination,
+                              }) =>
+                                  CustomMarkerModal(
+                                element: element,
+                                onFetchPlan: onFetchPlan,
+                              ),
+                              positon: element.position,
+                              minSize: 50,
                             ),
-                            positon: element.position,
-                            minSize: 50,
-                          ),
-                        );
-                      },
-                      child: SvgPicture.string(element.image),
-                    ),
+                          );
+                        },
+                        child: SvgPicture.string(element.image),
+                      );
+                    }),
                   ))
               .toList()
           : zoom != null && zoom > 11
@@ -136,8 +138,8 @@ class Layer extends CustomLayer {
                       height: 5,
                       width: 5,
                       point: element.position,
-                      anchorPos: AnchorPos.align(AnchorAlign.center),
-                      builder: (context) => Container(
+                      alignment: Alignment.center,
+                      child: Container(
                         decoration: BoxDecoration(
                           color: layerId.enumToColor(),
                           borderRadius: BorderRadius.circular(10),

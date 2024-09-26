@@ -115,7 +115,7 @@ class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
                 child: Text(
                   liveBusStateToOccupancyState(element.type, languageCode),
                   style: TextStyle(
-                    color: theme.textTheme.bodyText1?.color,
+                    color: theme.textTheme. bodyLarge?.color,
                   ),
                 ),
               ),

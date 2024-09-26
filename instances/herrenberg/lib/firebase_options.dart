@@ -66,4 +66,5 @@ class DefaultFirebaseOptions {
     iosClientId: '624400633028-i6sg6gb5hbpoqsfquq8h1ehq33gss0h4.apps.googleusercontent.com',
     iosBundleId: 'de.stadtnavi.herrenberg.internal',
   );
+
 }

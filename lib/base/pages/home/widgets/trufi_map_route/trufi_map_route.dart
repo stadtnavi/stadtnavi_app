@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:async_executor/async_executor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/plugin_api.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
@@ -102,14 +102,13 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
   }
 
   void _handleOnMapPositionChanged(
-    MapPosition position,
+    MapCamera mapCamera,
     bool hasGesture,
   ) {
-    if (widget.trufiMapController.selectedBounds.isValid &&
-        position.bounds != null) {
+    if (widget.trufiMapController.selectedBounds != null) {
       _cropButtonKey.currentState?.setVisible(
-        visible: !position.bounds!
-            .containsBounds(widget.trufiMapController.selectedBounds),
+        visible: !mapCamera.visibleBounds
+            .containsBounds(widget.trufiMapController.selectedBounds!),
       );
     }
   }

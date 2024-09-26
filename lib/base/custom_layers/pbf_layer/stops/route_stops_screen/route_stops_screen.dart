@@ -39,7 +39,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   bool loading = true;
   String? fetchError;
 
-  final LatLngBounds _selectedBounds = LatLngBounds();
+  final LatLngBounds? _selectedBounds = null;
   bool needsCameraUpdate = true;
   int indexNextDay = -1;
   @override
@@ -168,7 +168,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
               [];
           stopsLocations = value.stops?.map((e) {
                 final point = LatLng(e.lat ?? 0, e.lon ?? 0);
-                _selectedBounds.extend(point);
+                _selectedBounds?.extend(point);
                 return point;
               }).toList() ??
               [];
@@ -190,13 +190,13 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   }
 
   void _handleOnMapPositionChanged(
-    MapPosition position,
+    MapCamera mapCamera,
     bool hasGesture,
   ) {
-    if (_trufiMapController.selectedBounds.isValid && position.bounds != null) {
+    if (_trufiMapController.selectedBounds != null) {
       _cropButtonKey.currentState?.setVisible(
-        visible: !position.bounds!
-            .containsBounds(_trufiMapController.selectedBounds),
+        visible: !mapCamera.visibleBounds
+            .containsBounds(_trufiMapController.selectedBounds!),
       );
     }
   }

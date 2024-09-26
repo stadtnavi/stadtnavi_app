@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/search_location_utils.dart';

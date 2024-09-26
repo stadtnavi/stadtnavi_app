@@ -25,10 +25,8 @@ class CustomMarkerConfiguration implements MarkerConfiguration {
       point: point,
       width: 28.0,
       height: 28.0,
-      anchorPos: AnchorPos.align(AnchorAlign.center),
-      builder: (context) {
-        return _buildMarker(fromMarker);
-      },
+      alignment: Alignment.center,
+      child: _buildMarker(fromMarker),
     );
   }
 
@@ -38,10 +36,8 @@ class CustomMarkerConfiguration implements MarkerConfiguration {
       point: point,
       width: 28.0,
       height: 28.0,
-      anchorPos: AnchorPos.align(AnchorAlign.top),
-      builder: (context) {
-        return _buildMarker(toMarker);
-      },
+      alignment: Alignment.topCenter,
+      child: _buildMarker(toMarker),
     );
   }
 
@@ -52,14 +48,15 @@ class CustomMarkerConfiguration implements MarkerConfiguration {
             width: 50.0,
             height: 50.0,
             point: point,
-            anchorPos: AnchorPos.align(AnchorAlign.center),
-            builder: (context) => const MyLocationMarker(),
+            alignment: Alignment.center,
+            child: const MyLocationMarker(),
           )
         : Marker(
             width: 0,
             height: 0,
             point: LatLng(0, 0),
-            builder: (_) => Container());
+            child: Container(),
+          );
   }
 
   @override

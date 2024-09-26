@@ -53,14 +53,14 @@ class AboutPage extends StatelessWidget {
               children: <Widget>[
                 Text(
                   appName,
-                  style: theme.textTheme.headline6?.copyWith(
-                    color: theme.textTheme.bodyText1?.color,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: theme.textTheme.bodyLarge?.color,
                   ),
                 ),
                 Text(
                   cityName,
-                  style: theme.textTheme.headline6?.copyWith(
-                    color: theme.textTheme.bodyText1?.color,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: theme.textTheme.bodyLarge?.color,
                     fontSize: 15,
                   ),
                 ),
@@ -116,7 +116,7 @@ class AboutPage extends StatelessWidget {
                       children: [
                         Text(
                           localization.version(snapshot.data ?? ''),
-                          style: theme.textTheme.bodyText1,
+                          style: theme.textTheme.bodyLarge,
                         ),
                       ],
                     );

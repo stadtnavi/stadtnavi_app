@@ -100,7 +100,7 @@ class TransitLeg extends StatelessWidget {
                   widget: leg.dropOffBookingInfo?.contactInfo?.infoUrl != null
                       ? RichText(
                           text: TextSpan(
-                            style: theme.primaryTextTheme.bodyText2?.copyWith(
+                            style: theme.primaryTextTheme.bodyMedium?.copyWith(
                               decoration: TextDecoration.underline,
                               color: theme.primaryColor,
                               fontWeight: FontWeight.w600,
@@ -158,7 +158,7 @@ class TransitLeg extends StatelessWidget {
                     ),
                     child: Text(
                       localization.commonOnDemandTaxi,
-                      style: theme.primaryTextTheme.headline6,
+                      style: theme.primaryTextTheme.headlineSmall,
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -173,7 +173,7 @@ class TransitLeg extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5, left: 5),
             child: Text(
               '${leg.durationLeg(localizationBase)} (${leg.distanceString(localizationBase)})',
-              style: theme.primaryTextTheme.bodyText1
+              style: theme.primaryTextTheme. bodyLarge
                   ?.copyWith(fontSize: 13, color: Colors.grey[700]),
             ),
           ),

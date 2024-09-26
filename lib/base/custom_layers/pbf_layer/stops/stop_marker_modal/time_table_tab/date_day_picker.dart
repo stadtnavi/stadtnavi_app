@@ -30,7 +30,7 @@ class _DateDayPickerState extends State<DateDayPicker> {
           (MediaQuery.of(context).orientation == Orientation.portrait
               ? 0.3
               : 0.5),
-      color: theme.backgroundColor,
+      color: theme.colorScheme.surface,
       child: Column(
         children: [
           Row(

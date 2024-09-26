@@ -15,7 +15,7 @@ TrufiMenuItem stadtNaviSocialMedia(UrlSocialMedia defaultUrls) {
             children: [
               Text(
                 TrufiBaseLocalization.of(context).menuSocialMedia,
-                style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
               ),
