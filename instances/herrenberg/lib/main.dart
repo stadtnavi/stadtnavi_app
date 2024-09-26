@@ -8,10 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:herrenberg/firebase_options.dart';
-import 'package:herrenberg/lifecycle_reactor_handler_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stadtnavi_core/notifications/lifecycle_reactor_handler_notifications.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
@@ -50,6 +50,7 @@ void main() async {
         provisional: false,
         sound: true,
       )
+      // ignore: invalid_return_type_for_catch_error
       .catchError((error) => print("$error"));
 
   await initHiveForFlutter();
@@ -63,7 +64,10 @@ void main() async {
   });
   runApp(
     StadtnaviApp(
-      appLifecycleReactorHandler: AppLifecycleReactorHandlerNotifications(),
+      appLifecycleReactorHandler: LifecycleReactorHandlerNotifications(
+        hasInAppNotifications: true,
+        hasPushNotifications: true,
+      ),
       appName: 'stadtnavi',
       appNameTitle: 'stadtnavi|Herrenberg',
       cityName: 'Herrenberg',

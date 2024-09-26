@@ -2,58 +2,70 @@ import 'dart:async';
 
 import 'package:firebase_in_app_messaging/firebase_in_app_messaging.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:herrenberg/base_modal_popup.dart';
+import 'package:stadtnavi_core/notifications/firebase_push_notification_modal.dart';
 import 'package:stadtnavi_core/stadtnavi_screen_helper.dart';
 
-class AppLifecycleReactorHandlerNotifications
+class LifecycleReactorHandlerNotifications
     implements AppLifecycleReactorHandler {
-  AppLifecycleReactorHandlerNotifications();
+  LifecycleReactorHandlerNotifications({
+    required this.hasPushNotifications,
+    required this.hasInAppNotifications,
+  });
+
+  final bool hasPushNotifications;
+  final bool hasInAppNotifications;
 
   StreamSubscription<RemoteMessage>? _onMessageSubscription;
   StreamSubscription<RemoteMessage>? _onMessageOpenedAppSubscription;
 
   @override
   void onInitState(context) {
-    FirebaseMessaging.instance.getInitialMessage().then(
-      (RemoteMessage? message) {
-        if (message?.notification != null) {
-          BaseModalPopup.showAdvancedModal(
-            context,
-            message: message!,
-          );
-        }
-      },
-    );
-    _onMessageOpenedAppSubscription =
-        FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      if (message.notification != null) {
-        BaseModalPopup.showAdvancedModal(
-          context,
-          message: message,
-        );
-      }
-    });
-    _onMessageSubscription = FirebaseMessaging.onMessage.listen(
-      (RemoteMessage message) {
+    if (hasPushNotifications) {
+      FirebaseMessaging.instance.getInitialMessage().then(
+        (RemoteMessage? message) {
+          if (message?.notification != null) {
+            FirebasePushNotificationModal.showAdvancedModal(
+              context,
+              message: message!,
+            );
+          }
+        },
+      );
+      _onMessageOpenedAppSubscription =
+          FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         if (message.notification != null) {
-          BaseModalPopup.showAdvancedModal(
+          FirebasePushNotificationModal.showAdvancedModal(
             context,
             message: message,
           );
         }
-      },
-    );
-    FirebaseInAppMessaging.instance.triggerEvent('home_event').catchError(
-      (error) {
-        print("$error");
-      },
-    );
+      });
+      _onMessageSubscription = FirebaseMessaging.onMessage.listen(
+        (RemoteMessage message) {
+          if (message.notification != null) {
+            FirebasePushNotificationModal.showAdvancedModal(
+              context,
+              message: message,
+            );
+          }
+        },
+      );
+    }
+    if (hasInAppNotifications) {
+      FirebaseInAppMessaging.instance.triggerEvent('home_event').catchError(
+        (error) {
+          print("$error");
+        },
+      );
+    }
   }
 
   @override
   void onDispose() {
-    _onMessageOpenedAppSubscription?.cancel();
-    _onMessageSubscription?.cancel();
+    if (hasPushNotifications) {
+      _onMessageOpenedAppSubscription?.cancel();
+      _onMessageSubscription?.cancel();
+    }
   }
 
   // showNotification(

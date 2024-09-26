@@ -6,7 +6,7 @@ import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 import "package:url_launcher/url_launcher.dart";
 import "package:cached_network_image/cached_network_image.dart";
 
-class BaseModalPopup extends StatelessWidget {
+class FirebasePushNotificationModal extends StatelessWidget {
   static Future<T?> showAdvancedModal<T>(
     BuildContext buildContext, {
     required RemoteMessage message,
@@ -14,10 +14,10 @@ class BaseModalPopup extends StatelessWidget {
       showTrufiDialog<T?>(
         context: buildContext,
         barrierColor: Colors.black54,
-        builder: (buildContext) => BaseModalPopup(message: message),
+        builder: (buildContext) => FirebasePushNotificationModal(message: message),
       );
 
-  const BaseModalPopup({
+  const FirebasePushNotificationModal({
     super.key,
     required this.message,
   });
