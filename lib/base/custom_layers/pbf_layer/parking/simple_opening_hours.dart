@@ -108,7 +108,9 @@ class SimpleOpeningHours {
   void parse(String inp) {
     inp = simplify(inp);
     final parts = splitHard(inp);
-    parts.forEach((part) => {parseHardPart(part)});
+    parts.forEach((part) {
+      parseHardPart(part);
+    });
   }
 
   String simplify(String input) {

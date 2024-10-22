@@ -260,6 +260,7 @@ int match(String normalizedTerm, Map<String, dynamic> resultProperties) {
 
 String getIconProperties(Map<String, dynamic> item) {
   String? iconId;
+  // ignore: unused_local_variable
   String iconColor = '#888888';
 
   final type = item["type"];

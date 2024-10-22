@@ -14,7 +14,6 @@ import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/map_leyers.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
-import 'package:stadtnavi_core/base/pages/home/setting_payload/setting_panel/setting_panel.dart';
 import 'package:stadtnavi_core/consts.dart';
 import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
@@ -47,6 +46,7 @@ void main() async {
         provisional: false,
         sound: true,
       )
+      // ignore: invalid_return_type_for_catch_error
       .catchError((error) => {print("$error")});
   await initHiveForFlutter();
   // TODO we need to improve disable fetch˜ method
