@@ -29,6 +29,13 @@
             {
               "client_id": "624400633028-jnojpi1ngcvhsmf2eqjp1q4tokh4gtuc.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "624400633028-i6sg6gb5hbpoqsfquq8h1ehq33gss0h4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "de.stadtnavi.herrenberg.internal"
+              }
             }
           ]
         }

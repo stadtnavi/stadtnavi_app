@@ -9,7 +9,6 @@ import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
 import 'package:trufi_core/base/pages/saved_places/widgets/dialog_select_icon.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
-import 'package:trufi_core/base/utils/util_icons/icons.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 
 class LocationTiler extends StatefulWidget {

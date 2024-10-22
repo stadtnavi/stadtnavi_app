@@ -54,7 +54,7 @@ class InfoMessage extends StatelessWidget {
                   Flexible(
                     child: Text(
                       message,
-                      style: theme.textTheme.bodyText1?.copyWith(fontSize: 14),
+                      style: theme.textTheme. bodyLarge?.copyWith(fontSize: 14),
                     ),
                   ),
                 ],

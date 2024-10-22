@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_map/plugin_api.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
@@ -18,26 +18,21 @@ import 'package:trufi_core/base/widgets/maps/utils/trufi_map_animations.dart';
 part 'trufi_map_state.dart';
 
 class TrufiMapController extends Cubit<TrufiMapState> {
-  static const int animationDuration = 500;
   final MapController mapController = MapController();
 
-  TrufiMapController() : super(const TrufiMapState()) {
-    _animations = TrufiMapAnimations(mapController);
-  }
+  TrufiMapController() : super(const TrufiMapState());
 
-  TrufiMapAnimations? _animations;
   Map<PlanItinerary, List<PolylineWithMarkers>> itineraries = {};
-  LatLngBounds get selectedBounds => _selectedBounds;
-  LatLngBounds _selectedBounds = LatLngBounds();
+  LatLngBounds? get selectedBounds => _selectedBounds;
+  LatLngBounds? _selectedBounds;
 
   void cleanMap() {
-    _selectedBounds = LatLngBounds();
+    _selectedBounds = null;
     emit(const TrufiMapState());
   }
 
   final Completer<Null> readyCompleter = Completer<Null>();
 
-  @override
   Future<Null> get onReady => readyCompleter.future;
 
   Future<void> moveToYourLocation({
@@ -58,9 +53,9 @@ class TrufiMapController extends Cubit<TrufiMapState> {
     required List<LatLng> points,
     required TickerProvider tickerProvider,
   }) {
-    _selectedBounds = LatLngBounds();
+    _selectedBounds = LatLngBounds.fromPoints([]);
     for (final point in points) {
-      _selectedBounds.extend(point);
+      _selectedBounds?.extend(point);
     }
     moveCurrentBounds(tickerProvider: tickerProvider);
   }
@@ -83,9 +78,9 @@ class TrufiMapController extends Cubit<TrufiMapState> {
     required TickerProvider tickerProvider,
     bool showAllItineraries = true,
   }) {
-    _selectedBounds = LatLngBounds();
-    _selectedBounds.extend(from.latLng);
-    _selectedBounds.extend(to.latLng);
+    _selectedBounds = LatLngBounds(from.latLng, to.latLng);
+    // _selectedBounds.extend(from.latLng);
+    // _selectedBounds.extend(to.latLng);
     final itineraries = _buildItineraries(
       plan: plan,
       selectedItinerary: selectedItinerary,
@@ -103,7 +98,7 @@ class TrufiMapController extends Cubit<TrufiMapState> {
           for (final marker in polylineWithMarker.markers) {
             if (isSelected) {
               _selectedMarkers.add(marker);
-              _selectedBounds.extend(marker.point);
+              _selectedBounds!.extend(marker.point);
             } else {
               _unselectedMarkers.add(marker);
             }
@@ -111,7 +106,7 @@ class TrufiMapController extends Cubit<TrufiMapState> {
           if (isSelected) {
             _selectedPolylines.add(polylineWithMarker.polyline);
             for (final point in polylineWithMarker.polyline.points) {
-              _selectedBounds.extend(point);
+              _selectedBounds!.extend(point);
             }
           } else {
             _unselectedPolylines.add(polylineWithMarker.polyline);
@@ -126,8 +121,7 @@ class TrufiMapController extends Cubit<TrufiMapState> {
         unselectedPolylinesLayer:
             PolylineLayer(polylines: _unselectedPolylines),
         selectedMarkersLayer: MarkerLayer(markers: _selectedMarkers),
-        selectedPolylinesLayer:
-            PolylineLayer(polylines: _selectedPolylines),
+        selectedPolylinesLayer: PolylineLayer(polylines: _selectedPolylines),
       ),
     );
     moveCurrentBounds(tickerProvider: tickerProvider);
@@ -166,7 +160,9 @@ class TrufiMapController extends Cubit<TrufiMapState> {
               points: points,
               color: color,
               strokeWidth: isSelected ? 6.0 : 3.0,
-              isDotted: leg.transportMode == TransportMode.walk,
+              pattern: leg.transportMode == TransportMode.walk
+                  ? StrokePattern.dotted()
+                  : StrokePattern.solid(),
             );
 
             // Transfer marker
@@ -196,26 +192,30 @@ class TrufiMapController extends Cubit<TrufiMapState> {
     if (tickerProvider == null) {
       mapController.move(center, zoom);
     } else {
-      _animations?.move(
+      TrufiMapAnimations.move(
         center: center,
         zoom: zoom,
-        tickerProvider: tickerProvider,
-        milliseconds: animationDuration,
+        vsync: tickerProvider,
+        mapController: mapController,
       );
     }
   }
 
   void _fitBounds({
-    required LatLngBounds bounds,
+    required LatLngBounds? bounds,
     TickerProvider? tickerProvider,
   }) {
+    if (bounds == null) return;
     if (tickerProvider == null) {
-      mapController.fitBounds(bounds);
-    } else {
-      _animations?.fitBounds(
+      mapController.fitCamera(CameraFit.bounds(
         bounds: bounds,
-        tickerProvider: tickerProvider,
-        milliseconds: animationDuration,
+        padding: EdgeInsets.all(50),
+      ));
+    } else {
+      TrufiMapAnimations.fitBounds(
+        bounds: bounds,
+        vsync: tickerProvider,
+        mapController: mapController,
       );
     }
   }

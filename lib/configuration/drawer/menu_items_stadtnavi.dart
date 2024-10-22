@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:stadtnavi_core/base/pages/about/about.dart';
 import 'package:stadtnavi_core/base/pages/home/home_page.dart';
+import 'package:stadtnavi_core/base/pages/parking_information_page/parking_information_page.dart';
 import 'package:stadtnavi_core/configuration/drawer/menu_language.dart';
 import 'package:stadtnavi_core/configuration/drawer/tile_menu.dart';
 import 'package:stadtnavi_core/configuration/drawer/stadtnavi_social_media.dart';
@@ -44,6 +45,7 @@ List<List<TrufiMenuItem>> stadtnaviMenuItems({
           return localization.menuConnections;
         },
       ),
+      ParkingInformationPage.menuItemDrawer,
       if (extraItems != null) ...extraItems,
       MenuPageItem(
         id: SavedPlacesPage.route,

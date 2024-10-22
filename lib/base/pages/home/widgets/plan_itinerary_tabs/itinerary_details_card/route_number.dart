@@ -104,7 +104,7 @@ class RouteNumber extends StatelessWidget {
                 padding: const EdgeInsets.all(2),
                 child: Text(
                   tripHeadSing ?? '',
-                  style: theme.primaryTextTheme.bodyText1,
+                  style: theme.primaryTextTheme. bodyLarge,
                   overflow: TextOverflow.visible,
                 ),
               ),
@@ -115,12 +115,12 @@ class RouteNumber extends StatelessWidget {
                 const SizedBox(width: 8),
                 Text(
                   duration ?? '',
-                  style: theme.primaryTextTheme.bodyText1,
+                  style: theme.primaryTextTheme. bodyLarge,
                 ),
                 const SizedBox(width: 10),
                 Text(
                   distance ?? '',
-                  style: theme.primaryTextTheme.bodyText1,
+                  style: theme.primaryTextTheme. bodyLarge,
                 ),
               ],
             )

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -9,7 +8,6 @@ import 'package:latlong2/latlong.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bicycle_network/bicycle_network_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bicycle_network/bicycle_network_icons.dart';
-import 'package:stadtnavi_core/base/pages/home/widgets/maps/custom_polyline_layer.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -90,42 +88,46 @@ class BicycleNetworkLayer extends CustomLayer {
     if (_listlist.isEmpty) {
       load();
     }
-    double? markerSize;
-    switch (zoom) {
-      case 15:
-        markerSize = 0.5;
-        break;
-      case 16:
-        markerSize = 1;
-        break;
-      case 17:
-        markerSize = 1.5;
-        break;
-      case 18:
-        markerSize = 2;
-        break;
-      default:
-        markerSize = zoom != null && zoom > 12 ? -0.5 : null;
-    }
-    return CustomPolylineLayer(
-      polylineCulling: true,
-      polylineOpts: markerSize != null
-          ? _listlist
-              .map((e) => CustomPolyline(
-                    points: e.coordinates,
-                    strokeWidth: e.weight + markerSize!,
-                    color: e.color,
-                    borderColor: e.color,
-                    isDotted: e.dashArray != null,
-                  ))
-              .toList()
-          : [],
-    );
+    // double? markerSize;
+    // switch (zoom) {
+    //   case 15:
+    //     markerSize = 0.5;
+    //     break;
+    //   case 16:
+    //     markerSize = 1;
+    //     break;
+    //   case 17:
+    //     markerSize = 1.5;
+    //     break;
+    //   case 18:
+    //     markerSize = 2;
+    //     break;
+    //   default:
+    //     markerSize = zoom != null && zoom > 12 ? -0.5 : null;
+    // }
+    return null;
+    // TODO review PolylineLayer
+    // return CustomPolylineLayer(
+    //   polylineCulling: true,
+    //   polylineOpts: markerSize != null
+    //       ? _listlist
+    //           .map((e) => CustomPolyline(
+    //                 points: e.coordinates,
+    //                 strokeWidth: e.weight + markerSize!,
+    //                 color: e.color,
+    //                 borderColor: e.color,
+    //                 isDotted: e.dashArray != null,
+    //               ))
+    //           .toList()
+    //       : [],
+    // );
   }
 
   @override
   Widget buildLayerOptions(int? zoom) {
-    return PolygonLayer();
+    return PolygonLayer<Object>(
+      polygons: [],
+    );
   }
 
   @override

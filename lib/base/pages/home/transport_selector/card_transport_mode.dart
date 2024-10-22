@@ -49,12 +49,12 @@ class CardTransportMode extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: theme.textTheme.bodyText1
+                    style: theme.textTheme. bodyLarge
                         ?.copyWith(fontWeight: FontWeight.w600),
                   ),
                   Text(
                     subtitle,
-                    style: theme.textTheme.bodyText1
+                    style: theme.textTheme. bodyLarge
                         ?.copyWith(fontWeight: FontWeight.w300),
                   ),
                 ],

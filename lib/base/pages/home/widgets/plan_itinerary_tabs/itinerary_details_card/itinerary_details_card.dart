@@ -200,12 +200,12 @@ class ItineraryDetailsCard extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: '${localizationSB.commonTotalDistance}: ',
-                                style: theme.textTheme.bodyText2,
+                                style: theme.textTheme.bodyMedium,
                               ),
                               TextSpan(
                                 text: itinerary
                                     .getDistanceString(localizationBase),
-                                style: theme.textTheme.bodyText2?.copyWith(
+                                style: theme.textTheme.bodyMedium?.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
                               )

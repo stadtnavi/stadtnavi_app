@@ -1,12 +1,6 @@
-import 'dart:developer';
-import 'dart:ffi';
-
 import 'dart:math';
-import 'package:flutter/material.dart';
 import 'package:lodash_flutter/lodash_flutter.dart';
 import 'package:equatable/equatable.dart';
-import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/icons.dart';
-import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/location_model.dart';
 
 class SearchData extends Equatable {
   final List<Map<String, dynamic>> data;
@@ -266,6 +260,7 @@ int match(String normalizedTerm, Map<String, dynamic> resultProperties) {
 
 String getIconProperties(Map<String, dynamic> item) {
   String? iconId;
+  // ignore: unused_local_variable
   String iconColor = '#888888';
 
   final type = item["type"];

@@ -75,7 +75,7 @@ class CustomStopTile extends StatelessWidget {
                                 languageCode == 'en'
                                     ? "Drop-off only"
                                     : "Nur Abgabe",
-                                style: theme.textTheme.bodyText1
+                                style: theme.textTheme. bodyLarge
                                     ?.copyWith(fontSize: 13),
                               ),
                             ],

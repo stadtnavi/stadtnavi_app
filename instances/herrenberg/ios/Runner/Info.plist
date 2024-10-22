@@ -37,6 +37,8 @@
 	<string>stadtnavi app is using your location to display it on a map.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>stadtnavi app is using your location to display it on a map.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

@@ -74,8 +74,8 @@ class _MapLegendState extends State<MapLegend> {
                     style: const TextStyle(fontWeight: FontWeight.w400),
                     maxLines: 1,
                   ),
-                  textColor: theme.textTheme.bodyText2?.color,
-                  collapsedTextColor: theme.textTheme.bodyText2?.color,
+                  textColor: theme.textTheme.bodyMedium?.color,
+                  collapsedTextColor: theme.textTheme.bodyMedium?.color,
                   collapsedIconColor: theme.iconTheme.color,
                   iconColor: theme.iconTheme.color,
                   tilePadding: EdgeInsets.fromLTRB(

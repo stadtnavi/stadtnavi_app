@@ -16,7 +16,7 @@ class MapTypeButton extends StatelessWidget {
     final customLayersCubit = context.read<CustomLayersCubit>();
     return FloatingActionButton(
       mini: true,
-      backgroundColor: Theme.of(context).backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       onPressed: () {
         if (customLayersCubit.state.layers.isNotEmpty) {
           Navigator.push(
@@ -33,7 +33,7 @@ class MapTypeButton extends StatelessWidget {
           showTrufiModalBottomSheet(
             context: context,
             builder: (context) => _BuildMapTypeBottomSheet(),
-            backgroundColor: Theme.of(context).backgroundColor,
+            backgroundColor: Theme.of(context).colorScheme.surface,
           );
         }
       },
@@ -55,7 +55,7 @@ class _MapItemsSelector extends StatelessWidget {
           child: Text(
             localization.commonShowMap,
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodyText1
+            style: theme.textTheme. bodyLarge
                 ?.copyWith(fontWeight: FontWeight.bold),
           ),
         ),
@@ -152,7 +152,7 @@ class __CustomExpansionPanelState extends State<_CustomExpansionPanel> {
                     Expanded(
                       child: Text(
                         element.name(context),
-                        style: theme.textTheme.bodyText1?.copyWith(
+                        style: theme.textTheme. bodyLarge?.copyWith(
                           color: Colors.black87,
                         ),
                       ),
@@ -264,7 +264,7 @@ class _BuildMapTypeBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
                     localization.mapTypeLabel,
-                    style: theme.textTheme.bodyText1
+                    style: theme.textTheme. bodyLarge
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -342,7 +342,7 @@ class _BuildMapTypeOptionButton extends StatelessWidget {
               child: Text(
                 label,
                 style: TextStyle(
-                    fontSize: theme.textTheme.caption?.fontSize,
+                    fontSize: theme.textTheme.bodySmall?.fontSize,
                     color: active ? theme.primaryColor : Colors.grey),
               ),
             ),

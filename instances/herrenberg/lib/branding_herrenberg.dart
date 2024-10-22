@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 final brandingStadtnaviHerrenberg = ThemeData.from(
+  useMaterial3: false,
   colorScheme: ColorScheme.fromSwatch(
     primarySwatch: const MaterialColor(
       0xff9BBF28,
@@ -17,7 +18,6 @@ final brandingStadtnaviHerrenberg = ThemeData.from(
         900: Color(0xff3b6700),
       },
     ),
-    primaryColorDark: const Color(0xff000000),
     accentColor: const Color(0xff9BBF28),
     cardColor: Colors.white,
     backgroundColor: Colors.grey[50],

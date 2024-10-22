@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 final brandingStadtnaviLudwigsburg = ThemeData.from(
+  useMaterial3: false,
   colorScheme: ColorScheme.fromSwatch(
     primarySwatch: const MaterialColor(
       0xfffecc01,
@@ -17,7 +18,6 @@ final brandingStadtnaviLudwigsburg = ThemeData.from(
         900: Color(0xffff6d00),
       },
     ),
-    primaryColorDark: const Color(0xff000000),
     accentColor: const Color(0xfffecc01),
     cardColor: Colors.white,
     backgroundColor: Colors.grey[50],
@@ -37,6 +37,7 @@ final brandingStadtnaviLudwigsburg = ThemeData.from(
 );
 
 final brandingStadtnaviLudwigsburgDark = ThemeData.from(
+  useMaterial3: false,
   colorScheme: ColorScheme.fromSwatch(
     primarySwatch: const MaterialColor(
       0xff263238,

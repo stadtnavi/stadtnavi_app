@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
-import 'package:skeleton_animation/skeleton_animation.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -36,7 +36,9 @@ class _TicketInformationState extends State<TicketInformation> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => {loadFares()});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadFares();
+    });
   }
 
   @override
@@ -71,7 +73,7 @@ class _TicketInformationState extends State<TicketInformation> {
                         fares!.length > 1
                             ? '${localization.itineraryTicketsTitle}:'
                             : '${localization.itineraryTicketTitle}:',
-                        style: theme.primaryTextTheme.bodyText1?.copyWith(
+                        style: theme.primaryTextTheme.bodyLarge?.copyWith(
                           color: Colors.grey[600],
                         ),
                       ),
@@ -79,11 +81,11 @@ class _TicketInformationState extends State<TicketInformation> {
                         children: [
                           Text(
                             localization.fareTicketName,
-                            style: theme.primaryTextTheme.bodyText1,
+                            style: theme.primaryTextTheme.bodyLarge,
                           ),
                           Text(
                             ' ${formatTwoDecimals(localeName: localization.localeName).format((fares![0]!.cents ?? 0) / 100)} €',
-                            style: theme.primaryTextTheme.bodyText1?.copyWith(
+                            style: theme.primaryTextTheme.bodyLarge?.copyWith(
                               color: Colors.grey[600],
                             ),
                           ),
@@ -112,7 +114,7 @@ class _TicketInformationState extends State<TicketInformation> {
                 padding: const EdgeInsets.only(top: 7),
                 child: Text(
                   localization.copyrightsPriceProvider,
-                  style: theme.primaryTextTheme.bodyText1
+                  style: theme.primaryTextTheme.bodyLarge
                       ?.copyWith(fontSize: 12, color: Colors.grey[600]),
                   textAlign: TextAlign.left,
                 ),
@@ -163,36 +165,63 @@ class _LoadingTIcketSkeleton extends StatelessWidget {
   const _LoadingTIcketSkeleton({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          children: [
-            Skeleton(
-              padding: 2,
-              width: 170,
-              height: 18,
-              textColor: Colors.grey[300],
-              borderRadius: BorderRadius.circular(5),
+    return Skeletonizer(
+      enabled: true,
+      switchAnimationConfig: SwitchAnimationConfig(
+        duration: Duration(milliseconds: 50),
+      ),
+      textBoneBorderRadius: TextBoneBorderRadius(BorderRadius.circular(0)),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.all(2),
+                  child: Skeleton.leaf(
+                    child: Card(
+                      elevation: 0,
+                  shadowColor: Colors.transparent,
+                      margin: EdgeInsets.zero,
+                      child: Container(
+                        height: 18,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(2),
+                  child: Skeleton.leaf(
+                    child: Card(
+                  shadowColor: Colors.transparent,
+                      margin: EdgeInsets.zero,
+                      elevation: 0,
+                      child: Container(
+                        height: 18,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            Skeleton(
-              padding: 2,
-              width: 170,
-              height: 18,
-              textColor: Colors.grey[300],
-              borderRadius: BorderRadius.circular(5),
-            ),
-          ],
-        ),
-        Flexible(
-          child: Skeleton(
-            padding: 2,
-            height: 40,
-            textColor: Colors.grey[300],
-            borderRadius: BorderRadius.circular(5),
           ),
-        ),
-      ],
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(2),
+              child: Skeleton.leaf(
+                child: Card(
+                  shadowColor: Colors.transparent,
+                  margin: EdgeInsets.zero,
+                  child: Container(
+                    height: 40,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

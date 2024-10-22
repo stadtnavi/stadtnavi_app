@@ -1,6 +1,6 @@
 part of 'setting_fetch_cubit.dart';
 
-const initPayloadDataPlanState = SettingFetchState(
+final initPayloadDataPlanState = SettingFetchState(
   typeWalkingSpeed: WalkingSpeed.average,
   avoidWalking: false,
   transportModes: defaultTransportModes,
