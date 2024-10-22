@@ -1,3 +1,8 @@
+## 3.25.0
+🎉 Support for Flutter 3.24.3
+🎉 Support trufi-core = 3.25.0-stadtnavi-lts
+🎉 Support Funicular-Transport
+
 ## 3.24.0
 🎉 Support for Flutter 3.24.0
 🎉 Support trufi-core = 3.24.0-stadtnavi-lts
