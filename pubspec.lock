@@ -997,10 +997,12 @@ packages:
   trufi_core:
     dependency: "direct main"
     description:
-      path: "../trufi-core"
-      relative: true
-    source: path
-    version: "3.24.0"
+      path: "."
+      ref: "3.25.0-stadtnavi-lts"
+      resolved-ref: "41b3fddb33d7ee0d142e7d22b1f27169fdeae190"
+      url: "https://github.com/trufi-association/trufi-core.git"
+    source: git
+    version: "3.25.0"
   typed_data:
     dependency: transitive
     description:

@@ -5,10 +5,10 @@ packages:
     dependency: transitive
     description:
       name: _flutterfire_internals
-      sha256: d84d98f1992976775f83083523a34c5d22fea191eec3abb2bd09537fb623c2e0
+      sha256: "5534e701a2c505fed1f0799e652dd6ae23bd4d2c4cf797220e5ced5764a7c1c2"
       url: "https://pub.dev"
     source: hosted
-    version: "1.3.7"
+    version: "1.3.44"
   animated_stack_widget:
     dependency: transitive
     description:
@@ -241,54 +241,94 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.0"
+  firebase_app_installations:
+    dependency: transitive
+    description:
+      name: firebase_app_installations
+      sha256: e4878293ecd6290adef6bcb865c66211b6394d21da11e469232cba541de25619
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1+4"
+  firebase_app_installations_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_app_installations_platform_interface
+      sha256: c66cee820d53eeb8690ea5e3a578d99281dda411c118a0be3198a45e92a747be
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.4+44"
+  firebase_app_installations_web:
+    dependency: transitive
+    description:
+      name: firebase_app_installations_web
+      sha256: e795a539bbd21278137f65acd7421085a0e0467f7ea6e1fa6e6a5a660cc91efd
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.6+2"
   firebase_core:
     dependency: "direct main"
     description:
       name: firebase_core
-      sha256: "95580fa07c8ca3072a2bb1fecd792616a33f8683477d25b7d29d3a6a399e6ece"
+      sha256: "51dfe2fbf3a984787a2e7b8592f2f05c986bfedd6fdacea3f9e0a7beb334de96"
       url: "https://pub.dev"
     source: hosted
-    version: "2.17.0"
+    version: "3.6.0"
   firebase_core_platform_interface:
     dependency: transitive
     description:
       name: firebase_core_platform_interface
-      sha256: b63e3be6c96ef5c33bdec1aab23c91eb00696f6452f0519401d640938c94cba2
+      sha256: e30da58198a6d4b49d5bce4e852f985c32cb10db329ebef9473db2b9f09ce810
       url: "https://pub.dev"
     source: hosted
-    version: "4.8.0"
+    version: "5.3.0"
   firebase_core_web:
     dependency: transitive
     description:
       name: firebase_core_web
-      sha256: e8c408923cd3a25bd342c576a114f2126769cd1a57106a4edeaa67ea4a84e962
+      sha256: f967a7138f5d2ffb1ce15950e2a382924239eaa521150a8f144af34e68b3b3e5
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.0"
+    version: "2.18.1"
+  firebase_in_app_messaging:
+    dependency: transitive
+    description:
+      name: firebase_in_app_messaging
+      sha256: "0124f318d3b138c80ca292a9df9ab621d5c9466ff04a7598e2756865d236661d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.0+8"
+  firebase_in_app_messaging_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_in_app_messaging_platform_interface
+      sha256: "2d500f0c0baa8561adbdf29628e7adc1b20f9d2aa925fb5e0dd9a3185a5a213a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.4+44"
   firebase_messaging:
     dependency: "direct main"
     description:
       name: firebase_messaging
-      sha256: "67f9d7c87457e71ad78ee81e332f232b8a24f7d5e338f8c958fa7d6e9e0e3636"
+      sha256: eb6e28a3a35deda61fe8634967c84215efc19133ba58d8e0fc6c9a2af2cba05e
       url: "https://pub.dev"
     source: hosted
-    version: "14.6.9"
+    version: "15.1.3"
   firebase_messaging_platform_interface:
     dependency: transitive
     description:
       name: firebase_messaging_platform_interface
-      sha256: "8c7ced3201886ad7ba37f344c1468ccfc08abb3023922e0e5a016eaf38abb96c"
+      sha256: b316c4ee10d93d32c033644207afc282d9b2b4372f3cf9c6022f3558b3873d2d
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.8"
+    version: "4.5.46"
   firebase_messaging_web:
     dependency: transitive
     description:
       name: firebase_messaging_web
-      sha256: b601322bdb44e2fefe4cc7b85ef0dbb7a2479d4a7653a51340821cf8d60696b5
+      sha256: d7f0147a1a9fe4313168e20154a01fd5cf332898de1527d3930ff77b8c7f5387
       url: "https://pub.dev"
     source: hosted
-    version: "3.5.8"
+    version: "3.9.2"
   fixnum:
     dependency: transitive
     description:
@@ -1032,7 +1072,7 @@ packages:
       path: "../.."
       relative: true
     source: path
-    version: "2.0.0"
+    version: "3.25.0"
   stream_channel:
     dependency: transitive
     description:
@@ -1076,10 +1116,12 @@ packages:
   trufi_core:
     dependency: transitive
     description:
-      path: "../../../trufi-core"
-      relative: true
-    source: path
-    version: "3.2.0"
+      path: "."
+      ref: "3.25.0-stadtnavi-lts"
+      resolved-ref: "41b3fddb33d7ee0d142e7d22b1f27169fdeae190"
+      url: "https://github.com/trufi-association/trufi-core.git"
+    source: git
+    version: "3.25.0"
   typed_data:
     dependency: transitive
     description:
@@ -1228,10 +1270,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: f652077d0bdf60abe4c1f6377448e8655008eef28f128bc023f7b5e8dfeb48fc
+      sha256: "5c5f338a667b4c644744b661f309fb8080bb94b18a7e91ef1dbd343bed00ed6d"
       url: "https://pub.dev"
     source: hosted
-    version: "14.2.4"
+    version: "14.2.5"
   web:
     dependency: transitive
     description:
