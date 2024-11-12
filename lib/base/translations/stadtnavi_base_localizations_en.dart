@@ -260,6 +260,63 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get weekdayPH => 'Public holiday';
 
   @override
+  String get relativeDirectionDepart => 'Depart';
+
+  @override
+  String get relativeDirectionHardLeft => 'Make a hard left';
+
+  @override
+  String get relativeDirectionLeft => 'Turn left';
+
+  @override
+  String get relativeDirectionSlightlyLeft => 'Bear left';
+
+  @override
+  String get relativeDirectionContinue => 'Continue straight';
+
+  @override
+  String get relativeDirectionSlightlyRight => 'Bear right';
+
+  @override
+  String get relativeDirectionRight => 'Turn right';
+
+  @override
+  String get relativeDirectionHardRight => 'Make a hard right';
+
+  @override
+  String get relativeDirectionCircleClockwise => 'Enter roundabout and take exit clockwise';
+
+  @override
+  String get relativeDirectionCircleCounterclockwise => 'Enter roundabout and take exit counterclockwise';
+
+  @override
+  String get relativeDirectionElevator => 'Take the elevator';
+
+  @override
+  String get relativeDirectionUturnLeft => 'Make a U-turn to the left';
+
+  @override
+  String get relativeDirectionUturnRight => 'Make a U-turn to the right';
+
+  @override
+  String get relativeDirectionEnterStation => 'Enter the station';
+
+  @override
+  String get relativeDirectionExitStation => 'Exit the station';
+
+  @override
+  String get relativeDirectionFollowSigns => 'Follow the signs';
+
+  @override
+  String get commonWalkWithBicycle => 'Walk with your bicycle';
+
+  @override
+  String get commonContinueFor => 'Continue for';
+
+  @override
+  String get commonContinue => 'continue';
+
+  @override
   String get commonNow => 'Now';
 
   @override

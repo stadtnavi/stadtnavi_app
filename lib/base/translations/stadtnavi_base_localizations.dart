@@ -593,6 +593,120 @@ abstract class StadtnaviBaseLocalization {
   /// **'Public holiday'**
   String get weekdayPH;
 
+  /// No description provided for @relativeDirectionDepart.
+  ///
+  /// In en, this message translates to:
+  /// **'Depart'**
+  String get relativeDirectionDepart;
+
+  /// No description provided for @relativeDirectionHardLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a hard left'**
+  String get relativeDirectionHardLeft;
+
+  /// No description provided for @relativeDirectionLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn left'**
+  String get relativeDirectionLeft;
+
+  /// No description provided for @relativeDirectionSlightlyLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Bear left'**
+  String get relativeDirectionSlightlyLeft;
+
+  /// No description provided for @relativeDirectionContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue straight'**
+  String get relativeDirectionContinue;
+
+  /// No description provided for @relativeDirectionSlightlyRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Bear right'**
+  String get relativeDirectionSlightlyRight;
+
+  /// No description provided for @relativeDirectionRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn right'**
+  String get relativeDirectionRight;
+
+  /// No description provided for @relativeDirectionHardRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a hard right'**
+  String get relativeDirectionHardRight;
+
+  /// No description provided for @relativeDirectionCircleClockwise.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter roundabout and take exit clockwise'**
+  String get relativeDirectionCircleClockwise;
+
+  /// No description provided for @relativeDirectionCircleCounterclockwise.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter roundabout and take exit counterclockwise'**
+  String get relativeDirectionCircleCounterclockwise;
+
+  /// No description provided for @relativeDirectionElevator.
+  ///
+  /// In en, this message translates to:
+  /// **'Take the elevator'**
+  String get relativeDirectionElevator;
+
+  /// No description provided for @relativeDirectionUturnLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a U-turn to the left'**
+  String get relativeDirectionUturnLeft;
+
+  /// No description provided for @relativeDirectionUturnRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a U-turn to the right'**
+  String get relativeDirectionUturnRight;
+
+  /// No description provided for @relativeDirectionEnterStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the station'**
+  String get relativeDirectionEnterStation;
+
+  /// No description provided for @relativeDirectionExitStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit the station'**
+  String get relativeDirectionExitStation;
+
+  /// No description provided for @relativeDirectionFollowSigns.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the signs'**
+  String get relativeDirectionFollowSigns;
+
+  /// No description provided for @commonWalkWithBicycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Walk with your bicycle'**
+  String get commonWalkWithBicycle;
+
+  /// No description provided for @commonContinueFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue for'**
+  String get commonContinueFor;
+
+  /// No description provided for @commonContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'continue'**
+  String get commonContinue;
+
   /// No description provided for @commonNow.
   ///
   /// In en, this message translates to:

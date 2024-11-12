@@ -65,6 +65,23 @@ fragment planFragment on Plan {
         fareUrl
         id
       }
+      steps {
+        distance
+        lon
+        lat
+        elevationProfile{
+          distance
+          elevation
+        }
+        relativeDirection
+        absoluteDirection
+        streetName
+        exit
+        stayOn
+        area
+        bogusName
+        walkingBike
+      }
       from {
         lat
         lon

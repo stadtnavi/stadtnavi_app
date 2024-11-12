@@ -1,10 +1,10 @@
 import 'package:stadtnavi_core/base/models/enums/enums_plan/absolute_direction.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/relative_direction.dart';
-import 'package:stadtnavi_core/base/models/step_entity.dart';
+import 'package:stadtnavi_core/base/models/othermodel/elevation_profile_component.dart';
+import 'package:stadtnavi_core/base/models/utils/geo_utils.dart';
+import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
-import 'elevation_profile_component.dart';
-
-class Step {
+class StepEntity {
   final double? distance;
   final double? lon;
   final double? lat;
@@ -18,7 +18,7 @@ class Step {
   final bool? bogusName;
   final bool? walkingBike;
 
-  const Step({
+  const StepEntity({
     this.distance,
     this.lon,
     this.lat,
@@ -33,16 +33,10 @@ class Step {
     this.walkingBike,
   });
 
-  factory Step.fromJson(Map<String, dynamic> json) => Step(
+  factory StepEntity.fromJson(Map<String, dynamic> json) => StepEntity(
         distance: double.tryParse(json['distance'].toString()) ?? 0,
         lon: double.tryParse(json['lon'].toString()) ?? 0,
         lat: double.tryParse(json['lat'].toString()) ?? 0,
-        elevationProfile: json['elevationProfile'] != null
-            ? List<ElevationProfileComponent>.from(
-                (json["elevationProfile"] as List<dynamic>).map((x) =>
-                    ElevationProfileComponent.fromJson(
-                        x as Map<String, dynamic>)))
-            : null,
         relativeDirection: json['relativeDirection'] != null
             ? getRelativeDirectionByString(json['relativeDirection'])
             : null,
@@ -57,14 +51,21 @@ class Step {
         walkingBike: json['walkingBike'],
       );
 
-  Map<String, dynamic> toJson() => {
+  String distanceString(TrufiBaseLocalization localization) => distance != null
+      ? displayDistanceWithLocale(
+          localization,
+          distance!,
+        )
+      : '';
+
+  Map<String, dynamic> toMap() => {
         'distance': distance,
         'lon': lon,
         'lat': lat,
         'elevationProfile':
             List<dynamic>.from((elevationProfile ?? []).map((x) => x.toJson())),
-        'relativeDirection': relativeDirection,
-        'absoluteDirection': absoluteDirection,
+        'relativeDirection': relativeDirection?.name,
+        'absoluteDirection': absoluteDirection?.name,
         'streetName': streetName,
         'exit': exit,
         'stayOn': stayOn,
@@ -72,21 +73,4 @@ class Step {
         'bogusName': bogusName,
         'walkingBike': walkingBike,
       };
-
-  StepEntity toStepEntity() {
-    return StepEntity(
-      distance: distance,
-      lon: lon,
-      lat: lat,
-      elevationProfile: elevationProfile,
-      relativeDirection: relativeDirection,
-      absoluteDirection: absoluteDirection,
-      streetName: streetName,
-      exit: exit,
-      stayOn: stayOn,
-      area: area,
-      bogusName: bogusName,
-      walkingBike: walkingBike,
-    );
-  }
 }

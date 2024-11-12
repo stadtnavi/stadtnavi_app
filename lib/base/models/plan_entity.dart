@@ -11,6 +11,7 @@ import 'package:stadtnavi_core/base/models/othermodel/enums/place/vertex_type.da
 import 'package:stadtnavi_core/base/models/othermodel/pickup_booking_info.dart';
 import 'package:stadtnavi_core/base/models/othermodel/trip.dart';
 import 'package:stadtnavi_core/base/models/othermodel/vehicle_parking_with_entrance.dart';
+import 'package:stadtnavi_core/base/models/step_entity.dart';
 import 'package:stadtnavi_core/base/models/utils/geo_utils.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
