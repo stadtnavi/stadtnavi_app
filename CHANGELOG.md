@@ -1,3 +1,17 @@
+## 3.26.0
+🎉 Support for Flutter 3.24.4
+🎉 Enhanced pedestrian navigation with detailed, step-by-step visual instructions.
+
+
+## 3.25.0
+🎉 Support for Flutter 3.24.3
+🎉 Support trufi-core = 3.25.0-stadtnavi-lts
+🎉 Support Funicular-Transport
+
+## 3.24.0
+🎉 Support for Flutter 3.24.0
+🎉 Support trufi-core = 3.24.0-stadtnavi-lts
+
 ## 1.8.6
 🎉 Fixed missing Roadworks in Roadworks-Layer.
 🎉 Fixed dynamic size-text(scaleFactor) in departure-time itinerary.

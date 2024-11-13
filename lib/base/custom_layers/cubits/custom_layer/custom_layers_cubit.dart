@@ -6,7 +6,7 @@ import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/local_json_layer/custom_marker_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/local_json_layer/layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
-import 'package:flutter_map/plugin_api.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'custom_layer_local_storage.dart';
 part 'custom_layers_state.dart';
 

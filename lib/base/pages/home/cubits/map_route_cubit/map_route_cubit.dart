@@ -21,7 +21,6 @@ class MapRouteCubit extends Cubit<MapRouteState> {
   final OnlineGraphQLRepository _requestManager;
 
   CancelableOperation<PlanEntity?>? currentFetchPlanOperation;
-  CancelableOperation<ModesTransportEntity>? currentFetchPlanModesOperation;
 
   MapRouteCubit(String otpEndpoint)
       : _requestManager = OnlineGraphQLRepository(graphQLEndPoint: otpEndpoint),

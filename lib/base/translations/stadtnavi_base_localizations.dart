@@ -8,6 +8,8 @@ import 'package:intl/intl.dart' as intl;
 import 'stadtnavi_base_localizations_de.dart';
 import 'stadtnavi_base_localizations_en.dart';
 
+// ignore_for_file: type=lint
+
 /// Callers can lookup localized strings with an instance of StadtnaviBaseLocalization
 /// returned by `StadtnaviBaseLocalization.of(context)`.
 ///
@@ -159,10 +161,10 @@ abstract class StadtnaviBaseLocalization {
   /// **'Sharing'**
   String get instructionVehicleSharing;
 
-  /// General Citybikes label
+  /// General Rental bikes and scooters label
   ///
   /// In en, this message translates to:
-  /// **'Citybikes'**
+  /// **'Rental bikes and scooters'**
   String get commonCitybikes;
 
   /// Vehicle name (RegioRad)
@@ -300,7 +302,7 @@ abstract class StadtnaviBaseLocalization {
   /// Text info message No Route Showing Alternative Options for plan Fetch
   ///
   /// In en, this message translates to:
-  /// **'No route suggestions were found with the your settings. However, we found the following route options:'**
+  /// **'No route suggestions were found with your settings. However, we found the following route options:'**
   String get infoMessageNoRouteShowingAlternativeOptions;
 
   /// Text info message Only walking and cycling Routes for plan Fetch
@@ -507,17 +509,35 @@ abstract class StadtnaviBaseLocalization {
   /// **'Settings'**
   String get commonSettings;
 
-  /// General Track  label
-  ///
-  /// In en, this message translates to:
-  /// **'Track'**
-  String get commonTrack;
-
   /// No description provided for @mapLegend.
   ///
   /// In en, this message translates to:
   /// **'map legend'**
   String get mapLegend;
+
+  /// No description provided for @selectStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Stop ({sizeStops})'**
+  String selectStop(Object sizeStops);
+
+  /// No description provided for @bicycleParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Bicycle parking'**
+  String get bicycleParking;
+
+  /// No description provided for @instructionVehicleRackRailway.
+  ///
+  /// In en, this message translates to:
+  /// **'Rack railway'**
+  String get instructionVehicleRackRailway;
+
+  /// General Track  label
+  ///
+  /// In en, this message translates to:
+  /// **'Track'**
+  String get commonTrack;
 
   /// General Platform  label
   ///
@@ -572,6 +592,120 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'Public holiday'**
   String get weekdayPH;
+
+  /// No description provided for @relativeDirectionDepart.
+  ///
+  /// In en, this message translates to:
+  /// **'Depart'**
+  String get relativeDirectionDepart;
+
+  /// No description provided for @relativeDirectionHardLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a hard left'**
+  String get relativeDirectionHardLeft;
+
+  /// No description provided for @relativeDirectionLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn left'**
+  String get relativeDirectionLeft;
+
+  /// No description provided for @relativeDirectionSlightlyLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Bear left'**
+  String get relativeDirectionSlightlyLeft;
+
+  /// No description provided for @relativeDirectionContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue straight'**
+  String get relativeDirectionContinue;
+
+  /// No description provided for @relativeDirectionSlightlyRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Bear right'**
+  String get relativeDirectionSlightlyRight;
+
+  /// No description provided for @relativeDirectionRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn right'**
+  String get relativeDirectionRight;
+
+  /// No description provided for @relativeDirectionHardRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a hard right'**
+  String get relativeDirectionHardRight;
+
+  /// No description provided for @relativeDirectionCircleClockwise.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter roundabout and take exit clockwise'**
+  String get relativeDirectionCircleClockwise;
+
+  /// No description provided for @relativeDirectionCircleCounterclockwise.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter roundabout and take exit counterclockwise'**
+  String get relativeDirectionCircleCounterclockwise;
+
+  /// No description provided for @relativeDirectionElevator.
+  ///
+  /// In en, this message translates to:
+  /// **'Take the elevator'**
+  String get relativeDirectionElevator;
+
+  /// No description provided for @relativeDirectionUturnLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a U-turn to the left'**
+  String get relativeDirectionUturnLeft;
+
+  /// No description provided for @relativeDirectionUturnRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Make a U-turn to the right'**
+  String get relativeDirectionUturnRight;
+
+  /// No description provided for @relativeDirectionEnterStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the station'**
+  String get relativeDirectionEnterStation;
+
+  /// No description provided for @relativeDirectionExitStation.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit the station'**
+  String get relativeDirectionExitStation;
+
+  /// No description provided for @relativeDirectionFollowSigns.
+  ///
+  /// In en, this message translates to:
+  /// **'Follow the signs'**
+  String get relativeDirectionFollowSigns;
+
+  /// No description provided for @commonWalkWithBicycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Walk with your bicycle'**
+  String get commonWalkWithBicycle;
+
+  /// No description provided for @commonContinueFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue for'**
+  String get commonContinueFor;
+
+  /// No description provided for @commonContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'continue'**
+  String get commonContinue;
 
   /// No description provided for @commonNow.
   ///

@@ -56,13 +56,100 @@ class ChargingLayer extends CustomLayer {
     );
     return markerSize != null
         ? markersList
-            .map((element) => Marker(
-                  key: Key("$id:${element.id}"),
+            .map(
+              (element) => Marker(
+                key: Key("$id:${element.id}"),
+                height: markerSize!,
+                width: markerSize,
+                point: element.position,
+                alignment: Alignment.center,
+                child: Builder(builder: (context) {
+                  final availabilityStatus = element.getAvailabilityStatus();
+                  return GestureDetector(
+                    onTap: () {
+                      final panelCubit = context.read<PanelCubit>();
+                      panelCubit.setPanel(
+                        CustomMarkerPanel(
+                          panel: (
+                            context,
+                            onFetchPlan, {
+                            isOnlyDestination,
+                          }) =>
+                              ChargingMarkerModal(
+                            element: element,
+                            onFetchPlan: onFetchPlan,
+                          ),
+                          positon: element.position,
+                          minSize: 50,
+                        ),
+                      );
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                            left: markerSize! / 5,
+                            top: markerSize / 5,
+                          ),
+                          child: SvgPicture.string(
+                            chargingIcon,
+                          ),
+                        ),
+                        if (availabilityStatus != null)
+                          SizedBox(
+                            height: markerSize / 1.8,
+                            width: markerSize / 1.8,
+                            child: availabilityStatus.getImage(),
+                          ),
+                      ],
+                    ),
+                  );
+                }),
+              ),
+            )
+            .toList()
+        : [];
+  }
+
+  @override
+  Widget? buildLayerOptionsBackground(int? zoom) {
+    return null;
+  }
+
+  @override
+  Widget buildLayerOptions(int? zoom) {
+    double? markerSize;
+    switch (zoom) {
+      case 15:
+        markerSize = 20;
+        break;
+      case 16:
+        markerSize = 25;
+        break;
+      case 17:
+        markerSize = 30;
+        break;
+      case 18:
+        markerSize = 35;
+        break;
+      default:
+        markerSize = zoom != null && zoom > 18 ? 40 : null;
+    }
+    final markersList = _pbfMarkers.values.toList();
+    // avoid vertical wrong overlapping
+    markersList.sort(
+      (b, a) => a.position.latitude.compareTo(b.position.latitude),
+    );
+    return MarkerLayer(
+      markers: markerSize != null
+          ? markersList
+              .map(
+                (element) => Marker(
                   height: markerSize!,
                   width: markerSize,
                   point: element.position,
-                  anchorPos: AnchorPos.align(AnchorAlign.center),
-                  builder: (context) {
+                  alignment: Alignment.center,
+                  child: Builder(builder: (context) {
                     final availabilityStatus = element.getAvailabilityStatus();
                     return GestureDetector(
                       onTap: () {
@@ -103,93 +190,9 @@ class ChargingLayer extends CustomLayer {
                         ],
                       ),
                     );
-                  },
-                ))
-            .toList()
-        : [];
-  }
-
-  @override
-  Widget? buildLayerOptionsBackground(int? zoom) {
-    return null;
-  }
-
-  @override
-  Widget buildLayerOptions(int? zoom) {
-    double? markerSize;
-    switch (zoom) {
-      case 15:
-        markerSize = 20;
-        break;
-      case 16:
-        markerSize = 25;
-        break;
-      case 17:
-        markerSize = 30;
-        break;
-      case 18:
-        markerSize = 35;
-        break;
-      default:
-        markerSize = zoom != null && zoom > 18 ? 40 : null;
-    }
-    final markersList = _pbfMarkers.values.toList();
-    // avoid vertical wrong overlapping
-    markersList.sort(
-      (b, a) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return MarkerLayer(
-      markers: markerSize != null
-          ? markersList
-              .map((element) => Marker(
-                    height: markerSize!,
-                    width: markerSize,
-                    point: element.position,
-                    anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) {
-                      final availabilityStatus =
-                          element.getAvailabilityStatus();
-                      return GestureDetector(
-                        onTap: () {
-                          final panelCubit = context.read<PanelCubit>();
-                          panelCubit.setPanel(
-                            CustomMarkerPanel(
-                              panel: (
-                                context,
-                                onFetchPlan, {
-                                isOnlyDestination,
-                              }) =>
-                                  ChargingMarkerModal(
-                                element: element,
-                                onFetchPlan: onFetchPlan,
-                              ),
-                              positon: element.position,
-                              minSize: 50,
-                            ),
-                          );
-                        },
-                        child: Stack(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(
-                                left: markerSize! / 5,
-                                top: markerSize / 5,
-                              ),
-                              child: SvgPicture.string(
-                                chargingIcon,
-                              ),
-                            ),
-                            if (availabilityStatus != null)
-                              SizedBox(
-                                height: markerSize / 1.8,
-                                width: markerSize / 1.8,
-                                child: availabilityStatus.getImage(),
-                              ),
-                          ],
-                        ),
-                      );
-                    },
-                  ))
+                  }),
+                ),
+              )
               .toList()
           : zoom != null && zoom > 11
               ? markersList
@@ -198,8 +201,8 @@ class ChargingLayer extends CustomLayer {
                       height: 5,
                       width: 5,
                       point: element.position,
-                      anchorPos: AnchorPos.align(AnchorAlign.center),
-                      builder: (context) => Container(
+                      alignment: Alignment.center,
+                      child: Container(
                         decoration: BoxDecoration(
                           color: const Color(0xff00b096),
                           borderRadius: BorderRadius.circular(10),

@@ -1,3 +1,7 @@
+import 'package:stadtnavi_core/base/models/enums/enums_plan/absolute_direction.dart';
+import 'package:stadtnavi_core/base/models/enums/enums_plan/relative_direction.dart';
+import 'package:stadtnavi_core/base/models/step_entity.dart';
+
 import 'elevation_profile_component.dart';
 
 class Step {
@@ -5,12 +9,28 @@ class Step {
   final double? lon;
   final double? lat;
   final List<ElevationProfileComponent>? elevationProfile;
+  final RelativeDirection? relativeDirection;
+  final AbsoluteDirection? absoluteDirection;
+  final String? streetName;
+  final String? exit;
+  final bool? stayOn;
+  final bool? area;
+  final bool? bogusName;
+  final bool? walkingBike;
 
   const Step({
     this.distance,
     this.lon,
     this.lat,
     this.elevationProfile,
+    this.relativeDirection,
+    this.absoluteDirection,
+    this.streetName,
+    this.exit,
+    this.stayOn,
+    this.area,
+    this.bogusName,
+    this.walkingBike,
   });
 
   factory Step.fromJson(Map<String, dynamic> json) => Step(
@@ -23,6 +43,18 @@ class Step {
                     ElevationProfileComponent.fromJson(
                         x as Map<String, dynamic>)))
             : null,
+        relativeDirection: json['relativeDirection'] != null
+            ? getRelativeDirectionByString(json['relativeDirection'])
+            : null,
+        absoluteDirection: json['absoluteDirection'] != null
+            ? getAbsoluteDirectionByString(json['absoluteDirection'])
+            : null,
+        streetName: json['streetName'],
+        exit: json['exit'],
+        stayOn: json['stayOn'],
+        area: json['area'],
+        bogusName: json['bogusName'],
+        walkingBike: json['walkingBike'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -31,5 +63,30 @@ class Step {
         'lat': lat,
         'elevationProfile':
             List<dynamic>.from((elevationProfile ?? []).map((x) => x.toJson())),
+        'relativeDirection': relativeDirection,
+        'absoluteDirection': absoluteDirection,
+        'streetName': streetName,
+        'exit': exit,
+        'stayOn': stayOn,
+        'area': area,
+        'bogusName': bogusName,
+        'walkingBike': walkingBike,
       };
+
+  StepEntity toStepEntity() {
+    return StepEntity(
+      distance: distance,
+      lon: lon,
+      lat: lat,
+      elevationProfile: elevationProfile,
+      relativeDirection: relativeDirection,
+      absoluteDirection: absoluteDirection,
+      streetName: streetName,
+      exit: exit,
+      stayOn: stayOn,
+      area: area,
+      bogusName: bogusName,
+      walkingBike: walkingBike,
+    );
+  }
 }

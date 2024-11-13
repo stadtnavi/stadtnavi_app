@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:skeleton_animation/skeleton_animation.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/other_icons.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:stadtnavi_core/base/models/utils/geo_utils.dart';
@@ -25,47 +25,75 @@ class TransportSelector extends StatelessWidget {
     final modesTransport = mapModesState.modesTransport;
     final payloadDataPlanState = context.watch<SettingFetchCubit>().state;
     return mapModesState.isFetchingModes
-        ? Container(
-            color: Colors.grey[100],
-            height: 50,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: [
-                Skeleton(
-                  padding: 5,
-                  width: 100,
-                  height: 5,
-                  textColor: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                Skeleton(
-                  padding: 5,
-                  width: 100,
-                  height: 5,
-                  textColor: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                Skeleton(
-                  padding: 5,
-                  width: 100,
-                  height: 5,
-                  textColor: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                Skeleton(
-                  padding: 5,
-                  width: 100,
-                  height: 5,
-                  textColor: Colors.white,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ],
+        ? Skeletonizer(
+            enabled: true,
+            textBoneBorderRadius:
+                TextBoneBorderRadius(BorderRadius.circular(0)),
+            child: Container(
+              color: Colors.grey[100],
+              height: 54,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      child: Skeleton.leaf(
+                        child: Card(
+                          shadowColor: Colors.transparent,
+                          margin: EdgeInsets.zero,
+                          elevation: 0,
+                          child: Container(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      child: Skeleton.leaf(
+                        child: Card(
+                          shadowColor: Colors.transparent,
+                          margin: EdgeInsets.zero,
+                          elevation: 0,
+                          child: Container(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      child: Skeleton.leaf(
+                        child: Card(
+                          shadowColor: Colors.transparent,
+                          margin: EdgeInsets.zero,
+                          elevation: 0,
+                          child: Container(),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      child: Skeleton.leaf(
+                        child: Card(
+                          shadowColor: Colors.transparent,
+                          margin: EdgeInsets.zero,
+                          elevation: 0,
+                          child: Container(),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
         : mapModesState.hasTransportModes
             ? Container(
                 color: Colors.grey[100],
-                height: 50,
+                height: 54,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [

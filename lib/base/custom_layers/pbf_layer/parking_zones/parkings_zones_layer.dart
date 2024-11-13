@@ -49,7 +49,7 @@ class ParkingZonesLayer extends CustomLayer {
       default:
         markerSize = zoom != null && zoom > 12 ? 30 : null;
     }
-    return PolygonLayer(
+    return PolygonLayer<Object>(
       polygonCulling: true,
       polygons: markerSize != null
           ? _parkingZonePoligons
@@ -69,7 +69,9 @@ class ParkingZonesLayer extends CustomLayer {
 
   @override
   Widget buildLayerOptions(int? zoom) {
-    return PolygonLayer();
+    return const PolygonLayer<Object>(
+      polygons: [],
+    );
   }
 
   @override
@@ -98,33 +100,35 @@ class ParkingZonesLayer extends CustomLayer {
                     height: markerSize! * .8,
                     width: markerSize * .8,
                     point: element.coordinates,
-                    anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) => GestureDetector(
-                      onTap: () {
-                        final panelCubit = context.read<PanelCubit>();
-                        panelCubit.setPanel(
-                          CustomMarkerPanel(
-                            panel: (
-                              context,
-                              onFetchPlan, {
-                              isOnlyDestination,
-                            }) =>
-                                ParkingZoneModal(
-                              element: element,
+                    alignment: Alignment.center,
+                    child: Builder(builder: (context) {
+                      return GestureDetector(
+                        onTap: () {
+                          final panelCubit = context.read<PanelCubit>();
+                          panelCubit.setPanel(
+                            CustomMarkerPanel(
+                              panel: (
+                                context,
+                                onFetchPlan, {
+                                isOnlyDestination,
+                              }) =>
+                                  ParkingZoneModal(
+                                element: element,
+                              ),
+                              positon: element.coordinates,
+                              minSize: 100,
                             ),
-                            positon: element.coordinates,
-                            minSize: 100,
+                          );
+                        },
+                        child: FittedBox(
+                          child: SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: element.icon,
                           ),
-                        );
-                      },
-                      child: FittedBox(
-                        child: SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: element.icon,
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ))
               .toList()
           : [],

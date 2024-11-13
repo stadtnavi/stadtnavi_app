@@ -12,6 +12,7 @@ import 'package:stadtnavi_core/base/pages/home/offer_carpool/offer_carpool_scree
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/mode_transport_screen.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/custom_text_button.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/step_navigation_details.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/transit_leg.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/widgets/info_message.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
@@ -294,7 +295,7 @@ class CarDash extends StatelessWidget {
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: theme.colorScheme.primary),
+                        foregroundColor: theme.colorScheme.primary),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -491,13 +492,16 @@ class BikeParkDash extends StatelessWidget {
 
 class WalkDash extends StatelessWidget {
   final PlanItineraryLeg leg;
+  final void Function(LatLng latlng) moveInMap;
   const WalkDash({
     Key? key,
     required this.leg,
+    required this.moveInMap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final localization = TrufiBaseLocalization.of(context);
     return Column(
       children: [
@@ -510,11 +514,45 @@ class WalkDash extends StatelessWidget {
             width: 19,
             child: walkSvg,
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 7),
-            child: Text(
-              '${localization.commonWalk} ${leg.durationLeg(localization)} (${leg.distanceString(localization)})',
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (leg.steps != null && leg.steps!.isNotEmpty)
+                ExpansionTile(
+                  visualDensity: const VisualDensity(vertical: -4),
+                  title: Text(
+                    '${localization.commonWalk} ${leg.durationLeg(localization)} (${leg.distanceString(localization)})',
+                  ),
+                  tilePadding: const EdgeInsets.symmetric(
+                    horizontal: 0,
+                    vertical: 0,
+                  ),
+                  textColor: theme.colorScheme.onSurface,
+                  collapsedTextColor: theme.colorScheme.onSurface,
+                  iconColor: theme.primaryColor,
+                  collapsedIconColor: theme.primaryColor,
+                  childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
+                  children: leg.steps!
+                      .map((e) => InkWell(
+                            onTap: () {
+                              if (e.lat != null && e.lon != null) {
+                                moveInMap(LatLng(
+                                  e.lat!,
+                                  e.lon!,
+                                ));
+                              }
+                            },
+                            child: StepNavigationDetails(
+                              step: e,
+                            ),
+                          ))
+                      .toList(),
+                )
+              else
+                Text(
+                  '${localization.commonWalk} ${leg.durationLeg(localization)} (${leg.distanceString(localization)})',
+                ),
+            ],
           ),
         ),
       ],

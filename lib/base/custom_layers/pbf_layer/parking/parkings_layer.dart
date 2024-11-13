@@ -71,43 +71,45 @@ class ParkingLayer extends CustomLayer {
               height: markerSize!,
               width: markerSize,
               point: element.position,
-              anchorPos: AnchorPos.align(AnchorAlign.center),
-              builder: (context) => GestureDetector(
-                onTap: () {
-                  final panelCubit = context.read<PanelCubit>();
-                  panelCubit.setPanel(
-                    CustomMarkerPanel(
-                      panel: (
-                        context,
-                        onFetchPlan, {
-                        isOnlyDestination,
-                      }) =>
-                          ParkingStateUpdater(
-                        parkingFeature: element,
-                        onFetchPlan: onFetchPlan,
-                        isOnlyDestination: isOnlyDestination ?? false,
+              alignment: Alignment.center,
+              child: Builder(builder: (context) {
+                return GestureDetector(
+                  onTap: () {
+                    final panelCubit = context.read<PanelCubit>();
+                    panelCubit.setPanel(
+                      CustomMarkerPanel(
+                        panel: (
+                          context,
+                          onFetchPlan, {
+                          isOnlyDestination,
+                        }) =>
+                            ParkingStateUpdater(
+                          parkingFeature: element,
+                          onFetchPlan: onFetchPlan,
+                          isOnlyDestination: isOnlyDestination ?? false,
+                        ),
+                        positon: element.position,
+                        minSize: 50,
                       ),
-                      positon: element.position,
-                      minSize: 50,
-                    ),
-                  );
-                },
-                child: Stack(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                        left: markerSize! / 5,
-                        top: markerSize / 5,
+                    );
+                  },
+                  child: Stack(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: markerSize! / 5,
+                          top: markerSize / 5,
+                        ),
+                        child: SvgPicture.string(
+                          parkingMarkerIcons[element.type] ?? "",
+                        ),
                       ),
-                      child: SvgPicture.string(
-                        parkingMarkerIcons[element.type] ?? "",
-                      ),
-                    ),
-                    if (availabilityParking != null)
-                      availabilityParking.getImage(size: markerSize / 2),
-                  ],
-                ),
-              ),
+                      if (availabilityParking != null)
+                        availabilityParking.getImage(size: markerSize / 2),
+                    ],
+                  ),
+                );
+              }),
             );
           }).toList()
         : [];
@@ -150,43 +152,45 @@ class ParkingLayer extends CustomLayer {
                 height: markerSize!,
                 width: markerSize,
                 point: element.position,
-                anchorPos: AnchorPos.align(AnchorAlign.center),
-                builder: (context) => GestureDetector(
-                  onTap: () {
-                    final panelCubit = context.read<PanelCubit>();
-                    panelCubit.setPanel(
-                      CustomMarkerPanel(
-                        panel: (
-                          context,
-                          onFetchPlan, {
-                          isOnlyDestination,
-                        }) =>
-                            ParkingStateUpdater(
-                          parkingFeature: element,
-                          onFetchPlan: onFetchPlan,
-                          isOnlyDestination: isOnlyDestination ?? false,
+                alignment: Alignment.center,
+                child: Builder(builder: (context) {
+                  return GestureDetector(
+                    onTap: () {
+                      final panelCubit = context.read<PanelCubit>();
+                      panelCubit.setPanel(
+                        CustomMarkerPanel(
+                          panel: (
+                            context,
+                            onFetchPlan, {
+                            isOnlyDestination,
+                          }) =>
+                              ParkingStateUpdater(
+                            parkingFeature: element,
+                            onFetchPlan: onFetchPlan,
+                            isOnlyDestination: isOnlyDestination ?? false,
+                          ),
+                          positon: element.position,
+                          minSize: 50,
                         ),
-                        positon: element.position,
-                        minSize: 50,
-                      ),
-                    );
-                  },
-                  child: Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                          left: markerSize! / 5,
-                          top: markerSize / 5,
+                      );
+                    },
+                    child: Stack(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                            left: markerSize! / 5,
+                            top: markerSize / 5,
+                          ),
+                          child: SvgPicture.string(
+                            parkingMarkerIcons[element.type] ?? "",
+                          ),
                         ),
-                        child: SvgPicture.string(
-                          parkingMarkerIcons[element.type] ?? "",
-                        ),
-                      ),
-                      if (availabilityParking != null)
-                        availabilityParking.getImage(size: markerSize / 2),
-                    ],
-                  ),
-                ),
+                        if (availabilityParking != null)
+                          availabilityParking.getImage(size: markerSize / 2),
+                      ],
+                    ),
+                  );
+                }),
               );
             }).toList()
           : zoom != null && zoom > 11
@@ -196,8 +200,8 @@ class ParkingLayer extends CustomLayer {
                       height: 5,
                       width: 5,
                       point: element.position,
-                      anchorPos: AnchorPos.align(AnchorAlign.center),
-                      builder: (context) => Container(
+                      alignment: Alignment.center,
+                      child: Container(
                         decoration: BoxDecoration(
                           color: const Color(0xff005ab4),
                           borderRadius: BorderRadius.circular(10),

@@ -72,7 +72,7 @@ class CifsMarkerModal extends StatelessWidget {
                 Text(
                   element.description!,
                   style: TextStyle(
-                    color: theme.textTheme.bodyText1?.color,
+                    color: theme.textTheme. bodyLarge?.color,
                   ),
                 ),
               if (element.url != null)

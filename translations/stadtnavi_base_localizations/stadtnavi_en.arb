@@ -43,9 +43,9 @@
   "@instructionVehicleSharing": {
     "description": "Vehicle name (Sharing)"
   },
-  "commonCitybikes": "Citybikes",
+  "commonCitybikes": "Rental bikes and scooters",
   "@commonCitybikes": {
-    "description": "General Citybikes label"
+    "description": "General Rental bikes and scooters label"
   },
   "instructionVehicleSharingRegioRad": "RegioRad",
   "@instructionVehicleSharingRegioRad": {
@@ -135,7 +135,7 @@
   "@infoMessageNoRouteOriginSameAsDestination": {
     "description": "Text info message No Route Origin Same As Destination for plan Fetch"
   },
-  "infoMessageNoRouteShowingAlternativeOptions": "No route suggestions were found with the your settings. However, we found the following route options:",
+  "infoMessageNoRouteShowingAlternativeOptions": "No route suggestions were found with your settings. However, we found the following route options:",
   "@infoMessageNoRouteShowingAlternativeOptions": {
     "description": "Text info message No Route Showing Alternative Options for plan Fetch"
   },
@@ -253,8 +253,11 @@
   },
   "commonTotalDistance": "Total distance",
   "commonSettings": "Settings",
-  "commonTrack": "Track",
   "mapLegend": "map legend",
+  "selectStop": "Select Stop ({sizeStops})",
+  "bicycleParking": "Bicycle parking",
+  "instructionVehicleRackRailway": "Rack railway",
+  "commonTrack": "Track",
   "@commonTrack": {
       "description": "General Track  label"
   },
@@ -270,6 +273,25 @@
   "weekdaySA": "Saturday",
   "weekdaySU": "Sunday",
   "weekdayPH": "Public holiday",
+  "relativeDirectionDepart": "Depart",
+  "relativeDirectionHardLeft": "Make a hard left",
+  "relativeDirectionLeft": "Turn left",
+  "relativeDirectionSlightlyLeft": "Bear left",
+  "relativeDirectionContinue": "Continue straight",
+  "relativeDirectionSlightlyRight": "Bear right",
+  "relativeDirectionRight": "Turn right",
+  "relativeDirectionHardRight": "Make a hard right",
+  "relativeDirectionCircleClockwise": "Enter roundabout and take exit clockwise",
+  "relativeDirectionCircleCounterclockwise": "Enter roundabout and take exit counterclockwise",
+  "relativeDirectionElevator": "Take the elevator",
+  "relativeDirectionUturnLeft": "Make a U-turn to the left",
+  "relativeDirectionUturnRight": "Make a U-turn to the right",
+  "relativeDirectionEnterStation": "Enter the station",
+  "relativeDirectionExitStation": "Exit the station",
+  "relativeDirectionFollowSigns": "Follow the signs",
+  "commonWalkWithBicycle": "Walk with your bicycle",
+  "commonContinueFor": "Continue for",
+  "commonContinue": "continue",
   "commonNow": "Now",
   "commonClosed": "Closed",
   "commonOpen": "Open",

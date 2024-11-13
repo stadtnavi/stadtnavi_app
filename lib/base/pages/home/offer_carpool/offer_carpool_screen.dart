@@ -96,11 +96,13 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                       children: [
                         Text(
                           localeName == "en" ? "Thank you!" : "Vielen Dank!",
-                          style:
-                              Theme.of(context).textTheme.headline5?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                  ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
                         ),
                         const SizedBox(height: 20),
                         Text(
@@ -108,7 +110,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                               ? "Your offer from ${widget.planItineraryLeg.fromPlace?.name} to ${widget.planItineraryLeg.toPlace?.name} was added."
                               : "Ihr Inserat von ${widget.planItineraryLeg.fromPlace?.name} nach ${widget.planItineraryLeg.toPlace?.name} wurde eingestellt.",
                           style:
-                              Theme.of(context).textTheme.bodyText2?.copyWith(
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: Colors.black,
                                   ),
                         ),
@@ -118,20 +120,24 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                             localeName == "en"
                                 ? "You've set the following time: ${DateFormat('dd/MM/yyyy').format(widget.planItineraryLeg.startTime)} at ${DateFormat('hh:mm aa').format(widget.planItineraryLeg.startTime)}."
                                 : "Sie haben für den folgendes Datum und Uhrzeit inseriert: ${DateFormat('dd.MM.yyyy').format(widget.planItineraryLeg.startTime)} um ${DateFormat('HH:mm').format(widget.planItineraryLeg.startTime)} Uhr.",
-                            style:
-                                Theme.of(context).textTheme.bodyText2?.copyWith(
-                                      color: Colors.black,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: Colors.black,
+                                ),
                           )
                         else
                           Text(
                             localeName == "en"
                                 ? "You've set the following times and days: $daysSelectedFormated at ${DateFormat('hh:mm aa').format(widget.planItineraryLeg.startTime)}."
                                 : "Sie haben für folgende Zeit und Tage inseriert: $daysSelectedFormated um ${DateFormat('HH:mm').format(widget.planItineraryLeg.startTime)} Uhr.",
-                            style:
-                                Theme.of(context).textTheme.bodyText2?.copyWith(
-                                      color: Colors.black,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: Colors.black,
+                                ),
                           ),
                         const SizedBox(height: 20),
                         Text(
@@ -139,23 +145,26 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                               ? "Your offer will be deleted after the day of the ride. Regular ones will be removed after three months."
                               : "Ihr Inserat wird nach Ablauf der Zeit jedoch spätestens nach drei Monaten (bei regelmäßigen Fahrten) gelöscht.",
                           style:
-                              Theme.of(context).textTheme.bodyText2?.copyWith(
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: Colors.black,
                                   ),
                         ),
                         const SizedBox(height: 30),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: theme.colorScheme.primary),
+                            foregroundColor: theme.colorScheme.primary,
+                          ),
                           onPressed: () {
                             Navigator.pop(context);
                           },
                           child: Text(
                             localeName == "en" ? "Close" : "Schließen",
-                            style:
-                                Theme.of(context).textTheme.bodyText2?.copyWith(
-                                      color: Colors.white,
-                                    ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: Colors.white,
+                                ),
                           ),
                         ),
                       ],
@@ -165,11 +174,13 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                       children: [
                         Text(
                           localeName == "en" ? "Your trip" : "Ihr Inserat",
-                          style:
-                              Theme.of(context).textTheme.headline5?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
-                                  ),
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
                         ),
                         const SizedBox(height: 20),
                         Row(
@@ -178,7 +189,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                               localeName == "en" ? "Origin: " : "Start: ",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2
+                                  .bodyMedium
                                   ?.copyWith(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -191,7 +202,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                     : '${widget.planItineraryLeg.fromPlace?.name} um ${DateFormat('HH:mm').format(widget.planItineraryLeg.startTime)} Uhr.',
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyText2
+                                    .bodyMedium
                                     ?.copyWith(
                                       color: Colors.black,
                                     ),
@@ -207,7 +218,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                   : "Zielort: ",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2
+                                  .bodyMedium
                                   ?.copyWith(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -217,7 +228,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                               widget.planItineraryLeg.toPlace?.name ?? '',
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2
+                                  .bodyMedium
                                   ?.copyWith(
                                     color: Colors.black,
                                   ),
@@ -230,7 +241,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                               ? "How often do you want to add the offer?"
                               : "Wie oft bieten Sie diese Fahrt an?",
                           style:
-                              Theme.of(context).textTheme.bodyText1?.copyWith(
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17,
                                   ),
@@ -246,7 +257,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                               localeName == "en" ? "Once" : "Einmalig",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2
+                                  .bodyMedium
                                   ?.copyWith(
                                     color: Colors.black,
                                   ),
@@ -260,7 +271,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                               localeName == "en" ? "Recurring" : "Regelmäßig",
                               style: Theme.of(context)
                                   .textTheme
-                                  .bodyText2
+                                  .bodyMedium
                                   ?.copyWith(
                                     color: Colors.black,
                                   ),
@@ -292,7 +303,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                             ),
                                             style: Theme.of(context)
                                                 .textTheme
-                                                .bodyText2
+                                                .bodyMedium
                                                 ?.copyWith(
                                                   color: Colors.black,
                                                 ),
@@ -331,7 +342,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                               ? "This will be shown to people interested in the ride."
                               : "Diese wird Interessenten angezeigt.",
                           style:
-                              Theme.of(context).textTheme.bodyText2?.copyWith(
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: Colors.black,
                                   ),
                         ),
@@ -352,7 +363,8 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                 text: TextSpan(
                                   children: [
                                     TextSpan(
-                                      style: theme.textTheme.caption?.copyWith(
+                                      style:
+                                          theme.textTheme.bodySmall?.copyWith(
                                         color: Colors.black,
                                       ),
                                       text: localeName == "en"
@@ -360,7 +372,8 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                           : "Ich habe die ",
                                     ),
                                     TextSpan(
-                                      style: theme.textTheme.caption?.copyWith(
+                                      style:
+                                          theme.textTheme.bodySmall?.copyWith(
                                         color: Colors.black,
                                         decoration: TextDecoration.underline,
                                       ),
@@ -374,7 +387,8 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                         },
                                     ),
                                     TextSpan(
-                                      style: theme.textTheme.caption?.copyWith(
+                                      style:
+                                          theme.textTheme.bodySmall?.copyWith(
                                         color: Colors.black,
                                       ),
                                       text: localeName == "en"
@@ -382,7 +396,8 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                           : " und die ",
                                     ),
                                     TextSpan(
-                                      style: theme.textTheme.caption?.copyWith(
+                                      style:
+                                          theme.textTheme.bodySmall?.copyWith(
                                         color: Colors.black,
                                         decoration: TextDecoration.underline,
                                       ),
@@ -396,7 +411,8 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                         },
                                     ),
                                     TextSpan(
-                                      style: theme.textTheme.caption?.copyWith(
+                                      style:
+                                          theme.textTheme.bodySmall?.copyWith(
                                         color: Colors.black,
                                       ),
                                       text: localeName == "en"
@@ -412,7 +428,8 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                         const SizedBox(height: 30),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              primary: theme.colorScheme.primary),
+                            foregroundColor: theme.colorScheme.primary,
+                          ),
                           onPressed: termsChecked && !loading
                               ? createOfferCarpool
                               : null,
@@ -423,7 +440,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                       : "Fahrgemeinschaft anbieten",
                                   style: Theme.of(context)
                                       .textTheme
-                                      .bodyText2
+                                      .bodyMedium
                                       ?.copyWith(
                                         color: Colors.white,
                                       ),

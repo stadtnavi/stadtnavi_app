@@ -99,7 +99,7 @@ class CifsLayer extends CustomLayer {
                 .map((e) => Polyline(
                       points: e.polyline.reversed.toList(),
                       color: Colors.red.withOpacity(.8),
-                      isDotted: true,
+                      pattern: const StrokePattern.dotted(),
                       strokeWidth: polylineSize!,
                     ))
                 .toList(),
@@ -112,8 +112,8 @@ class CifsLayer extends CustomLayer {
                         height: markerSize!,
                         width: markerSize,
                         point: element.startPoint,
-                        anchorPos: AnchorPos.align(AnchorAlign.center),
-                        builder: (context) => _CifsFeatureMarker(
+                        alignment: Alignment.center,
+                        child: _CifsFeatureMarker(
                           element: element,
                           point: element.startPoint,
                         ),
@@ -125,8 +125,8 @@ class CifsLayer extends CustomLayer {
                         height: markerSize!,
                         width: markerSize,
                         point: element.endPoint,
-                        anchorPos: AnchorPos.align(AnchorAlign.center),
-                        builder: (context) => _CifsFeatureMarker(
+                        alignment: Alignment.center,
+                        child: _CifsFeatureMarker(
                           element: element,
                           point: element.endPoint,
                         ),

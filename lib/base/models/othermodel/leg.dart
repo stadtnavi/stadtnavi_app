@@ -200,6 +200,7 @@ class Leg {
       agency: agency?.toAgencyEntity(),
       toPlace: to?.toPlaceEntity(),
       fromPlace: from?.toPlaceEntity(),
+      steps: steps?.map((x) => x.toStepEntity()).toList(),
       intermediatePlaces:
           intermediatePlaces?.map((x) => x.toPlaceEntity()).toList(),
       pickupBookingInfo: pickupBookingInfo,

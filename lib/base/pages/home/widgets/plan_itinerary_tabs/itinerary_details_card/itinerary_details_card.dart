@@ -122,7 +122,10 @@ class ItineraryDetailsCard extends StatelessWidget {
                             BikeParkDash(
                                 leg: itineraryLeg, bikePark: fromBikePark)
                           else
-                            WalkDash(leg: itineraryLeg),
+                            WalkDash(
+                              leg: itineraryLeg,
+                              moveInMap: moveInMap,
+                            ),
                         ],
                       )
                     else if ((itineraryLeg.rentedBike ?? false) ||
@@ -153,7 +156,10 @@ class ItineraryDetailsCard extends StatelessWidget {
                             compresedLegs[index + 1].mode == 'BICYCLE',
                       )
                     else
-                      WalkDash(leg: itineraryLeg),
+                      WalkDash(
+                        leg: itineraryLeg,
+                        moveInMap: moveInMap,
+                      ),
 
                     if (index < sizeLegs - 1 &&
                         compresedLegs[index + 1]
@@ -200,12 +206,12 @@ class ItineraryDetailsCard extends StatelessWidget {
                             children: [
                               TextSpan(
                                 text: '${localizationSB.commonTotalDistance}: ',
-                                style: theme.textTheme.bodyText2,
+                                style: theme.textTheme.bodyMedium,
                               ),
                               TextSpan(
                                 text: itinerary
                                     .getDistanceString(localizationBase),
-                                style: theme.textTheme.bodyText2?.copyWith(
+                                style: theme.textTheme.bodyMedium?.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
                               )

@@ -1,5 +1,7 @@
 import 'stadtnavi_base_localizations.dart';
 
+// ignore_for_file: type=lint
+
 /// The translations for German (`de`).
 class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   StadtnaviBaseLocalizationDe([String locale = 'de']) : super(locale);
@@ -35,7 +37,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get settingPanelTransportModes => 'Verkehrsmittel auswählen';
 
   @override
-  String get instructionVehicleSharing => 'Sharing angebote';
+  String get instructionVehicleSharing => 'Sharing Angebote';
 
   @override
   String get commonCitybikes => 'Leihräder und Scooter';
@@ -200,7 +202,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get itinerarySummaryBikeParkTitle => 'Fahrrad abstellen und weiterfahren';
 
   @override
-  String get itinerarySummaryBikeAndPublicRailSubwayTitle => 'Nehmen Sie Ihr Rad mit in den Zug oder die bahn';
+  String get itinerarySummaryBikeAndPublicRailSubwayTitle => 'Nehmen Sie Ihr Rad mit in den Zug oder die Bahn';
 
   @override
   String departureBikeStation(Object departureStop, Object departureTime) {
@@ -214,10 +216,21 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get commonSettings => 'Einstellungen';
 
   @override
-  String get commonTrack => 'Gleis';
+  String get mapLegend => 'Legende';
 
   @override
-  String get mapLegend => 'Legende';
+  String selectStop(Object sizeStops) {
+    return 'Option auswählen ($sizeStops)';
+  }
+
+  @override
+  String get bicycleParking => 'Fahrradabstellplatz';
+
+  @override
+  String get instructionVehicleRackRailway => 'Zahnradbahn';
+
+  @override
+  String get commonTrack => 'Gleis';
 
   @override
   String get commonPlatform => 'Plattform';
@@ -245,6 +258,63 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get weekdayPH => 'Gesetzlicher Feiertag';
+
+  @override
+  String get relativeDirectionDepart => 'Abfahren';
+
+  @override
+  String get relativeDirectionHardLeft => 'Scharf links abbiegen';
+
+  @override
+  String get relativeDirectionLeft => 'Links abbiegen';
+
+  @override
+  String get relativeDirectionSlightlyLeft => 'Leicht links halten';
+
+  @override
+  String get relativeDirectionContinue => 'Geradeaus weitergehen';
+
+  @override
+  String get relativeDirectionSlightlyRight => 'Leicht rechts halten';
+
+  @override
+  String get relativeDirectionRight => 'Rechts abbiegen';
+
+  @override
+  String get relativeDirectionHardRight => 'Scharf rechts abbiegen';
+
+  @override
+  String get relativeDirectionCircleClockwise => 'In den Kreisverkehr einfahren und im Uhrzeigersinn ausfahren';
+
+  @override
+  String get relativeDirectionCircleCounterclockwise => 'In den Kreisverkehr einfahren und gegen den Uhrzeigersinn ausfahren';
+
+  @override
+  String get relativeDirectionElevator => 'Den Aufzug nehmen';
+
+  @override
+  String get relativeDirectionUturnLeft => 'Wenden Sie nach links';
+
+  @override
+  String get relativeDirectionUturnRight => 'Wenden Sie nach rechts';
+
+  @override
+  String get relativeDirectionEnterStation => 'Betreten Sie die Station';
+
+  @override
+  String get relativeDirectionExitStation => 'Verlassen Sie die Station';
+
+  @override
+  String get relativeDirectionFollowSigns => 'Folgen Sie den Schildern';
+
+  @override
+  String get commonWalkWithBicycle => 'Schiebe dein Fahrrad';
+
+  @override
+  String get commonContinueFor => 'Gehe weiter für';
+
+  @override
+  String get commonContinue => 'Weiter';
 
   @override
   String get commonNow => 'Jetzt';

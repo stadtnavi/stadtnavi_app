@@ -83,7 +83,7 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
                         Text(
                           widget.element.type?.getTranslate(languageCode) ?? '',
                           style: TextStyle(
-                            color: theme.textTheme.bodyText1?.color
+                            color: theme.textTheme. bodyLarge?.color
                                 ?.withOpacity(.5),
                           ),
                         ),
@@ -102,7 +102,7 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
                         languageCode, cityBikeDataFetch!.bikesAvailable!) ??
                     '',
                 style: TextStyle(
-                  color: theme.textTheme.bodyText1?.color,
+                  color: theme.textTheme. bodyLarge?.color,
                 ),
               ),
             ),
@@ -120,9 +120,9 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
                       cityBikeDataFetch!.firstNetwork!
                           .getNetworkBookData(languageCode)
                           .title,
-                      style: theme.textTheme.bodyText1?.copyWith(
+                      style: theme.textTheme. bodyLarge?.copyWith(
                         fontWeight: FontWeight.w700,
-                        fontSize: theme.textTheme.bodyText1?.fontSize,
+                        fontSize: theme.textTheme. bodyLarge?.fontSize,
                       ),
                     ),
                     const SizedBox(height: 10),
@@ -142,7 +142,7 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
                                       ?.getNetworkBookData(languageCode)
                                       .bookText ??
                                   '',
-                              style: theme.textTheme.bodyText2
+                              style: theme.textTheme.bodyMedium
                                   ?.copyWith(fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(width: 5),
@@ -269,7 +269,7 @@ class _CargobikeMarkerModalState extends State<CargoBikeMarkerModal> {
                         Text(
                           widget.element.type?.getTranslate(languageCode) ?? '',
                           style: TextStyle(
-                            color: theme.textTheme.bodyText1?.color
+                            color: theme.textTheme. bodyLarge?.color
                                 ?.withOpacity(.5),
                           ),
                         ),

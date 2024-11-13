@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,153 +62,42 @@ class CityBikesLayer extends CustomLayer {
     );
     return markerSize != null
         ? markersList
-            .map((element) => Marker(
+            .map(
+              (element) => Marker(
                 key: Key("$id:${element.id}"),
                 height: markerSize! + 5,
                 width: markerSize + 5,
                 point: element.position,
-                anchorPos: AnchorPos.align(AnchorAlign.top),
-                builder: (context) {
-                  return GestureDetector(
-                    onTap: () {
-                      final panelCubit = context.read<PanelCubit>();
-                      panelCubit.setPanel(
-                        CustomMarkerPanel(
-                          panel: (
-                            context,
-                            onFetchPlan, {
-                            isOnlyDestination,
-                          }) =>
-                              element.id == "cargobike-herrenberg"
-                                  ? CargoBikeMarkerModal(
-                                      element: element,
-                                      onFetchPlan: onFetchPlan,
-                                    )
-                                  : CitybikeMarkerModal(
-                                      element: element,
-                                      onFetchPlan: onFetchPlan,
-                                    ),
-                          positon: element.position,
-                          minSize: 50,
-                        ),
-                      );
-                    },
-                    child: SharingMarkerUpdater(
-                      element: element,
-                      addMarker: forceAddMarker,
-                      child: Stack(
-                        children: [
-                          Container(
-                            height: markerSize,
-                            width: markerSize,
-                            margin: EdgeInsets.only(top: markerSize! / 5),
-                            child: element.type?.imageStop,
+                alignment: Alignment.topCenter,
+                child: Builder(
+                  builder: (context) {
+                    return GestureDetector(
+                      onTap: () {
+                        final panelCubit = context.read<PanelCubit>();
+                        panelCubit.setPanel(
+                          CustomMarkerPanel(
+                            panel: (
+                              context,
+                              onFetchPlan, {
+                              isOnlyDestination,
+                            }) =>
+                                element.id == "cargobike-herrenberg"
+                                    ? CargoBikeMarkerModal(
+                                        element: element,
+                                        onFetchPlan: onFetchPlan,
+                                      )
+                                    : CitybikeMarkerModal(
+                                        element: element,
+                                        onFetchPlan: onFetchPlan,
+                                      ),
+                            positon: element.position,
+                            minSize: 50,
                           ),
-                          if (element.extraInfo?.bikesAvailable != null &&
-                              element.extraInfo!.bikesAvailable! >= 0 &&
-                              element.type != CityBikeLayerIds.carSharing)
-                            Positioned(
-                              right: markerSize / 5,
-                              child: Container(
-                                height: markerSize / 1.7,
-                                width: markerSize / 1.7,
-                                decoration: BoxDecoration(
-                                  color: element.id == "cargobike-herrenberg" ||
-                                          element.extraInfo!.bikesAvailable! ==
-                                              0
-                                      ? Colors.red
-                                      : element.extraInfo!.bikesAvailable! > 4
-                                          ? const Color(0xff448A54)
-                                          : Colors.orange,
-                                  borderRadius: BorderRadius.circular(100),
-                                  border: Border.all(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    "${element.extraInfo!.bikesAvailable}",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: markerSize / 2.5,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            )
-                        ],
-                      ),
-                    ),
-                  );
-                }))
-            .toList()
-        : [];
-  }
-
-  @override
-  Widget? buildLayerOptionsBackground(int? zoom) {
-    return null;
-  }
-
-  @override
-  Widget buildLayerOptions(int? zoom) {
-    double? markerSize;
-    switch (zoom) {
-      case 15:
-        markerSize = 15;
-        break;
-      case 16:
-        markerSize = 20;
-        break;
-      case 17:
-        markerSize = 25;
-        break;
-      case 18:
-        markerSize = 30;
-        break;
-      default:
-        markerSize = zoom != null && zoom > 18 ? 35 : null;
-    }
-    final markersList = _pbfMarkers.values.toList();
-    // avoid vertical wrong overlapping
-    markersList.sort(
-      (b, a) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return MarkerLayer(
-      markers: markerSize != null
-          ? markersList
-              .map((element) => Marker(
-                    height: markerSize! + 5,
-                    width: markerSize + 5,
-                    point: element.position,
-                    anchorPos: AnchorPos.align(AnchorAlign.top),
-                    builder: (context) => SharingMarkerUpdater(
-                      element: element,
-                      addMarker: forceAddMarker,
-                      child: GestureDetector(
-                        onTap: () {
-                          final panelCubit = context.read<PanelCubit>();
-                          panelCubit.setPanel(
-                            CustomMarkerPanel(
-                              panel: (
-                                context,
-                                onFetchPlan, {
-                                isOnlyDestination,
-                              }) =>
-                                  element.id == "cargobike-herrenberg"
-                                      ? CargoBikeMarkerModal(
-                                          element: element,
-                                          onFetchPlan: onFetchPlan,
-                                        )
-                                      : CitybikeMarkerModal(
-                                          element: element,
-                                          onFetchPlan: onFetchPlan,
-                                        ),
-                              positon: element.position,
-                              minSize: 50,
-                            ),
-                          );
-                        },
+                        );
+                      },
+                      child: SharingMarkerUpdater(
+                        element: element,
+                        addMarker: forceAddMarker,
                         child: Stack(
                           children: [
                             Container(
@@ -256,6 +143,127 @@ class CityBikesLayer extends CustomLayer {
                           ],
                         ),
                       ),
+                    );
+                  },
+                ),
+              ),
+            )
+            .toList()
+        : [];
+  }
+
+  @override
+  Widget? buildLayerOptionsBackground(int? zoom) {
+    return null;
+  }
+
+  @override
+  Widget buildLayerOptions(int? zoom) {
+    double? markerSize;
+    switch (zoom) {
+      case 15:
+        markerSize = 15;
+        break;
+      case 16:
+        markerSize = 20;
+        break;
+      case 17:
+        markerSize = 25;
+        break;
+      case 18:
+        markerSize = 30;
+        break;
+      default:
+        markerSize = zoom != null && zoom > 18 ? 35 : null;
+    }
+    final markersList = _pbfMarkers.values.toList();
+    // avoid vertical wrong overlapping
+    markersList.sort(
+      (b, a) => a.position.latitude.compareTo(b.position.latitude),
+    );
+    return MarkerLayer(
+      markers: markerSize != null
+          ? markersList
+              .map((element) => Marker(
+                    height: markerSize! + 5,
+                    width: markerSize + 5,
+                    point: element.position,
+                    alignment: Alignment.topCenter,
+                    child: SharingMarkerUpdater(
+                      element: element,
+                      addMarker: forceAddMarker,
+                      child: Builder(builder: (context) {
+                        return GestureDetector(
+                          onTap: () {
+                            final panelCubit = context.read<PanelCubit>();
+                            panelCubit.setPanel(
+                              CustomMarkerPanel(
+                                panel: (
+                                  context,
+                                  onFetchPlan, {
+                                  isOnlyDestination,
+                                }) =>
+                                    element.id == "cargobike-herrenberg"
+                                        ? CargoBikeMarkerModal(
+                                            element: element,
+                                            onFetchPlan: onFetchPlan,
+                                          )
+                                        : CitybikeMarkerModal(
+                                            element: element,
+                                            onFetchPlan: onFetchPlan,
+                                          ),
+                                positon: element.position,
+                                minSize: 50,
+                              ),
+                            );
+                          },
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: markerSize,
+                                width: markerSize,
+                                margin: EdgeInsets.only(top: markerSize! / 5),
+                                child: element.type?.imageStop,
+                              ),
+                              if (element.extraInfo?.bikesAvailable != null &&
+                                  element.extraInfo!.bikesAvailable! >= 0 &&
+                                  element.type != CityBikeLayerIds.carSharing)
+                                Positioned(
+                                  right: markerSize / 5,
+                                  child: Container(
+                                    height: markerSize / 1.7,
+                                    width: markerSize / 1.7,
+                                    decoration: BoxDecoration(
+                                      color: element.id ==
+                                                  "cargobike-herrenberg" ||
+                                              element.extraInfo!
+                                                      .bikesAvailable! ==
+                                                  0
+                                          ? Colors.red
+                                          : element.extraInfo!.bikesAvailable! >
+                                                  4
+                                              ? const Color(0xff448A54)
+                                              : Colors.orange,
+                                      borderRadius: BorderRadius.circular(100),
+                                      border: Border.all(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        "${element.extraInfo!.bikesAvailable}",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: markerSize / 2.5,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                            ],
+                          ),
+                        );
+                      }),
                     ),
                   ))
               .toList()
@@ -266,8 +274,8 @@ class CityBikesLayer extends CustomLayer {
                       height: 5,
                       width: 5,
                       point: element.position,
-                      anchorPos: AnchorPos.align(AnchorAlign.center),
-                      builder: (context) => Container(
+                      alignment: Alignment.center,
+                      child: Container(
                         decoration: BoxDecoration(
                           color: element.type?.imageStopColor,
                           borderRadius: BorderRadius.circular(10),

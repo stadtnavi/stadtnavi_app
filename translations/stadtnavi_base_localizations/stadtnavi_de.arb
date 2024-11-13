@@ -39,7 +39,7 @@
   "@settingPanelTransportModes": {
     "description": "Transport Modes configuration panel label"
   },
-  "instructionVehicleSharing": "Sharing angebote",
+  "instructionVehicleSharing": "Sharing Angebote",
   "@instructionVehicleSharing": {
     "description": "Vehicle name (Sharing)"
   },
@@ -235,7 +235,7 @@
   "@itinerarySummaryBikeParkTitle": {
       "description": "Text title itinerary Summary Bike Park Title"
   },
-  "itinerarySummaryBikeAndPublicRailSubwayTitle": "Nehmen Sie Ihr Rad mit in den Zug oder die bahn",
+  "itinerarySummaryBikeAndPublicRailSubwayTitle": "Nehmen Sie Ihr Rad mit in den Zug oder die Bahn",
   "@itinerarySummaryBikeAndPublicRailSubwayTitle": {
       "description": "Text title itinerary Summary Bike And Public Rail Subway"
   },
@@ -253,8 +253,11 @@
   },
   "commonTotalDistance": "Gesamtstrecke",
   "commonSettings": "Einstellungen",
-  "commonTrack": "Gleis",
   "mapLegend": "Legende",
+  "selectStop": "Option auswählen ({sizeStops})",
+  "bicycleParking": "Fahrradabstellplatz",
+  "instructionVehicleRackRailway": "Zahnradbahn",
+  "commonTrack": "Gleis",
   "@commonTrack": {
       "description": "General Track  label"
   },
@@ -270,6 +273,25 @@
   "weekdaySA": "Samstag",
   "weekdaySU": "Sonntag",
   "weekdayPH": "Gesetzlicher Feiertag",
+  "relativeDirectionDepart": "Abfahren",
+  "relativeDirectionHardLeft": "Scharf links abbiegen",
+  "relativeDirectionLeft": "Links abbiegen",
+  "relativeDirectionSlightlyLeft": "Leicht links halten",
+  "relativeDirectionContinue": "Geradeaus weitergehen",
+  "relativeDirectionSlightlyRight": "Leicht rechts halten",
+  "relativeDirectionRight": "Rechts abbiegen",
+  "relativeDirectionHardRight": "Scharf rechts abbiegen",
+  "relativeDirectionCircleClockwise": "In den Kreisverkehr einfahren und im Uhrzeigersinn ausfahren",
+  "relativeDirectionCircleCounterclockwise": "In den Kreisverkehr einfahren und gegen den Uhrzeigersinn ausfahren",
+  "relativeDirectionElevator": "Den Aufzug nehmen",
+  "relativeDirectionUturnLeft": "Wenden Sie nach links",
+  "relativeDirectionUturnRight": "Wenden Sie nach rechts",
+  "relativeDirectionEnterStation": "Betreten Sie die Station",
+  "relativeDirectionExitStation": "Verlassen Sie die Station",
+  "relativeDirectionFollowSigns": "Folgen Sie den Schildern",
+  "commonWalkWithBicycle": "Schiebe dein Fahrrad",
+  "commonContinueFor": "Gehe weiter für",
+  "commonContinue": "Weiter",
   "commonNow": "Jetzt",
   "commonClosed": "Geschlossen",
   "commonOpen": "Geöffnet",

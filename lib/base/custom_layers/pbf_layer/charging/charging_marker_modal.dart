@@ -104,7 +104,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                       Text(
                         localizationST.commonOpenAlways,
                         style: TextStyle(
-                          color: theme.textTheme.bodyText1?.color,
+                          color: theme.textTheme. bodyLarge?.color,
                         ),
                       ),
                     ],
@@ -148,7 +148,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                                 ? "${widget.element.capacity} charging slots"
                                 : "${widget.element.capacity} Ladeplätze",
                         style: TextStyle(
-                          color: theme.textTheme.bodyText1?.color,
+                          color: theme.textTheme. bodyLarge?.color,
                         ),
                       ),
                     ],
@@ -179,7 +179,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                                 .join(", ")
                             : (localeName == "en" ? 'Unknown' : 'Unbekannt'),
                         style: TextStyle(
-                          color: theme.textTheme.bodyText1?.color,
+                          color: theme.textTheme. bodyLarge?.color,
                         ),
                       ),
                     ],
@@ -197,7 +197,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                     Text(
                       "${chargingItem!.address}, ${chargingItem!.postalCode}, ${chargingItem!.city}",
                       style: TextStyle(
-                        color: theme.textTheme.bodyText1?.color,
+                        color: theme.textTheme. bodyLarge?.color,
                       ),
                     ),
                   ],

@@ -49,14 +49,14 @@ class ItineraryCard extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     "${itinerary.startDateText(localizationBase)} ${itinerary.startTimeHHmm} - ${itinerary.endTimeHHmm}",
-                    style: theme.primaryTextTheme.bodyText1
+                    style: theme.primaryTextTheme. bodyLarge
                         ?.copyWith(fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(width: 8),
                   Text(
                     itinerary.durationFormat(localizationBase),
                     textScaleFactor: MediaQuery.of(context).textScaleFactor,
-                    style: theme.textTheme.bodyText2?.copyWith(
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
                   )

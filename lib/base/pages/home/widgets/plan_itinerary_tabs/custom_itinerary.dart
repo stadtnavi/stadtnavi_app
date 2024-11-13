@@ -79,7 +79,7 @@ class _CustomItineraryState extends State<CustomItinerary>
                       child: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                            style: theme.textTheme.bodyText1?.copyWith(
+                            style: theme.textTheme. bodyLarge?.copyWith(
                                 fontSize: 14,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w600),
@@ -87,7 +87,7 @@ class _CustomItineraryState extends State<CustomItinerary>
                                 .infoMessageUseNationalServicePrefix,
                           ),
                           TextSpan(
-                            style: theme.primaryTextTheme.bodyText2?.copyWith(
+                            style: theme.primaryTextTheme.bodyMedium?.copyWith(
                               decoration: TextDecoration.underline,
                             ),
                             text: ' Fahrplanauskunft efa-bw',

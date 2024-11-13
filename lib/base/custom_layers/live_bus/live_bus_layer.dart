@@ -34,6 +34,7 @@ class LiveBusLayer extends CustomLayer {
   final Map<String, LiveBusFeature> _pbfMarkers = {};
   OnLiveBusStateChangeContainer? onLiveBusStateChangeContainer;
   LiveBusLayer(String id, String weight) : super(id, weight) {
+    // ignore: body_might_complete_normally_catch_error
     connect().catchError((error) {
       // should not make any effect on layer behavior
     });
@@ -157,63 +158,66 @@ class LiveBusLayer extends CustomLayer {
                     height: markerSize! * 1.5,
                     width: markerSize * 1.5,
                     point: element.position,
-                    anchorPos: AnchorPos.align(AnchorAlign.center),
-                    builder: (context) => GestureDetector(
-                        onTap: () {
-                          onLiveBusStateChangeContainer =
-                              OnLiveBusStateChangeContainer(
-                            element.id,
-                            () {
-                              onLiveBusStateChangeContainer = null;
-                            },
-                          );
-                          final panelCubit = context.read<PanelCubit>();
-                          panelCubit.setPanel(
-                            CustomMarkerPanel(
-                              panel: (
-                                context,
-                                onFetchPlan, {
-                                isOnlyDestination,
-                              }) =>
-                                  LiveBusMarkerModal(
-                                mainElement: element,
-                                onLiveBusStateChangeContainer:
-                                    onLiveBusStateChangeContainer,
+                    alignment: Alignment.center,
+                    child: Builder(builder: (context) {
+                      return GestureDetector(
+                          onTap: () {
+                            onLiveBusStateChangeContainer =
+                                OnLiveBusStateChangeContainer(
+                              element.id,
+                              () {
+                                onLiveBusStateChangeContainer = null;
+                              },
+                            );
+                            final panelCubit = context.read<PanelCubit>();
+                            panelCubit.setPanel(
+                              CustomMarkerPanel(
+                                panel: (
+                                  context,
+                                  onFetchPlan, {
+                                  isOnlyDestination,
+                                }) =>
+                                    LiveBusMarkerModal(
+                                  mainElement: element,
+                                  onLiveBusStateChangeContainer:
+                                      onLiveBusStateChangeContainer,
+                                ),
+                                positon: element.position,
+                                minSize: 50,
                               ),
-                              positon: element.position,
-                              minSize: 50,
-                            ),
-                          );
-                        },
-                        child: Stack(
-                          children: [
-                            if (element.bearing != null)
-                              Transform.rotate(
-                                angle: element.bearing! * pi / 180,
-                                child: SvgPicture.string("""
+                            );
+                          },
+                          child: Stack(
+                            children: [
+                              if (element.bearing != null)
+                                Transform.rotate(
+                                  angle: element.bearing! * pi / 180,
+                                  child: SvgPicture.string("""
                                 <svg version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                                     <path fill="red" d="M50 0L32.4 14.08A40 40 0 0 0 10 50a40 40 0 0 0 40 40 40 40 0 0 0 40-40 40 40 0 0 0-22.398-35.918L50 0z" />
                                 </svg>
                               """),
-                              ),
-                            Container(
-                              margin: EdgeInsets.all(markerSize! / 5),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(markerSize),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  element.name,
-                                  style: TextStyle(
-                                    fontSize: markerSize / 2,
-                                    color: Colors.red,
+                                ),
+                              Container(
+                                margin: EdgeInsets.all(markerSize! / 5),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius:
+                                      BorderRadius.circular(markerSize),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    element.name,
+                                    style: TextStyle(
+                                      fontSize: markerSize / 2,
+                                      color: Colors.red,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        )),
+                            ],
+                          ));
+                    }),
                   ))
               .toList()
           : zoom != null && zoom > 11
@@ -223,8 +227,8 @@ class LiveBusLayer extends CustomLayer {
                       height: 5,
                       width: 5,
                       point: element.position,
-                      anchorPos: AnchorPos.align(AnchorAlign.center),
-                      builder: (context) => Container(
+                      alignment: Alignment.center,
+                      child: Container(
                         decoration: BoxDecoration(
                           color: liveBusStateColor(element.type),
                           borderRadius: BorderRadius.circular(10),
