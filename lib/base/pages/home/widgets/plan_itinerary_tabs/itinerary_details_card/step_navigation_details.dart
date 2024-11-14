@@ -50,7 +50,8 @@ class StepNavigationDetails extends StatelessWidget {
               children: [
                 Text(
                   instruction,
-                  style: const TextStyle(fontWeight: FontWeight.w600,fontSize: 13),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600, fontSize: 13),
                 ),
                 ...subtitles,
               ],
@@ -71,14 +72,15 @@ class StepNavigationDetails extends StatelessWidget {
     TrufiBaseLocalization localization,
     StadtnaviBaseLocalization localizationST,
   ) {
-    if (step.bogusName == true ||
-        step.streetName == null ||
-        step.streetName!.isEmpty) {
-      return '${localizationST.commonContinueFor} ${step.distanceString(localization)}';
-    }
-    ;
+    // if (step.bogusName == true ||
+    //     step.streetName == null ||
+    //     step.streetName!.isEmpty) {
+    //   return '${localizationST.commonContinueFor} ${step.distanceString(localization)}';
+    // }
+
     return step.relativeDirection != null
-        ? '${step.relativeDirection!.translatesTitle(localizationST)} ${localizationST.commonOpen} ${step.streetName}'
+        ? step.relativeDirection!
+            .translatesTitle(localizationST, step.streetName ?? "")
         : localizationST.commonContinue;
   }
 }

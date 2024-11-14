@@ -260,52 +260,84 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get weekdayPH => 'Public holiday';
 
   @override
-  String get relativeDirectionDepart => 'Depart';
+  String relativeDirectionDepart(Object streetName) {
+    return 'Start on $streetName';
+  }
 
   @override
-  String get relativeDirectionHardLeft => 'Make a hard left';
+  String relativeDirectionHardLeft(Object streetName) {
+    return 'Make a sharp left onto $streetName';
+  }
 
   @override
-  String get relativeDirectionLeft => 'Turn left';
+  String relativeDirectionLeft(Object streetName) {
+    return 'Turn left onto $streetName';
+  }
 
   @override
-  String get relativeDirectionSlightlyLeft => 'Bear left';
+  String relativeDirectionSlightlyLeft(Object streetName) {
+    return 'Bear slightly left onto $streetName';
+  }
 
   @override
-  String get relativeDirectionContinue => 'Continue straight';
+  String relativeDirectionContinue(Object streetName) {
+    return 'Continue straight on $streetName';
+  }
 
   @override
-  String get relativeDirectionSlightlyRight => 'Bear right';
+  String relativeDirectionSlightlyRight(Object streetName) {
+    return 'Bear slightly right onto $streetName';
+  }
 
   @override
-  String get relativeDirectionRight => 'Turn right';
+  String relativeDirectionRight(Object streetName) {
+    return 'Turn right onto $streetName';
+  }
 
   @override
-  String get relativeDirectionHardRight => 'Make a hard right';
+  String relativeDirectionHardRight(Object streetName) {
+    return 'Make a sharp right onto $streetName';
+  }
 
   @override
-  String get relativeDirectionCircleClockwise => 'Enter roundabout and take exit clockwise';
+  String relativeDirectionCircleClockwise(Object streetName) {
+    return 'Enter the roundabout and take the exit going clockwise on $streetName';
+  }
 
   @override
-  String get relativeDirectionCircleCounterclockwise => 'Enter roundabout and take exit counterclockwise';
+  String relativeDirectionCircleCounterclockwise(Object streetName) {
+    return 'Enter the roundabout and take the exit going counterclockwise on $streetName';
+  }
 
   @override
-  String get relativeDirectionElevator => 'Take the elevator';
+  String relativeDirectionElevator(Object streetName) {
+    return 'Take the elevator to $streetName';
+  }
 
   @override
-  String get relativeDirectionUturnLeft => 'Make a U-turn to the left';
+  String relativeDirectionUturnLeft(Object streetName) {
+    return 'Make a U-turn to the left onto $streetName';
+  }
 
   @override
-  String get relativeDirectionUturnRight => 'Make a U-turn to the right';
+  String relativeDirectionUturnRight(Object streetName) {
+    return 'Make a U-turn to the right onto $streetName';
+  }
 
   @override
-  String get relativeDirectionEnterStation => 'Enter the station';
+  String relativeDirectionEnterStation(Object streetName) {
+    return 'Enter the station at $streetName';
+  }
 
   @override
-  String get relativeDirectionExitStation => 'Exit the station';
+  String relativeDirectionExitStation(Object streetName) {
+    return 'Exit the station onto $streetName';
+  }
 
   @override
-  String get relativeDirectionFollowSigns => 'Follow the signs';
+  String relativeDirectionFollowSigns(Object streetName) {
+    return 'Follow the signs for $streetName';
+  }
 
   @override
   String get commonWalkWithBicycle => 'Walk with your bicycle';
