@@ -18,6 +18,7 @@ import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 
 typedef LayerOptionsBuilder = List<Widget> Function(BuildContext context);
+typedef MoveInMap = void Function(LatLng latlng, {double zoom});
 
 class StadtnaviMap extends StatefulWidget {
   final TrufiMapController trufiMapController;

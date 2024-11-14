@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
@@ -15,10 +15,11 @@ import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.da
 import 'bar_itinerary_details.dart';
 import 'line_dash_components.dart';
 
+
 class ItineraryDetailsCard extends StatelessWidget {
   final PlanItinerary itinerary;
   final void Function() onBackPressed;
-  final void Function(LatLng latlng) moveInMap;
+  final MoveInMap moveInMap;
 
   const ItineraryDetailsCard({
     Key? key,
