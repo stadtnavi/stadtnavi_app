@@ -149,10 +149,9 @@ class _BottomSheetItinerariesState extends State<BottomSheetItineraries>
                 });
                 mapModesCubit.showAllItineraries();
               },
-              moveInMap: (latLng, {zoom = 15}) =>
-                  widget.trufiMapController.move(
+              moveInMap: (latLng, {zoom}) => widget.trufiMapController.move(
                 center: latLng,
-                zoom: zoom,
+                zoom: zoom ?? 15.0,
                 tickerProvider: this,
               ),
             ),

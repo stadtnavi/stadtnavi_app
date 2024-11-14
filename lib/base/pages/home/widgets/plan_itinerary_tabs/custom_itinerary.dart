@@ -210,10 +210,9 @@ class _CustomItineraryState extends State<CustomItinerary>
                 });
                 mapRouteCubit.showAllItineraries();
               },
-              moveInMap: (latLng, {zoom = 15}) =>
-                  widget.trufiMapController.move(
+              moveInMap: (latLng, {zoom}) => widget.trufiMapController.move(
                 center: latLng,
-                zoom: zoom,
+                zoom: zoom ?? 15,
                 tickerProvider: this,
               ),
             ),
