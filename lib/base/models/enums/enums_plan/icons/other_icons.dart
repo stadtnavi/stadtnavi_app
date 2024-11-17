@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:trufi_core/base/utils/util_icons/custom_icons.dart';
 
 const String wait = '''
 <svg id="icon-icon_wait" viewBox="0 0 18 18">
@@ -111,6 +114,15 @@ const String wheelChair = '''
       </g>
     </svg>
 ''';
+
+String showOnMap({String color = '000000'}) => '''
+    <svg id="icon-icon_show-on-map" viewBox="0 0 24 25">
+      <path d="M11.426 21.323l-4.508-1.387 1.568-9.543 2.94 1.316v9.614zm-5.635-1.436l-4.36 1.338 3.135-9.468 2.768-1.242-1.543 9.372zm18.18 2.02l-3.553-10.735c-.05-.146-.148-.267-.294-.34l-1.103-.487c-.172.341-.367.681-.515.998l.907.415 3.136 9.468-4.337-1.34-1.102-6.62c-.196.073-.417.121-.637.121-.172 0-.343-.023-.49-.072l1.103 6.597-4.534 1.387v-9.614l1.691-.755-.514-.998-1.74.778L8.29 9.056c-.147-.073-.319-.073-.466 0L3.88 10.832c-.147.073-.246.194-.294.34L.033 21.907c-.073.195-.024.415.123.56.146.146.367.196.563.146l5.562-1.703 5.561 1.703c.098.024.221.024.343 0l5.562-1.703 5.561 1.703c.05.024.123.024.172.024.147 0 .294-.047.391-.17.1-.145.172-.364.1-.56z" transform="translate(0 2)" fill="$color"/>
+      <path stroke="#FFF" stroke-width="3" d="M18 4.487C18 3.123 16.883 2 15.5 2S13 3.123 13 4.487C13 5.877 14.117 7 15.5 7S18 5.877 18 4.487m2 .172C20 7.243 15.5 14 15.5 14S11 7.243 11 4.66C11 2.097 13.005 0 15.5 0S20 2.098 20 4.66" transform="translate(0 2)" fill="$color"/>
+      <path d="M17.5 4.49c0-1.092-.894-1.99-2-1.99-1.106 0-2 .898-2 1.99 0 1.112.894 2.01 2 2.01 1.106 0 2-.898 2-2.01m2.5.17C20 7.242 15.5 14 15.5 14S11 7.243 11 4.66C11 2.097 13.005 0 15.5 0S20 2.098 20 4.66" transform="translate(0 2)" fill="$color"/>
+    </svg>
+''';
+
 SvgPicture waitSvg = SvgPicture.string(wait);
 SvgPicture walkSvg = SvgPicture.string(walk);
 SvgPicture bikeSvg({String? color}) =>
@@ -122,3 +134,8 @@ SvgPicture wheelChairSvg = SvgPicture.string(wheelChair);
 SvgPicture onDemandTaxiSvg({String? color}) =>
     SvgPicture.string(onDemandTaxi(color: color ?? '000000'));
 SvgPicture shareManuSvg = SvgPicture.string(sharingIconMenu);
+Widget showOnMapSvg({Color? color}) {
+  return SvgPicture.string(showOnMap(
+    color: decodeFillColor(color),
+  ));
+}

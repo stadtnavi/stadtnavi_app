@@ -260,18 +260,23 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get weekdayPH => 'Gesetzlicher Feiertag';
 
   @override
+  String legStepsStartInstructions(Object absoluteDirection, Object streetName) {
+    return 'Starten auf $streetName in Richtung $absoluteDirection';
+  }
+
+  @override
   String relativeDirectionDepart(Object streetName) {
-    return 'Losgehen auf $streetName';
+    return 'Starten auf $streetName';
   }
 
   @override
   String relativeDirectionHardLeft(Object streetName) {
-    return 'Scharf links gehen auf $streetName';
+    return 'Scharf links abbiegen auf $streetName';
   }
 
   @override
   String relativeDirectionLeft(Object streetName) {
-    return 'Links gehen auf $streetName';
+    return 'Links abbiegen auf $streetName';
   }
 
   @override
@@ -281,7 +286,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String relativeDirectionContinue(Object streetName) {
-    return 'Geradeaus weitergehen auf $streetName';
+    return 'Geradeaus weiter auf $streetName';
   }
 
   @override
@@ -291,22 +296,22 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String relativeDirectionRight(Object streetName) {
-    return 'Rechts gehen auf $streetName';
+    return 'Rechts abbiegen auf $streetName';
   }
 
   @override
   String relativeDirectionHardRight(Object streetName) {
-    return 'Scharf rechts gehen auf $streetName';
+    return 'Scharf rechts abbiegen auf $streetName';
   }
 
   @override
-  String relativeDirectionCircleClockwise(Object streetName) {
-    return 'In den Kreisverkehr eintreten und die Ausfahrt im Uhrzeigersinn nehmen auf $streetName';
+  String relativeDirectionCircleClockwise(Object exitNumber, Object streetName) {
+    return 'In den Kreisverkehr links einbiegen und die $exitNumber. Ausfahrt im Uhrzeigersinn nehmen auf $streetName';
   }
 
   @override
-  String relativeDirectionCircleCounterclockwise(Object streetName) {
-    return 'In den Kreisverkehr eintreten und die Ausfahrt gegen den Uhrzeigersinn nehmen auf $streetName';
+  String relativeDirectionCircleCounterclockwise(Object exitNumber, Object streetName) {
+    return 'In den Kreisverkehr einbiegen und die $exitNumber. Ausfahrt nehmen auf $streetName';
   }
 
   @override
@@ -331,7 +336,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String relativeDirectionExitStation(Object streetName) {
-    return 'Verlassen Sie die Station auf $streetName';
+    return 'Verlassen Sie die Station in Richtung $streetName';
   }
 
   @override
@@ -340,13 +345,28 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   }
 
   @override
-  String get commonWalkWithBicycle => 'Schiebe dein Fahrrad';
+  String get absoluteDirectionNorth => 'Norden';
 
   @override
-  String get commonContinueFor => 'Gehe weiter für';
+  String get absoluteDirectionNortheast => 'Nordosten';
 
   @override
-  String get commonContinue => 'Weiter';
+  String get absoluteDirectionEast => 'Osten';
+
+  @override
+  String get absoluteDirectionSoutheast => 'Südosten';
+
+  @override
+  String get absoluteDirectionSouth => 'Süden';
+
+  @override
+  String get absoluteDirectionSouthwest => 'Südwesten';
+
+  @override
+  String get absoluteDirectionWest => 'Westen';
+
+  @override
+  String get absoluteDirectionNorthwest => 'Nordwesten';
 
   @override
   String get commonNow => 'Jetzt';

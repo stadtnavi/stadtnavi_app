@@ -533,18 +533,22 @@ class WalkDash extends StatelessWidget {
                   iconColor: theme.primaryColor,
                   collapsedIconColor: theme.primaryColor,
                   childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  children: leg.steps!
-                      .map((e) => InkWell(
-                            onTap: () {
-                              if (e.lat != null && e.lon != null) {
-                                moveInMap(LatLng(e.lat!, e.lon!), zoom: 18);
-                              }
-                            },
-                            child: StepNavigationDetails(
-                              step: e,
-                            ),
-                          ))
-                      .toList(),
+                  children: leg.steps!.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final step = entry.value;
+
+                    return InkWell(
+                      onTap: () {
+                        if (step.lat != null && step.lon != null) {
+                          moveInMap(LatLng(step.lat!, step.lon!), zoom: 18);
+                        }
+                      },
+                      child: StepNavigationDetails(
+                        step: step,
+                        isFirst: index == 0,
+                      ),
+                    );
+                  }).toList(),
                 )
               else
                 Text(

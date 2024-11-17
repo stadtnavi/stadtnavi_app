@@ -260,13 +260,18 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get weekdayPH => 'Public holiday';
 
   @override
+  String legStepsStartInstructions(Object absoluteDirection, Object streetName) {
+    return 'Start on $streetName towards $absoluteDirection';
+  }
+
+  @override
   String relativeDirectionDepart(Object streetName) {
     return 'Start on $streetName';
   }
 
   @override
   String relativeDirectionHardLeft(Object streetName) {
-    return 'Make a sharp left onto $streetName';
+    return 'Turn sharp left onto $streetName';
   }
 
   @override
@@ -276,7 +281,7 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String relativeDirectionSlightlyLeft(Object streetName) {
-    return 'Bear slightly left onto $streetName';
+    return 'Keep slightly left onto $streetName';
   }
 
   @override
@@ -286,7 +291,7 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String relativeDirectionSlightlyRight(Object streetName) {
-    return 'Bear slightly right onto $streetName';
+    return 'Keep slightly right onto $streetName';
   }
 
   @override
@@ -296,17 +301,17 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String relativeDirectionHardRight(Object streetName) {
-    return 'Make a sharp right onto $streetName';
+    return 'Turn sharp right onto $streetName';
   }
 
   @override
-  String relativeDirectionCircleClockwise(Object streetName) {
-    return 'Enter the roundabout and take the exit going clockwise on $streetName';
+  String relativeDirectionCircleClockwise(Object exitNumber, Object streetName) {
+    return 'Enter the roundabout to the left and take the $exitNumber exit clockwise onto $streetName';
   }
 
   @override
-  String relativeDirectionCircleCounterclockwise(Object streetName) {
-    return 'Enter the roundabout and take the exit going counterclockwise on $streetName';
+  String relativeDirectionCircleCounterclockwise(Object exitNumber, Object streetName) {
+    return 'Enter the roundabout and take the $exitNumber exit onto $streetName';
   }
 
   @override
@@ -331,22 +336,37 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String relativeDirectionExitStation(Object streetName) {
-    return 'Exit the station onto $streetName';
+    return 'Exit the station towards $streetName';
   }
 
   @override
   String relativeDirectionFollowSigns(Object streetName) {
-    return 'Follow the signs for $streetName';
+    return 'Follow the signs to $streetName';
   }
 
   @override
-  String get commonWalkWithBicycle => 'Walk with your bicycle';
+  String get absoluteDirectionNorth => 'North';
 
   @override
-  String get commonContinueFor => 'Continue for';
+  String get absoluteDirectionNortheast => 'Northeast';
 
   @override
-  String get commonContinue => 'continue';
+  String get absoluteDirectionEast => 'East';
+
+  @override
+  String get absoluteDirectionSoutheast => 'Southeast';
+
+  @override
+  String get absoluteDirectionSouth => 'South';
+
+  @override
+  String get absoluteDirectionSouthwest => 'Southwest';
+
+  @override
+  String get absoluteDirectionWest => 'West';
+
+  @override
+  String get absoluteDirectionNorthwest => 'Northwest';
 
   @override
   String get commonNow => 'Now';
