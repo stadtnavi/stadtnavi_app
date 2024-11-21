@@ -1,3 +1,6 @@
+## 3.26.1
+🎉 Enhanced pedestrian navigation with detailed, step-by-step visual instructions(IMPROVEMENTS).
+
 ## 3.26.0
 🎉 Support for Flutter 3.24.4
 🎉 Enhanced pedestrian navigation with detailed, step-by-step visual instructions.
