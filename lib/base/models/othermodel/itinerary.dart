@@ -16,6 +16,7 @@ class Itinerary {
   final double? elevationGained;
   final double? elevationLost;
   final bool? arrivedAtDestinationWithRentedBicycle;
+  final double? emissionsPerPerson;
 
   const Itinerary({
     this.startTime,
@@ -30,31 +31,36 @@ class Itinerary {
     this.elevationGained,
     this.elevationLost,
     this.arrivedAtDestinationWithRentedBicycle,
+    this.emissionsPerPerson,
   });
 
-  factory Itinerary.fromMap(Map<String, dynamic> json) => Itinerary(
-        startTime: int.tryParse(json['startTime'].toString()),
-        endTime: int.tryParse(json['endTime'].toString()),
-        duration: int.tryParse(json['duration'].toString()),
-        generalizedCost: int.tryParse(json['generalizedCost'].toString()),
-        waitingTime: int.tryParse(json['waitingTime'].toString()),
-        walkTime: int.tryParse(json['walkTime'].toString()),
-        walkDistance: double.tryParse(json['walkDistance'].toString()),
-        legs: json['legs'] != null
-            ? List<Leg>.from((json["legs"] as List<dynamic>).map(
-                (x) => Leg.fromMap(x as Map<String, dynamic>),
-              ))
-            : null,
-        fares: json['fares'] != null
-            ? List<Fare>.from((json["fares"] as List<dynamic>).map(
-                (x) => Fare.fromMap(x as Map<String, dynamic>),
-              ))
-            : null,
-        elevationGained: double.tryParse(json['elevationGained'].toString()),
-        elevationLost: double.tryParse(json['elevationLost'].toString()),
-        arrivedAtDestinationWithRentedBicycle:
-            json['arrivedAtDestinationWithRentedBicycle'] as bool?,
-      );
+  factory Itinerary.fromMap(Map<String, dynamic> json) {
+    return Itinerary(
+      startTime: int.tryParse(json['startTime'].toString()),
+      endTime: int.tryParse(json['endTime'].toString()),
+      duration: int.tryParse(json['duration'].toString()),
+      generalizedCost: int.tryParse(json['generalizedCost'].toString()),
+      waitingTime: int.tryParse(json['waitingTime'].toString()),
+      walkTime: int.tryParse(json['walkTime'].toString()),
+      walkDistance: double.tryParse(json['walkDistance'].toString()),
+      legs: json['legs'] != null
+          ? List<Leg>.from((json["legs"] as List<dynamic>).map(
+              (x) => Leg.fromMap(x as Map<String, dynamic>),
+            ))
+          : null,
+      fares: json['fares'] != null
+          ? List<Fare>.from((json["fares"] as List<dynamic>).map(
+              (x) => Fare.fromMap(x as Map<String, dynamic>),
+            ))
+          : null,
+      elevationGained: double.tryParse(json['elevationGained'].toString()),
+      elevationLost: double.tryParse(json['elevationLost'].toString()),
+      arrivedAtDestinationWithRentedBicycle:
+          json['arrivedAtDestinationWithRentedBicycle'] as bool?,
+      emissionsPerPerson:
+          double.tryParse(json['emissionsPerPerson']?["co2"].toString() ?? ""),
+    );
+  }
 
   Map<String, dynamic> toMap() => {
         'startTime': startTime,
@@ -74,6 +80,7 @@ class Itinerary {
         'elevationLost': elevationLost,
         'arrivedAtDestinationWithRentedBicycle':
             arrivedAtDestinationWithRentedBicycle,
+        'emissionsPerPerson': emissionsPerPerson,
       };
 
   PlanItinerary toPlanItinerary() {
@@ -89,6 +96,7 @@ class Itinerary {
       walkTime: Duration(seconds: walkTime ?? 0),
       arrivedAtDestinationWithRentedBicycle:
           arrivedAtDestinationWithRentedBicycle ?? false,
+      emissionsPerPerson: emissionsPerPerson,
     );
   }
 }
