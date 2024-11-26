@@ -9,6 +9,7 @@ class PlanItinerary extends Equatable {
   static const String _walkDistance = "walkDistance";
   static const String _arrivedAtDestinationWithRentedBicycle =
       "arrivedAtDestinationWithRentedBicycle";
+  static const String _emissionsPerPerson = "emissionsPerPerson";
 
   static int _distanceForLegs(List<PlanItineraryLeg> legs) =>
       legs.fold<int>(0, (distance, leg) => distance += leg.distance.ceil());
@@ -22,7 +23,8 @@ class PlanItinerary extends Equatable {
     required this.walkDistance,
     required this.arrivedAtDestinationWithRentedBicycle,
     this.isOnlyShowItinerary = false,
-  })  : distance = _distanceForLegs(legs);
+    required this.emissionsPerPerson,
+  }) : distance = _distanceForLegs(legs);
 
   final List<PlanItineraryLeg> legs;
   final DateTime startTime;
@@ -32,10 +34,13 @@ class PlanItinerary extends Equatable {
   final double walkDistance;
   final bool arrivedAtDestinationWithRentedBicycle;
   final bool isOnlyShowItinerary;
+  final double? emissionsPerPerson;
 
   final int distance;
 
   factory PlanItinerary.fromJson(Map<String, dynamic> json) {
+    print("PlanItinerary");
+    print(json['emissionsPerPerson']);
     return PlanItinerary(
       legs: json[_legs].map<PlanItineraryLeg>((dynamic json) {
         return PlanItineraryLeg.fromJson(json as Map<String, dynamic>);
@@ -49,6 +54,7 @@ class PlanItinerary extends Equatable {
       walkDistance: double.tryParse(json[_walkDistance].toString()) ?? 0,
       arrivedAtDestinationWithRentedBicycle:
           json[_arrivedAtDestinationWithRentedBicycle] as bool,
+      emissionsPerPerson: json[_emissionsPerPerson]?["co2"],
     );
   }
 
@@ -61,7 +67,8 @@ class PlanItinerary extends Equatable {
       _durationTrip: duration.inSeconds,
       _walkDistance: walkDistance,
       _arrivedAtDestinationWithRentedBicycle:
-          arrivedAtDestinationWithRentedBicycle
+          arrivedAtDestinationWithRentedBicycle,
+      _emissionsPerPerson: emissionsPerPerson
     };
   }
 
@@ -74,6 +81,7 @@ class PlanItinerary extends Equatable {
     double? walkDistance,
     bool? arrivedAtDestinationWithRentedBicycle,
     bool? isOnlyShowItinerary,
+    double? emissionsPerPerson,
   }) {
     return PlanItinerary(
       legs: legs ?? this.legs,
@@ -86,6 +94,7 @@ class PlanItinerary extends Equatable {
           arrivedAtDestinationWithRentedBicycle ??
               this.arrivedAtDestinationWithRentedBicycle,
       isOnlyShowItinerary: isOnlyShowItinerary ?? this.isOnlyShowItinerary,
+      emissionsPerPerson: emissionsPerPerson ?? this.emissionsPerPerson,
     );
   }
 

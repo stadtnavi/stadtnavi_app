@@ -18,6 +18,9 @@ fragment planFragment on Plan {
     endTime
     duration
     walkDistance
+    emissionsPerPerson {
+      co2
+    }
     walkTime
     arrivedAtDestinationWithRentedBicycle
     fares {
