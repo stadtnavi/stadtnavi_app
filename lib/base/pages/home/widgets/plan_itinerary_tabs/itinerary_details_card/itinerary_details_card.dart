@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinarary_card/itinerary_card.dart';
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
-
+import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/ticket_information.dart';
@@ -18,7 +19,7 @@ import 'line_dash_components.dart';
 class ItineraryDetailsCard extends StatelessWidget {
   final PlanItinerary itinerary;
   final void Function() onBackPressed;
-  final void Function(LatLng latlng) moveInMap;
+  final MoveInMap moveInMap;
 
   const ItineraryDetailsCard({
     Key? key,
@@ -66,6 +67,43 @@ class ItineraryDetailsCard extends StatelessWidget {
                 legs: compresedLegs,
               ),
             ),
+            if (itinerary.emissionsPerPerson != null)
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 15),
+                child: Row(
+                  children: [
+                    SvgPicture.string(leafIcon),
+                    Container(
+                      width: 10,
+                    ),
+                    Expanded(
+                        child: Text(
+                      "CO₂ emissions of the journey",
+                    )),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: Colors.green.withOpacity(.2),
+                          borderRadius: BorderRadius.circular(5)),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 3,
+                        vertical: 2,
+                      ),
+                      margin: EdgeInsets.only(right: 5),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "${itinerary.emissionsPerPerson!.toStringAsFixed(0)} g",
+                            style: TextStyle(
+                              color: const Color(0xFF4CAF50),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ListView.builder(
               padding: const EdgeInsets.fromLTRB(15, 10, 15, 20),
               physics: const NeverScrollableScrollPhysics(),

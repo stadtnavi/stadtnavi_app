@@ -90,7 +90,7 @@ class _BottomSheetItinerariesState extends State<BottomSheetItineraries>
                                 vertical: 8, horizontal: 10),
                             child: Text(
                               localization.itinerarySummaryBikeParkTitle,
-                              style: theme.primaryTextTheme. bodyLarge?.copyWith(
+                              style: theme.primaryTextTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -108,7 +108,7 @@ class _BottomSheetItinerariesState extends State<BottomSheetItineraries>
                             child: Text(
                               localization
                                   .itinerarySummaryBikeAndPublicRailSubwayTitle,
-                              style: theme.primaryTextTheme. bodyLarge?.copyWith(
+                              style: theme.primaryTextTheme.bodyLarge?.copyWith(
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -149,9 +149,9 @@ class _BottomSheetItinerariesState extends State<BottomSheetItineraries>
                 });
                 mapModesCubit.showAllItineraries();
               },
-              moveInMap: (latLng) => widget.trufiMapController.move(
+              moveInMap: (latLng, {zoom}) => widget.trufiMapController.move(
                 center: latLng,
-                zoom: 15,
+                zoom: zoom ?? 15.0,
                 tickerProvider: this,
               ),
             ),

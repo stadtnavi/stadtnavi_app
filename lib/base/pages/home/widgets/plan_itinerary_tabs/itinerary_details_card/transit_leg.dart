@@ -173,7 +173,7 @@ class TransitLeg extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5, left: 5),
             child: Text(
               '${leg.durationLeg(localizationBase)} (${leg.distanceString(localizationBase)})',
-              style: theme.primaryTextTheme. bodyLarge
+              style: theme.primaryTextTheme.bodyLarge
                   ?.copyWith(fontSize: 13, color: Colors.grey[700]),
             ),
           ),
@@ -230,9 +230,12 @@ class TransitLeg extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(width: 5),
-                                  Icon(
-                                    Icons.keyboard_arrow_right,
-                                    color: theme.colorScheme.primary,
+                                  SizedBox(
+                                    width: 20,
+                                    height: 20,
+                                    child: showOnMapSvg(
+                                      color: theme.colorScheme.primary,
+                                    ),
                                   ),
                                 ],
                               ),

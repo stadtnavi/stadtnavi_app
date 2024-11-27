@@ -593,119 +593,155 @@ abstract class StadtnaviBaseLocalization {
   /// **'Public holiday'**
   String get weekdayPH;
 
+  /// No description provided for @legStepsStartInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Start on {streetName} towards {absoluteDirection}'**
+  String legStepsStartInstructions(Object absoluteDirection, Object streetName);
+
   /// No description provided for @relativeDirectionDepart.
   ///
   /// In en, this message translates to:
-  /// **'Depart'**
-  String get relativeDirectionDepart;
+  /// **'Start on {streetName}'**
+  String relativeDirectionDepart(Object streetName);
 
   /// No description provided for @relativeDirectionHardLeft.
   ///
   /// In en, this message translates to:
-  /// **'Make a hard left'**
-  String get relativeDirectionHardLeft;
+  /// **'Turn sharp left onto {streetName}'**
+  String relativeDirectionHardLeft(Object streetName);
 
   /// No description provided for @relativeDirectionLeft.
   ///
   /// In en, this message translates to:
-  /// **'Turn left'**
-  String get relativeDirectionLeft;
+  /// **'Turn left onto {streetName}'**
+  String relativeDirectionLeft(Object streetName);
 
   /// No description provided for @relativeDirectionSlightlyLeft.
   ///
   /// In en, this message translates to:
-  /// **'Bear left'**
-  String get relativeDirectionSlightlyLeft;
+  /// **'Keep slightly left onto {streetName}'**
+  String relativeDirectionSlightlyLeft(Object streetName);
 
   /// No description provided for @relativeDirectionContinue.
   ///
   /// In en, this message translates to:
-  /// **'Continue straight'**
-  String get relativeDirectionContinue;
+  /// **'Continue straight on {streetName}'**
+  String relativeDirectionContinue(Object streetName);
 
   /// No description provided for @relativeDirectionSlightlyRight.
   ///
   /// In en, this message translates to:
-  /// **'Bear right'**
-  String get relativeDirectionSlightlyRight;
+  /// **'Keep slightly right onto {streetName}'**
+  String relativeDirectionSlightlyRight(Object streetName);
 
   /// No description provided for @relativeDirectionRight.
   ///
   /// In en, this message translates to:
-  /// **'Turn right'**
-  String get relativeDirectionRight;
+  /// **'Turn right onto {streetName}'**
+  String relativeDirectionRight(Object streetName);
 
   /// No description provided for @relativeDirectionHardRight.
   ///
   /// In en, this message translates to:
-  /// **'Make a hard right'**
-  String get relativeDirectionHardRight;
+  /// **'Turn sharp right onto {streetName}'**
+  String relativeDirectionHardRight(Object streetName);
 
   /// No description provided for @relativeDirectionCircleClockwise.
   ///
   /// In en, this message translates to:
-  /// **'Enter roundabout and take exit clockwise'**
-  String get relativeDirectionCircleClockwise;
+  /// **'Enter the roundabout to the left and take the {exitNumber} exit clockwise onto {streetName}'**
+  String relativeDirectionCircleClockwise(Object exitNumber, Object streetName);
 
   /// No description provided for @relativeDirectionCircleCounterclockwise.
   ///
   /// In en, this message translates to:
-  /// **'Enter roundabout and take exit counterclockwise'**
-  String get relativeDirectionCircleCounterclockwise;
+  /// **'Enter the roundabout and take the {exitNumber} exit onto {streetName}'**
+  String relativeDirectionCircleCounterclockwise(Object exitNumber, Object streetName);
 
   /// No description provided for @relativeDirectionElevator.
   ///
   /// In en, this message translates to:
-  /// **'Take the elevator'**
-  String get relativeDirectionElevator;
+  /// **'Take the elevator to {streetName}'**
+  String relativeDirectionElevator(Object streetName);
 
   /// No description provided for @relativeDirectionUturnLeft.
   ///
   /// In en, this message translates to:
-  /// **'Make a U-turn to the left'**
-  String get relativeDirectionUturnLeft;
+  /// **'Make a U-turn to the left onto {streetName}'**
+  String relativeDirectionUturnLeft(Object streetName);
 
   /// No description provided for @relativeDirectionUturnRight.
   ///
   /// In en, this message translates to:
-  /// **'Make a U-turn to the right'**
-  String get relativeDirectionUturnRight;
+  /// **'Make a U-turn to the right onto {streetName}'**
+  String relativeDirectionUturnRight(Object streetName);
 
   /// No description provided for @relativeDirectionEnterStation.
   ///
   /// In en, this message translates to:
-  /// **'Enter the station'**
-  String get relativeDirectionEnterStation;
+  /// **'Enter the station at {streetName}'**
+  String relativeDirectionEnterStation(Object streetName);
 
   /// No description provided for @relativeDirectionExitStation.
   ///
   /// In en, this message translates to:
-  /// **'Exit the station'**
-  String get relativeDirectionExitStation;
+  /// **'Exit the station towards {streetName}'**
+  String relativeDirectionExitStation(Object streetName);
 
   /// No description provided for @relativeDirectionFollowSigns.
   ///
   /// In en, this message translates to:
-  /// **'Follow the signs'**
-  String get relativeDirectionFollowSigns;
+  /// **'Follow the signs to {streetName}'**
+  String relativeDirectionFollowSigns(Object streetName);
 
-  /// No description provided for @commonWalkWithBicycle.
+  /// No description provided for @absoluteDirectionNorth.
   ///
   /// In en, this message translates to:
-  /// **'Walk with your bicycle'**
-  String get commonWalkWithBicycle;
+  /// **'North'**
+  String get absoluteDirectionNorth;
 
-  /// No description provided for @commonContinueFor.
+  /// No description provided for @absoluteDirectionNortheast.
   ///
   /// In en, this message translates to:
-  /// **'Continue for'**
-  String get commonContinueFor;
+  /// **'Northeast'**
+  String get absoluteDirectionNortheast;
 
-  /// No description provided for @commonContinue.
+  /// No description provided for @absoluteDirectionEast.
   ///
   /// In en, this message translates to:
-  /// **'continue'**
-  String get commonContinue;
+  /// **'East'**
+  String get absoluteDirectionEast;
+
+  /// No description provided for @absoluteDirectionSoutheast.
+  ///
+  /// In en, this message translates to:
+  /// **'Southeast'**
+  String get absoluteDirectionSoutheast;
+
+  /// No description provided for @absoluteDirectionSouth.
+  ///
+  /// In en, this message translates to:
+  /// **'South'**
+  String get absoluteDirectionSouth;
+
+  /// No description provided for @absoluteDirectionSouthwest.
+  ///
+  /// In en, this message translates to:
+  /// **'Southwest'**
+  String get absoluteDirectionSouthwest;
+
+  /// No description provided for @absoluteDirectionWest.
+  ///
+  /// In en, this message translates to:
+  /// **'West'**
+  String get absoluteDirectionWest;
+
+  /// No description provided for @absoluteDirectionNorthwest.
+  ///
+  /// In en, this message translates to:
+  /// **'Northwest'**
+  String get absoluteDirectionNorthwest;
 
   /// No description provided for @commonNow.
   ///

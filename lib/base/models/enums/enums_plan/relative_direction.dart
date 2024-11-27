@@ -49,51 +49,61 @@ extension RelativeDirectionExtension on RelativeDirection {
 
   static const icons = <RelativeDirection, IconData>{
     RelativeDirection.depart: Icons.directions_walk,
-    RelativeDirection.hardLeft: Icons.turn_left,
+    RelativeDirection.hardLeft: Icons.keyboard_double_arrow_left,
     RelativeDirection.left: Icons.turn_left,
-    RelativeDirection.slightlyLeft: Icons.subdirectory_arrow_left,
-    RelativeDirection.continue_: Icons.forward,
-    RelativeDirection.slightlyRight: Icons.subdirectory_arrow_right,
+    RelativeDirection.slightlyLeft: Icons.turn_slight_left,
+    RelativeDirection.continue_: Icons.arrow_upward,
+    RelativeDirection.slightlyRight: Icons.turn_slight_right,
     RelativeDirection.right: Icons.turn_right,
-    RelativeDirection.hardRight: Icons.turn_right,
-    RelativeDirection.circleClockwise: Icons.refresh,
-    RelativeDirection.circleCounterclockwise: Icons.undo,
+    RelativeDirection.hardRight: Icons.keyboard_double_arrow_right,
+    RelativeDirection.circleClockwise: Icons.rotate_right,
+    RelativeDirection.circleCounterclockwise: Icons.rotate_left,
     RelativeDirection.elevator: Icons.elevator,
-    RelativeDirection.uturnLeft: Icons.call_missed_outgoing,
-    RelativeDirection.uturnRight: Icons.call_missed,
-    RelativeDirection.enterStation: Icons.train,
+    RelativeDirection.uturnLeft: Icons.u_turn_left,
+    RelativeDirection.uturnRight: Icons.u_turn_right,
+    RelativeDirection.enterStation: Icons.subway,
     RelativeDirection.exitStation: Icons.exit_to_app,
-    RelativeDirection.followSigns: Icons.signpost,
+    RelativeDirection.followSigns: Icons.signpost_outlined,
   };
 
   String translatesTitle(
     StadtnaviBaseLocalization localization,
-  ) {
+    String streetName, {
+    String exitNumber = '',
+  }) {
     return {
-          RelativeDirection.depart: localization.relativeDirectionDepart,
-          RelativeDirection.hardLeft: localization.relativeDirectionHardLeft,
-          RelativeDirection.left: localization.relativeDirectionLeft,
+          RelativeDirection.depart:
+              localization.relativeDirectionDepart(streetName),
+          RelativeDirection.hardLeft:
+              localization.relativeDirectionHardLeft(streetName),
+          RelativeDirection.left:
+              localization.relativeDirectionLeft(streetName),
           RelativeDirection.slightlyLeft:
-              localization.relativeDirectionSlightlyLeft,
-          RelativeDirection.continue_: localization.relativeDirectionContinue,
+              localization.relativeDirectionSlightlyLeft(streetName),
+          RelativeDirection.continue_:
+              localization.relativeDirectionContinue(streetName),
           RelativeDirection.slightlyRight:
-              localization.relativeDirectionSlightlyRight,
-          RelativeDirection.right: localization.relativeDirectionRight,
-          RelativeDirection.hardRight: localization.relativeDirectionHardRight,
-          RelativeDirection.circleClockwise:
-              localization.relativeDirectionCircleClockwise,
-          RelativeDirection.circleCounterclockwise:
-              localization.relativeDirectionCircleCounterclockwise,
-          RelativeDirection.elevator: localization.relativeDirectionElevator,
-          RelativeDirection.uturnLeft: localization.relativeDirectionUturnLeft,
+              localization.relativeDirectionSlightlyRight(streetName),
+          RelativeDirection.right:
+              localization.relativeDirectionRight(streetName),
+          RelativeDirection.hardRight:
+              localization.relativeDirectionHardRight(streetName),
+          RelativeDirection.circleClockwise: localization
+              .relativeDirectionCircleClockwise(exitNumber, streetName),
+          RelativeDirection.circleCounterclockwise: localization
+              .relativeDirectionCircleCounterclockwise(exitNumber, streetName),
+          RelativeDirection.elevator:
+              localization.relativeDirectionElevator(streetName),
+          RelativeDirection.uturnLeft:
+              localization.relativeDirectionUturnLeft(streetName),
           RelativeDirection.uturnRight:
-              localization.relativeDirectionUturnRight,
+              localization.relativeDirectionUturnRight(streetName),
           RelativeDirection.enterStation:
-              localization.relativeDirectionEnterStation,
+              localization.relativeDirectionEnterStation(streetName),
           RelativeDirection.exitStation:
-              localization.relativeDirectionExitStation,
+              localization.relativeDirectionExitStation(streetName),
           RelativeDirection.followSigns:
-              localization.relativeDirectionFollowSigns,
+              localization.relativeDirectionFollowSigns(streetName),
         }[this] ??
         'errorType';
   }

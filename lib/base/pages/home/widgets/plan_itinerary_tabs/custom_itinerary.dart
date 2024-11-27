@@ -79,7 +79,7 @@ class _CustomItineraryState extends State<CustomItinerary>
                       child: RichText(
                         text: TextSpan(children: [
                           TextSpan(
-                            style: theme.textTheme. bodyLarge?.copyWith(
+                            style: theme.textTheme.bodyLarge?.copyWith(
                                 fontSize: 14,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w600),
@@ -210,9 +210,9 @@ class _CustomItineraryState extends State<CustomItinerary>
                 });
                 mapRouteCubit.showAllItineraries();
               },
-              moveInMap: (latLng) => widget.trufiMapController.move(
+              moveInMap: (latLng, {zoom}) => widget.trufiMapController.move(
                 center: latLng,
-                zoom: 15,
+                zoom: zoom ?? 15,
                 tickerProvider: this,
               ),
             ),

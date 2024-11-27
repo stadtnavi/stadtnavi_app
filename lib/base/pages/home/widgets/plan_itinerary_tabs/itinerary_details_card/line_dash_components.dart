@@ -11,6 +11,7 @@ import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_
 import 'package:stadtnavi_core/base/pages/home/offer_carpool/offer_carpool_screen.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/mode_transport_screen.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/custom_text_button.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/step_navigation_details.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/transit_leg.dart';
@@ -27,7 +28,7 @@ class BicycleDash extends StatelessWidget {
   final PlanItineraryLeg leg;
   final bool showBeforeLine;
   final bool showAfterLine;
-  final void Function(LatLng latlng) moveInMap;
+  final MoveInMap moveInMap;
 
   const BicycleDash({
     Key? key,
@@ -247,7 +248,7 @@ class CarDash extends StatelessWidget {
   final PlanItineraryLeg leg;
   final bool showBeforeLine;
   final bool showAfterLine;
-  final void Function(LatLng latlng) moveInMap;
+  final MoveInMap moveInMap;
 
   const CarDash({
     Key? key,
@@ -380,7 +381,7 @@ class TransportDash extends StatelessWidget {
   final bool showBeforeLine;
   final bool showAfterLine;
   final bool showAfterText;
-  final void Function(LatLng latlng) moveInMap;
+  final MoveInMap moveInMap;
 
   const TransportDash({
     Key? key,
@@ -492,7 +493,7 @@ class BikeParkDash extends StatelessWidget {
 
 class WalkDash extends StatelessWidget {
   final PlanItineraryLeg leg;
-  final void Function(LatLng latlng) moveInMap;
+  final MoveInMap moveInMap;
   const WalkDash({
     Key? key,
     required this.leg,
@@ -532,21 +533,22 @@ class WalkDash extends StatelessWidget {
                   iconColor: theme.primaryColor,
                   collapsedIconColor: theme.primaryColor,
                   childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  children: leg.steps!
-                      .map((e) => InkWell(
-                            onTap: () {
-                              if (e.lat != null && e.lon != null) {
-                                moveInMap(LatLng(
-                                  e.lat!,
-                                  e.lon!,
-                                ));
-                              }
-                            },
-                            child: StepNavigationDetails(
-                              step: e,
-                            ),
-                          ))
-                      .toList(),
+                  children: leg.steps!.asMap().entries.map((entry) {
+                    final index = entry.key;
+                    final step = entry.value;
+
+                    return InkWell(
+                      onTap: () {
+                        if (step.lat != null && step.lon != null) {
+                          moveInMap(LatLng(step.lat!, step.lon!), zoom: 18);
+                        }
+                      },
+                      child: StepNavigationDetails(
+                        step: step,
+                        isFirst: index == 0,
+                      ),
+                    );
+                  }).toList(),
                 )
               else
                 Text(

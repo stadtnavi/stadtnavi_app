@@ -260,61 +260,113 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get weekdayPH => 'Gesetzlicher Feiertag';
 
   @override
-  String get relativeDirectionDepart => 'Abfahren';
+  String legStepsStartInstructions(Object absoluteDirection, Object streetName) {
+    return 'Starten auf $streetName in Richtung $absoluteDirection';
+  }
 
   @override
-  String get relativeDirectionHardLeft => 'Scharf links abbiegen';
+  String relativeDirectionDepart(Object streetName) {
+    return 'Starten auf $streetName';
+  }
 
   @override
-  String get relativeDirectionLeft => 'Links abbiegen';
+  String relativeDirectionHardLeft(Object streetName) {
+    return 'Scharf links abbiegen auf $streetName';
+  }
 
   @override
-  String get relativeDirectionSlightlyLeft => 'Leicht links halten';
+  String relativeDirectionLeft(Object streetName) {
+    return 'Links abbiegen auf $streetName';
+  }
 
   @override
-  String get relativeDirectionContinue => 'Geradeaus weitergehen';
+  String relativeDirectionSlightlyLeft(Object streetName) {
+    return 'Leicht links halten auf $streetName';
+  }
 
   @override
-  String get relativeDirectionSlightlyRight => 'Leicht rechts halten';
+  String relativeDirectionContinue(Object streetName) {
+    return 'Geradeaus weiter auf $streetName';
+  }
 
   @override
-  String get relativeDirectionRight => 'Rechts abbiegen';
+  String relativeDirectionSlightlyRight(Object streetName) {
+    return 'Leicht rechts halten auf $streetName';
+  }
 
   @override
-  String get relativeDirectionHardRight => 'Scharf rechts abbiegen';
+  String relativeDirectionRight(Object streetName) {
+    return 'Rechts abbiegen auf $streetName';
+  }
 
   @override
-  String get relativeDirectionCircleClockwise => 'In den Kreisverkehr einfahren und im Uhrzeigersinn ausfahren';
+  String relativeDirectionHardRight(Object streetName) {
+    return 'Scharf rechts abbiegen auf $streetName';
+  }
 
   @override
-  String get relativeDirectionCircleCounterclockwise => 'In den Kreisverkehr einfahren und gegen den Uhrzeigersinn ausfahren';
+  String relativeDirectionCircleClockwise(Object exitNumber, Object streetName) {
+    return 'In den Kreisverkehr links einbiegen und die $exitNumber. Ausfahrt im Uhrzeigersinn nehmen auf $streetName';
+  }
 
   @override
-  String get relativeDirectionElevator => 'Den Aufzug nehmen';
+  String relativeDirectionCircleCounterclockwise(Object exitNumber, Object streetName) {
+    return 'In den Kreisverkehr einbiegen und die $exitNumber. Ausfahrt nehmen auf $streetName';
+  }
 
   @override
-  String get relativeDirectionUturnLeft => 'Wenden Sie nach links';
+  String relativeDirectionElevator(Object streetName) {
+    return 'Nehmen Sie den Aufzug zu $streetName';
+  }
 
   @override
-  String get relativeDirectionUturnRight => 'Wenden Sie nach rechts';
+  String relativeDirectionUturnLeft(Object streetName) {
+    return 'Wenden Sie nach links auf $streetName';
+  }
 
   @override
-  String get relativeDirectionEnterStation => 'Betreten Sie die Station';
+  String relativeDirectionUturnRight(Object streetName) {
+    return 'Wenden Sie nach rechts auf $streetName';
+  }
 
   @override
-  String get relativeDirectionExitStation => 'Verlassen Sie die Station';
+  String relativeDirectionEnterStation(Object streetName) {
+    return 'Betreten Sie die Station bei $streetName';
+  }
 
   @override
-  String get relativeDirectionFollowSigns => 'Folgen Sie den Schildern';
+  String relativeDirectionExitStation(Object streetName) {
+    return 'Verlassen Sie die Station in Richtung $streetName';
+  }
 
   @override
-  String get commonWalkWithBicycle => 'Schiebe dein Fahrrad';
+  String relativeDirectionFollowSigns(Object streetName) {
+    return 'Folgen Sie den Schildern zu $streetName';
+  }
 
   @override
-  String get commonContinueFor => 'Gehe weiter für';
+  String get absoluteDirectionNorth => 'Norden';
 
   @override
-  String get commonContinue => 'Weiter';
+  String get absoluteDirectionNortheast => 'Nordosten';
+
+  @override
+  String get absoluteDirectionEast => 'Osten';
+
+  @override
+  String get absoluteDirectionSoutheast => 'Südosten';
+
+  @override
+  String get absoluteDirectionSouth => 'Süden';
+
+  @override
+  String get absoluteDirectionSouthwest => 'Südwesten';
+
+  @override
+  String get absoluteDirectionWest => 'Westen';
+
+  @override
+  String get absoluteDirectionNorthwest => 'Nordwesten';
 
   @override
   String get commonNow => 'Jetzt';
