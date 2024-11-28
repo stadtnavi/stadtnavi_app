@@ -41,6 +41,7 @@ class BicycleDash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final localizationBase = TrufiBaseLocalization.of(context);
     final localization = StadtnaviBaseLocalization.of(context);
     final isTypeBikeRentalNetwork =
@@ -227,12 +228,46 @@ class BicycleDash extends StatelessWidget {
                     child: InfoMessage(
                         message: localization.bikeRentalNetworkFreeFloating),
                   ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 7),
-                  child: Text(
-                    stopsDescription,
+                if (leg.steps != null && leg.steps!.isNotEmpty)
+                  ExpansionTile(
+                    visualDensity: const VisualDensity(vertical: -4),
+                    title: Text(
+                      stopsDescription,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    tilePadding: const EdgeInsets.symmetric(
+                      horizontal: 0,
+                      vertical: 0,
+                    ),
+                    textColor: theme.colorScheme.onSurface,
+                    collapsedTextColor: theme.colorScheme.onSurface,
+                    iconColor: theme.primaryColor,
+                    collapsedIconColor: theme.primaryColor,
+                    childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
+                    children: leg.steps!.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final step = entry.value;
+
+                      return InkWell(
+                        onTap: () {
+                          if (step.lat != null && step.lon != null) {
+                            moveInMap(LatLng(step.lat!, step.lon!), zoom: 18);
+                          }
+                        },
+                        child: StepNavigationDetails(
+                          step: step,
+                          isFirst: index == 0,
+                        ),
+                      );
+                    }).toList(),
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    child: Text(
+                      stopsDescription,
+                    ),
                   ),
-                ),
                 const Divider(height: 0),
               ],
             ),
@@ -264,6 +299,8 @@ class CarDash extends StatelessWidget {
     final theme = Theme.of(context);
     final localizationBase = TrufiBaseLocalization.of(context);
     final localization = StadtnaviBaseLocalization.of(context);
+    final textCarInstruction =
+        '${localization.carInstructionDrive} ${leg.durationLeg(localizationBase)} (${leg.distanceString(localizationBase)})';
     return Column(
       children: [
         if (showBeforeLine)
@@ -287,12 +324,46 @@ class CarDash extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Divider(height: 0),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 7),
-                  child: Text(
-                    '${localization.carInstructionDrive} ${leg.durationLeg(localizationBase)} (${leg.distanceString(localizationBase)})',
+                if (leg.steps != null && leg.steps!.isNotEmpty)
+                  ExpansionTile(
+                    visualDensity: const VisualDensity(vertical: -4),
+                    title: Text(
+                      textCarInstruction,
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    tilePadding: const EdgeInsets.symmetric(
+                      horizontal: 0,
+                      vertical: 0,
+                    ),
+                    textColor: theme.colorScheme.onSurface,
+                    collapsedTextColor: theme.colorScheme.onSurface,
+                    iconColor: theme.primaryColor,
+                    collapsedIconColor: theme.primaryColor,
+                    childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
+                    children: leg.steps!.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final step = entry.value;
+
+                      return InkWell(
+                        onTap: () {
+                          if (step.lat != null && step.lon != null) {
+                            moveInMap(LatLng(step.lat!, step.lon!), zoom: 18);
+                          }
+                        },
+                        child: StepNavigationDetails(
+                          step: step,
+                          isFirst: index == 0,
+                        ),
+                      );
+                    }).toList(),
+                  )
+                else
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 7),
+                    child: Text(
+                      textCarInstruction,
+                    ),
                   ),
-                ),
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -527,6 +598,7 @@ class WalkDash extends StatelessWidget {
                   visualDensity: const VisualDensity(vertical: -4),
                   title: Text(
                     '${localization.commonWalk} ${leg.durationLeg(localization)} (${leg.distanceString(localization)})',
+                    style: const TextStyle(fontSize: 14),
                   ),
                   tilePadding: const EdgeInsets.symmetric(
                     horizontal: 0,
