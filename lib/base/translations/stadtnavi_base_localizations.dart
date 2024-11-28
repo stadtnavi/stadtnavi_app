@@ -530,7 +530,7 @@ abstract class StadtnaviBaseLocalization {
   /// No description provided for @instructionVehicleRackRailway.
   ///
   /// In en, this message translates to:
-  /// **'Rack railway'**
+  /// **'funicular/ rack railway'**
   String get instructionVehicleRackRailway;
 
   /// General Track  label

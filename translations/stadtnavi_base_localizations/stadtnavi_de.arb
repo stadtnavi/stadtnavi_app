@@ -256,7 +256,7 @@
   "mapLegend": "Legende",
   "selectStop": "Option auswählen ({sizeStops})",
   "bicycleParking": "Fahrradabstellplatz",
-  "instructionVehicleRackRailway": "Zahnradbahn",
+  "instructionVehicleRackRailway": "Seilbahn/ Zahnradbahn",
   "commonTrack": "Gleis",
   "@commonTrack": {
       "description": "General Track  label"

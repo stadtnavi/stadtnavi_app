@@ -256,7 +256,7 @@
   "mapLegend": "map legend",
   "selectStop": "Select Stop ({sizeStops})",
   "bicycleParking": "Bicycle parking",
-  "instructionVehicleRackRailway": "Rack railway",
+  "instructionVehicleRackRailway": "funicular/ rack railway",
   "commonTrack": "Track",
   "@commonTrack": {
       "description": "General Track  label"
