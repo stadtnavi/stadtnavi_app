@@ -302,6 +302,7 @@
   "commonClosed": "Geschlossen",
   "commonOpen": "Geöffnet",
   "commonOpenAlways": "Durchgängig geöffnet",
+  "carInstructionDrive": "Fahren",
   "@commonSettings": {
     "description": "General Settings label"
   }

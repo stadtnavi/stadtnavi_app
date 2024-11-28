@@ -379,4 +379,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get commonOpenAlways => 'Durchgängig geöffnet';
+
+  @override
+  String get carInstructionDrive => 'Fahren';
 }

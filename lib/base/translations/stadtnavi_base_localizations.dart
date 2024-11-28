@@ -766,6 +766,12 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'Open 24/7'**
   String get commonOpenAlways;
+
+  /// No description provided for @carInstructionDrive.
+  ///
+  /// In en, this message translates to:
+  /// **'Drive'**
+  String get carInstructionDrive;
 }
 
 class _StadtnaviBaseLocalizationDelegate extends LocalizationsDelegate<StadtnaviBaseLocalization> {

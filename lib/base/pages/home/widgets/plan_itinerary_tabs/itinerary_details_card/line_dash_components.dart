@@ -290,13 +290,14 @@ class CarDash extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 7),
                   child: Text(
-                    '${localizationBase.localeName == 'en' ? 'Fahren' : 'Drive'} ${leg.durationLeg(localizationBase)} (${leg.distanceString(localizationBase)})',
+                    '${localization.carInstructionDrive} ${leg.durationLeg(localizationBase)} (${leg.distanceString(localizationBase)})',
                   ),
                 ),
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        foregroundColor: theme.colorScheme.primary),
+                      foregroundColor: theme.colorScheme.primary,
+                    ),
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -310,6 +311,7 @@ class CarDash extends StatelessWidget {
                       localization.localeName == "en"
                           ? "Offer carpool"
                           : "Fahrgemeinschaft anbieten",
+                      style: TextStyle(color: theme.colorScheme.surface),
                     ),
                   ),
                 ),
