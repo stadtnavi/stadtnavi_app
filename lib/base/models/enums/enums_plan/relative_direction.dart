@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/relative_directions_icons.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 
 enum RelativeDirection {
@@ -46,25 +47,44 @@ extension RelativeDirectionExtension on RelativeDirection {
     RelativeDirection.exitStation: 'EXIT_STATION',
     RelativeDirection.followSigns: 'FOLLOW_SIGNS',
   };
-
-  static const icons = <RelativeDirection, IconData>{
-    RelativeDirection.depart: Icons.directions_walk,
-    RelativeDirection.hardLeft: Icons.keyboard_double_arrow_left,
-    RelativeDirection.left: Icons.turn_left,
-    RelativeDirection.slightlyLeft: Icons.turn_slight_left,
-    RelativeDirection.continue_: Icons.arrow_upward,
-    RelativeDirection.slightlyRight: Icons.turn_slight_right,
-    RelativeDirection.right: Icons.turn_right,
-    RelativeDirection.hardRight: Icons.keyboard_double_arrow_right,
-    RelativeDirection.circleClockwise: Icons.rotate_right,
-    RelativeDirection.circleCounterclockwise: Icons.rotate_left,
-    RelativeDirection.elevator: Icons.elevator,
-    RelativeDirection.uturnLeft: Icons.u_turn_left,
-    RelativeDirection.uturnRight: Icons.u_turn_right,
-    RelativeDirection.enterStation: Icons.subway,
-    RelativeDirection.exitStation: Icons.exit_to_app,
-    RelativeDirection.followSigns: Icons.signpost_outlined,
-  };
+  static Widget? _images(RelativeDirection transportMode, Color? color) {
+    switch (transportMode) {
+      case RelativeDirection.depart:
+        return iconInstructionStraightSvg;
+      case RelativeDirection.hardLeft:
+        return iconInstructionSharpTurnLeftSvg;
+      case RelativeDirection.left:
+        return iconInstructionTurnLeftSvg;
+      case RelativeDirection.slightlyLeft:
+        return iconInstructionTurnSlightLeftSvg;
+      case RelativeDirection.continue_:
+        return iconInstructionStraightSvg;
+      case RelativeDirection.slightlyRight:
+        return iconInstructionTurnSlightRightSvg;
+      case RelativeDirection.right:
+        return iconInstructionTurnRightSvg;
+      case RelativeDirection.hardRight:
+        return iconInstructionSharpTurnRightSvg;
+      case RelativeDirection.circleClockwise:
+        return iconInstructionRoundaboutLeftSvg;
+      case RelativeDirection.circleCounterclockwise:
+        return iconInstructionRoundaboutRightSvg;
+      case RelativeDirection.elevator:
+        return iconInstructionElevatorSvg;
+      case RelativeDirection.uturnLeft:
+        return iconInstructionUTurnLeftSvg;
+      case RelativeDirection.uturnRight:
+        return iconInstructionUTurnRightSvg;
+      case RelativeDirection.enterStation:
+        return iconInstructionEnterStationSvg;
+      case RelativeDirection.exitStation:
+        return iconInstructionExitStationSvg;
+      case RelativeDirection.followSigns:
+        return iconInstructionFollowSignsSvg;
+      default:
+        return null;
+    }
+  }
 
   String translatesTitle(
     StadtnaviBaseLocalization localization,
@@ -109,5 +129,19 @@ extension RelativeDirectionExtension on RelativeDirection {
   }
 
   String get name => names[this] ?? 'CONTINUE';
-  IconData get icon => icons[this] ?? Icons.help_outline;
+
+  Widget getImage({Color? color, double size = 24}) {
+    return Container(
+      width: size,
+      height: size,
+      padding: const EdgeInsets.all(2),
+      child: FittedBox(
+        child: _images(this, color) ??
+            const Icon(
+              Icons.error,
+              color: Colors.red,
+            ),
+      ),
+    );
+  }
 }
