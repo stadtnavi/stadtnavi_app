@@ -669,6 +669,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.11.1"
+  matomo_tracker:
+    dependency: "direct main"
+    description:
+      name: matomo_tracker
+      sha256: "8706ca29389b836929415a52c3e6e94aaf8e37ceca23407ee215716fdb83466d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.0"
   meta:
     dependency: transitive
     description:
@@ -1092,11 +1100,9 @@ packages:
   trufi_core:
     dependency: transitive
     description:
-      path: "."
-      ref: "3.25.0-stadtnavi-lts"
-      resolved-ref: "41b3fddb33d7ee0d142e7d22b1f27169fdeae190"
-      url: "https://github.com/trufi-association/trufi-core.git"
-    source: git
+      path: "../../../trufi-core"
+      relative: true
+    source: path
     version: "3.25.0"
   typed_data:
     dependency: transitive
