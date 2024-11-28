@@ -340,6 +340,8 @@ class CarDash extends StatelessWidget {
                               from: mapRouteState.fromPlace!,
                               to: mapRouteState.toPlace!,
                               advancedOptions: settingFetchState,
+                              localeName:
+                                  Localizations.localeOf(context).languageCode,
                             ),
                             onFinish: (mapModesState) {
                               final modesTransport =
