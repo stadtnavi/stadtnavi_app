@@ -144,9 +144,10 @@ class ParkingMarkerModal extends StatelessWidget {
                 ),
               if (parkingFeature.updatedAt != null)
                 Text(
-                  "${isEnglishCode ? 'Last Update' : 'Daten von'}: ${DateFormat('hh:mm a', languageCode).format(DateTime.parse(parkingFeature.updatedAt!).toLocal())}",
+                  "\n${isEnglishCode ? 'Last Update' : 'Daten von'}: ${DateFormat('hh:mm a', languageCode).format(DateTime.parse(parkingFeature.updatedAt!).toLocal())}",
                   style: TextStyle(
-                    color: theme.textTheme.bodyLarge?.color,
+                    fontSize: 12,
+                    color: theme.textTheme.bodyLarge?.color?.withOpacity(.5),
                   ),
                 ),
             ],
