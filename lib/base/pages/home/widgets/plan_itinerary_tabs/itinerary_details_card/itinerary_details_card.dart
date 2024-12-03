@@ -82,10 +82,10 @@ class ItineraryDetailsCard extends StatelessWidget {
                     )),
                     Container(
                       decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(.2),
+                          color: Color(0xFFEBF6E4),
                           borderRadius: BorderRadius.circular(5)),
                       padding: EdgeInsets.symmetric(
-                        horizontal: 3,
+                        horizontal: 5,
                         vertical: 2,
                       ),
                       margin: EdgeInsets.only(right: 5),
@@ -95,7 +95,7 @@ class ItineraryDetailsCard extends StatelessWidget {
                           Text(
                             "${itinerary.emissionsPerPerson!.toStringAsFixed(0)} g",
                             style: TextStyle(
-                              color: const Color(0xFF4CAF50),
+                              color: const Color(0xFF4C7C2A),
                             ),
                           )
                         ],
