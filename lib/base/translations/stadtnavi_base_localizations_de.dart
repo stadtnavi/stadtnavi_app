@@ -379,4 +379,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get commonOpenAlways => 'Durchgängig geöffnet';
+
+  @override
+  String get journeyCo2Emissions => 'CO2-Emissionen der Reise';
 }

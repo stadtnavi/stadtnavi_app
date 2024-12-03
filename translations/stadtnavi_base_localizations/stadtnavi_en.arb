@@ -302,7 +302,5 @@
   "commonClosed": "Closed",
   "commonOpen": "Open",
   "commonOpenAlways": "Open 24/7",
-  "@commonSettings": {
-    "description": "General Settings label"
-  }
+  "journeyCo2Emissions": "CO2 emissions of the journey"
 }

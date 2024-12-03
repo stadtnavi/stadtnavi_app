@@ -302,7 +302,5 @@
   "commonClosed": "Geschlossen",
   "commonOpen": "Geöffnet",
   "commonOpenAlways": "Durchgängig geöffnet",
-  "@commonSettings": {
-    "description": "General Settings label"
-  }
+  "journeyCo2Emissions": "CO2-Emissionen der Reise"
 }

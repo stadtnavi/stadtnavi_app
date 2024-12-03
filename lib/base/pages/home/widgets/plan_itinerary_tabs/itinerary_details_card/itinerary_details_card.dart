@@ -78,7 +78,7 @@ class ItineraryDetailsCard extends StatelessWidget {
                     ),
                     Expanded(
                         child: Text(
-                      "CO₂ emissions of the journey",
+                      localizationSB.journeyCo2Emissions,
                     )),
                     Container(
                       decoration: BoxDecoration(

@@ -503,7 +503,7 @@ abstract class StadtnaviBaseLocalization {
   /// **'Total distance'**
   String get commonTotalDistance;
 
-  /// General Settings label
+  /// No description provided for @commonSettings.
   ///
   /// In en, this message translates to:
   /// **'Settings'**
@@ -766,6 +766,12 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'Open 24/7'**
   String get commonOpenAlways;
+
+  /// No description provided for @journeyCo2Emissions.
+  ///
+  /// In en, this message translates to:
+  /// **'CO2 emissions of the journey'**
+  String get journeyCo2Emissions;
 }
 
 class _StadtnaviBaseLocalizationDelegate extends LocalizationsDelegate<StadtnaviBaseLocalization> {
