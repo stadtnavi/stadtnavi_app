@@ -228,6 +228,7 @@ class _CustomItineraryState extends State<CustomItinerary>
     final mapRouteCubit = context.read<MapRouteCubit>();
     final mapRouteState = mapRouteCubit.state;
     final payloadDataPlanCubit = context.read<SettingFetchCubit>();
+    final languageCode = Localizations.localeOf(context).languageCode;
     if (!mapRouteState.isFetchEarlier && !mapRouteState.isFetchLater) {
       if (payloadDataPlanCubit.state.arriveBy) {
         await mapRouteCubit
@@ -235,6 +236,7 @@ class _CustomItineraryState extends State<CustomItinerary>
               advancedOptions: payloadDataPlanCubit.state,
               isFetchEarlier: isFetchEarlier,
               itineraries: mapRouteState.plan?.itineraries ?? [],
+              localeName: languageCode,
             )
             .catchError((error) => onFetchError(context, error as Exception));
       } else {
@@ -243,6 +245,7 @@ class _CustomItineraryState extends State<CustomItinerary>
               advancedOptions: payloadDataPlanCubit.state,
               isFetchEarlier: isFetchEarlier,
               itineraries: mapRouteState.plan?.itineraries ?? [],
+              localeName: languageCode,
             )
             .catchError((error) => onFetchError(context, error as Exception));
       }

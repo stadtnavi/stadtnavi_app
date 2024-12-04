@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
+import 'package:stadtnavi_core/configuration/graphql_client.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
-import 'package:trufi_core/base/utils/graphql_client/graphql_client.dart';
 import 'package:trufi_core/base/utils/graphql_client/graphql_utils.dart';
 
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
@@ -20,9 +20,13 @@ import 'graphql_operation/queries2/plan_queries.dart' as plan_queries;
 import 'graphql_operation/query_utils.dart';
 
 class GraphQLPlanRepository {
-  final GraphQLClient client;
+  final String endpoint;
+  GraphQLClient client;
 
-  GraphQLPlanRepository(String endpoint) : client = getClient(endpoint);
+  GraphQLPlanRepository({required this.endpoint})
+      : client = getClient(
+          endpoint,
+        );
 
   Future<Plan> fetchPlanAdvanced({
     required TrufiLocation fromLocation,
@@ -32,6 +36,11 @@ class GraphQLPlanRepository {
     String? locale,
     bool defaultFecth = false,
   }) async {
+    client = updateClient(
+      graphQLClient: client,
+      endpoint: endpoint,
+      langugeEncode: locale,
+    );
     final transportsMode =
         defaultFecth ? defaultTransportModes : advancedOptions.transportModes;
     final QueryOptions planAdvancedQuery = QueryOptions(
@@ -70,7 +79,7 @@ class GraphQLPlanRepository {
         'unpreferred': const {'useUnpreferredRoutesPenalty': 1200},
         'allowedVehicleRentalNetworks':
             parseBikeRentalNetworks(advancedOptions.bikeRentalNetworks),
-        'locale': locale ?? 'de',
+        'locale': locale ?? 'en',
       },
     );
     final planAdvancedData = await client.query(planAdvancedQuery);
@@ -92,8 +101,13 @@ class GraphQLPlanRepository {
     required TrufiLocation fromLocation,
     required TrufiLocation toLocation,
     required SettingFetchState advancedOptions,
-    String? locale,
+    required String locale,
   }) async {
+    client = updateClient(
+      graphQLClient: client,
+      endpoint: endpoint,
+      langugeEncode: locale,
+    );
     final linearDistance =
         estimateDistance(fromLocation.latLng, toLocation.latLng);
     final dateNow = DateTime.now();
@@ -132,7 +146,7 @@ class GraphQLPlanRepository {
           'triangle': {...OptimizeType.triangle.value!},
           'itineraryFiltering': 1.5,
           'unpreferred': const {'useUnpreferredRoutesPenalty': 1200},
-          'locale': locale ?? 'de',
+          'locale': locale,
           'bikeAndPublicMaxWalkDistance':
               SettingFetchState.bikeAndPublicMaxWalkDistance,
           'bikeAndPublicModes':

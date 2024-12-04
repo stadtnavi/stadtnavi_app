@@ -11,17 +11,21 @@ NumberFormat formatOneDecimals({String? localeName}) {
   return NumberFormat('#.0', localeName ?? 'en');
 }
 
+NumberFormat formatZeroDecimals({String? localeName}) {
+  return NumberFormat('#', localeName ?? 'en');
+}
+
 String displayDistanceWithLocale(
     TrufiBaseLocalization localization, double meters) {
   final tempMeters = meters;
   if (tempMeters < 100) {
-    return localization.instructionDistanceMeters(formatOneDecimals(
+    return localization.instructionDistanceMeters(formatZeroDecimals(
       localeName: localization.localeName,
     ).format((tempMeters / 10).round() * 10));
   }
   if (tempMeters < 975) {
     return localization.instructionDistanceMeters(
-        formatOneDecimals(localeName: localization.localeName)
+        formatZeroDecimals(localeName: localization.localeName)
             .format((tempMeters / 50).round() * 50));
   }
   if (tempMeters < 10000) {

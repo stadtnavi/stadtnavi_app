@@ -92,7 +92,10 @@ class MapRouteCubit extends Cubit<MapRouteState> {
     emit(newState);
   }
 
-  Future<void> fetchPlan({required SettingFetchState advancedOptions}) async {
+  Future<void> fetchPlan({
+    required SettingFetchState advancedOptions,
+    required String localeName,
+  }) async {
     if (state.toPlace != null && state.fromPlace != null) {
       await updateMapRouteState(state.copyWithNullable(
         plan: const Optional.value(null),
@@ -106,6 +109,7 @@ class MapRouteCubit extends Cubit<MapRouteState> {
             from: state.fromPlace!,
             to: state.toPlace!,
             advancedOptions: advancedOptions,
+            localeName: localeName,
           );
         }(),
       );
@@ -129,6 +133,7 @@ class MapRouteCubit extends Cubit<MapRouteState> {
   Future<void> fetchMoreDeparturePlan({
     required List<PlanItinerary> itineraries,
     required SettingFetchState advancedOptions,
+    required String localeName,
     bool isFetchEarlier = true,
   }) async {
     emit(state.copyWith(
@@ -158,6 +163,7 @@ class MapRouteCubit extends Cubit<MapRouteState> {
     final PlanEntity? planEntity = await _fetchPlanPart(
       advancedOptions:
           advancedOptions.copyWith(date: newDateTime, arriveBy: isFetchEarlier),
+      localeName: localeName,
     ).catchError((error) async {
       emit(state.copyWith(
         isFetchEarlier: false,
@@ -196,6 +202,7 @@ class MapRouteCubit extends Cubit<MapRouteState> {
   Future<void> fetchMoreArrivalPlan({
     required List<PlanItinerary> itineraries,
     required SettingFetchState advancedOptions,
+    required String localeName,
     bool isFetchEarlier = true,
   }) async {
     emit(state.copyWith(
@@ -225,6 +232,7 @@ class MapRouteCubit extends Cubit<MapRouteState> {
     final PlanEntity? planEntity = await _fetchPlanPart(
       advancedOptions: advancedOptions.copyWith(
           date: newDateTime, arriveBy: !isFetchEarlier),
+      localeName: localeName,
     ).catchError((error) async {
       emit(state.copyWith(
         isFetchEarlier: false,
@@ -262,6 +270,7 @@ class MapRouteCubit extends Cubit<MapRouteState> {
 
   Future<PlanEntity?> _fetchPlanPart({
     required SettingFetchState advancedOptions,
+    required String localeName,
   }) async {
     await cancelCurrentFetchIfExist();
     currentFetchPlanOperation = CancelableOperation.fromFuture(
@@ -270,6 +279,7 @@ class MapRouteCubit extends Cubit<MapRouteState> {
           from: state.fromPlace!,
           to: state.toPlace!,
           advancedOptions: advancedOptions,
+          localeName: localeName,
         );
       }(),
     );
