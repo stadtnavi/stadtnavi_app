@@ -68,7 +68,7 @@ extension RelativeDirectionExtension on RelativeDirection {
       case RelativeDirection.circleClockwise:
         return iconInstructionRoundaboutLeftSvg;
       case RelativeDirection.circleCounterclockwise:
-        return iconInstructionRoundaboutRightSvg;
+        return iconInstructionRoundaboutLeftSvg;
       case RelativeDirection.elevator:
         return iconInstructionElevatorSvg;
       case RelativeDirection.uturnLeft:
