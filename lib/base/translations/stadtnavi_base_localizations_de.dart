@@ -381,5 +381,31 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get commonOpenAlways => 'Durchgängig geöffnet';
 
   @override
+  String itineraryCo2Description(Object carCo2Value, Object co2value) {
+    return '$co2value g of CO₂ emissions will be generated on this journey. A car would generate $carCo2Value g of CO₂ on the same journey.';
+  }
+
+  @override
+  String itineraryCo2DescriptionSr(Object carCo2Value, Object co2value) {
+    return '$co2value g of carbondioxide emissions will be generated on this journey. A car would generate $carCo2Value g of carbondioxide on the same journey.';
+  }
+
+  @override
+  String itineraryCo2DescriptionSimple(Object co2value) {
+    return '$co2value g of CO₂ emissions will be generated on this journey.';
+  }
+
+  @override
+  String itineraryCo2DescriptionSimpleSr(Object co2value) {
+    return '$co2value g of carbondioxide emissions will be generated on this journey.';
+  }
+
+  @override
   String get journeyCo2Emissions => 'CO2-Emissionen der Reise';
+
+  @override
+  String get journeyCo2EmissionsSr => 'Carbondioxide emissions of the journey';
+
+  @override
+  String get itineraryCo2Link => 'This is how we compare emissions ›';
 }

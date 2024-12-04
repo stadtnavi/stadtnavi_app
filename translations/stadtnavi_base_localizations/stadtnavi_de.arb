@@ -302,5 +302,11 @@
   "commonClosed": "Geschlossen",
   "commonOpen": "Geöffnet",
   "commonOpenAlways": "Durchgängig geöffnet",
-  "journeyCo2Emissions": "CO2-Emissionen der Reise"
+  "itineraryCo2Description": "{co2value} g of CO₂ emissions will be generated on this journey. A car would generate {carCo2Value} g of CO₂ on the same journey.",
+  "itineraryCo2DescriptionSr": "{co2value} g of carbondioxide emissions will be generated on this journey. A car would generate {carCo2Value} g of carbondioxide on the same journey.",
+  "itineraryCo2DescriptionSimple": "{co2value} g of CO₂ emissions will be generated on this journey.",
+  "itineraryCo2DescriptionSimpleSr": "{co2value} g of carbondioxide emissions will be generated on this journey.",
+  "journeyCo2Emissions": "CO2-Emissionen der Reise",
+  "journeyCo2EmissionsSr": "Carbondioxide emissions of the journey",
+  "itineraryCo2Link": "This is how we compare emissions ›"
 }
