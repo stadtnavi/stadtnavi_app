@@ -302,11 +302,11 @@
   "commonClosed": "Geschlossen",
   "commonOpen": "Geöffnet",
   "commonOpenAlways": "Durchgängig geöffnet",
-  "itineraryCo2Description": "{co2value} g of CO₂ emissions will be generated on this journey. A car would generate {carCo2Value} g of CO₂ on the same journey.",
-  "itineraryCo2DescriptionSr": "{co2value} g of carbondioxide emissions will be generated on this journey. A car would generate {carCo2Value} g of carbondioxide on the same journey.",
-  "itineraryCo2DescriptionSimple": "{co2value} g of CO₂ emissions will be generated on this journey.",
-  "itineraryCo2DescriptionSimpleSr": "{co2value} g of carbondioxide emissions will be generated on this journey.",
-  "journeyCo2Emissions": "CO2-Emissionen der Reise",
-  "journeyCo2EmissionsSr": "Carbondioxide emissions of the journey",
-  "itineraryCo2Link": "This is how we compare emissions ›"
+  "itineraryCo2Description": "{co2value} g CO₂ Emissionen werden durch diese Reise verursacht. Ein Auto würde {carCo2Value} g CO₂ auf derselben Reise ausstoßen.'",
+  "itineraryCo2DescriptionSr": "{co2value} g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht. Ein Auto würde {carCo2Value} g Kohlenstoffdioxid auf derselben Reise ausstoßen.",
+  "itineraryCo2DescriptionSimple": "{co2value} g CO₂ Emissionen werden durch diese Reise verursacht.",
+  "itineraryCo2DescriptionSimpleSr": "{co2value} g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht.",
+  "journeyCo2Emissions": "CO₂-Emissionen der Reise",
+  "journeyCo2EmissionsSr": "Kohlenstoffdioxid-Emissionen der Reise",
+  "itineraryCo2Link": "So berechnen wir die Emissionen ›"
 }
