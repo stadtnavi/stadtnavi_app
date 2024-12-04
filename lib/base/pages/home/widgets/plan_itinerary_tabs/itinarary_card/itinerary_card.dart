@@ -71,10 +71,12 @@ class ItineraryCard extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              SvgPicture.string(leafIcon),
-                              Container(
-                                width: 5,
-                              ),
+                              if (itinerary.isMinorEmissionsPerPerson) ...[
+                                SvgPicture.string(leafIcon),
+                                Container(
+                                  width: 5,
+                                ),
+                              ],
                               Text(
                                 "${itinerary.emissionsPerPerson!.toStringAsFixed(0)} g",
                                 style: TextStyle(
