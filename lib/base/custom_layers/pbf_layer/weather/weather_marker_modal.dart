@@ -144,7 +144,7 @@ class ParkingMarkerModal extends StatelessWidget {
                 ),
               if (parkingFeature.updatedAt != null)
                 Text(
-                  "\n${isEnglishCode ? 'Last Update' : 'Daten von'}: ${DateFormat(null, languageCode).format(DateTime.parse(parkingFeature.updatedAt!).toLocal())}",
+                  "\n${isEnglishCode ? 'Last Update' : 'Daten von'}: ${formatDateWithoutSeconds(parkingFeature.updatedAt!, languageCode)}",
                   style: TextStyle(
                     fontSize: 12,
                     color: theme.textTheme.bodyLarge?.color?.withOpacity(.5),
@@ -163,5 +163,12 @@ class ParkingMarkerModal extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  String formatDateWithoutSeconds(String date, String languageCode) {
+    final parsedDate = DateTime.parse(date).toLocal();
+    String formattedDate = DateFormat(null, languageCode).format(parsedDate);
+    formattedDate = formattedDate.replaceFirst(RegExp(r':\d{2}(?=\s|$)'), '');
+    return formattedDate;
   }
 }
