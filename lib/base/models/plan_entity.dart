@@ -60,17 +60,19 @@ class PlanEntity extends Equatable {
 
   factory PlanEntity.fromJson(Map<String, dynamic> json) {
     final Map<String, dynamic> planJson = json[_plan] as Map<String, dynamic>;
+    final itineraries = removePlanItineraryDuplicates(
+      planJson[_itineraries]
+          .map<PlanItinerary>(
+            (dynamic itineraryJson) =>
+                PlanItinerary.fromJson(itineraryJson as Map<String, dynamic>),
+          )
+          .toList() as List<PlanItinerary>,
+    );
+    findMinEmissionsPerPerson(itineraries);
     return PlanEntity(
       from: PlanLocation.fromJson(planJson[_from] as Map<String, dynamic>),
       to: PlanLocation.fromJson(planJson[_to] as Map<String, dynamic>),
-      itineraries: removePlanItineraryDuplicates(
-        planJson[_itineraries]
-            .map<PlanItinerary>(
-              (dynamic itineraryJson) =>
-                  PlanItinerary.fromJson(itineraryJson as Map<String, dynamic>),
-            )
-            .toList() as List<PlanItinerary>,
-      ),
+      itineraries: itineraries,
       type: planJson[_type] as String,
       planInfoBox: getPlanInfoBoxByKey(planJson[_planInfoBox] as String),
     );
@@ -99,6 +101,33 @@ class PlanEntity extends Equatable {
   ) {
     Set<PlanItinerary> set = Set<PlanItinerary>.from(itineraries);
     return set.toList();
+  }
+
+  static void findMinEmissionsPerPerson(
+    List<PlanItinerary> itineraries,
+  ) {
+    // Determine the itinerary with the smallest non-null emissionsPerPerson
+    double? minEmissionsPerPerson;
+    for (var i = 0; i < itineraries.length; i++) {
+      final itinerary = itineraries[i];
+      if (itinerary.emissionsPerPerson != null) {
+        if (minEmissionsPerPerson == null ||
+            (itinerary.emissionsPerPerson! < minEmissionsPerPerson)) {
+          minEmissionsPerPerson = itinerary.emissionsPerPerson;
+        }
+      }
+      itineraries[i] = itinerary.copyWith(isMinorEmissionsPerPerson: false);
+    }
+
+    for (var i = 0; i < itineraries.length; i++) {
+      final itinerary = itineraries[i];
+      if (itinerary.emissionsPerPerson == minEmissionsPerPerson) {
+        itineraries[i] = itinerary.copyWith(
+            isMinorEmissionsPerPerson:
+                itinerary.emissionsPerPerson == minEmissionsPerPerson);
+        break;
+      }
+    }
   }
 
   Map<String, dynamic> toJson() {

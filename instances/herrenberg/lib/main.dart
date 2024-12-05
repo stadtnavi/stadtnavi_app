@@ -72,6 +72,7 @@ void main() async {
       appNameTitle: 'stadtnavi|Herrenberg',
       cityName: 'Herrenberg',
       center: LatLng(48.5950, 8.8672),
+      co2EmmissionUrl: "https://www.herrenberg.de/Mobilit%C3%A4t/CO2",
       otpGraphqlEndpoint: ApiConfig().openTripPlannerUrl,
       urlFeedback: 'https://stadtnavi.de/feedback/',
       urlShareApp: 'https://herrenberg.stadtnavi.de/',

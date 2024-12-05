@@ -98,14 +98,17 @@ class Plan {
   }
 
   PlanEntity toPlan() {
+    final itinerariesTemp = itineraries
+            ?.map(
+              (itinerary) => itinerary.toPlanItinerary(),
+            )
+            .toList() ??
+        <PlanItinerary>[];
+    PlanEntity.findMinEmissionsPerPerson(itinerariesTemp);
     return PlanEntity(
       to: to?.toPlanLocation(),
       from: from?.toPlanLocation(),
-      itineraries: itineraries
-          ?.map(
-            (itinerary) => itinerary.toPlanItinerary(),
-          )
-          .toList(),
+      itineraries: itinerariesTemp,
     ).copyWith(type: 'plan');
   }
 }
