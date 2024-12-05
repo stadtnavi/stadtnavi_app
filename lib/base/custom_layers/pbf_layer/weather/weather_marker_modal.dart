@@ -169,6 +169,10 @@ class ParkingMarkerModal extends StatelessWidget {
     final parsedDate = DateTime.parse(date).toLocal();
     String formattedDate = DateFormat(null, languageCode).format(parsedDate);
     formattedDate = formattedDate.replaceFirst(RegExp(r':\d{2}(?=\s|$)'), '');
+    if (languageCode == 'de' && !formattedDate.contains('Uhr')) {
+      formattedDate += ' Uhr';
+    }
+
     return formattedDate;
   }
 }
