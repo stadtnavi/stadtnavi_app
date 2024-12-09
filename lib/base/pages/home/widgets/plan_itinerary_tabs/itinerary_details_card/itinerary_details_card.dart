@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
@@ -78,14 +80,14 @@ class ItineraryDetailsCard extends StatelessWidget {
                     ),
                     Expanded(
                         child: Text(
-                      "CO₂ emissions of the journey",
+                      localizationSB.journeyCo2Emissions,
                     )),
                     Container(
                       decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(.2),
+                          color: Color(0xFFEBF6E4),
                           borderRadius: BorderRadius.circular(5)),
                       padding: EdgeInsets.symmetric(
-                        horizontal: 3,
+                        horizontal: 5,
                         vertical: 2,
                       ),
                       margin: EdgeInsets.only(right: 5),
@@ -95,7 +97,7 @@ class ItineraryDetailsCard extends StatelessWidget {
                           Text(
                             "${itinerary.emissionsPerPerson!.toStringAsFixed(0)} g",
                             style: TextStyle(
-                              color: const Color(0xFF4CAF50),
+                              color: const Color(0xFF4C7C2A),
                             ),
                           )
                         ],
@@ -257,6 +259,69 @@ class ItineraryDetailsCard extends StatelessWidget {
                           ),
                         ),
                       ),
+                      if (itinerary.emissionsPerPerson != null &&
+                          mapConfiguratiom.co2EmmissionUrl != null) ...[
+                        const Divider(
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 5,
+                                  top: 5,
+                                  right: 16,
+                                ),
+                                child: SvgPicture.string(
+                                  leafIcon,
+                                  width: 24,
+                                  height: 24,
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      localizationSB.itineraryCo2DescriptionSr(
+                                        // TODO: Determine the source or origin of this value.
+                                        "488",
+                                        itinerary.emissionsPerPerson!
+                                            .toStringAsFixed(0),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text.rich(
+                                      TextSpan(
+                                        text: localizationSB.itineraryCo2Link,
+                                        recognizer: TapGestureRecognizer()
+                                          ..onTap = () async {
+                                            final co2EmmissionUri = Uri.parse(
+                                              mapConfiguratiom.co2EmmissionUrl!,
+                                            );
+                                            if (await canLaunchUrl(
+                                                co2EmmissionUri)) {
+                                              await launchUrl(co2EmmissionUri);
+                                            }
+                                          },
+                                      ),
+                                      style: TextStyle(
+                                          color: theme.colorScheme.primary,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Divider(
+                          thickness: 1,
+                        ),
+                      ],
                     ]
                   ],
                 );

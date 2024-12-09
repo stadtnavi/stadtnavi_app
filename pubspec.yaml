@@ -15,12 +15,12 @@ dependencies:
   maps_toolkit: ^3.0.0
   mqtt_client: ^10.5.1
   skeletonizer: ^1.4.2
-  trufi_core:
-    git:
-      url: https://github.com/trufi-association/trufi-core.git
-      ref: 3.25.0-stadtnavi-lts
-  # trufi_core: 
-  #   path: ../trufi-core
+  # trufi_core:
+  #   git:
+  #     url: https://github.com/trufi-association/trufi-core.git
+  #     ref: 3.25.0-stadtnavi-lts
+  trufi_core: 
+    path: ../trufi-core
   firebase_core: ^3.3.0
   firebase_messaging: ^15.0.4
   firebase_in_app_messaging: ^0.8.0+4
