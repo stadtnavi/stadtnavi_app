@@ -530,7 +530,7 @@ abstract class StadtnaviBaseLocalization {
   /// No description provided for @instructionVehicleRackRailway.
   ///
   /// In en, this message translates to:
-  /// **'Rack railway'**
+  /// **'funicular/ rack railway'**
   String get instructionVehicleRackRailway;
 
   /// General Track  label
@@ -808,6 +808,84 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'This is how we compare emissions ›'**
   String get itineraryCo2Link;
+
+  /// No description provided for @commonRealTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time'**
+  String get commonRealTime;
+
+  /// No description provided for @carInstructionDrive.
+  ///
+  /// In en, this message translates to:
+  /// **'Drive'**
+  String get carInstructionDrive;
+
+  /// No description provided for @departureListUpdateSrInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'The list of upcoming departures and departure times will update in real time.'**
+  String get departureListUpdateSrInstructions;
+
+  /// No description provided for @departurePageSr.
+  ///
+  /// In en, this message translates to:
+  /// **'Trip {shortName} {destination} {time} information'**
+  String departurePageSr(Object destination, Object shortName, Object time);
+
+  /// No description provided for @departureTimeSr.
+  ///
+  /// In en, this message translates to:
+  /// **'{when} clock {time}. {realTime}'**
+  String departureTimeSr(Object realTime, Object time, Object when);
+
+  /// No description provided for @disruptionsTabSrDisruptions.
+  ///
+  /// In en, this message translates to:
+  /// **'One or more known disruptions'**
+  String get disruptionsTabSrDisruptions;
+
+  /// No description provided for @disruptionsTabSrNoDisruptions.
+  ///
+  /// In en, this message translates to:
+  /// **'No known disruptions'**
+  String get disruptionsTabSrNoDisruptions;
+
+  /// No description provided for @itineraryCo2TitleSr.
+  ///
+  /// In en, this message translates to:
+  /// **'Carbondioxide emissions of the journey'**
+  String get itineraryCo2TitleSr;
+
+  /// No description provided for @searchFieldsSrInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Route search will take place automatically when you enter origin and destination. Changing search parameters will trigger a new search. Navigate to the search fields using the tab key'**
+  String get searchFieldsSrInstructions;
+
+  /// No description provided for @stopListUpdateSrInstructions.
+  ///
+  /// In en, this message translates to:
+  /// **'Departure times for each stop will update in real time.'**
+  String get stopListUpdateSrInstructions;
+
+  /// No description provided for @swipeSrNewTabOpened.
+  ///
+  /// In en, this message translates to:
+  /// **'Tab {number} opened.'**
+  String swipeSrNewTabOpened(Object number);
+
+  /// No description provided for @tripCo2EmissionsSr.
+  ///
+  /// In en, this message translates to:
+  /// **'Carbondioxide emissions of the journey'**
+  String get tripCo2EmissionsSr;
+
+  /// No description provided for @departureTimeInMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String departureTimeInMinutes(Object minutes);
 }
 
 class _StadtnaviBaseLocalizationDelegate extends LocalizationsDelegate<StadtnaviBaseLocalization> {

@@ -256,7 +256,7 @@
   "mapLegend": "Legende",
   "selectStop": "Option auswählen ({sizeStops})",
   "bicycleParking": "Fahrradabstellplatz",
-  "instructionVehicleRackRailway": "Zahnradbahn",
+  "instructionVehicleRackRailway": "Seilbahn/ Zahnradbahn",
   "commonTrack": "Gleis",
   "@commonTrack": {
       "description": "General Track  label"
@@ -308,5 +308,18 @@
   "itineraryCo2DescriptionSimpleSr": "{co2value} g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht.",
   "journeyCo2Emissions": "CO₂-Emissionen der Reise",
   "journeyCo2EmissionsSr": "Kohlenstoffdioxid-Emissionen der Reise",
-  "itineraryCo2Link": "So berechnen wir die Emissionen ›"
+  "itineraryCo2Link": "So berechnen wir die Emissionen ›",
+  "commonRealTime": "Echtzeit",
+  "carInstructionDrive": "Fahren",
+  "departureListUpdateSrInstructions": "The list of upcoming departures and departure times will update in real time.",
+  "departurePageSr": "Trip {shortName} {destination} {time} information",
+  "departureTimeSr": "{when} clock {time}. {realTime}",
+  "disruptionsTabSrDisruptions": "One or more known disruptions",
+  "disruptionsTabSrNoDisruptions": "No known disruptions",
+  "itineraryCo2TitleSr": "Carbondioxide emissions of the journey",
+  "searchFieldsSrInstructions": "Route search will take place automatically when you enter origin and destination. Changing search parameters will trigger a new search. Navigate to the search fields using the tab key",
+  "stopListUpdateSrInstructions": "Departure times for each stop will update in real time.",
+  "swipeSrNewTabOpened": "Tab {number} opened.",
+  "tripCo2EmissionsSr": "Carbondioxide emissions of the journey",
+  "departureTimeInMinutes": "{minutes} min"
 }
