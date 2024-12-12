@@ -100,34 +100,31 @@ class _BannerAlertsState extends State<BannerAlerts> {
                                                   : TextOverflow.ellipsis,
                                             ),
                                             children: [
-                                              TextSpan(
-                                                text:
-                                                    localization.commonMoreInfo,
-                                                style: const TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  height: 1,
-                                                  decoration:
-                                                      TextDecoration.underline,
+                                              if (alert.alertUrl != null)
+                                                TextSpan(
+                                                  text: localization
+                                                      .commonMoreInfo,
+                                                  style: const TextStyle(
+                                                    fontSize: 13,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    height: 1,
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                  ),
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () async {
+                                                          Uri uri = Uri.parse(
+                                                              alert.alertUrl ??
+                                                                  '');
+                                                          if (await canLaunchUrl(
+                                                              uri)) {
+                                                            await launchUrl(
+                                                                uri);
+                                                          }
+                                                        },
                                                 ),
-                                                recognizer:
-                                                    TapGestureRecognizer()
-                                                      ..onTap = () async {
-                                                        final selectedAlert =
-                                                            globalAlertsState
-                                                                    .alerts[
-                                                                _currentIndex];
-                                                        Uri uri = Uri.parse(
-                                                            selectedAlert
-                                                                    .alertUrl ??
-                                                                '');
-                                                        if (await canLaunchUrl(
-                                                            uri)) {
-                                                          await launchUrl(uri);
-                                                        }
-                                                      },
-                                              ),
                                             ],
                                           ),
                                         ),
