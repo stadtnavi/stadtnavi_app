@@ -8,6 +8,7 @@ import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart'
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/pages/about/about.dart';
 import 'package:stadtnavi_core/base/pages/feedback/feedback.dart';
+import 'package:stadtnavi_core/base/pages/home/cubits/global_alerts_cubit/global_alerts_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
@@ -61,6 +62,7 @@ abstract class DefaultStadtnaviValues {
     required SearchLocationRepository searchLocationRepository,
     required List<CustomLayerContainer> layersContainer,
     required List<MapTileProvider> mapTileProviders,
+    required List<String> alertsFeedIds,
     List<BlocProvider>? extraBlocs,
   }) {
     return [
@@ -102,6 +104,12 @@ abstract class DefaultStadtnaviValues {
       BlocProvider<ParkingInformationCubit>(
         create: (context) =>
             ParkingInformationCubit(ApiConfig().openTripPlannerUrl),
+      ),
+      BlocProvider<GlobalAlertsCubit>(
+        create: (context) => GlobalAlertsCubit(
+          otpEndpoint: ApiConfig().openTripPlannerUrl,
+          feedIds: alertsFeedIds,
+        ),
       ),
       if (extraBlocs != null) ...extraBlocs,
     ];

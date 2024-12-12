@@ -7,6 +7,7 @@ import 'package:path/path.dart' show join;
 
 import 'package:graphql/client.dart' show HiveStore;
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layer_local_storage.dart';
+import 'package:stadtnavi_core/base/pages/home/cubits/global_alerts_cubit/global_alerts_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
@@ -55,4 +56,5 @@ const listPathsHive = [
   MapModesCubit.path,
   SettingFetchCubit.path,
   CustomLayerLocalStorage.path,
+  GlobalAlertsCubit.path,
 ];
