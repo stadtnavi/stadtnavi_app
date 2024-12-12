@@ -766,6 +766,24 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'Open 24/7'**
   String get commonOpenAlways;
+
+  /// No description provided for @commonShowMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Show more'**
+  String get commonShowMore;
+
+  /// No description provided for @commonShowLess.
+  ///
+  /// In en, this message translates to:
+  /// **'Show less'**
+  String get commonShowLess;
+
+  /// No description provided for @commonMoreInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'More info'**
+  String get commonMoreInfo;
 }
 
 class _StadtnaviBaseLocalizationDelegate extends LocalizationsDelegate<StadtnaviBaseLocalization> {

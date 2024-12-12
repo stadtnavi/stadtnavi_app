@@ -304,5 +304,8 @@
   "commonOpenAlways": "Open 24/7",
   "@commonSettings": {
     "description": "General Settings label"
-  }
+  },
+  "commonShowMore": "Show more",
+  "commonShowLess": "Show less",
+  "commonMoreInfo": "More info"
 }
