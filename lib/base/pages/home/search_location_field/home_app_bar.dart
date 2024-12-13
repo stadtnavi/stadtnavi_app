@@ -32,82 +32,81 @@ class HomeAppBar extends StatelessWidget {
     final theme = Theme.of(context);
 
     final stLocalization = StadtnaviBaseLocalization.of(context);
-    return Semantics(
-      label: stLocalization.searchFieldsSrInstructions,
-      button: true,
-      excludeSemantics: true,
-      child: Card(
-        margin: EdgeInsets.zero,
-        color: ThemeCubit.isDarkMode(theme)
-            ? theme.appBarTheme.backgroundColor
-            : theme.colorScheme.primary,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(5),
-          ),
-        ),
-        child: SafeArea(
-          bottom: false,
-          top: false,
+    return Card(
+      margin: EdgeInsets.zero,
+      color: ThemeCubit.isDarkMode(theme)
+        ? theme.appBarTheme.backgroundColor
+        : theme.colorScheme.primary,
+      shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        bottom: Radius.circular(5),
+      ),
+    ),
+      child: SafeArea(
+        bottom: false,
+        top: false,
+        child: Semantics(
+          label: stLocalization.searchFieldsSrInstructions,
+          excludeSemantics: false,
           child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.menu,
-                        color: theme.appBarTheme.foregroundColor,
-                      ),
-                      splashRadius: 24,
-                      iconSize: 24,
-                      onPressed: onBackButton,
-                      tooltip: MaterialLocalizations.of(context)
-                          .openAppDrawerTooltip,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 2),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.menu,
+                      color: theme.appBarTheme.foregroundColor,
                     ),
-                    Expanded(
-                      child: (isPortrait)
-                          ? Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(2.0, 4.0, 6.0, 0.0),
-                              child: FormFieldsPortrait(
-                                onFetchPlan: onFetchPlan,
-                                onReset: onReset,
-                                onSaveFrom: onSaveFrom,
-                                onSaveTo: onSaveTo,
-                                onSwap: onSwap,
-                              ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  12.0, 4.0, 4.0, 0.0),
-                              child: FormFieldsLandscape(
-                                onFetchPlan: onFetchPlan,
-                                onReset: onReset,
-                                onSaveFrom: onSaveFrom,
-                                onSaveTo: onSaveTo,
-                                onSwap: onSwap,
-                              ),
+                    splashRadius: 24,
+                    iconSize: 24,
+                    onPressed: onBackButton,
+                    tooltip: MaterialLocalizations.of(context)
+                        .openAppDrawerTooltip,
+                  ),
+                  Expanded(
+                    child: (isPortrait)
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.fromLTRB(2.0, 4.0, 6.0, 0.0),
+                            child: FormFieldsPortrait(
+                              onFetchPlan: onFetchPlan,
+                              onReset: onReset,
+                              onSaveFrom: onSaveFrom,
+                              onSaveTo: onSaveTo,
+                              onSwap: onSwap,
                             ),
-                    ),
-                  ],
-                ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                12.0, 4.0, 4.0, 0.0),
+                            child: FormFieldsLandscape(
+                              onFetchPlan: onFetchPlan,
+                              onReset: onReset,
+                              onSaveFrom: onSaveFrom,
+                              onSaveTo: onSaveTo,
+                              onSwap: onSwap,
+                            ),
+                          ),
+                  ),
+                ],
               ),
-              Container(
-                margin: EdgeInsets.only(
-                  left: isPortrait ? 55 : 65,
-                  right: isPortrait ? 15 : 50,
-                  bottom: 3,
-                ),
-                child: SettingPayload(
-                  onFetchPlan: onFetchPlan,
-                ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                left: isPortrait ? 55 : 65,
+                right: isPortrait ? 15 : 50,
+                bottom: 3,
               ),
-              const TransportSelector(),
-            ],
-          ),
+              child: SettingPayload(
+                onFetchPlan: onFetchPlan,
+              ),
+            ),
+            const TransportSelector(),
+          ],
+        ),
         ),
       ),
     );
