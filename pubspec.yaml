@@ -30,6 +30,7 @@ dependencies:
   lodash_flutter: ^0.0.3
   vector_tile: ^2.0.0
   rive: ^0.13.4
+  flutter_compass: ^0.8.1
 
 dev_dependencies:
   flutter_test:
