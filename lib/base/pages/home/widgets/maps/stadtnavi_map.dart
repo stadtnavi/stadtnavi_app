@@ -29,6 +29,7 @@ class StadtnaviMap extends StatefulWidget {
   final PositionCallback? onPositionChanged;
   final bool showMapTypeButton;
   final String? showLayerById;
+  final bool enableCurrentLocation;
   const StadtnaviMap({
     Key? key,
     required this.trufiMapController,
@@ -39,6 +40,7 @@ class StadtnaviMap extends StatefulWidget {
     this.onPositionChanged,
     this.showMapTypeButton = true,
     this.showLayerById,
+    this.enableCurrentLocation = true,
   }) : super(key: key);
 
   @override
@@ -230,8 +232,9 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
                     ),
                     showLayerById: widget.showLayerById,
                   ),
-                  mapConfiguratiom.markersConfiguration
-                      .buildYourLocationMarkerLayerOptions(currentLocation),
+                  if (widget.enableCurrentLocation)
+                    mapConfiguratiom.markersConfiguration
+                        .buildYourLocationMarkerLayerOptions(currentLocation),
                 ],
               );
             }),
@@ -251,9 +254,10 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
               if (widget.floatingActionButtons != null)
                 widget.floatingActionButtons!,
               const Padding(padding: EdgeInsets.all(4.0)),
-              YourLocationButton(
-                trufiMapController: widget.trufiMapController,
-              ),
+              if (widget.enableCurrentLocation)
+                YourLocationButton(
+                  trufiMapController: widget.trufiMapController,
+                ),
             ],
           ),
         ),
