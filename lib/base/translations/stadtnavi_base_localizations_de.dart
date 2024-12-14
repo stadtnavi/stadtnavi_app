@@ -387,53 +387,53 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get carInstructionDrive => 'Fahren';
 
   @override
-  String get departureListUpdateSrInstructions => 'The list of upcoming departures and departure times will update in real time.';
+  String get departureListUpdateSrInstructions => 'Die Abfahrts- und Ankunfstafeln zeigen Informationen in Echtzeit an.';
 
   @override
   String departurePageSr(Object destination, Object shortName, Object time) {
-    return 'Trip $shortName $destination $time information';
+    return 'Informationen zu Fahrt $shortName $destination $time';
   }
 
   @override
   String departureTimeSr(Object realTime, Object time, Object when) {
-    return '$when clock $time. $realTime';
+    return '$when Uhr $time. $realTime';
   }
 
   @override
-  String get disruptionsTabSrDisruptions => 'One or more known disruptions';
+  String get disruptionsTabSrDisruptions => 'Mindestens eine bekannte Störung';
 
   @override
-  String get disruptionsTabSrNoDisruptions => 'No known disruptions';
+  String get disruptionsTabSrNoDisruptions => 'Keine bekannten Störungen';
 
   @override
   String itineraryCo2DescriptionSimpleSr(Object co2value) {
-    return '$co2value g of carbondioxide emissions will be generated on this journey.';
+    return '$co2value g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht.';
   }
 
   @override
   String itineraryCo2DescriptionSr(Object carCo2Value, Object co2value) {
-    return '$co2value g of carbondioxide emissions will be generated on this journey. A car would generate $carCo2Value g of carbondioxide on the same journey.';
+    return '$co2value g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht. Ein Auto würde $carCo2Value g Kohlenstoffdioxid auf derselben Reise ausstoßen.';
   }
 
   @override
-  String get itineraryCo2TitleSr => 'Carbondioxide emissions of the journey';
+  String get itineraryCo2TitleSr => 'Kohlenstoffdioxid-Emissionen der Reise';
 
   @override
-  String get searchFieldsSrInstructions => 'Route search will take place automatically when you enter origin and destination. Changing search parameters will trigger a new search. Navigate to the search fields using the tab key';
+  String get searchFieldsSrInstructions => 'Die Verbindungssuche wird automatisch ausgelöst, wenn sie Start und Ziel eingegeben oder die Suchparameter verändert haben.';
 
   @override
-  String get stopListUpdateSrInstructions => 'Departure times for each stop will update in real time.';
+  String get stopListUpdateSrInstructions => 'Abfahrtszeiten für jede Haltestelle werden in Echtzeit angezeigt.';
 
   @override
   String swipeSrNewTabOpened(Object number) {
-    return 'Tab $number opened.';
+    return 'Tab $number geöffnet.';
   }
 
   @override
-  String get tripCo2EmissionsSr => 'Carbondioxide emissions of the journey';
+  String get tripCo2EmissionsSr => 'Kohlenstoffdioxid-Emissionen der Reise';
 
   @override
   String departureTimeInMinutes(Object minutes) {
-    return '$minutes min';
+    return '$minutes m';
   }
 }

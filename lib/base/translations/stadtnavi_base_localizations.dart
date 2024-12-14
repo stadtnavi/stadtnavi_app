@@ -830,7 +830,7 @@ abstract class StadtnaviBaseLocalization {
   /// No description provided for @searchFieldsSrInstructions.
   ///
   /// In en, this message translates to:
-  /// **'Route search will take place automatically when you enter origin and destination. Changing search parameters will trigger a new search. Navigate to the search fields using the tab key'**
+  /// **'Route search will take place automatically when you enter origin and destination. Changing search parameters will trigger a new search.'**
   String get searchFieldsSrInstructions;
 
   /// No description provided for @stopListUpdateSrInstructions.

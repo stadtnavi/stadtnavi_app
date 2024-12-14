@@ -419,7 +419,7 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get itineraryCo2TitleSr => 'Carbondioxide emissions of the journey';
 
   @override
-  String get searchFieldsSrInstructions => 'Route search will take place automatically when you enter origin and destination. Changing search parameters will trigger a new search. Navigate to the search fields using the tab key';
+  String get searchFieldsSrInstructions => 'Route search will take place automatically when you enter origin and destination. Changing search parameters will trigger a new search.';
 
   @override
   String get stopListUpdateSrInstructions => 'Departure times for each stop will update in real time.';
