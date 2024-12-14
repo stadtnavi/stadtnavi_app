@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_compass/flutter_compass.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
@@ -15,14 +16,11 @@ import 'package:trufi_core/base/widgets/custom_scrollable_container.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
 
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/utils/map_utils/trufi_map_utils.dart';
 import 'dart:math' as math;
-
-import 'package:maps_toolkit/maps_toolkit.dart' as mtk;
 
 class ModeTrackerScreen extends StatefulWidget {
   final String title;
@@ -44,10 +42,17 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
   PolylineLayer<Object>? routePolyline;
   List<LatLng>? originalTrackRoute;
   List<LatLng>? trackRoute;
+  late StreamSubscription<CompassEvent>? _compassSubscription;
   late StreamSubscription<LatLng?>? _locationSubscription;
+  double? currentHeading;
   @override
   void initState() {
     super.initState();
+    _compassSubscription = FlutterCompass.events!.listen((CompassEvent event) {
+      setState(() {
+        currentHeading = event.heading;
+      });
+    });
     _locationSubscription = GPSLocationProvider().streamLocation.listen(
           (location) {
             if (location != null) {
@@ -74,6 +79,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
 
   @override
   void dispose() {
+    _compassSubscription?.cancel();
     _locationSubscription?.cancel();
     super.dispose();
   }
@@ -268,26 +274,6 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
                   layerOptionsBuilder: (context) => [
                     if (routeMarker != null) routeMarker!,
                     if (routePolyline != null) routePolyline!,
-                    if (originalTrackRoute != null)
-                      PolylineLayer(
-                        polylines: [
-                          Polyline(
-                            points: originalTrackRoute!,
-                            strokeWidth: 4.0,
-                            color: Colors.grey,
-                          ),
-                        ],
-                      ),
-                    if (trackRoute != null)
-                      PolylineLayer(
-                        polylines: [
-                          Polyline(
-                            points: trackRoute!,
-                            strokeWidth: 5.0,
-                            color: Colors.blue,
-                          ),
-                        ],
-                      ),
                     MarkerLayer(markers: [
                       if (mapRouteState.fromPlace != null)
                         mapConfiguratiom.markersConfiguration
@@ -303,8 +289,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
                           point: trackRoute!.first,
                           alignment: Alignment.center,
                           child: Transform.rotate(
-                            angle:
-                                getBearingAngle(trackRoute![0], trackRoute![1]),
+                            angle: (currentHeading! * math.pi / 180),
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100),
