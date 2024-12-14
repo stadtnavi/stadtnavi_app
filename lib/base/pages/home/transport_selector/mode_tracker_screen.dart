@@ -10,6 +10,7 @@ import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubi
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/utils/trufi_map_utils.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/step_navigation_details.dart';
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/widgets/custom_scrollable_container.dart';
@@ -21,6 +22,39 @@ import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/utils/map_utils/trufi_map_utils.dart';
 import 'dart:math' as math;
+
+class NextStepContainer {
+  final LatLng point;
+  final Widget widget;
+
+  NextStepContainer({required this.point, required this.widget});
+}
+
+class PolylineExtended extends Polyline {
+  final PlanItineraryLeg leg;
+  PolylineExtended({
+    required super.points,
+    super.strokeWidth = 1.0,
+    super.pattern = const StrokePattern.solid(),
+    super.color = const Color(0xFF00FF00),
+    super.borderStrokeWidth = 0.0,
+    super.borderColor = const Color(0xFFFFFF00),
+    super.gradientColors,
+    super.colorsStop,
+    super.strokeCap = StrokeCap.round,
+    super.strokeJoin = StrokeJoin.round,
+    super.useStrokeWidthInMeter = false,
+    super.hitValue,
+    required this.leg,
+  });
+}
+
+class PolylineWithMarkersExtended {
+  PolylineWithMarkersExtended(this.polyline, this.markers);
+
+  final PolylineExtended polyline;
+  final List<Marker> markers;
+}
 
 class ModeTrackerScreen extends StatefulWidget {
   final String title;
@@ -44,6 +78,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
   List<LatLng>? trackRoute;
   late StreamSubscription<CompassEvent>? _compassSubscription;
   late StreamSubscription<LatLng?>? _locationSubscription;
+  List<NextStepContainer> nextSteps = [];
   double? currentHeading;
   @override
   void initState() {
@@ -193,11 +228,12 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
     return bearing;
   }
 
-  List<PolylineWithMarkers> _buildItineraries({
+  List<PolylineWithMarkersExtended> _buildItineraries({
     required PlanItinerary itinerary,
   }) {
     final List<Marker> markers = [];
-    final List<PolylineWithMarkers> polylinesWithMarkers = [];
+    final List<NextStepContainer> nextStepsBuilder = [];
+    final List<PolylineWithMarkersExtended> polylinesWithMarkers = [];
     final List<PlanItineraryLeg> compressedLegs = itinerary.compressLegs;
     for (int i = 0; i < compressedLegs.length; i++) {
       final PlanItineraryLeg leg = compressedLegs[i];
@@ -211,29 +247,63 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
               .color
           : leg.primaryColor;
 
-      final Polyline polyline = Polyline(
+      final PolylineExtended polyline = PolylineExtended(
         points: points,
         color: color,
         strokeWidth: 6.0,
         pattern: leg.transportMode == TransportMode.walk
             ? const StrokePattern.dotted()
             : const StrokePattern.solid(),
+        leg: leg,
       );
-
-      if (i < compressedLegs.length - 1 && polyline.points.isNotEmpty) {
-        markers.add(
-          buildTransferMarker(
-            polyline.points[polyline.points.length - 1],
-          ),
-        );
+      if (leg.steps != null && leg.steps!.isNotEmpty) {
+        bool isFirst = true;
+        for (final step in leg.steps!) {
+          LatLng point = LatLng(step.lat!, step.lon!);
+          nextStepsBuilder.add(NextStepContainer(
+              point: point,
+              widget: StepNavigationDetails(
+                step: step,
+                isFirst: isFirst,
+              )));
+          isFirst = false;
+          markers.add(
+            buildTransferMarker(
+              point,
+            ),
+          );
+        }
+      } else {
+        if (leg.fromPlace != null) {
+          PlaceEntity fromPlace = leg.fromPlace!;
+          nextStepsBuilder.add(
+            NextStepContainer(
+              point: LatLng(fromPlace.lat, fromPlace.lon),
+              widget: Text(fromPlace.name),
+            ),
+          );
+        }
+        if (leg.toPlace != null) {
+          PlaceEntity toPlace = leg.toPlace!;
+          nextStepsBuilder.add(
+            NextStepContainer(
+              point: LatLng(toPlace.lat, toPlace.lon),
+              widget: Text(toPlace.name),
+            ),
+          );
+        }
       }
-      polylinesWithMarkers.add(PolylineWithMarkers(polyline, markers));
-    }
 
+      polylinesWithMarkers.add(PolylineWithMarkersExtended(polyline, markers));
+    }
+    setState(() {
+      nextSteps = nextStepsBuilder;
+    });
     return polylinesWithMarkers;
   }
 
-  MarkerLayer toMarkerLayer(List<PolylineWithMarkers> polylinesWithMarker) {
+  MarkerLayer toMarkerLayer(
+      List<PolylineWithMarkersExtended> polylinesWithMarker) {
     final selectedMarkers = <Marker>[];
     for (final polylineWithMarker in polylinesWithMarker) {
       selectedMarkers.addAll(polylineWithMarker.markers);
@@ -242,7 +312,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
   }
 
   PolylineLayer<Object> toPolylineLayer(
-      List<PolylineWithMarkers> polylinesWithMarker) {
+      List<PolylineWithMarkersExtended> polylinesWithMarker) {
     final selectedPolylines = <Polyline>[];
     for (final polylineWithMarker in polylinesWithMarker) {
       selectedPolylines.add(polylineWithMarker.polyline);
@@ -308,6 +378,9 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
                         ),
                     ]),
                   ],
+                ),
+                panel: ListView(
+                  children: nextSteps.map((value) => value.widget).toList(),
                 ),
               ),
             ),
