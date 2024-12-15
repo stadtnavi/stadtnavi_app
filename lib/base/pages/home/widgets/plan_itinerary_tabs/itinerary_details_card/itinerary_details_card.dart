@@ -6,6 +6,7 @@ import 'package:stadtnavi_core/base/pages/home/transport_selector/mode_tracker_s
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinarary_card/itinerary_card.dart';
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
+import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
@@ -59,12 +60,27 @@ class ItineraryDetailsCard extends StatelessWidget {
                     itinerary: itinerary,
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.navigation_rounded,
-                    color: Color(0xFF9BBF28),
+                GestureDetector(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all()),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("Start"),
+                        const Icon(
+                          Icons.navigation_rounded,
+                          color: Color(0xFF9BBF28),
+                        )
+                      ],
+                    ),
                   ),
-                  onPressed: () async {
+                  onTap: () async {
+                    final locationProvider = GPSLocationProvider();
+                    await locationProvider.startLocation(context);
+
                     await Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => ModeTrackerScreen(
                         title: localizationBase.commonWalk,

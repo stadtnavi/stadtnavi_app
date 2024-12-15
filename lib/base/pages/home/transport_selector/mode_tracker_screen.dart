@@ -11,6 +11,7 @@ import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/utils/trufi_map_utils.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/step_navigation_details.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/transit_leg.dart';
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/widgets/custom_scrollable_container.dart';
@@ -30,32 +31,6 @@ class NextStepContainer {
   NextStepContainer({required this.point, required this.widget});
 }
 
-class PolylineExtended extends Polyline {
-  final PlanItineraryLeg leg;
-  PolylineExtended({
-    required super.points,
-    super.strokeWidth = 1.0,
-    super.pattern = const StrokePattern.solid(),
-    super.color = const Color(0xFF00FF00),
-    super.borderStrokeWidth = 0.0,
-    super.borderColor = const Color(0xFFFFFF00),
-    super.gradientColors,
-    super.colorsStop,
-    super.strokeCap = StrokeCap.round,
-    super.strokeJoin = StrokeJoin.round,
-    super.useStrokeWidthInMeter = false,
-    super.hitValue,
-    required this.leg,
-  });
-}
-
-class PolylineWithMarkersExtended {
-  PolylineWithMarkersExtended(this.polyline, this.markers);
-
-  final PolylineExtended polyline;
-  final List<Marker> markers;
-}
-
 class ModeTrackerScreen extends StatefulWidget {
   final String title;
   final PlanItinerary itinerary;
@@ -72,12 +47,12 @@ class ModeTrackerScreen extends StatefulWidget {
 class _ModeTransportScreen extends State<ModeTrackerScreen>
     with TickerProviderStateMixin {
   final TrufiMapController trufiMapController = TrufiMapController();
-  MarkerLayer? routeMarker;
-  PolylineLayer<Object>? routePolyline;
-  List<LatLng>? originalTrackRoute;
-  List<LatLng>? trackRoute;
+  PolylineLayer<Object>? originalRoute;
+  PolylineLayer<Object>? currentRoute;
+  bool _popupShown = false;
   late StreamSubscription<CompassEvent>? _compassSubscription;
   late StreamSubscription<LatLng?>? _locationSubscription;
+  LatLng? lastPosition;
   List<NextStepContainer> nextSteps = [];
   double? currentHeading;
   @override
@@ -91,15 +66,20 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
     _locationSubscription = GPSLocationProvider().streamLocation.listen(
           (location) {
             if (location != null) {
-              navigationProcess(location);
-            }
-            if (trackRoute != null && trackRoute!.isNotEmpty) {
-              trufiMapController.move(center: trackRoute!.first!, zoom: 20);
+              navigationHeaderProcess(location);
+              final newPos = navigationProcess(location);
+              if (newPos != null) {
+                trufiMapController.move(center: newPos, zoom: 20);
+              }
+              setState(() {
+                currentRoute =
+                    PolylineLayer(polylines: currentRoute!.polylines);
+                lastPosition = newPos;
+              });
             }
           },
           onError: (error) {},
           onDone: () {
-            // El stream se cerró
           },
         );
     WidgetsBinding.instance.addPostFrameCallback((duration) {
@@ -120,7 +100,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
   }
 
   double _calculateDistance(LatLng pos1, LatLng pos2) {
-    const double R = 6371000; // Radio de la Tierra en metros
+    const double R = 6371000; 
     double lat1 = pos1.latitude * (3.141592653589793 / 180.0);
     double lon1 = pos1.longitude * (3.141592653589793 / 180.0);
     double lat2 = pos2.latitude * (3.141592653589793 / 180.0);
@@ -137,15 +117,60 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
     return distance;
   }
 
-  void navigationProcess(LatLng currentPosition) {
-    if (trackRoute == null || trackRoute!.isEmpty) return;
+  LatLng? navigationProcess(LatLng currentPosition) {
+    if (currentRoute == null || currentRoute!.polylines.isEmpty) return null;
+
+    int closestPolylineIndex = -1;
+    int closestPointIndex = -1;
+    double closestDistance = double.infinity;
+
+    for (int polylineIndex = 0;
+        polylineIndex < currentRoute!.polylines.length;
+        polylineIndex++) {
+      final polyline = currentRoute!.polylines[polylineIndex];
+      for (int pointIndex = 0;
+          pointIndex < polyline.points.length;
+          pointIndex++) {
+        final point = polyline.points[pointIndex];
+        double distance = _calculateDistance(currentPosition, point);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestPolylineIndex = polylineIndex;
+          closestPointIndex = pointIndex;
+        }
+      }
+    }
+    if (closestDistance > 200 &&
+        !_popupShown &&
+        (closestPolylineIndex > 0 || closestPointIndex > 0)) {
+      _popupShown = true;
+    }
+
+    if (closestPolylineIndex == -1 || closestPointIndex == -1) return null;
+
+    if (closestPolylineIndex > 0) {
+      currentRoute!.polylines.removeRange(0, closestPolylineIndex);
+      closestPolylineIndex = 0;
+    }
+    Polyline closestPolyline = currentRoute!.polylines[closestPolylineIndex];
+
+    closestPolyline.points.removeRange(0, closestPointIndex);
+    currentRoute!.polylines.removeWhere((polyline) => polyline.points.isEmpty);
+
+    if (currentRoute == null || currentRoute!.polylines.isEmpty) return null;
+    return currentRoute!.polylines!.first!.points.first;
+  }
+
+  void navigationHeaderProcess(LatLng currentPosition) {
+    if (nextSteps.isEmpty) return;
 
     int closestIndex = 0;
     double closestDistance =
-        _calculateDistance(currentPosition, trackRoute!.first);
+        _calculateDistance(currentPosition, nextSteps.first.point);
 
-    for (int i = 1; i < trackRoute!.length; i++) {
-      double distance = _calculateDistance(currentPosition, trackRoute![i]);
+    for (int i = 1; i < nextSteps!.length; i++) {
+      double distance =
+          _calculateDistance(currentPosition, nextSteps![i].point);
       if (distance < closestDistance) {
         closestDistance = distance;
         closestIndex = i;
@@ -153,7 +178,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
     }
 
     if (closestIndex > 0) {
-      trackRoute!.removeRange(0, closestIndex);
+      nextSteps!.removeRange(0, closestIndex);
     }
 
     if (mounted) {
@@ -187,14 +212,16 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
   // }
 
   void loadOriginalRoute() {
-    final marker = toMarkerLayer(
+    final originalPolyline = toPolylineLayer(
       _buildItineraries(
         itinerary: widget.itinerary,
+        overrideColor: Colors.grey,
       ),
     );
-    final polyline = toPolylineLayer(
+    final currentPolyline = toPolylineLayer(
       _buildItineraries(
         itinerary: widget.itinerary,
+        overrideColor: null,
       ),
     );
     final route = widget.itinerary.compressLegs
@@ -205,10 +232,10 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
         .toList();
 
     setState(() {
-      routeMarker = marker;
-      routePolyline = polyline;
-      originalTrackRoute = route;
-      trackRoute = route;
+      originalRoute = originalPolyline;
+      currentRoute = currentPolyline;
+      // originalTrackRoute = route;
+      // trackRoute = route;
     });
   }
 
@@ -228,12 +255,13 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
     return bearing;
   }
 
-  List<PolylineWithMarkersExtended> _buildItineraries({
+  List<PolylineWithMarkers> _buildItineraries({
     required PlanItinerary itinerary,
+    required Color? overrideColor,
   }) {
-    final List<Marker> markers = [];
+    // final List<Marker> markers = [];
     final List<NextStepContainer> nextStepsBuilder = [];
-    final List<PolylineWithMarkersExtended> polylinesWithMarkers = [];
+    final List<PolylineWithMarkers> polylinesWithMarkers = [];
     final List<PlanItineraryLeg> compressedLegs = itinerary.compressLegs;
     for (int i = 0; i < compressedLegs.length; i++) {
       final PlanItineraryLeg leg = compressedLegs[i];
@@ -247,31 +275,34 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
               .color
           : leg.primaryColor;
 
-      final PolylineExtended polyline = PolylineExtended(
-        points: points,
-        color: color,
+      final Polyline polyline = Polyline(
+        points: points.toList(),
+        color: overrideColor ?? color,
         strokeWidth: 6.0,
         pattern: leg.transportMode == TransportMode.walk
             ? const StrokePattern.dotted()
             : const StrokePattern.solid(),
-        leg: leg,
       );
       if (leg.steps != null && leg.steps!.isNotEmpty) {
         bool isFirst = true;
         for (final step in leg.steps!) {
           LatLng point = LatLng(step.lat!, step.lon!);
-          nextStepsBuilder.add(NextStepContainer(
+          nextStepsBuilder.add(
+            NextStepContainer(
               point: point,
               widget: StepNavigationDetails(
                 step: step,
                 isFirst: isFirst,
-              )));
-          isFirst = false;
-          markers.add(
-            buildTransferMarker(
-              point,
+                showNavigationIcon: false,
+              ),
             ),
           );
+          isFirst = false;
+          // markers.add(
+          //   buildTransferMarker(
+          //     point,
+          //   ),
+          // );
         }
       } else {
         if (leg.fromPlace != null) {
@@ -279,7 +310,11 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
           nextStepsBuilder.add(
             NextStepContainer(
               point: LatLng(fromPlace.lat, fromPlace.lon),
-              widget: Text(fromPlace.name),
+              widget: TransitLeg(
+                itinerary: itinerary,
+                leg: leg,
+                moveInMap: (_) {},
+              ),
             ),
           );
         }
@@ -288,13 +323,17 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
           nextStepsBuilder.add(
             NextStepContainer(
               point: LatLng(toPlace.lat, toPlace.lon),
-              widget: Text(toPlace.name),
+              widget: TransitLeg(
+                itinerary: itinerary,
+                leg: leg,
+                moveInMap: (_) {},
+              ),
             ),
           );
         }
       }
 
-      polylinesWithMarkers.add(PolylineWithMarkersExtended(polyline, markers));
+      polylinesWithMarkers.add(PolylineWithMarkers(polyline, []));
     }
     setState(() {
       nextSteps = nextStepsBuilder;
@@ -302,8 +341,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
     return polylinesWithMarkers;
   }
 
-  MarkerLayer toMarkerLayer(
-      List<PolylineWithMarkersExtended> polylinesWithMarker) {
+  MarkerLayer toMarkerLayer(List<PolylineWithMarkers> polylinesWithMarker) {
     final selectedMarkers = <Marker>[];
     for (final polylineWithMarker in polylinesWithMarker) {
       selectedMarkers.addAll(polylineWithMarker.markers);
@@ -312,7 +350,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
   }
 
   PolylineLayer<Object> toPolylineLayer(
-      List<PolylineWithMarkersExtended> polylinesWithMarker) {
+      List<PolylineWithMarkers> polylinesWithMarker) {
     final selectedPolylines = <Polyline>[];
     for (final polylineWithMarker in polylinesWithMarker) {
       selectedPolylines.add(polylineWithMarker.polyline);
@@ -327,7 +365,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
     return BaseTrufiPage(
       child: Scaffold(
-        appBar: AppBar(title: const Text("")),
+        appBar: AppBar(title: Text("Turn by turn navigation")),
         body: Stack(
           children: [
             BlocListener<MapModesCubit, MapModesState>(
@@ -342,8 +380,9 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
                   enableCurrentLocation: false,
                   trufiMapController: trufiMapController,
                   layerOptionsBuilder: (context) => [
-                    if (routeMarker != null) routeMarker!,
-                    if (routePolyline != null) routePolyline!,
+                    // if (routeMarker != null) routeMarker!,
+                    if (originalRoute != null) originalRoute!,
+                    if (currentRoute != null) currentRoute!,
                     MarkerLayer(markers: [
                       if (mapRouteState.fromPlace != null)
                         mapConfiguratiom.markersConfiguration
@@ -351,12 +390,11 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
                       if (mapRouteState.toPlace != null)
                         mapConfiguratiom.markersConfiguration
                             .buildToMarker(mapRouteState.toPlace!.latLng),
-                      // if (tempMarker != null) tempMarker!,
-                      if (trackRoute != null && trackRoute!.length > 1)
+                      if (lastPosition != null)
                         Marker(
                           width: 50.0,
                           height: 50.0,
-                          point: trackRoute!.first,
+                          point: lastPosition!,
                           alignment: Alignment.center,
                           child: Transform.rotate(
                             angle: (currentHeading! * math.pi / 180),
@@ -379,11 +417,59 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
                     ]),
                   ],
                 ),
-                panel: ListView(
-                  children: nextSteps.map((value) => value.widget).toList(),
-                ),
+                // panel: ListView(
+                //   children: nextSteps.map((value) => value.widget).toList(),
+                // ),
               ),
             ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (_popupShown)
+                    Container(
+                      margin: EdgeInsets.all(5),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: Text(
+                                style: TextStyle(color: Colors.red),
+                                'You have strayed too far from the route. Please return to the path.'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              _popupShown = false;
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  Container(
+                    margin: EdgeInsets.all(5),
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF9BBF28),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        nextSteps.first.widget,
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
