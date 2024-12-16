@@ -68,7 +68,9 @@ class PlanItinerary extends Equatable {
       _walkDistance: walkDistance,
       _arrivedAtDestinationWithRentedBicycle:
           arrivedAtDestinationWithRentedBicycle,
-      _emissionsPerPerson: emissionsPerPerson
+      _emissionsPerPerson: {
+        "co2": emissionsPerPerson,
+      }
     };
   }
 
