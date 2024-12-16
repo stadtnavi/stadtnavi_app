@@ -24,6 +24,7 @@ class PlanItinerary extends Equatable {
     required this.arrivedAtDestinationWithRentedBicycle,
     this.isOnlyShowItinerary = false,
     required this.emissionsPerPerson,
+    this.isMinorEmissionsPerPerson = false,
   }) : distance = _distanceForLegs(legs);
 
   final List<PlanItineraryLeg> legs;
@@ -35,6 +36,7 @@ class PlanItinerary extends Equatable {
   final bool arrivedAtDestinationWithRentedBicycle;
   final bool isOnlyShowItinerary;
   final double? emissionsPerPerson;
+  final bool isMinorEmissionsPerPerson;
 
   final int distance;
 
@@ -84,6 +86,7 @@ class PlanItinerary extends Equatable {
     bool? arrivedAtDestinationWithRentedBicycle,
     bool? isOnlyShowItinerary,
     double? emissionsPerPerson,
+    bool? isMinorEmissionsPerPerson,
   }) {
     return PlanItinerary(
       legs: legs ?? this.legs,
@@ -97,6 +100,8 @@ class PlanItinerary extends Equatable {
               this.arrivedAtDestinationWithRentedBicycle,
       isOnlyShowItinerary: isOnlyShowItinerary ?? this.isOnlyShowItinerary,
       emissionsPerPerson: emissionsPerPerson ?? this.emissionsPerPerson,
+      isMinorEmissionsPerPerson:
+          isMinorEmissionsPerPerson ?? this.isMinorEmissionsPerPerson,
     );
   }
 

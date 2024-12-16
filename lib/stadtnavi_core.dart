@@ -32,6 +32,7 @@ class StadtnaviApp extends StatelessWidget {
   final Map<String, dynamic>? searchLocationQueryParameters;
   final LatLng center;
   final double? onlineZoom;
+  final String? co2EmmissionUrl;
   final List<CustomLayerContainer> layersContainer;
   final UrlSocialMedia urlSocialMedia;
   final TrufiBaseTheme? trufiBaseTheme;
@@ -58,6 +59,7 @@ class StadtnaviApp extends StatelessWidget {
     this.searchLocationQueryParameters,
     required this.center,
     this.onlineZoom,
+    this.co2EmmissionUrl,
     required this.layersContainer,
     required this.urlSocialMedia,
     this.trufiBaseTheme,
@@ -82,6 +84,7 @@ class StadtnaviApp extends StatelessWidget {
           onlineZoom: onlineZoom ?? 13,
           markersConfiguration: const CustomMarkerConfiguration(),
           mapAttributionBuilder: stadtNaviAttributionBuilder,
+          co2EmmissionUrl: co2EmmissionUrl,
         ),
         searchLocationRepository: OnlineSearchLocation(
           queryParameters: searchLocationQueryParameters,
