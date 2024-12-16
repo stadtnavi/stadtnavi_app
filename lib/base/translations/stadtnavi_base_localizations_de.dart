@@ -379,4 +379,70 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get commonOpenAlways => 'Durchgängig geöffnet';
+
+  @override
+  String get journeyCo2Emissions => 'CO₂-Emissionen der Reise';
+
+  @override
+  String get journeyCo2EmissionsSr => 'Kohlenstoffdioxid-Emissionen der Reise';
+
+  @override
+  String get itineraryCo2Link => 'So berechnen wir die Emissionen ›';
+
+  @override
+  String get commonRealTime => 'Echtzeit';
+
+  @override
+  String get carInstructionDrive => 'Fahren';
+
+  @override
+  String get departureListUpdateSrInstructions => 'Die Abfahrts- und Ankunfstafeln zeigen Informationen in Echtzeit an.';
+
+  @override
+  String departurePageSr(Object destination, Object shortName, Object time) {
+    return 'Informationen zu Fahrt $shortName $destination $time';
+  }
+
+  @override
+  String departureTimeSr(Object realTime, Object time, Object when) {
+    return '$when Uhr $time. $realTime';
+  }
+
+  @override
+  String get disruptionsTabSrDisruptions => 'Mindestens eine bekannte Störung';
+
+  @override
+  String get disruptionsTabSrNoDisruptions => 'Keine bekannten Störungen';
+
+  @override
+  String itineraryCo2DescriptionSimpleSr(Object co2value) {
+    return '$co2value g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht.';
+  }
+
+  @override
+  String itineraryCo2DescriptionSr(Object carCo2Value, Object co2value) {
+    return '$co2value g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht. Ein Auto würde $carCo2Value g Kohlenstoffdioxid auf derselben Reise ausstoßen.';
+  }
+
+  @override
+  String get itineraryCo2TitleSr => 'Kohlenstoffdioxid-Emissionen der Reise';
+
+  @override
+  String get searchFieldsSrInstructions => 'Die Verbindungssuche wird automatisch ausgelöst, wenn sie Start und Ziel eingegeben oder die Suchparameter verändert haben.';
+
+  @override
+  String get stopListUpdateSrInstructions => 'Abfahrtszeiten für jede Haltestelle werden in Echtzeit angezeigt.';
+
+  @override
+  String swipeSrNewTabOpened(Object number) {
+    return 'Tab $number geöffnet.';
+  }
+
+  @override
+  String get tripCo2EmissionsSr => 'Kohlenstoffdioxid-Emissionen der Reise';
+
+  @override
+  String departureTimeInMinutes(Object minutes) {
+    return '$minutes m';
+  }
 }
