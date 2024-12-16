@@ -36,7 +36,7 @@ class _DateTimePickerState extends State<DateTimePicker>
     initialDateTime =
         tempDateConf.date != null && tempDateConf.date!.isAfter(_nowDate)
             ? tempDateConf.date!.roundDown(delta: const Duration(minutes: 15))
-            : _nowDate;
+            : DateTime.now().roundDown(delta: const Duration(minutes: 15));
     super.initState();
     _controller = TabController(
         length: 2, initialIndex: tempDateConf.isArriveBy ? 1 : 0, vsync: this);

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
 import 'package:intl/intl.dart';
-import 'package:trufi_core/base/utils/graphql_client/graphql_client.dart';
+import 'package:stadtnavi_core/configuration/graphql_client.dart';
 import 'package:trufi_core/base/utils/graphql_client/graphql_utils.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybike_data_fetch.dart';

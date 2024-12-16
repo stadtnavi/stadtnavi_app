@@ -13,13 +13,14 @@ class OnlineGraphQLRepository {
 
   OnlineGraphQLRepository({
     required this.graphQLEndPoint,
-  }) : _graphQLPlanRepository = GraphQLPlanRepository(graphQLEndPoint);
+  }) : _graphQLPlanRepository =
+            GraphQLPlanRepository(endpoint: graphQLEndPoint);
 
   Future<PlanEntity> fetchAdvancedPlan({
     required TrufiLocation from,
     required TrufiLocation to,
     required SettingFetchState advancedOptions,
-    String? localeName,
+    required String localeName,
   }) async {
     Plan planData = await _graphQLPlanRepository.fetchPlanAdvanced(
       fromLocation: from,
@@ -72,7 +73,7 @@ class OnlineGraphQLRepository {
     required TrufiLocation from,
     required TrufiLocation to,
     required SettingFetchState advancedOptions,
-    String? localeName,
+    required String localeName,
   }) async {
     Plan planData = await _graphQLPlanRepository.fetchPlanAdvanced(
       fromLocation: from,
@@ -97,7 +98,7 @@ class OnlineGraphQLRepository {
     required TrufiLocation from,
     required TrufiLocation to,
     required SettingFetchState advancedOptions,
-    String? localeName,
+    required String localeName,
   }) async {
     final ModesTransport planEntityData =
         await _graphQLPlanRepository.fetchWalkBikePlanQuery(

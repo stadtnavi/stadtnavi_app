@@ -41,13 +41,7 @@ class StepNavigationDetails extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            isFirst
-                ? step.absoluteDirection?.icon ?? Icons.help_outline
-                : step.relativeDirection?.icon ?? Icons.help_outline,
-            size: 24,
-            color: Colors.black,
-          ),
+          step.relativeDirection?.getImage() ?? Container(),
           const SizedBox(width: 4),
           Expanded(
             child: Column(

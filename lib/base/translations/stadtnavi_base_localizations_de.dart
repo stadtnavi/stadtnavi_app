@@ -227,7 +227,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get bicycleParking => 'Fahrradabstellplatz';
 
   @override
-  String get instructionVehicleRackRailway => 'Zahnradbahn';
+  String get instructionVehicleRackRailway => 'Seilbahn/ Zahnradbahn';
 
   @override
   String get commonTrack => 'Gleis';
@@ -379,33 +379,4 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get commonOpenAlways => 'Durchgängig geöffnet';
-
-  @override
-  String itineraryCo2Description(Object carCo2Value, Object co2value) {
-    return '$co2value g CO₂ Emissionen werden durch diese Reise verursacht. Ein Auto würde $carCo2Value g CO₂ auf derselben Reise ausstoßen.\'';
-  }
-
-  @override
-  String itineraryCo2DescriptionSr(Object carCo2Value, Object co2value) {
-    return '$co2value g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht. Ein Auto würde $carCo2Value g Kohlenstoffdioxid auf derselben Reise ausstoßen.';
-  }
-
-  @override
-  String itineraryCo2DescriptionSimple(Object co2value) {
-    return '$co2value g CO₂ Emissionen werden durch diese Reise verursacht.';
-  }
-
-  @override
-  String itineraryCo2DescriptionSimpleSr(Object co2value) {
-    return '$co2value g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht.';
-  }
-
-  @override
-  String get journeyCo2Emissions => 'CO₂-Emissionen der Reise';
-
-  @override
-  String get journeyCo2EmissionsSr => 'Kohlenstoffdioxid-Emissionen der Reise';
-
-  @override
-  String get itineraryCo2Link => 'So berechnen wir die Emissionen ›';
 }
