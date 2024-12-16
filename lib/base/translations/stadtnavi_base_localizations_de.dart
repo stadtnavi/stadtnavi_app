@@ -415,13 +415,23 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get disruptionsTabSrNoDisruptions => 'Keine bekannten Störungen';
 
   @override
-  String itineraryCo2DescriptionSimpleSr(Object co2value) {
-    return '$co2value g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht.';
+  String itineraryCo2Description(Object carCo2Value, Object co2value) {
+    return '$co2value g CO₂ Emissionen werden durch diese Reise verursacht. Ein Auto würde $carCo2Value g CO₂ auf derselben Reise ausstoßen.\'';
   }
 
   @override
   String itineraryCo2DescriptionSr(Object carCo2Value, Object co2value) {
     return '$co2value g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht. Ein Auto würde $carCo2Value g Kohlenstoffdioxid auf derselben Reise ausstoßen.';
+  }
+
+  @override
+  String itineraryCo2DescriptionSimple(Object co2value) {
+    return '$co2value g CO₂ Emissionen werden durch diese Reise verursacht.';
+  }
+
+  @override
+  String itineraryCo2DescriptionSimpleSr(Object co2value) {
+    return '$co2value g Kohlenstoffdioxid Emissionen werden durch diese Reise verursacht.';
   }
 
   @override
