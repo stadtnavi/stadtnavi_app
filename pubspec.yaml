@@ -31,6 +31,7 @@ dependencies:
   vector_tile: ^2.0.0
   rive: ^0.13.4
   matomo_tracker: ^5.1.0
+  flutter_compass: ^0.8.1
 
 dev_dependencies:
   flutter_test:

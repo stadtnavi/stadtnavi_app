@@ -773,6 +773,18 @@ abstract class StadtnaviBaseLocalization {
   /// **'Real-time'**
   String get commonRealTime;
 
+  /// No description provided for @commonStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get commonStart;
+
+  /// No description provided for @navigationTurnByTurnNavigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn by turn navigation'**
+  String get navigationTurnByTurnNavigation;
+
   /// No description provided for @carInstructionDrive.
   ///
   /// In en, this message translates to:
