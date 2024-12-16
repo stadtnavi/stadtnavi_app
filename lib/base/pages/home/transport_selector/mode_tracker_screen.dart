@@ -12,6 +12,7 @@ import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/truf
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/utils/trufi_map_utils.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/step_navigation_details.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/transit_leg.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/widgets/custom_scrollable_container.dart';
@@ -64,24 +65,22 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
       });
     });
     _locationSubscription = GPSLocationProvider().streamLocation.listen(
-          (location) {
-            if (location != null) {
-              navigationHeaderProcess(location);
-              final newPos = navigationProcess(location);
-              if (newPos != null) {
-                trufiMapController.move(center: newPos, zoom: 20);
-              }
-              setState(() {
-                currentRoute =
-                    PolylineLayer(polylines: currentRoute!.polylines);
-                lastPosition = newPos;
-              });
-            }
-          },
-          onError: (error) {},
-          onDone: () {
-          },
-        );
+      (location) {
+        if (location != null) {
+          navigationHeaderProcess(location);
+          final newPos = navigationProcess(location);
+          if (newPos != null) {
+            trufiMapController.move(center: newPos, zoom: 20);
+          }
+          setState(() {
+            currentRoute = PolylineLayer(polylines: currentRoute!.polylines);
+            lastPosition = newPos;
+          });
+        }
+      },
+      onError: (error) {},
+      onDone: () {},
+    );
     WidgetsBinding.instance.addPostFrameCallback((duration) {
       final mapRouteState = context.read<MapRouteCubit>().state;
       final mapModesCubit = context.read<MapModesCubit>();
@@ -100,7 +99,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
   }
 
   double _calculateDistance(LatLng pos1, LatLng pos2) {
-    const double R = 6371000; 
+    const double R = 6371000;
     double lat1 = pos1.latitude * (3.141592653589793 / 180.0);
     double lon1 = pos1.longitude * (3.141592653589793 / 180.0);
     double lat2 = pos2.latitude * (3.141592653589793 / 180.0);
@@ -335,12 +334,15 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
 
   @override
   Widget build(BuildContext context) {
+    final localizationSB = StadtnaviBaseLocalization.of(context);
     final mapRouteState = context.read<MapRouteCubit>().state;
     final mapModesCubit = context.watch<MapModesCubit>();
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
     return BaseTrufiPage(
       child: Scaffold(
-        appBar: AppBar(title: Text("Turn by turn navigation")),
+        appBar: AppBar(
+          title: Text(localizationSB.navigationTurnByTurnNavigation),
+        ),
         body: Stack(
           children: [
             BlocListener<MapModesCubit, MapModesState>(

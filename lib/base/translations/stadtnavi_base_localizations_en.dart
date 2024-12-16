@@ -384,6 +384,12 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get commonRealTime => 'Real-time';
 
   @override
+  String get commonStart => 'Start';
+
+  @override
+  String get navigationTurnByTurnNavigation => 'Turn by turn navigation';
+
+  @override
   String get carInstructionDrive => 'Drive';
 
   @override

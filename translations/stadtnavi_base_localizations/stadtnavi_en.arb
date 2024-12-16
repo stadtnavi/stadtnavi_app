@@ -303,6 +303,8 @@
   "commonOpen": "Open",
   "commonOpenAlways": "Open 24/7",
   "commonRealTime": "Real-time",
+  "commonStart": "Start",
+  "navigationTurnByTurnNavigation": "Turn by turn navigation",
   "carInstructionDrive": "Drive",
   "departureListUpdateSrInstructions": "The list of upcoming departures and departure times will update in real time.",
   "departurePageSr": "Trip {shortName} {destination} {time} information",

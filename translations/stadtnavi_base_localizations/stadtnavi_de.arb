@@ -303,6 +303,8 @@
   "commonOpen": "Geöffnet",
   "commonOpenAlways": "Durchgängig geöffnet",
   "commonRealTime": "Echtzeit",
+  "commonStart": "Beginn",
+  "navigationTurnByTurnNavigation": "Schritt-für-Schritt Navigation",
   "carInstructionDrive": "Fahren",
   "departureListUpdateSrInstructions": "Die Abfahrts- und Ankunfstafeln zeigen Informationen in Echtzeit an.",
   "departurePageSr": "Informationen zu Fahrt {shortName} {destination} {time}",

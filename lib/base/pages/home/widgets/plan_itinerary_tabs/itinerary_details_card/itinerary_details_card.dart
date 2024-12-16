@@ -69,7 +69,7 @@ class ItineraryDetailsCard extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text("Start"),
+                        Text(localizationSB.commonStart),
                         const Icon(
                           Icons.navigation_rounded,
                           color: Color(0xFF9BBF28),
