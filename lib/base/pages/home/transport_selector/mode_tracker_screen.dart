@@ -185,31 +185,6 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
       setState(() {});
     }
   }
-  // void navigationProcess(LatLng _currentPosition) {
-  //   if (trackRoute == null) return;
-  //   List<mtk.LatLng> myLatLngList = [];
-  //   for (var data in trackRoute!) {
-  //     myLatLngList.add(mtk.LatLng(data.latitude, data.longitude));
-  //   }
-  //   mtk.LatLng myPosition =
-  //       mtk.LatLng(_currentPosition!.latitude, _currentPosition!.longitude);
-  //   int x = mtk.PolygonUtil.locationIndexOnPath(
-  //     myPosition,
-  //     myLatLngList,
-  //     true,
-  //     tolerance: 12,
-  //   );
-  //   if (x == -1) {
-  //   } else {
-  //     myLatLngList.removeRange(0, x);
-  //     trackRoute!.clear();
-  //     trackRoute!
-  //         .addAll(myLatLngList.map((e) => LatLng(e.latitude, e.longitude)));
-  //   }
-  //   if (mounted) {
-  //     setState(() {});
-  //   }
-  // }
 
   void loadOriginalRoute() {
     final originalPolyline = toPolylineLayer(
