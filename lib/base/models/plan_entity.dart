@@ -125,7 +125,6 @@ class PlanEntity extends Equatable {
         itineraries[i] = itinerary.copyWith(
             isMinorEmissionsPerPerson:
                 itinerary.emissionsPerPerson == minEmissionsPerPerson);
-        break;
       }
     }
   }
