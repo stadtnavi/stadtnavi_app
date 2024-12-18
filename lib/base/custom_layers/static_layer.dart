@@ -5,6 +5,8 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_la
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking_zones/parkings_zones_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/poi_feature_model.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
@@ -17,6 +19,9 @@ class StaticTileLayers {
     StopsLayerIds.rail: StopsLayer(StopsLayerIds.rail, '4'),
     StopsLayerIds.carpool: StopsLayer(StopsLayerIds.carpool, '4'),
     StopsLayerIds.subway: StopsLayer(StopsLayerIds.subway, '4'),
+  };
+  static Map<PoiCategoryEnum, PoisLayer> poisLayers = {
+    for (var value in PoiCategoryEnum.values) value: PoisLayer(value, "4")
   };
   static ParkingLayer parkingLayer = ParkingLayer("Parking", '4');
   static ParkingZonesLayer parkingZonesLayer =
