@@ -390,6 +390,9 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get navigationTurnByTurnNavigation => 'Turn by turn navigation';
 
   @override
+  String get navigationTurnByTurnNavigationWarning => 'You have strayed too far from the route. Please return to the path.';
+
+  @override
   String get carInstructionDrive => 'Drive';
 
   @override

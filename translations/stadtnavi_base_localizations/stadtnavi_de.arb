@@ -305,6 +305,7 @@
   "commonRealTime": "Echtzeit",
   "commonStart": "Beginn",
   "navigationTurnByTurnNavigation": "Schritt-für-Schritt Navigation",
+  "navigationTurnByTurnNavigationWarning": "Sie sind zu weit von der Route abgewichen. Bitte kehren Sie auf den Weg zurück.",
   "carInstructionDrive": "Fahren",
   "departureListUpdateSrInstructions": "Die Abfahrts- und Ankunfstafeln zeigen Informationen in Echtzeit an.",
   "departurePageSr": "Informationen zu Fahrt {shortName} {destination} {time}",

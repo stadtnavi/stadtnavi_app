@@ -91,8 +91,8 @@ class ItineraryDetailsCard extends StatelessWidget {
                       await Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => ModeTrackerScreen(
                           title: localizationSB.navigationTurnByTurnNavigation,
-                          warning:
-                              'You have strayed too far from the route. Please return to the path.',
+                          warning: localizationSB
+                              .navigationTurnByTurnNavigationWarning,
                           itinerary: itinerary,
                         ),
                       ));

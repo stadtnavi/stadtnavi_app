@@ -390,6 +390,9 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get navigationTurnByTurnNavigation => 'Schritt-für-Schritt Navigation';
 
   @override
+  String get navigationTurnByTurnNavigationWarning => 'Sie sind zu weit von der Route abgewichen. Bitte kehren Sie auf den Weg zurück.';
+
+  @override
   String get carInstructionDrive => 'Fahren';
 
   @override

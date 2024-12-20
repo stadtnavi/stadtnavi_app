@@ -785,6 +785,12 @@ abstract class StadtnaviBaseLocalization {
   /// **'Turn by turn navigation'**
   String get navigationTurnByTurnNavigation;
 
+  /// No description provided for @navigationTurnByTurnNavigationWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'You have strayed too far from the route. Please return to the path.'**
+  String get navigationTurnByTurnNavigationWarning;
+
   /// No description provided for @carInstructionDrive.
   ///
   /// In en, this message translates to:
