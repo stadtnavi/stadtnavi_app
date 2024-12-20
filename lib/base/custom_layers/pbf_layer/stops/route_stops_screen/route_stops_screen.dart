@@ -5,6 +5,7 @@ import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_screen/bottom_stops_detail.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_screen/route_disruptions_alerts_screen.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_icon.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/models_otp/pattern.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/models_otp/stoptime.dart';
@@ -139,9 +140,15 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                       tabs: [
                         Tab(text: languageCode == 'en' ? "Stops" : "Jetzt"),
                         Tab(
-                          text: languageCode == 'en'
-                              ? "Disruptions"
-                              : "Störungen",
+                          child: Row(
+                            children: [
+                              alertIcon(),
+                              const SizedBox(width: 4),
+                              Text(languageCode == 'en'
+                                  ? "Disruptions"
+                                  : "Störungen")
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -160,8 +167,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                             },
                           ),
                           RouteDisruptionAlertsScreen(
-                            routeId:
-                                widget.stopTime.trip?.route?.gtfsId ?? '',
+                            routeId: widget.stopTime.trip?.route?.gtfsId ?? '',
                           ),
                         ],
                       ),

@@ -78,7 +78,7 @@ class _DisruptionAlertsScreenState extends State<DisruptionAlertsScreen>
                       (e) => Column(
                         children: [
                           AlertStopCard(
-                            shortName: "43",
+                            shortName: "42",
                             startDateTime: DateTime.fromMillisecondsSinceEpoch(
                               e.effectiveStartDate!.toInt() * 1000,
                             ),
