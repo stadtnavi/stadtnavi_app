@@ -384,7 +384,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get commonRealTime => 'Echtzeit';
 
   @override
-  String get commonStart => 'Beginn';
+  String get commonStart => 'Starten';
 
   @override
   String get navigationTurnByTurnNavigation => 'Schritt-für-Schritt Navigation';
