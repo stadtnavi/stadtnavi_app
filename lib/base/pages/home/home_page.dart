@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:async_executor/async_executor.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:matomo_tracker/matomo_tracker.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
@@ -45,7 +46,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+    with
+        TickerProviderStateMixin,
+        WidgetsBindingObserver,
+        TraceableClientMixin {
   final TrufiMapController trufiMapController = TrufiMapController();
   StreamSubscription<LatLng?>? locationStreamSubscription;
 
@@ -68,6 +72,9 @@ class _HomePageState extends State<HomePage>
           .load(Localizations.localeOf(context).languageCode),
     );
   }
+
+  @override
+  String get actionName => 'HomePage-(Mobile-App)';
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -264,17 +271,22 @@ class _HomePageState extends State<HomePage>
     if (mapRouteState.toPlace == null || mapRouteState.fromPlace == null) {
       return;
     }
+    final languageCode = Localizations.localeOf(context).languageCode;
     widget.asyncExecutor.run(
       context: context,
       onExecute: () async {
         await mapModesCubit.reset();
-        await mapRouteCubit.fetchPlan(advancedOptions: settingFetchState);
+        await mapRouteCubit.fetchPlan(
+          advancedOptions: settingFetchState,
+          localeName: languageCode,
+        );
       },
       onFinish: (_) {
         mapModesCubit.fetchModesPlans(
           from: mapRouteState.fromPlace!,
           to: mapRouteState.toPlace!,
           advancedOptions: settingFetchState,
+          localeName: languageCode,
         );
       },
     );

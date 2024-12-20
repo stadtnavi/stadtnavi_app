@@ -18,7 +18,7 @@ dependencies:
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
-      ref: 3.25.0-stadtnavi-lts
+      ref: 3.26.0-stadtnavi-lts
   # trufi_core: 
   #   path: ../trufi-core
   firebase_core: ^3.3.0
@@ -30,6 +30,7 @@ dependencies:
   lodash_flutter: ^0.0.3
   vector_tile: ^2.0.0
   rive: ^0.13.4
+  matomo_tracker: ^5.1.0
 
 dev_dependencies:
   flutter_test:

@@ -227,7 +227,7 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get bicycleParking => 'Bicycle parking';
 
   @override
-  String get instructionVehicleRackRailway => 'Rack railway';
+  String get instructionVehicleRackRailway => 'funicular/ rack railway';
 
   @override
   String get commonTrack => 'Track';
@@ -388,4 +388,59 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String get commonMoreInfo => 'More info';
+  String get commonRealTime => 'Real-time';
+
+  @override
+  String get carInstructionDrive => 'Drive';
+
+  @override
+  String get departureListUpdateSrInstructions => 'The list of upcoming departures and departure times will update in real time.';
+
+  @override
+  String departurePageSr(Object destination, Object shortName, Object time) {
+    return 'Trip $shortName $destination $time information';
+  }
+
+  @override
+  String departureTimeSr(Object realTime, Object time, Object when) {
+    return '$when clock $time. $realTime';
+  }
+
+  @override
+  String get disruptionsTabSrDisruptions => 'One or more known disruptions';
+
+  @override
+  String get disruptionsTabSrNoDisruptions => 'No known disruptions';
+
+  @override
+  String itineraryCo2DescriptionSimpleSr(Object co2value) {
+    return '$co2value g of carbondioxide emissions will be generated on this journey.';
+  }
+
+  @override
+  String itineraryCo2DescriptionSr(Object carCo2Value, Object co2value) {
+    return '$co2value g of carbondioxide emissions will be generated on this journey. A car would generate $carCo2Value g of carbondioxide on the same journey.';
+  }
+
+  @override
+  String get itineraryCo2TitleSr => 'Carbondioxide emissions of the journey';
+
+  @override
+  String get searchFieldsSrInstructions => 'Route search will take place automatically when you enter origin and destination. Changing search parameters will trigger a new search.';
+
+  @override
+  String get stopListUpdateSrInstructions => 'Departure times for each stop will update in real time.';
+
+  @override
+  String swipeSrNewTabOpened(Object number) {
+    return 'Tab $number opened.';
+  }
+
+  @override
+  String get tripCo2EmissionsSr => 'Carbondioxide emissions of the journey';
+
+  @override
+  String departureTimeInMinutes(Object minutes) {
+    return '$minutes min';
+  }
 }

@@ -174,17 +174,22 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
     if (mapRouteState.toPlace == null || mapRouteState.fromPlace == null) {
       return;
     }
+    final languageCode = Localizations.localeOf(context).languageCode;
     widget.asyncExecutor.run(
       context: context,
       onExecute: () async {
         await mapModesCubit.reset();
-        await mapRouteCubit.fetchPlan(advancedOptions: settingFetchState);
+        await mapRouteCubit.fetchPlan(
+          advancedOptions: settingFetchState,
+          localeName: languageCode,
+        );
       },
       onFinish: (_) {
         mapModesCubit.fetchModesPlans(
           from: mapRouteState.fromPlace!,
           to: mapRouteState.toPlace!,
           advancedOptions: settingFetchState,
+          localeName: languageCode,
         );
       },
     );
