@@ -10,6 +10,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:herrenberg/firebase_options.dart';
 import 'package:hive/hive.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:matomo_tracker/matomo_tracker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stadtnavi_core/notifications/lifecycle_reactor_handler_notifications.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
@@ -18,6 +19,7 @@ import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/utils/certificates_letsencrypt_android.dart';
 import 'package:trufi_core/base/widgets/drawer/menu/social_media_item.dart';
 
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/hb_layers_data.dart';
 import 'package:stadtnavi_core/consts.dart';
 import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
@@ -62,6 +64,11 @@ void main() async {
     TransportMode.bicycle: const Color(0xffFECC01),
     TransportMode.walk: const Color(0xffFECC01),
   });
+  await MatomoTracker.instance.initialize(
+    siteId: '1',
+    url: 'https://track.dev.stadtnavi.eu/matomo.php',
+  );
+  await HBLayerData.loadHbLayers();
   runApp(
     StadtnaviApp(
       appLifecycleReactorHandler: LifecycleReactorHandlerNotifications(
@@ -72,6 +79,7 @@ void main() async {
       appNameTitle: 'stadtnavi|Herrenberg',
       cityName: 'Herrenberg',
       center: LatLng(48.5950, 8.8672),
+      co2EmmissionUrl: "https://www.herrenberg.de/Mobilit%C3%A4t/CO2",
       otpGraphqlEndpoint: ApiConfig().openTripPlannerUrl,
       urlFeedback: 'https://stadtnavi.de/feedback/',
       urlShareApp: 'https://herrenberg.stadtnavi.de/',
@@ -94,6 +102,7 @@ void main() async {
         theme: brandingStadtnaviHerrenberg,
         darkTheme: brandingStadtnaviHerrenberg,
       ),
+      alertsFeedIds: const ['hbg'],
     ),
   );
 }

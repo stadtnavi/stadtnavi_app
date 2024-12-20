@@ -11,7 +11,7 @@ enum AlertEffectType {
   noEffect,
 }
 
-AlertEffectType getAlertEffectTypeByString(String alertEffectType) {
+AlertEffectType getAlertEffectTypeByString(String? alertEffectType) {
   return AlertEffectTypeExtension.names.keys.firstWhere(
     (key) => key.name == alertEffectType,
     orElse: () => AlertEffectType.noService,

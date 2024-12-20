@@ -13,7 +13,7 @@ enum AlertCauseType {
   medicalemergency
 }
 
-AlertCauseType getAlertCauseTypeByString(String alertCauseType) {
+AlertCauseType getAlertCauseTypeByString(String? alertCauseType) {
   return AlertCauseTypeExtension.names.keys.firstWhere(
     (key) => key.name == alertCauseType,
     orElse: () => AlertCauseType.unknowncause,

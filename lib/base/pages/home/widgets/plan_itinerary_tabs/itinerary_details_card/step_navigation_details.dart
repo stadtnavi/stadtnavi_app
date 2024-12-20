@@ -9,11 +9,13 @@ import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 class StepNavigationDetails extends StatelessWidget {
   final StepEntity step;
   final bool isFirst;
+  final bool showNavigationIcon;
 
   const StepNavigationDetails({
     super.key,
     required this.step,
     required this.isFirst,
+    this.showNavigationIcon=true,
   });
 
   @override
@@ -41,13 +43,7 @@ class StepNavigationDetails extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            isFirst
-                ? step.absoluteDirection?.icon ?? Icons.help_outline
-                : step.relativeDirection?.icon ?? Icons.help_outline,
-            size: 24,
-            color: Colors.black,
-          ),
+          step.relativeDirection?.getImage() ?? Container(),
           const SizedBox(width: 4),
           Expanded(
             child: Column(
@@ -66,6 +62,7 @@ class StepNavigationDetails extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 5),
+          if(showNavigationIcon)
           SizedBox(
             width: 20,
             height: 20,

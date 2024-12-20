@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:trufi_core/base/widgets/alerts/fetch_error_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -61,6 +62,9 @@ class _CustomItineraryState extends State<CustomItinerary>
     final mapRouteCubit = context.watch<MapRouteCubit>();
     final mapRouteState = mapRouteCubit.state;
     final payloadDataPlanState = context.watch<SettingFetchCubit>().state;
+    if (mapRouteState.plan?.itineraries != null) {
+      PlanEntity.findMinEmissionsPerPerson(mapRouteState.plan!.itineraries!);
+    }
     return Stack(
       children: [
         if (mapRouteState.plan?.isOnlyWalk ?? false)
@@ -228,6 +232,7 @@ class _CustomItineraryState extends State<CustomItinerary>
     final mapRouteCubit = context.read<MapRouteCubit>();
     final mapRouteState = mapRouteCubit.state;
     final payloadDataPlanCubit = context.read<SettingFetchCubit>();
+    final languageCode = Localizations.localeOf(context).languageCode;
     if (!mapRouteState.isFetchEarlier && !mapRouteState.isFetchLater) {
       if (payloadDataPlanCubit.state.arriveBy) {
         await mapRouteCubit
@@ -235,6 +240,7 @@ class _CustomItineraryState extends State<CustomItinerary>
               advancedOptions: payloadDataPlanCubit.state,
               isFetchEarlier: isFetchEarlier,
               itineraries: mapRouteState.plan?.itineraries ?? [],
+              localeName: languageCode,
             )
             .catchError((error) => onFetchError(context, error as Exception));
       } else {
@@ -243,6 +249,7 @@ class _CustomItineraryState extends State<CustomItinerary>
               advancedOptions: payloadDataPlanCubit.state,
               isFetchEarlier: isFetchEarlier,
               itineraries: mapRouteState.plan?.itineraries ?? [],
+              localeName: languageCode,
             )
             .catchError((error) => onFetchError(context, error as Exception));
       }
