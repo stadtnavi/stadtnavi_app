@@ -388,6 +388,8 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get commonMoreInfo => 'Mehr Infos';
+
+  @override
   String get journeyCo2Emissions => 'CO₂-Emissionen der Reise';
 
   @override

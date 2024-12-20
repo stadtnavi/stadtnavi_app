@@ -784,6 +784,7 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'More info'**
   String get commonMoreInfo;
+
   /// No description provided for @journeyCo2Emissions.
   ///
   /// In en, this message translates to:
