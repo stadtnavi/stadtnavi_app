@@ -1,4 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
@@ -78,14 +81,14 @@ class ItineraryDetailsCard extends StatelessWidget {
                     ),
                     Expanded(
                         child: Text(
-                      "CO₂ emissions of the journey",
+                      localizationSB.journeyCo2Emissions,
                     )),
                     Container(
                       decoration: BoxDecoration(
-                          color: Colors.green.withOpacity(.2),
+                          color: Color(0xFFEBF6E4),
                           borderRadius: BorderRadius.circular(5)),
                       padding: EdgeInsets.symmetric(
-                        horizontal: 3,
+                        horizontal: 5,
                         vertical: 2,
                       ),
                       margin: EdgeInsets.only(right: 5),
@@ -95,7 +98,7 @@ class ItineraryDetailsCard extends StatelessWidget {
                           Text(
                             "${itinerary.emissionsPerPerson!.toStringAsFixed(0)} g",
                             style: TextStyle(
-                              color: const Color(0xFF4CAF50),
+                              color: const Color(0xFF4C7C2A),
                             ),
                           )
                         ],
@@ -257,6 +260,16 @@ class ItineraryDetailsCard extends StatelessWidget {
                           ),
                         ),
                       ),
+                      if (itinerary.emissionsPerPerson != null &&
+                          mapConfiguratiom.co2EmmissionUrl != null) ...[
+                        const Divider(
+                          thickness: 1,
+                        ),
+                        Emissions(itinerary: itinerary),
+                        const Divider(
+                          thickness: 1,
+                        ),
+                      ],
                     ]
                   ],
                 );
@@ -264,6 +277,97 @@ class ItineraryDetailsCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Emissions extends StatelessWidget {
+  const Emissions({
+    super.key,
+    required this.itinerary,
+  });
+  final PlanItinerary itinerary;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final localizationSB = StadtnaviBaseLocalization.of(context);
+    final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
+    final carItinerary = context
+        .watch<MapModesCubit>()
+        .state
+        .modesTransport
+        ?.carPlan
+        ?.itineraries
+        ?.firstOrNull;
+    final co2value = itinerary.emissionsPerPerson ?? 0;
+    final itineraryIsCar = itinerary.legs.every(
+      (leg) => leg.mode == 'CAR' || leg.mode == 'WALK',
+    );
+
+    final carCo2Value = !itineraryIsCar && carItinerary != null
+        ? carItinerary.emissionsPerPerson?.round()
+        : null;
+
+    final useCo2SimpleDesc = carCo2Value == null || itineraryIsCar;
+
+    final co2DescriptionId = useCo2SimpleDesc
+        ? localizationSB.itineraryCo2DescriptionSimple(
+            co2value.toStringAsFixed(0),
+          )
+        : localizationSB.itineraryCo2Description(
+            carCo2Value,
+            co2value.toStringAsFixed(0),
+          );
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 5,
+              top: 5,
+              right: 16,
+            ),
+            child: SvgPicture.string(
+              leafIcon,
+              width: 24,
+              height: 24,
+            ),
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  co2DescriptionId,
+                ),
+                if (mapConfiguratiom.co2EmmissionUrl != null) ...[
+                  const SizedBox(height: 4),
+                  Text.rich(
+                    TextSpan(
+                      text: localizationSB.itineraryCo2Link,
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () async {
+                          final co2EmmissionUri = Uri.parse(
+                            mapConfiguratiom.co2EmmissionUrl!,
+                          );
+                          if (await canLaunchUrl(co2EmmissionUri)) {
+                            await launchUrl(co2EmmissionUri);
+                          }
+                        },
+                    ),
+                    style: TextStyle(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
