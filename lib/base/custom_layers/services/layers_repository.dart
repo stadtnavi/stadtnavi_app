@@ -4,6 +4,7 @@ import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
 import 'package:intl/intl.dart';
 import 'package:stadtnavi_core/configuration/graphql_client.dart';
+import 'package:stadtnavi_core/base/custom_layers/services/models_otp/route.dart';
 import 'package:trufi_core/base/utils/graphql_client/graphql_utils.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybike_data_fetch.dart';
@@ -19,6 +20,10 @@ import 'graphql_operation/fragment/stop_fragments.dart' as stops_fragments;
 import 'graphql_operation/queries/park_queries.dart' as park_queries;
 import 'graphql_operation/queries/pattern_queries.dart' as pattern_queries;
 import 'graphql_operation/queries/stops_queries.dart' as stops_queries;
+import 'graphql_operation/queries/alerts_queries.dart'
+    as stops_alerts_queries;
+import 'graphql_operation/fragment/alerts_fragments.dart'
+    as stops_alerts_fragments;
 import 'models_otp/pattern.dart';
 import 'models_otp/stop.dart';
 
@@ -34,6 +39,52 @@ class LayersRepository {
   static Future<Stop> fetchStop(String idStop) async {
     return _fetchStopByTIme(
         idStop, DateTime.now().millisecondsSinceEpoch ~/ 1000);
+  }
+
+  static Future<Stop> stopAlerts({
+    required String idStop,
+  }) async {
+    final WatchQueryOptions patternQuery = WatchQueryOptions(
+      document: addFragments(
+        parseString(stops_alerts_queries.stopAlertsQuery),
+        [stops_alerts_fragments.stopAlertsContainer],
+      ),
+      variables: <String, dynamic>{
+        "stopId": idStop,
+      },
+    );
+    // "Validation error (UndefinedVariable@[stop]) : Undefined variable 'stopId'"
+    final dataStopsTimes = await client.query(patternQuery);
+    if (dataStopsTimes.hasException && dataStopsTimes.data == null) {
+      throw Exception("Bad request");
+    }
+    final stopData =
+        Stop.fromJson(dataStopsTimes.data!['stop'] as Map<String, dynamic>);
+
+    return stopData;
+  }
+  
+  static Future<RouteOtp> routeAlerts({
+    required String routeId,
+  }) async {
+    final WatchQueryOptions patternQuery = WatchQueryOptions(
+      document: addFragments(
+        parseString(stops_alerts_queries.routeAlertsQuery),
+        [stops_alerts_fragments.routeAlertsContainer],
+      ),
+      variables: <String, dynamic>{
+        "routeId": routeId,
+      },
+      fetchResults: true,
+    );
+    final dataStopsTimes = await client.query(patternQuery);
+    if (dataStopsTimes.hasException && dataStopsTimes.data == null) {
+      throw Exception("Bad request");
+    }
+    final stopData =
+        RouteOtp.fromJson(dataStopsTimes.data!['route'] as Map<String, dynamic>);
+
+    return stopData;
   }
 
   static Future<Stop> fetchTimeTable(String idStop, {DateTime? date}) async {
