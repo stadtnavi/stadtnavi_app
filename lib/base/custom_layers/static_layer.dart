@@ -21,7 +21,7 @@ class StaticTileLayers {
     StopsLayerIds.subway: StopsLayer(StopsLayerIds.subway, '4'),
   };
   static Map<PoiCategoryEnum, PoisLayer> poisLayers = {
-    for (var value in PoiCategoryEnum.values) value: PoisLayer(value, "4")
+    for (var value in PoiCategoryEnum.values) value: PoisLayer(value, "3")
   };
   static ParkingLayer parkingLayer = ParkingLayer("Parking", '4');
   static ParkingZonesLayer parkingZonesLayer =

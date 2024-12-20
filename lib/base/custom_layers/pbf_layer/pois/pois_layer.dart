@@ -62,8 +62,8 @@ class PoisLayer extends CustomLayer {
                 HBLayerData.subCategoriesList[element.category3];
             return Marker(
               key: Key("$id:${element.id}"),
-              height: markerSize! * .8,
-              width: markerSize * .8,
+              height: markerSize! * .7,
+              width: markerSize * .7,
               point: element.position,
               alignment: Alignment.center,
               child: Builder(builder: (context) {
@@ -86,16 +86,16 @@ class PoisLayer extends CustomLayer {
                       ),
                     );
                   },
-                  child: Container(
-                    // padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                        // color: Colors.red,
-                        borderRadius: BorderRadius.circular(50)),
-                    child: subCategoryData != null &&
-                            subCategoryData.icon.isNotEmpty
-                        ? SvgPicture.string(subCategoryData.icon)
-                        : const Icon(Icons.error),
-                  ),
+                   child: Container(
+                      padding: EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                          color:subCategoryData != null? fromStringToColor( subCategoryData.backgroundColor):null,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: subCategoryData != null &&
+                              subCategoryData.icon.isNotEmpty
+                          ? SvgPicture.string(subCategoryData.icon,color:fromStringToColor( subCategoryData.color),)
+                          : const Icon(Icons.error),
+                    ),
                 );
               }),
             );
@@ -133,8 +133,8 @@ class PoisLayer extends CustomLayer {
               final subCategoryData =
                   HBLayerData.subCategoriesList[element.category3];
               return Marker(
-                height: markerSize! * .8,
-                width: markerSize * .8,
+                height: markerSize! * .7,
+                width: markerSize * .7,
                 point: element.position,
                 alignment: Alignment.center,
                 child: Builder(builder: (context) {
@@ -158,13 +158,14 @@ class PoisLayer extends CustomLayer {
                       );
                     },
                     child: Container(
-                      // padding: EdgeInsets.all(5),
+                      padding: EdgeInsets.all(4),
                       decoration: BoxDecoration(
-                          // color: Colors.red,
+                        
+                          color:subCategoryData != null? fromStringToColor( subCategoryData.backgroundColor):null,
                           borderRadius: BorderRadius.circular(50)),
                       child: subCategoryData != null &&
                               subCategoryData.icon.isNotEmpty
-                          ? SvgPicture.string(subCategoryData.icon)
+                          ? SvgPicture.string(subCategoryData.icon,color:fromStringToColor( subCategoryData.color),)
                           : const Icon(Icons.error),
                     ),
                   );
@@ -174,24 +175,37 @@ class PoisLayer extends CustomLayer {
           : zoom != null && zoom > 11
               ? markersList
                   .map(
-                    (element) => Marker(
+                    (element) {
+              final subCategoryData =
+                  HBLayerData.subCategoriesList[element.category3];
+                      return Marker(
                       height: 5,
                       width: 5,
                       point: element.position,
                       alignment: Alignment.center,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Colors.blue,
+                          color:subCategoryData != null ? fromStringToColor( subCategoryData.color):Colors.blue,
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                    ),
+                    );
+                    },
                   )
                   .toList()
               : [],
     );
   }
-
+Color? fromStringToColor(String colorString) {
+  try {
+    String hexColor = colorString.replaceAll("#", "");
+    if (hexColor.length == 6) hexColor = "FF$hexColor";
+    if (hexColor.length != 8) return Colors.black;
+    return Color(int.parse(hexColor, radix: 16));
+  } catch (e) {
+    return Colors.black;
+  }
+}
   @override
   Widget? buildLayerOptionsPriority(int zoom) {
     return null;
