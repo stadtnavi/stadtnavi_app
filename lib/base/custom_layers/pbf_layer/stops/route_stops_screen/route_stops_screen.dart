@@ -4,6 +4,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_screen/bottom_stops_detail.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_screen/route_disruptions_alerts_screen.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_icon.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/models_otp/pattern.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/models_otp/stoptime.dart';
@@ -64,6 +66,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   Widget build(BuildContext context) {
     final localization = TrufiBaseLocalization.of(context);
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
+    final languageCode = Localizations.localeOf(context).languageCode;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -128,16 +131,49 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                   ),
                 ],
               ),
-              panel: BottomStopsDetails(
-                routeOtp: patternOtp!.route!,
-                stops: patternOtp?.stops ?? [],
-                moveTo: (point) {
-                  _trufiMapController.move(
-                    center: point,
-                    zoom: 16,
-                    tickerProvider: this,
-                  );
-                },
+              panel: DefaultTabController(
+                length: 2,
+                child: Column(
+                  children: [
+                    TabBar(
+                      labelColor: Colors.black,
+                      tabs: [
+                        Tab(text: languageCode == 'en' ? "Stops" : "Jetzt"),
+                        Tab(
+                          child: Row(
+                            children: [
+                              alertIcon(),
+                              const SizedBox(width: 4),
+                              Text(languageCode == 'en'
+                                  ? "Disruptions"
+                                  : "Störungen")
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        children: [
+                          BottomStopsDetails(
+                            routeOtp: patternOtp!.route!,
+                            stops: patternOtp?.stops ?? [],
+                            moveTo: (point) {
+                              _trufiMapController.move(
+                                center: point,
+                                zoom: 16,
+                                tickerProvider: this,
+                              );
+                            },
+                          ),
+                          RouteDisruptionAlertsScreen(
+                            routeId: widget.stopTime.trip?.route?.gtfsId ?? '',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ] else
