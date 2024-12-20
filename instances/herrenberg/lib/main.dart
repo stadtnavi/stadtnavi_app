@@ -100,6 +100,7 @@ void main() async {
         theme: brandingStadtnaviHerrenberg,
         darkTheme: brandingStadtnaviHerrenberg,
       ),
+      alertsFeedIds: const ['hbg'],
     ),
   );
 }

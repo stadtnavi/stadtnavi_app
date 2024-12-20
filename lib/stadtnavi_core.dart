@@ -43,6 +43,7 @@ class StadtnaviApp extends StatelessWidget {
   final RouterBuilder? extraRoutes;
   final List<BlocProvider>? extraBlocs;
   final WidgetBuilder? extraFloatingMapButtons;
+  final List<String> alertsFeedIds;
 
   final AppLifecycleReactorHandler? appLifecycleReactorHandler;
   const StadtnaviApp({
@@ -69,6 +70,7 @@ class StadtnaviApp extends StatelessWidget {
     this.extraBlocs,
     this.extraFloatingMapButtons,
     this.appLifecycleReactorHandler,
+    this.alertsFeedIds = const [],
   }) : super(key: key);
 
   @override
@@ -96,6 +98,7 @@ class StadtnaviApp extends StatelessWidget {
               MapLayer(MapLayerIds.satellite),
               MapLayer(MapLayerIds.bike),
             ],
+        alertsFeedIds: alertsFeedIds,
         extraBlocs: extraBlocs,
       ),
       trufiRouter: TrufiRouter(

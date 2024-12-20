@@ -381,6 +381,15 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get commonOpenAlways => 'Open 24/7';
 
   @override
+  String get commonShowMore => 'Show more';
+
+  @override
+  String get commonShowLess => 'Show less';
+
+  @override
+  String get commonMoreInfo => 'More info';
+
+  @override
   String get journeyCo2Emissions => 'CO₂ emissions of the journey';
 
   @override

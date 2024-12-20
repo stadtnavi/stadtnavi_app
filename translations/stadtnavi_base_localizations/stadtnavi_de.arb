@@ -302,6 +302,12 @@
   "commonClosed": "Geschlossen",
   "commonOpen": "Geöffnet",
   "commonOpenAlways": "Durchgängig geöffnet",
+  "@commonSettings": {
+    "description": "General Settings label"
+  },
+  "commonShowMore": "Mehr zeigen",
+  "commonShowLess": "Weniger anzeigen",
+  "commonMoreInfo": "Mehr Infos",
   "journeyCo2Emissions": "CO₂-Emissionen der Reise",
   "journeyCo2EmissionsSr": "Kohlenstoffdioxid-Emissionen der Reise",
   "itineraryCo2Link": "So berechnen wir die Emissionen ›",
