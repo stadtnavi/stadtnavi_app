@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
@@ -185,6 +186,13 @@ class CustomTileProvider extends TileProvider {
     // }
     // if (layersStatus["Parking"] ?? false) {
     await ParkingLayer.fetchPBF(
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    ).catchError((error) {
+      log("$error");
+    });
+    await PoisLayer.fetchPBF(
       coords.z.toInt(),
       coords.x.toInt(),
       coords.y.toInt(),
