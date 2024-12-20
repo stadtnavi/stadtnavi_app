@@ -20,10 +20,8 @@ class WeatherLayer extends CustomLayer {
 
   WeatherLayer(String id, String weight) : super(id, weight);
   void addMarker(WeatherFeature pointFeature) {
-    if (_pbfMarkers[pointFeature.address] == null) {
       _pbfMarkers[pointFeature.address] = pointFeature;
       refresh();
-    }
   }
 
   @override
