@@ -159,7 +159,7 @@ enum PoiCategoryEnum {
     codes: ["cycle_network"],
   ),
   bikeShops(
-    selfCode: "bike_shops",
+    selfCode: "bike_shop",
     codes: ["bike_shop"],
   ),
   bikeRental(

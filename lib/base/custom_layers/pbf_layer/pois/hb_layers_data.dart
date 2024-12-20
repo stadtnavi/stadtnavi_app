@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 
 abstract class HBLayerData {
-  static Map<String, CategoryData> categoriesList = {};
   static Map<String, SubCategory> subCategoriesList = {};
   static Future<void> loadHbLayers() async {
     final String jsonString = await rootBundle
@@ -14,8 +13,8 @@ abstract class HBLayerData {
   }
 
   static void _loadCategory(data) {
-    final category = CategoryData.fromJson(data);
-    categoriesList[category.code] = category;
+    final category = SubCategory.fromJson(data);
+    subCategoriesList[category.code] = category;
     for (final value in data["categories"]) {
       if (value["categories"] == null) {
         final subCategory = SubCategory.fromJson(value);
@@ -24,26 +23,6 @@ abstract class HBLayerData {
         _loadCategory(value);
       }
     }
-  }
-}
-
-class CategoryData {
-  final String code;
-  final String en;
-  final String de;
-
-  CategoryData({
-    required this.code,
-    required this.en,
-    required this.de,
-  });
-
-  factory CategoryData.fromJson(json) {
-    return CategoryData(
-      code: json['code'],
-      en: json['translations']['en'],
-      de: json['translations']['de'],
-    );
   }
 }
 
