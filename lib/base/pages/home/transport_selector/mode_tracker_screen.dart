@@ -34,10 +34,12 @@ class NextStepContainer {
 
 class ModeTrackerScreen extends StatefulWidget {
   final String title;
+  final String warning;
   final PlanItinerary itinerary;
   const ModeTrackerScreen({
     Key? key,
     required this.title,
+    required this.warning,
     required this.itinerary,
   }) : super(key: key);
 
@@ -288,6 +290,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
                 itinerary: itinerary,
                 leg: leg,
                 moveInMap: (_) {},
+                detailsColor: Colors.white,
               ),
             ),
           );
@@ -301,6 +304,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
                 itinerary: itinerary,
                 leg: leg,
                 moveInMap: (_) {},
+                detailsColor: Colors.white,
               ),
             ),
           );
@@ -334,14 +338,13 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
 
   @override
   Widget build(BuildContext context) {
-    final localizationSB = StadtnaviBaseLocalization.of(context);
     final mapRouteState = context.read<MapRouteCubit>().state;
     final mapModesCubit = context.watch<MapModesCubit>();
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
     return BaseTrufiPage(
       child: Scaffold(
         appBar: AppBar(
-          title: Text(localizationSB.navigationTurnByTurnNavigation),
+          title: Text(widget.title),
         ),
         body: Stack(
           children: [
@@ -416,34 +419,36 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          Container(child: Icon(Icons.warning,color: Colors.red,),margin: EdgeInsets.only(right: 10),),
                           Expanded(
-                            child: Text(
-                                style: TextStyle(color: Colors.red),
-                                'You have strayed too far from the route. Please return to the path.'),
+                            child: Text(widget.warning
+                               ),
                           ),
-                          TextButton(
+                          IconButton(
                             onPressed: () {
                               _popupShown = false;
                             },
-                            child: Text('OK'),
+                            icon:Icon(Icons.close),
                           ),
                         ],
                       ),
                     ),
-                  Container(
-                    margin: EdgeInsets.all(5),
-                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: Color(0xFF9BBF28),
-                      borderRadius: BorderRadius.circular(5),
+                  if (nextSteps.isNotEmpty)
+                    DefaultTextStyle(
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      child: Container(
+                        margin: EdgeInsets.all(5),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF9BBF28),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: nextSteps.first.widget,
+                      ),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        nextSteps.first.widget,
-                      ],
-                    ),
-                  ),
                 ],
               ),
             )

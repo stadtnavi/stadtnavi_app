@@ -17,6 +17,7 @@ import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 class TransitLeg extends StatelessWidget {
   final PlanItinerary itinerary;
   final PlanItineraryLeg leg;
+  final Color? detailsColor;
   final void Function(LatLng latlng) moveInMap;
 
   const TransitLeg({
@@ -24,6 +25,7 @@ class TransitLeg extends StatelessWidget {
     required this.itinerary,
     required this.leg,
     required this.moveInMap,
+    this.detailsColor,
   }) : super(key: key);
 
   @override
@@ -174,7 +176,7 @@ class TransitLeg extends StatelessWidget {
             child: Text(
               '${leg.durationLeg(localizationBase)} (${leg.distanceString(localizationBase)})',
               style: theme.primaryTextTheme.bodyLarge
-                  ?.copyWith(fontSize: 13, color: Colors.grey[700]),
+                  ?.copyWith(fontSize: 13, color:detailsColor?? Colors.grey[700]),
             ),
           ),
         if (leg.intermediatePlaces != null &&

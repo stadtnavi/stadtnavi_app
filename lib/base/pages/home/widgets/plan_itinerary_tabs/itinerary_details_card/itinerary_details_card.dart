@@ -60,34 +60,44 @@ class ItineraryDetailsCard extends StatelessWidget {
                     itinerary: itinerary,
                   ),
                 ),
-                GestureDetector(
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all()),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(localizationSB.commonStart),
-                        const Icon(
-                          Icons.navigation_rounded,
-                          color: Color(0xFF9BBF28),
-                        )
-                      ],
-                    ),
-                  ),
-                  onTap: () async {
-                    final locationProvider = GPSLocationProvider();
-                    await locationProvider.startLocation(context);
-
-                    await Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => ModeTrackerScreen(
-                        title: localizationBase.commonWalk,
-                        itinerary: itinerary,
+                Container(
+                  margin: EdgeInsets.only(right: 5),
+                  child: GestureDetector(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all()),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            localizationSB.commonStart,
+                            style: TextStyle(
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                          const Icon(
+                            Icons.navigation_rounded,
+                            color: Color(0xFF9BBF28),
+                          )
+                        ],
                       ),
-                    ));
-                  },
+                    ),
+                    onTap: () async {
+                      final locationProvider = GPSLocationProvider();
+                      await locationProvider.startLocation(context);
+
+                      await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => ModeTrackerScreen(
+                          title: localizationSB.navigationTurnByTurnNavigation,
+                          warning:
+                              'You have strayed too far from the route. Please return to the path.',
+                          itinerary: itinerary,
+                        ),
+                      ));
+                    },
+                  ),
                 ),
               ],
             ),
