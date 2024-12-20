@@ -1,7 +1,7 @@
 enum AlertSeverityLevelType { unknownseverity, info, warning, severe }
 
 AlertSeverityLevelType getAlertSeverityLevelTypeByString(
-    String alertSeverityLevelType) {
+    String? alertSeverityLevelType) {
   return AlertSeverityLevelTypeExtension.names.keys.firstWhere(
     (key) => key.name == alertSeverityLevelType,
     orElse: () => AlertSeverityLevelType.unknownseverity,

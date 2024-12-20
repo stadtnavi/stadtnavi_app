@@ -32,6 +32,7 @@ class StadtnaviApp extends StatelessWidget {
   final Map<String, dynamic>? searchLocationQueryParameters;
   final LatLng center;
   final double? onlineZoom;
+  final String? co2EmmissionUrl;
   final List<CustomLayerContainer> layersContainer;
   final UrlSocialMedia urlSocialMedia;
   final TrufiBaseTheme? trufiBaseTheme;
@@ -42,6 +43,7 @@ class StadtnaviApp extends StatelessWidget {
   final RouterBuilder? extraRoutes;
   final List<BlocProvider>? extraBlocs;
   final WidgetBuilder? extraFloatingMapButtons;
+  final List<String> alertsFeedIds;
 
   final AppLifecycleReactorHandler? appLifecycleReactorHandler;
   const StadtnaviApp({
@@ -58,6 +60,7 @@ class StadtnaviApp extends StatelessWidget {
     this.searchLocationQueryParameters,
     required this.center,
     this.onlineZoom,
+    this.co2EmmissionUrl,
     required this.layersContainer,
     required this.urlSocialMedia,
     this.trufiBaseTheme,
@@ -67,6 +70,7 @@ class StadtnaviApp extends StatelessWidget {
     this.extraBlocs,
     this.extraFloatingMapButtons,
     this.appLifecycleReactorHandler,
+    this.alertsFeedIds = const [],
   }) : super(key: key);
 
   @override
@@ -82,6 +86,7 @@ class StadtnaviApp extends StatelessWidget {
           onlineZoom: onlineZoom ?? 13,
           markersConfiguration: const CustomMarkerConfiguration(),
           mapAttributionBuilder: stadtNaviAttributionBuilder,
+          co2EmmissionUrl: co2EmmissionUrl,
         ),
         searchLocationRepository: OnlineSearchLocation(
           queryParameters: searchLocationQueryParameters,
@@ -93,6 +98,7 @@ class StadtnaviApp extends StatelessWidget {
               MapLayer(MapLayerIds.satellite),
               MapLayer(MapLayerIds.bike),
             ],
+        alertsFeedIds: alertsFeedIds,
         extraBlocs: extraBlocs,
       ),
       trufiRouter: TrufiRouter(
