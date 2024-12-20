@@ -4,9 +4,12 @@ import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubi
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/transport_selector/mode_tracker_screen.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinarary_card/itinerary_card.dart';
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
+import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/pages/saved_places/translations/saved_places_localizations.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
@@ -42,6 +45,8 @@ class ItineraryDetailsCard extends StatelessWidget {
     final mapRouteState = mapRouteCubit.state;
     final compresedLegs = itinerary.compressLegs;
     final sizeLegs = compresedLegs.length;
+    final mapModesCubit = context.watch<MapModesCubit>();
+    final mapModesState = mapModesCubit.state;
     return Scrollbar(
       child: SingleChildScrollView(
         controller: ScrollController(),
@@ -58,6 +63,45 @@ class ItineraryDetailsCard extends StatelessWidget {
                     itinerary: itinerary,
                   ),
                 ),
+                Container(
+                  margin: EdgeInsets.only(right: 5),
+                  child: GestureDetector(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all()),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            localizationSB.commonStart,
+                            style: TextStyle(
+                              color: theme.primaryColor,
+                            ),
+                          ),
+                          const Icon(
+                            Icons.navigation_rounded,
+                            color: Color(0xFF9BBF28),
+                          )
+                        ],
+                      ),
+                    ),
+                    onTap: () async {
+                      final locationProvider = GPSLocationProvider();
+                      await locationProvider.startLocation(context);
+
+                      await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => ModeTrackerScreen(
+                          title: localizationSB.navigationTurnByTurnNavigation,
+                          warning: localizationSB
+                              .navigationTurnByTurnNavigationWarning,
+                          itinerary: itinerary,
+                        ),
+                      ));
+                    },
+                  ),
+                ),
               ],
             ),
             const Divider(
@@ -72,7 +116,7 @@ class ItineraryDetailsCard extends StatelessWidget {
             ),
             if (itinerary.emissionsPerPerson != null)
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 15),
+                margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
                   children: [
                     SvgPicture.string(leafIcon),
@@ -91,7 +135,7 @@ class ItineraryDetailsCard extends StatelessWidget {
                         horizontal: 5,
                         vertical: 2,
                       ),
-                      margin: EdgeInsets.only(right: 5),
+                      margin: const EdgeInsets.only(right: 5),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
