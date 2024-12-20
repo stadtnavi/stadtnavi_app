@@ -503,7 +503,7 @@ abstract class StadtnaviBaseLocalization {
   /// **'Total distance'**
   String get commonTotalDistance;
 
-  /// No description provided for @commonSettings.
+  /// General Settings label
   ///
   /// In en, this message translates to:
   /// **'Settings'**
@@ -784,6 +784,7 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'More info'**
   String get commonMoreInfo;
+
   /// No description provided for @commonRealTime.
   ///
   /// In en, this message translates to:

@@ -388,6 +388,8 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get commonMoreInfo => 'Mehr Infos';
+
+  @override
   String get commonRealTime => 'Echtzeit';
 
   @override
