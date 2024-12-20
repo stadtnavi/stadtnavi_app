@@ -33,7 +33,7 @@ class _BannerAlertsState extends State<BannerAlerts> {
                 : theme.colorScheme.primary,
             child: Container(
               decoration: BoxDecoration(
-                color: const Color(0xFFDC0451),
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Column(
@@ -76,7 +76,6 @@ class _BannerAlertsState extends State<BannerAlerts> {
                                         Text(
                                           alert.alertHeaderText ?? "",
                                           style: TextStyle(
-                                            color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 13,
                                             height: 1,
@@ -92,12 +91,12 @@ class _BannerAlertsState extends State<BannerAlerts> {
                                           text: TextSpan(
                                             text: alert.alertDescriptionText,
                                             style: TextStyle(
-                                              color: Colors.white,
                                               height: 1,
                                               fontSize: 13,
                                               overflow: isExpandable
                                                   ? null
                                                   : TextOverflow.ellipsis,
+                                              color: Colors.black,
                                             ),
                                             children: [
                                               if (alert.alertUrl != null)
@@ -106,7 +105,6 @@ class _BannerAlertsState extends State<BannerAlerts> {
                                                       .commonMoreInfo,
                                                   style: const TextStyle(
                                                     fontSize: 13,
-                                                    color: Colors.white,
                                                     fontWeight: FontWeight.bold,
                                                     height: 1,
                                                     decoration: TextDecoration
@@ -152,7 +150,7 @@ class _BannerAlertsState extends State<BannerAlerts> {
                                 child: IconButton(
                                   icon: const Icon(
                                     Icons.close,
-                                    color: Colors.white,
+                                    color: Color(0xFFDC0451),
                                   ),
                                   onPressed: () {
                                     globalAlertsCubit.deleteAlert(alert);
@@ -181,20 +179,23 @@ class _BannerAlertsState extends State<BannerAlerts> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               IconButton(
-                                onPressed: () {
-                                  if (_currentIndex != 0) {
-                                    _pageController.previousPage(
-                                      duration:
-                                          const Duration(milliseconds: 200),
-                                      curve: Curves.bounceIn,
-                                    );
-                                  }
-                                },
+                                onPressed: _currentIndex != 0
+                                    ? () {
+                                        _pageController.previousPage(
+                                          duration:
+                                              const Duration(milliseconds: 200),
+                                          curve: Curves.bounceIn,
+                                        );
+                                      }
+                                    : null,
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
-                                icon: const Icon(
+                                icon: Icon(
                                   Icons.arrow_back_ios,
-                                  color: Color(0xFFCCCCCC),
+                                  color:
+                                      _currentIndex != 0
+                                          ? const Color(0xFFDC0451)
+                                          : Colors.grey,
                                   size: 18,
                                 ),
                               ),
@@ -225,7 +226,7 @@ class _BannerAlertsState extends State<BannerAlerts> {
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             color: _currentIndex == entry.key
-                                                ? Colors.white
+                                                ? Colors.black
                                                 : const Color(0xFFCCCCCC),
                                           ),
                                         ),
@@ -235,19 +236,23 @@ class _BannerAlertsState extends State<BannerAlerts> {
                                 ),
                               ),
                               IconButton(
-                                onPressed: () {
-                                  if (_currentIndex <
-                                      getFilteredAlerts.length) {
-                                    _pageController.nextPage(
-                                      duration:
-                                          const Duration(milliseconds: 200),
-                                      curve: Curves.bounceIn,
-                                    );
-                                  }
-                                },
-                                icon: const Icon(
+                                onPressed: _currentIndex <
+                                        getFilteredAlerts.length-1
+                                    ? () {
+                                        _pageController.nextPage(
+                                          duration:
+                                              const Duration(milliseconds: 200),
+                                          curve: Curves.bounceIn,
+                                        );
+                                      }
+                                    : null,
+                                icon: Icon(
                                   Icons.arrow_forward_ios,
-                                  color: Color(0xFFCCCCCC),
+                                  color:
+                                   _currentIndex <
+                                        getFilteredAlerts.length-1
+                                          ? const Color(0xFFDC0451)
+                                          : Colors.grey,
                                   size: 20,
                                 ),
                                 padding: EdgeInsets.zero,
@@ -264,7 +269,7 @@ class _BannerAlertsState extends State<BannerAlerts> {
                             isExpandable
                                 ? Icons.keyboard_arrow_up
                                 : Icons.keyboard_arrow_down,
-                            color: Colors.white,
+                            color: const Color(0xFFDC0451),
                           ),
                           iconSize: 30,
                           onPressed: () {
