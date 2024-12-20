@@ -767,6 +767,24 @@ abstract class StadtnaviBaseLocalization {
   /// **'Open 24/7'**
   String get commonOpenAlways;
 
+  /// No description provided for @journeyCo2Emissions.
+  ///
+  /// In en, this message translates to:
+  /// **'CO₂ emissions of the journey'**
+  String get journeyCo2Emissions;
+
+  /// No description provided for @journeyCo2EmissionsSr.
+  ///
+  /// In en, this message translates to:
+  /// **'Carbondioxide emissions of the journey'**
+  String get journeyCo2EmissionsSr;
+
+  /// No description provided for @itineraryCo2Link.
+  ///
+  /// In en, this message translates to:
+  /// **'This is how we compare emissions ›'**
+  String get itineraryCo2Link;
+
   /// No description provided for @commonRealTime.
   ///
   /// In en, this message translates to:
@@ -809,17 +827,29 @@ abstract class StadtnaviBaseLocalization {
   /// **'No known disruptions'**
   String get disruptionsTabSrNoDisruptions;
 
-  /// No description provided for @itineraryCo2DescriptionSimpleSr.
+  /// No description provided for @itineraryCo2Description.
   ///
   /// In en, this message translates to:
-  /// **'{co2value} g of carbondioxide emissions will be generated on this journey.'**
-  String itineraryCo2DescriptionSimpleSr(Object co2value);
+  /// **'{co2value} g of CO₂ emissions will be generated on this journey. A car would generate {carCo2Value} g of CO₂ on the same journey.'**
+  String itineraryCo2Description(Object carCo2Value, Object co2value);
 
   /// No description provided for @itineraryCo2DescriptionSr.
   ///
   /// In en, this message translates to:
   /// **'{co2value} g of carbondioxide emissions will be generated on this journey. A car would generate {carCo2Value} g of carbondioxide on the same journey.'**
   String itineraryCo2DescriptionSr(Object carCo2Value, Object co2value);
+
+  /// No description provided for @itineraryCo2DescriptionSimple.
+  ///
+  /// In en, this message translates to:
+  /// **'{co2value} g of CO₂ emissions will be generated on this journey.'**
+  String itineraryCo2DescriptionSimple(Object co2value);
+
+  /// No description provided for @itineraryCo2DescriptionSimpleSr.
+  ///
+  /// In en, this message translates to:
+  /// **'{co2value} g of carbondioxide emissions will be generated on this journey.'**
+  String itineraryCo2DescriptionSimpleSr(Object co2value);
 
   /// No description provided for @itineraryCo2TitleSr.
   ///
