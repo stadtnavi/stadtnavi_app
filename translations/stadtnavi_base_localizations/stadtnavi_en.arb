@@ -331,5 +331,11 @@
   "stopListUpdateSrInstructions": "Departure times for each stop will update in real time.",
   "swipeSrNewTabOpened": "Tab {number} opened.",
   "tripCo2EmissionsSr": "Carbondioxide emissions of the journey",
-  "departureTimeInMinutes": "{minutes} min"
+  "departureTimeInMinutes": "{minutes} min",
+  "poiTagWheelchair": "Wheelchair accessible",
+  "poiTagOutdoor" : "Outdoor seating",
+  "poiTagDogs" : "Dogs allowed",
+  "poiTagWifi" : "WiFi",
+  "poiTagOperator" : "Operator: {operator}",
+  "poiTagBrand" : "Brand: {brand}"
 }

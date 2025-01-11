@@ -196,7 +196,7 @@ class PoisLayer extends CustomLayer {
               : [],
     );
   }
-Color? fromStringToColor(String colorString) {
+static Color? fromStringToColor(String colorString) {
   try {
     String hexColor = colorString.replaceAll("#", "");
     if (hexColor.length == 6) hexColor = "FF$hexColor";
