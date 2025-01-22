@@ -330,5 +330,11 @@
   "stopListUpdateSrInstructions": "Abfahrtszeiten für jede Haltestelle werden in Echtzeit angezeigt.",
   "swipeSrNewTabOpened": "Tab {number} geöffnet.",
   "tripCo2EmissionsSr": "Kohlenstoffdioxid-Emissionen der Reise",
-  "departureTimeInMinutes": "{minutes} m"
+  "departureTimeInMinutes": "{minutes} m",
+  "poiTagWheelchair": "Rollstuhlgerecht",
+  "poiTagOutdoor" : "Sitzplätze im Freien",
+  "poiTagDogs" : "Hunde erlaubt",
+  "poiTagWifi" : "WLAN",
+  "poiTagOperator" : "Betreiber: {operator}",
+  "poiTagBrand" : "Marke: {brand}"
 }

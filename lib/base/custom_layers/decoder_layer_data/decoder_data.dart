@@ -4,11 +4,13 @@ import 'package:stadtnavi_core/base/custom_layers/decoder_layer_data/bike_park_f
 import 'package:stadtnavi_core/base/custom_layers/decoder_layer_data/charging_feature_tile.dart';
 import 'package:stadtnavi_core/base/custom_layers/decoder_layer_data/city_bike_feature_tile.dart';
 import 'package:stadtnavi_core/base/custom_layers/decoder_layer_data/parking_feature_tile.dart';
+import 'package:stadtnavi_core/base/custom_layers/decoder_layer_data/pois_feature_tile.dart';
 import 'package:stadtnavi_core/base/custom_layers/decoder_layer_data/stop_feature_tile.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_park_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybike_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/poi_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
@@ -60,7 +62,11 @@ class ShowOverlappingData extends StatelessWidget {
                                         ? StopFeatureTile(
                                             element: keyValue,
                                           )
-                                        : Container(),
+                                        : keyValue is PoiFeature
+                                            ? PoisFeatureTile(
+                                                element: keyValue,
+                                              )
+                                            : Container(),
                   ),
                   const SizedBox(width: 5),
                   const Icon(Icons.arrow_forward_ios)
@@ -74,7 +80,6 @@ class ShowOverlappingData extends StatelessWidget {
     final keyString = (key as ValueKey).value.toString();
     int idx = keyString.indexOf(":");
     List keyValue = [keyString.substring(0, idx), keyString.substring(idx + 1)];
-
     switch (keyValue[0]) {
       case "Sharing":
         return StaticTileLayers.citybikeLayer.data[keyValue[1]];
@@ -97,7 +102,9 @@ class ShowOverlappingData extends StatelessWidget {
         return StaticTileLayers
             .stopsLayers[StopsLayerIds.subway]?.data[keyValue[1]];
       default:
-        return null;
+        return StaticTileLayers
+            .poisLayers[PoiCategoryEnum.fromSelfCode(keyValue[0])]
+            ?.data[keyValue[1]];
     }
   }
 }

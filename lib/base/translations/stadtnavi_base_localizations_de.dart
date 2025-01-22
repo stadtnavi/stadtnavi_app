@@ -473,4 +473,26 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String departureTimeInMinutes(Object minutes) {
     return '$minutes m';
   }
+
+  @override
+  String get poiTagWheelchair => 'Rollstuhlgerecht';
+
+  @override
+  String get poiTagOutdoor => 'Sitzplätze im Freien';
+
+  @override
+  String get poiTagDogs => 'Hunde erlaubt';
+
+  @override
+  String get poiTagWifi => 'WLAN';
+
+  @override
+  String poiTagOperator(Object operator) {
+    return 'Betreiber: $operator';
+  }
+
+  @override
+  String poiTagBrand(Object brand) {
+    return 'Marke: $brand';
+  }
 }

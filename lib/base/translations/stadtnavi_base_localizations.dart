@@ -922,6 +922,42 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'{minutes} min'**
   String departureTimeInMinutes(Object minutes);
+
+  /// No description provided for @poiTagWheelchair.
+  ///
+  /// In en, this message translates to:
+  /// **'Wheelchair accessible'**
+  String get poiTagWheelchair;
+
+  /// No description provided for @poiTagOutdoor.
+  ///
+  /// In en, this message translates to:
+  /// **'Outdoor seating'**
+  String get poiTagOutdoor;
+
+  /// No description provided for @poiTagDogs.
+  ///
+  /// In en, this message translates to:
+  /// **'Dogs allowed'**
+  String get poiTagDogs;
+
+  /// No description provided for @poiTagWifi.
+  ///
+  /// In en, this message translates to:
+  /// **'WiFi'**
+  String get poiTagWifi;
+
+  /// No description provided for @poiTagOperator.
+  ///
+  /// In en, this message translates to:
+  /// **'Operator: {operator}'**
+  String poiTagOperator(Object operator);
+
+  /// No description provided for @poiTagBrand.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand: {brand}'**
+  String poiTagBrand(Object brand);
 }
 
 class _StadtnaviBaseLocalizationDelegate extends LocalizationsDelegate<StadtnaviBaseLocalization> {
