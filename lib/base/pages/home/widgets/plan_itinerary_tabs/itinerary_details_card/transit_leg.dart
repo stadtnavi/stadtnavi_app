@@ -2,6 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:intl/intl.dart';
+import 'package:stadtnavi_core/base/models/othermodel/enums/alert_severity_level_type.dart';
+import 'package:stadtnavi_core/base/models/utils/alert_utils.dart';
+import 'package:stadtnavi_core/config_default.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
@@ -36,6 +39,12 @@ class TransitLeg extends StatelessWidget {
     final isTypeBikeRentalNetwork =
         leg.transportMode == TransportMode.bicycle &&
             leg.fromPlace?.bikeRentalStation != null;
+
+    final alerts = AlertUtils.getActiveLegAlerts(
+        leg, (leg.startTime.millisecondsSinceEpoch / 1000));
+    alerts.sort(AlertUtils.alertSeverityCompare);
+    final alert = alerts.firstOrNull;
+    final alertSeverityLevel = AlertUtils.getMaximumAlertSeverityLevel(alerts);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -74,6 +83,7 @@ class TransitLeg extends StatelessWidget {
                   ],
                 )
               : null,
+          alertSeverityLevel: alertSeverityLevel,
         ),
         if (TransportMode.carPool == leg.transportMode &&
             leg.route?.url != null)
@@ -175,8 +185,38 @@ class TransitLeg extends StatelessWidget {
             padding: const EdgeInsets.only(top: 5, left: 5),
             child: Text(
               '${leg.durationLeg(localizationBase)} (${leg.distanceString(localizationBase)})',
-              style: theme.primaryTextTheme.bodyLarge
-                  ?.copyWith(fontSize: 13, color:detailsColor?? Colors.grey[700]),
+              style: theme.primaryTextTheme.bodyLarge?.copyWith(
+                  fontSize: 13, color: detailsColor ?? Colors.grey[700]),
+            ),
+          ),
+        if (alertSeverityLevel == AlertSeverityLevelType.warning ||
+            alertSeverityLevel == AlertSeverityLevelType.severe ||
+            alertSeverityLevel == AlertSeverityLevelType.unknownseverity)
+          Container(
+            margin: const EdgeInsets.only(right: 10, top: 5, bottom: 5),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              decoration: BoxDecoration(
+                border: Border.all(width: 0.2),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Row(
+                children: [
+                  if (alertSeverityLevel != null)
+                    Container(
+                      margin: const EdgeInsets.only(right: 4),
+                      child: alertSeverityLevel.getServiceAlertIcon(size: 22),
+                    ),
+                  Expanded(
+                    child: Text(
+                      (ConfigDefault.showAlertHeader
+                              ? alert?.alertHeaderText
+                              : alert?.alertDescriptionText) ??
+                          "",
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         if (leg.intermediatePlaces != null &&

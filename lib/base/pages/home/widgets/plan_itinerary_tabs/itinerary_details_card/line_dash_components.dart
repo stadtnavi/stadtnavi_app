@@ -5,7 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/icons_transport_modes.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/other_icons.dart';
+import 'package:stadtnavi_core/base/models/othermodel/enums/alert_severity_level_type.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
+import 'package:stadtnavi_core/base/models/utils/alert_utils.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/offer_carpool/offer_carpool_screen.dart';
@@ -477,6 +479,10 @@ class TransportDash extends StatelessWidget {
             date: leg.startTimeString,
             location: leg.fromPlace?.name ?? '',
             color: leg.primaryColor,
+            alertSeverityLevel: AlertUtils.getActiveAlertSeverityLevel(
+              leg.fromPlace?.stopEntity?.alerts,
+              leg.startTime.millisecondsSinceEpoch / 1000,
+            ),
           ),
         SeparatorPlace(
           color: leg.primaryColor,
@@ -501,6 +507,10 @@ class TransportDash extends StatelessWidget {
             date: leg.endTimeString.toString(),
             location: showAfterText ? '' : leg.toPlace?.name ?? '',
             color: leg.primaryColor,
+            alertSeverityLevel: AlertUtils.getActiveAlertSeverityLevel(
+              leg.toPlace?.stopEntity?.alerts,
+              leg.startTime.millisecondsSinceEpoch / 1000,
+            ),
           ),
       ],
     );
@@ -774,6 +784,7 @@ class DashLinePlace extends StatelessWidget {
   final String? subtitle;
   final Widget? child;
   final Color? color;
+  final AlertSeverityLevelType? alertSeverityLevel;
 
   const DashLinePlace({
     Key? key,
@@ -782,6 +793,7 @@ class DashLinePlace extends StatelessWidget {
     this.subtitle,
     this.child,
     this.color,
+    this.alertSeverityLevel,
   }) : super(key: key);
 
   @override
@@ -830,12 +842,25 @@ class DashLinePlace extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  location,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        location,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    if (alertSeverityLevel != null)
+                      Container(
+                        margin: const EdgeInsets.only(left: 4),
+                        child:
+                            alertSeverityLevel!.getServiceAlertIcon(size: 16),
+                      ),
+                  ],
                 ),
                 if (subtitle != null)
                   Text(

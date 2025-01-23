@@ -142,7 +142,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                         Tab(
                           child: Row(
                             children: [
-                              alertIcon(),
+                              cautionNoExclNoStrokeIcon(),
                               const SizedBox(width: 4),
                               Text(languageCode == 'en'
                                   ? "Disruptions"

@@ -52,7 +52,7 @@ class StopMarkerModal extends StatelessWidget {
                       Tab(
                         child: Row(
                           children: [
-                            alertIcon(),
+                            cautionNoExclNoStrokeIcon(),
                             const SizedBox(width: 4),
                             Text(languageCode == 'en'
                                 ? "Disruptions"

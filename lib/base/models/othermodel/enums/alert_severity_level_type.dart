@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_icon.dart';
+import 'package:stadtnavi_core/base/pages/home/services/global_alerts/models/icons.dart';
+
 enum AlertSeverityLevelType { unknownseverity, info, warning, severe }
 
 AlertSeverityLevelType getAlertSeverityLevelTypeByString(
@@ -16,4 +20,52 @@ extension AlertSeverityLevelTypeExtension on AlertSeverityLevelType {
     AlertSeverityLevelType.severe: 'SEVERE'
   };
   String get name => names[this] ?? 'UNKNOWN_SEVERITY';
+
+  static Widget? _images(AlertSeverityLevelType transportMode, Color? color) {
+    switch (transportMode) {
+      case AlertSeverityLevelType.unknownseverity:
+        return null;
+      case AlertSeverityLevelType.info:
+        return infoSvg();
+      case AlertSeverityLevelType.warning:
+        return null;
+      case AlertSeverityLevelType.severe:
+        return cautionSvg(
+          color: Colors.white,
+          backColor: const Color(0xFFDC0451),
+        );
+      default:
+        return null;
+    }
+  }
+
+  Widget getServiceAlertIcon({Color? color, double size = 24}) {
+    return Container(
+      width: size,
+      height: size,
+      padding: const EdgeInsets.all(2),
+      child: FittedBox(
+        child: _images(
+            this == AlertSeverityLevelType.info
+                ? AlertSeverityLevelType.info
+                : AlertSeverityLevelType.severe,
+            color),
+      ),
+    );
+  }
+
+  Widget getWithBigCautionIcon({Color? color, double size = 24}) {
+    return Container(
+      width: size,
+      height: size,
+      padding: const EdgeInsets.all(2),
+      child: FittedBox(
+        child: this == AlertSeverityLevelType.info
+            ? infoSvg()
+            : cautionNoExclIcon(
+                color: const Color(0xFFDC0451),
+              ),
+      ),
+    );
+  }
 }

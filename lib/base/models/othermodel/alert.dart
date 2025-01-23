@@ -29,6 +29,7 @@ class Alert {
   final AlertSeverityLevelType? alertSeverityLevel;
   final double? effectiveStartDate;
   final double? effectiveEndDate;
+  final List<String>? entities;
 
   const Alert({
     this.id,
@@ -51,6 +52,7 @@ class Alert {
     this.alertSeverityLevel,
     this.effectiveStartDate,
     this.effectiveEndDate,
+    this.entities,
   });
 
   factory Alert.fromJson(Map<String, dynamic> json) => Alert(
@@ -75,14 +77,14 @@ class Alert {
                 (x) => PatternOtp.fromJson(x as Map<String, dynamic>),
               ))
             : null,
-        alertHeaderText: json['alertHeaderText'].toString(),
+        alertHeaderText: json['alertHeaderText'],
         alertHeaderTextTranslations: json['alertHeaderTextTranslations'] != null
             ? List<TranslatedString>.from(
                 (json["alertHeaderTextTranslations"] as List<dynamic>).map(
                 (x) => TranslatedString.fromJson(x as Map<String, dynamic>),
               ))
             : null,
-        alertDescriptionText: json['alertDescriptionText'].toString(),
+        alertDescriptionText: json['alertDescriptionText'],
         alertDescriptionTextTranslations:
             json['alertDescriptionTextTranslations'] != null
                 ? List<TranslatedString>.from(
@@ -105,6 +107,11 @@ class Alert {
         effectiveStartDate:
             double.tryParse(json['effectiveStartDate'].toString()),
         effectiveEndDate: double.tryParse(json['effectiveEndDate'].toString()),
+        entities: json['entities'] != null
+            ? List<String>.from((json["entities"] as List<dynamic>).map(
+                (x) => x["__typename"],
+              ))
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -139,5 +146,6 @@ class Alert {
         'alertSeverityLevel': alertSeverityLevel?.name,
         'effectiveStartDate': effectiveStartDate,
         'effectiveEndDate': effectiveEndDate,
+        'entities': entities?.map((e) => {"__typename": e}).toList(),
       };
 }

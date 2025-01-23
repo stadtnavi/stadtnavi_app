@@ -51,12 +51,12 @@ class AlertStopCard extends StatelessWidget {
                   SizedBox(
                     width: 20,
                     height: 20,
-                    child: alertIcon(color: Colors.white),
+                    child: cautionNoExclNoStrokeIcon(color: Colors.white),
                   ),
                   SizedBox(
                     width: 16,
                     height: 16,
-                    child: alertIcon(),
+                    child: cautionNoExclNoStrokeIcon(),
                   ),
                 ]),
               ),
