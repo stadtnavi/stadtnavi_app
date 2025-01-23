@@ -22,6 +22,7 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
       color: Colors.grey,
     ),
     layers: [
+      StaticTileLayers.stopsLayers[StopsLayerIds.funicular]!,
       StaticTileLayers.stopsLayers[StopsLayerIds.bus]!,
       StaticTileLayers.stopsLayers[StopsLayerIds.subway]!,
       StaticTileLayers.stopsLayers[StopsLayerIds.rail]!,
@@ -73,8 +74,9 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
     layers: [
       StaticTileLayers.stopsLayers[StopsLayerIds.carpool]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.scooter]!,
+      StaticTileLayers.poisLayers[PoiCategoryEnum.cargoBicycle]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.bicycle]!,
-      StaticTileLayers.citybikeLayer,
+      // StaticTileLayers.citybikeLayer,
       StaticTileLayers.poisLayers[PoiCategoryEnum.car]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.taxi]!,
     ],
