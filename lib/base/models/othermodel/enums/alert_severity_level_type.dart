@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_icon.dart';
 import 'package:stadtnavi_core/base/pages/home/services/global_alerts/models/icons.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 
 enum AlertSeverityLevelType { unknownseverity, info, warning, severe }
 
@@ -19,7 +20,25 @@ extension AlertSeverityLevelTypeExtension on AlertSeverityLevelType {
     AlertSeverityLevelType.warning: 'WARNING',
     AlertSeverityLevelType.severe: 'SEVERE'
   };
+
   String get name => names[this] ?? 'UNKNOWN_SEVERITY';
+
+  String translateValue(
+    StadtnaviBaseLocalization localization,
+  ) {
+    switch (this) {
+      case AlertSeverityLevelType.unknownseverity:
+        return localization.itineraryDetailsRouteHasInfoAlert;
+      case AlertSeverityLevelType.info:
+        return localization.itineraryDetailsRouteHasSevereAlert;
+      case AlertSeverityLevelType.warning:
+        return localization.itineraryDetailsRouteHasUnknownAlert;
+      case AlertSeverityLevelType.severe:
+        return localization.itineraryDetailsRouteHasWarningAlert;
+      default:
+        return 'typeError';
+    }
+  }
 
   static Widget? _images(AlertSeverityLevelType transportMode, Color? color) {
     switch (transportMode) {

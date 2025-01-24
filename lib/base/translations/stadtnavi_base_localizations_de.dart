@@ -473,4 +473,16 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String departureTimeInMinutes(Object minutes) {
     return '$minutes m';
   }
+
+  @override
+  String get itineraryDetailsRouteHasInfoAlert => 'Route enthält Warnungen.';
+
+  @override
+  String get itineraryDetailsRouteHasSevereAlert => 'Route enthält Störungen.';
+
+  @override
+  String get itineraryDetailsRouteHasUnknownAlert => 'Route enthält Störungen.';
+
+  @override
+  String get itineraryDetailsRouteHasWarningAlert => 'Route enthält Störungen.';
 }

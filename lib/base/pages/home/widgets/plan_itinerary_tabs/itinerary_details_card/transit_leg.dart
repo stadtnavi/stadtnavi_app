@@ -288,6 +288,9 @@ class TransitLeg extends StatelessWidget {
               ],
             ),
           ),
+        Semantics(
+          value: alertSeverityLevel?.translateValue(localization),
+        ),
       ],
     );
   }

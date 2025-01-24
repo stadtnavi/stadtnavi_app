@@ -331,5 +331,9 @@
   "stopListUpdateSrInstructions": "Departure times for each stop will update in real time.",
   "swipeSrNewTabOpened": "Tab {number} opened.",
   "tripCo2EmissionsSr": "Carbondioxide emissions of the journey",
-  "departureTimeInMinutes": "{minutes} min"
+  "departureTimeInMinutes": "{minutes} min",
+  "itineraryDetailsRouteHasInfoAlert": "Route has alerts.",
+  "itineraryDetailsRouteHasSevereAlert": "Route has disruptions.",
+  "itineraryDetailsRouteHasUnknownAlert": "Route has disruptions.",
+  "itineraryDetailsRouteHasWarningAlert": "Route has disruptions."
 }

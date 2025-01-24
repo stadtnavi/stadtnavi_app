@@ -330,5 +330,9 @@
   "stopListUpdateSrInstructions": "Abfahrtszeiten für jede Haltestelle werden in Echtzeit angezeigt.",
   "swipeSrNewTabOpened": "Tab {number} geöffnet.",
   "tripCo2EmissionsSr": "Kohlenstoffdioxid-Emissionen der Reise",
-  "departureTimeInMinutes": "{minutes} m"
+  "departureTimeInMinutes": "{minutes} m",
+  "itineraryDetailsRouteHasInfoAlert": "Route enthält Warnungen.",
+  "itineraryDetailsRouteHasSevereAlert": "Route enthält Störungen.",
+  "itineraryDetailsRouteHasUnknownAlert": "Route enthält Störungen.",
+  "itineraryDetailsRouteHasWarningAlert": "Route enthält Störungen."
 }
