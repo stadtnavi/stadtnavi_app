@@ -86,7 +86,7 @@ class GraphQLPlanRepository {
     if (planAdvancedData.hasException && planAdvancedData.data == null) {
       throw planAdvancedData.exception!.graphqlErrors.isNotEmpty
           ? Exception("Bad request")
-          : Exception("Internet no connection");
+          : Exception("Error connection");
     }
     if (planAdvancedData.source?.isEager ?? false) {
       await Future.delayed(const Duration(milliseconds: 200));
@@ -194,7 +194,7 @@ class GraphQLPlanRepository {
     if (walkBikePlanData.hasException && walkBikePlanData.data == null) {
       throw walkBikePlanData.exception!.graphqlErrors.isNotEmpty
           ? Exception("Bad request")
-          : Exception("Internet no connection");
+          : Exception("Error connection");
     }
     final modesTransportData = ModesTransport.fromJson(walkBikePlanData.data!);
 

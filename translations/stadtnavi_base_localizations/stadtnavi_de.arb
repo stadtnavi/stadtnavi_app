@@ -334,5 +334,11 @@
   "itineraryDetailsRouteHasInfoAlert": "Route enthält Warnungen.",
   "itineraryDetailsRouteHasSevereAlert": "Route enthält Störungen.",
   "itineraryDetailsRouteHasUnknownAlert": "Route enthält Störungen.",
-  "itineraryDetailsRouteHasWarningAlert": "Route enthält Störungen."
+  "itineraryDetailsRouteHasWarningAlert": "Route enthält Störungen.",
+  "poiTagWheelchair": "Rollstuhlgerecht",
+  "poiTagOutdoor" : "Sitzplätze im Freien",
+  "poiTagDogs" : "Hunde erlaubt",
+  "poiTagWifi" : "WLAN",
+  "poiTagOperator" : "Betreiber: {operator}",
+  "poiTagBrand" : "Marke: {brand}"
 }

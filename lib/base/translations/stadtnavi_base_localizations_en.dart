@@ -485,4 +485,24 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String get itineraryDetailsRouteHasWarningAlert => 'Route has disruptions.';
+  String get poiTagWheelchair => 'Wheelchair accessible';
+
+  @override
+  String get poiTagOutdoor => 'Outdoor seating';
+
+  @override
+  String get poiTagDogs => 'Dogs allowed';
+
+  @override
+  String get poiTagWifi => 'WiFi';
+
+  @override
+  String poiTagOperator(Object operator) {
+    return 'Operator: $operator';
+  }
+
+  @override
+  String poiTagBrand(Object brand) {
+    return 'Brand: $brand';
+  }
 }
