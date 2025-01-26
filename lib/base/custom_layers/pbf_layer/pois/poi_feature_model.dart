@@ -159,13 +159,17 @@ enum PoiCategoryEnum {
     codes: ["cycle_network"],
   ),
   bikeShops(
-    selfCode: "bike_shop",
-    codes: ["bike_shop"],
+    selfCode: "bike_shops_rental",
+    codes: ["bike_shops_rental","bike_shop","bike_rental"],
   ),
-  bikeRental(
-    selfCode: "bike_rental",
-    codes: ["bike_rental"],
-  ),
+  // bikeShops(
+  //   selfCode: "bike_shop",
+  //   codes: ["bike_shop"],
+  // ),
+  // bikeRental(
+  //   selfCode: "bike_rental",
+  //   codes: ["bike_rental"],
+  // ),
   weatherStations(
     selfCode: "weatherStations",
     codes: ["weatherStations"],

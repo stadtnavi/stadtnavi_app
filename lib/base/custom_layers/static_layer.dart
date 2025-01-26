@@ -19,6 +19,7 @@ class StaticTileLayers {
     StopsLayerIds.rail: StopsLayer(StopsLayerIds.rail, '4'),
     StopsLayerIds.carpool: StopsLayer(StopsLayerIds.carpool, '4'),
     StopsLayerIds.subway: StopsLayer(StopsLayerIds.subway, '4'),
+    StopsLayerIds.funicular: StopsLayer(StopsLayerIds.funicular, '4'),
   };
   static Map<PoiCategoryEnum, PoisLayer> poisLayers = {
     for (var value in PoiCategoryEnum.values) value: PoisLayer(value, "3")
