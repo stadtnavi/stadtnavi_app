@@ -9,9 +9,15 @@ const stopAlertsQuery = r'''
 const routeAlertsQuery = r'''
   query routeRoutes_RoutePage_Query(
     $routeId: String!
+    $patternId: String!
   ) {
     route(id: $routeId) {
-      ...RoutePage_route
+     ...RouteAlertsContainer_route
+     id
+    }
+    pattern(id: $patternId) {
+      ...RouteAlertsContainer_pattern_19b1FI
+      id
     }
   }
 ''';

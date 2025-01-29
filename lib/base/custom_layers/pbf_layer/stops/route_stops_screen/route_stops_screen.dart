@@ -8,7 +8,6 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_sc
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_icon.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/models_otp/pattern.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/stoptime.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/crop_button.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
@@ -20,10 +19,16 @@ import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:trufi_core/base/widgets/custom_scrollable_container.dart';
 
 class RoutesStopScreen extends StatefulWidget {
-  final Stoptime stopTime;
+  final String routeShortName;
+  final String routeGtfsId;
+  final String patternCode;
+  final TransportMode? transportMode;
   const RoutesStopScreen({
     Key? key,
-    required this.stopTime,
+    required this.routeShortName,
+    required this.routeGtfsId,
+    required this.patternCode,
+    required this.transportMode,
   }) : super(key: key);
 
   @override
@@ -71,10 +76,9 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
       appBar: AppBar(
         title: Row(
           children: [
-            Text(getTransportMode(
-                    mode: widget.stopTime.trip?.route?.mode?.name ?? '')
+            Text(getTransportMode(mode: widget.transportMode?.name ?? '')
                 .getTranslate(localization)),
-            Text(' - ${widget.stopTime.trip?.route?.shortName ?? ''}'),
+            Text(' - ${widget.routeShortName}'),
           ],
         ),
       ),
@@ -141,6 +145,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                         Tab(text: languageCode == 'en' ? "Stops" : "Jetzt"),
                         Tab(
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               cautionNoExclNoStrokeIcon(),
                               const SizedBox(width: 4),
@@ -167,7 +172,8 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                             },
                           ),
                           RouteDisruptionAlertsScreen(
-                            routeId: widget.stopTime.trip?.route?.gtfsId ?? '',
+                            routeId: widget.routeGtfsId,
+                            patternId: widget.patternCode,
                           ),
                         ],
                       ),
@@ -192,8 +198,7 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
       fetchError = null;
       loading = true;
     });
-    await LayersRepository.fetchStopsRoute(
-            widget.stopTime.trip?.pattern?.code ?? "")
+    await LayersRepository.fetchStopsRoute(widget.patternCode)
         .then((value) async {
       if (mounted) {
         setState(() {

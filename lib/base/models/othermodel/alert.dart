@@ -31,6 +31,9 @@ class Alert {
   final double? effectiveEndDate;
   final List<String>? entities;
 
+  // Custom field
+  final String? sourceAlert;
+
   const Alert({
     this.id,
     this.alertId,
@@ -53,6 +56,7 @@ class Alert {
     this.effectiveStartDate,
     this.effectiveEndDate,
     this.entities,
+    this.sourceAlert,
   });
 
   factory Alert.fromJson(Map<String, dynamic> json) => Alert(
@@ -112,6 +116,7 @@ class Alert {
                 (x) => x["__typename"],
               ))
             : null,
+        sourceAlert: json['sourceAlert'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -147,5 +152,58 @@ class Alert {
         'effectiveStartDate': effectiveStartDate,
         'effectiveEndDate': effectiveEndDate,
         'entities': entities?.map((e) => {"__typename": e}).toList(),
+        'sourceAlert': sourceAlert,
       };
+
+  Alert copyWith({
+    String? id,
+    String? alertId,
+    int? alertHash,
+    String? feed,
+    Agency? agency,
+    RouteOtp? route,
+    Trip? trip,
+    Stop? stop,
+    List<PatternOtp>? patterns,
+    String? alertHeaderText,
+    List<TranslatedString>? alertHeaderTextTranslations,
+    String? alertDescriptionText,
+    List<TranslatedString>? alertDescriptionTextTranslations,
+    String? alertUrl,
+    List<TranslatedString>? alertUrlTranslations,
+    AlertEffectType? alertEffect,
+    AlertCauseType? alertCause,
+    AlertSeverityLevelType? alertSeverityLevel,
+    double? effectiveStartDate,
+    double? effectiveEndDate,
+    List<String>? entities,
+    String? sourceAlert,
+  }) {
+    return Alert(
+      id: id ?? this.id,
+      alertId: alertId ?? this.alertId,
+      alertHash: alertHash ?? this.alertHash,
+      feed: feed ?? this.feed,
+      agency: agency ?? this.agency,
+      route: route ?? this.route,
+      trip: trip ?? this.trip,
+      stop: stop ?? this.stop,
+      patterns: patterns ?? this.patterns,
+      alertHeaderText: alertHeaderText ?? this.alertHeaderText,
+      alertHeaderTextTranslations:
+          alertHeaderTextTranslations ?? this.alertHeaderTextTranslations,
+      alertDescriptionText: alertDescriptionText ?? this.alertDescriptionText,
+      alertDescriptionTextTranslations: alertDescriptionTextTranslations ??
+          this.alertDescriptionTextTranslations,
+      alertUrl: alertUrl ?? this.alertUrl,
+      alertUrlTranslations: alertUrlTranslations ?? this.alertUrlTranslations,
+      alertEffect: alertEffect ?? this.alertEffect,
+      alertCause: alertCause ?? this.alertCause,
+      alertSeverityLevel: alertSeverityLevel ?? this.alertSeverityLevel,
+      effectiveStartDate: effectiveStartDate ?? this.effectiveStartDate,
+      effectiveEndDate: effectiveEndDate ?? this.effectiveEndDate,
+      entities: entities ?? this.entities,
+      sourceAlert: sourceAlert ?? this.sourceAlert,
+    );
+  }
 }

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_feature_model.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_marker_modal/stop_marker_modal.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_enum.dart';
 
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/icons_transport_modes.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/other_icons.dart';
+import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
 import 'package:stadtnavi_core/base/models/othermodel/enums/alert_severity_level_type.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:stadtnavi_core/base/models/utils/alert_utils.dart';
@@ -472,6 +477,7 @@ class TransportDash extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final panelCubit = context.read<PanelCubit>();
     return Column(
       children: [
         if (showBeforeLine)
@@ -479,9 +485,37 @@ class TransportDash extends StatelessWidget {
             date: leg.startTimeString,
             location: leg.fromPlace?.name ?? '',
             color: leg.primaryColor,
-            alertSeverityLevel: AlertUtils.getActiveAlertSeverityLevel(
-              leg.fromPlace?.stopEntity?.alerts,
-              leg.startTime.millisecondsSinceEpoch / 1000,
+            alertSeverityIcon: AlertActionIcon.getActiveAlertSeverityLevel(
+              alerts: leg.fromPlace?.stopEntity?.alerts,
+              referenceUnixTime: leg.startTime.millisecondsSinceEpoch / 1000,
+              ontap: () {
+                panelCubit.setPanel(
+                  CustomMarkerPanel(
+                    panel: (
+                      context,
+                      _, {
+                      isOnlyDestination,
+                    }) =>
+                        StopMarkerModal(
+                      initialIndex: 2,
+                      stopFeature: StopFeature(
+                        code: leg.fromPlace?.stopEntity?.code,
+                        gtfsId: leg.fromPlace?.stopEntity?.gtfsId,
+                        name: leg.fromPlace?.stopEntity?.name,
+                        parentStation: null,
+                        patterns: null,
+                        platform: null,
+                        type: StopsLayerIdsIdsToString.fromTransportMode(
+                            leg.transportMode),
+                        position:
+                            LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon),
+                      ),
+                    ),
+                    positon: LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon),
+                    minSize: 130,
+                  ),
+                );
+              },
             ),
           ),
         SeparatorPlace(
@@ -507,12 +541,74 @@ class TransportDash extends StatelessWidget {
             date: leg.endTimeString.toString(),
             location: showAfterText ? '' : leg.toPlace?.name ?? '',
             color: leg.primaryColor,
-            alertSeverityLevel: AlertUtils.getActiveAlertSeverityLevel(
-              leg.toPlace?.stopEntity?.alerts,
-              leg.startTime.millisecondsSinceEpoch / 1000,
+            alertSeverityIcon: AlertActionIcon.getActiveAlertSeverityLevel(
+              alerts: leg.toPlace?.stopEntity?.alerts,
+              referenceUnixTime: leg.startTime.millisecondsSinceEpoch / 1000,
+              ontap: () {
+                panelCubit.setPanel(
+                  CustomMarkerPanel(
+                    panel: (
+                      context,
+                      _, {
+                      isOnlyDestination,
+                    }) =>
+                        StopMarkerModal(
+                      initialIndex: 2,
+                      stopFeature: StopFeature(
+                        code: leg.toPlace?.stopEntity?.code,
+                        gtfsId: leg.toPlace?.stopEntity?.gtfsId,
+                        name: leg.toPlace?.stopEntity?.name,
+                        parentStation: null,
+                        patterns: null,
+                        platform: null,
+                        type: StopsLayerIdsIdsToString.fromTransportMode(
+                            leg.transportMode),
+                        position: LatLng(leg.toPlace!.lat, leg.toPlace!.lon),
+                      ),
+                    ),
+                    positon: LatLng(leg.toPlace!.lat, leg.toPlace!.lon),
+                    minSize: 130,
+                  ),
+                );
+              },
             ),
           ),
       ],
+    );
+  }
+}
+
+class AlertActionIcon extends StatelessWidget {
+  static Widget? getActiveAlertSeverityLevel({
+    required List<Alert>? alerts,
+    required double? referenceUnixTime,
+    required VoidCallback ontap,
+  }) {
+    final activeAlertSeverityLevel = AlertUtils.getActiveAlertSeverityLevel(
+      alerts,
+      referenceUnixTime,
+    );
+    return activeAlertSeverityLevel != null
+        ? AlertActionIcon(
+            alertSeverityLevelType: activeAlertSeverityLevel,
+            ontap: ontap,
+          )
+        : null;
+  }
+
+  const AlertActionIcon({
+    super.key,
+    required this.alertSeverityLevelType,
+    required this.ontap,
+  });
+  final AlertSeverityLevelType alertSeverityLevelType;
+  final VoidCallback ontap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: ontap,
+      child: alertSeverityLevelType.getServiceAlertIcon(size: 16),
     );
   }
 }
@@ -784,7 +880,7 @@ class DashLinePlace extends StatelessWidget {
   final String? subtitle;
   final Widget? child;
   final Color? color;
-  final AlertSeverityLevelType? alertSeverityLevel;
+  final Widget? alertSeverityIcon;
 
   const DashLinePlace({
     Key? key,
@@ -793,7 +889,7 @@ class DashLinePlace extends StatelessWidget {
     this.subtitle,
     this.child,
     this.color,
-    this.alertSeverityLevel,
+    this.alertSeverityIcon,
   }) : super(key: key);
 
   @override
@@ -854,11 +950,10 @@ class DashLinePlace extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (alertSeverityLevel != null)
+                    if (alertSeverityIcon != null)
                       Container(
                         margin: const EdgeInsets.only(left: 4),
-                        child:
-                            alertSeverityLevel!.getServiceAlertIcon(size: 16),
+                        child: alertSeverityIcon,
                       ),
                   ],
                 ),

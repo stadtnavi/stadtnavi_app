@@ -126,15 +126,26 @@ abstract class AlertUtils {
   }
 
   static List<Alert> getActiveLegAlerts(
-      PlanItineraryLeg? leg, double legStartTime) {
+    PlanItineraryLeg? leg,
+    double legStartTime,
+  ) {
     if (leg == null) {
       return [];
     }
+    final routeAlerts = leg.route?.alerts?.map(
+      (e) => e.copyWith(sourceAlert: 'route-alert'),
+    );
+    final fromStopAlerts = leg.fromPlace?.stopEntity?.alerts?.map(
+      (e) => e.copyWith(sourceAlert: 'from-stop-alert'),
+    );
+    final toStopAlerts = leg.toPlace?.stopEntity?.alerts?.map(
+      (e) => e.copyWith(sourceAlert: 'to-stop-alert'),
+    );
 
     final List<Alert> serviceAlerts = [
-      ...leg.route?.alerts ?? [],
-      ...leg.fromPlace?.stopEntity?.alerts ?? [],
-      ...leg.toPlace?.stopEntity?.alerts ?? [],
+      ...routeAlerts ?? [],
+      ...fromStopAlerts ?? [],
+      ...toStopAlerts ?? [],
     ];
 
     return serviceAlerts

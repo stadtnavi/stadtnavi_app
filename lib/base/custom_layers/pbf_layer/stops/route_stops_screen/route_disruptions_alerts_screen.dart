@@ -3,12 +3,15 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/widgets/alert_
 
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/models_otp/alert.dart';
+import 'package:stadtnavi_core/base/models/othermodel/route.dart';
 
 class RouteDisruptionAlertsScreen extends StatefulWidget {
   final String routeId;
+  final String patternId;
   const RouteDisruptionAlertsScreen({
     Key? key,
     required this.routeId,
+    required this.patternId,
   }) : super(key: key);
 
   @override
@@ -19,6 +22,7 @@ class RouteDisruptionAlertsScreen extends StatefulWidget {
 class _RouteDisruptionAlertsScreenState
     extends State<RouteDisruptionAlertsScreen>
     with AutomaticKeepAliveClientMixin<RouteDisruptionAlertsScreen> {
+  RouteOtp? route;
   List<Alert>? alerts;
   // Map<String, List<TimeTableStop>>? stoptimesByDay;
 
@@ -41,10 +45,14 @@ class _RouteDisruptionAlertsScreenState
       fetchError = null;
       loading = true;
     });
-    await LayersRepository.routeAlerts(routeId: widget.routeId).then((value) {
+    await LayersRepository.routeAlerts(
+      routeId: widget.routeId,
+      patternId: widget.patternId,
+    ).then((value) {
       if (mounted) {
         setState(() {
-          alerts = value.alerts;
+          route = value.route;
+          alerts = value.pattern.alerts;
           loading = false;
         });
       }
@@ -77,15 +85,21 @@ class _RouteDisruptionAlertsScreenState
                     (e) => Column(
                       children: [
                         AlertStopCard(
-                          shortName: "43",
+                          shortName: route!.shortName ?? "",
                           startDateTime: DateTime.fromMillisecondsSinceEpoch(
                             e.effectiveStartDate!.toInt() * 1000,
                           ),
                           endDateTime: DateTime.fromMillisecondsSinceEpoch(
                             e.effectiveEndDate!.toInt() * 1000,
                           ),
-                          content: e.alertDescriptionTextTranslations?.firstOrNull?.text ?? "",
+                          content: e.alertDescriptionTextTranslations
+                                  ?.firstOrNull?.text ??
+                              "",
                           alertUrl: e.alertUrl,
+                          transportMode: route!.mode,
+                          transportColor: route?.color != null
+                              ? Color(int.tryParse('0xFF${route!.color}')!)
+                              : null,
                         ),
                         const Divider(
                           thickness: 1,

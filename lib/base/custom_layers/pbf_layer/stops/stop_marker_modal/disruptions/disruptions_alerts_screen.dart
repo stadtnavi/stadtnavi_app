@@ -78,7 +78,7 @@ class _DisruptionAlertsScreenState extends State<DisruptionAlertsScreen>
                       (e) => Column(
                         children: [
                           AlertStopCard(
-                            shortName: "42",
+                            shortName: null,
                             startDateTime: DateTime.fromMillisecondsSinceEpoch(
                               e.effectiveStartDate!.toInt() * 1000,
                             ),
@@ -87,6 +87,8 @@ class _DisruptionAlertsScreenState extends State<DisruptionAlertsScreen>
                             ),
                             content: e.alertDescriptionText ?? "",
                             alertUrl: e.alertUrl,
+                            transportMode: null,
+                            transportColor: null,
                           ),
                           const Divider(
                             thickness: 1,

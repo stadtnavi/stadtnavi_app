@@ -19,7 +19,7 @@ class RightNowScreen extends StatefulWidget {
 }
 
 class _RightNowScreenState extends State<RightNowScreen> {
-  List<Stoptime>? stoptimes;
+  List<StoptimeOtp>? stoptimes;
   int indexNextDay = -1;
   bool loading = true;
   String? fetchError;
@@ -72,7 +72,7 @@ class _RightNowScreenState extends State<RightNowScreen> {
               child: ListView.builder(
                 itemCount: stoptimes!.length,
                 itemBuilder: (contextBuilde, index) {
-                  final Stoptime stopTime = stoptimes![index];
+                  final StoptimeOtp stopTime = stoptimes![index];
                   return Column(
                     children: [
                       if (indexNextDay == index && index == 0)
@@ -114,7 +114,7 @@ class _TitleDay extends StatelessWidget {
     required this.stoptime,
   }) : super(key: key);
 
-  final Stoptime stoptime;
+  final StoptimeOtp stoptime;
 
   @override
   Widget build(BuildContext context) {

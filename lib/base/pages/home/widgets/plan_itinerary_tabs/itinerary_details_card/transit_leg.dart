@@ -2,9 +2,16 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_screen/route_stops_screen.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_feature_model.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_marker_modal/stop_marker_modal.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_enum.dart';
 import 'package:stadtnavi_core/base/models/othermodel/enums/alert_severity_level_type.dart';
 import 'package:stadtnavi_core/base/models/utils/alert_utils.dart';
 import 'package:stadtnavi_core/config_default.dart';
+import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
@@ -36,6 +43,7 @@ class TransitLeg extends StatelessWidget {
     final theme = Theme.of(context);
     final localizationBase = TrufiBaseLocalization.of(context);
     final localization = StadtnaviBaseLocalization.of(context);
+    final panelCubit = context.read<PanelCubit>();
     final isTypeBikeRentalNetwork =
         leg.transportMode == TransportMode.bicycle &&
             leg.fromPlace?.bikeRentalStation != null;
@@ -194,28 +202,107 @@ class TransitLeg extends StatelessWidget {
             alertSeverityLevel == AlertSeverityLevelType.unknownseverity)
           Container(
             margin: const EdgeInsets.only(right: 10, top: 5, bottom: 5),
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-              decoration: BoxDecoration(
-                border: Border.all(width: 0.2),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Row(
-                children: [
-                  if (alertSeverityLevel != null)
-                    Container(
-                      margin: const EdgeInsets.only(right: 4),
-                      child: alertSeverityLevel.getServiceAlertIcon(size: 22),
+            child: InkWell(
+              onTap: () {
+                final sourceAlert = alert?.sourceAlert;
+                if (sourceAlert == 'route-alert') {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BaseTrufiPage(
+                        child: RoutesStopScreen(
+                          routeShortName: leg.route?.shortName ?? '',
+                          routeGtfsId: leg.route?.gtfsId ?? '',
+                          patternCode: leg.trip?.pattern?.code ?? '',
+                          transportMode: leg.transportMode,
+                        ),
+                      ),
                     ),
-                  Expanded(
-                    child: Text(
-                      (ConfigDefault.showAlertHeader
-                              ? alert?.alertHeaderText
-                              : alert?.alertDescriptionText) ??
-                          "",
+                  );
+                } else if (sourceAlert == 'from-stop-alert') {
+                  panelCubit.setPanel(
+                    CustomMarkerPanel(
+                      panel: (
+                        context,
+                        _, {
+                        isOnlyDestination,
+                      }) =>
+                          StopMarkerModal(
+                        initialIndex: 2,
+                        stopFeature: StopFeature(
+                          code: leg.fromPlace?.stopEntity?.code,
+                          gtfsId: leg.fromPlace?.stopEntity?.gtfsId,
+                          name: leg.fromPlace?.stopEntity?.name,
+                          parentStation: null,
+                          patterns: null,
+                          platform: null,
+                          type: StopsLayerIdsIdsToString.fromTransportMode(
+                            leg.transportMode,
+                          ),
+                          position:
+                              LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon),
+                        ),
+                      ),
+                      positon: LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon),
+                      minSize: 130,
                     ),
-                  ),
-                ],
+                  );
+                } else if (sourceAlert == 'to-stop-alert') {
+                  panelCubit.setPanel(
+                    CustomMarkerPanel(
+                      panel: (
+                        context,
+                        _, {
+                        isOnlyDestination,
+                      }) =>
+                          StopMarkerModal(
+                        initialIndex: 2,
+                        stopFeature: StopFeature(
+                          code: leg.toPlace?.stopEntity?.code,
+                          gtfsId: leg.toPlace?.stopEntity?.gtfsId,
+                          name: leg.toPlace?.stopEntity?.name,
+                          parentStation: null,
+                          patterns: null,
+                          platform: null,
+                          type: StopsLayerIdsIdsToString.fromTransportMode(
+                            leg.transportMode,
+                          ),
+                          position: LatLng(leg.toPlace!.lat, leg.toPlace!.lon),
+                        ),
+                      ),
+                      positon: LatLng(leg.toPlace!.lat, leg.toPlace!.lon),
+                      minSize: 130,
+                    ),
+                  );
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 0.2),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Row(
+                  children: [
+                    if (alertSeverityLevel != null)
+                      Container(
+                        margin: const EdgeInsets.only(right: 4),
+                        child: alertSeverityLevel.getServiceAlertIcon(size: 22),
+                      ),
+                    Expanded(
+                      child: Text(
+                        (ConfigDefault.showAlertHeader
+                                ? alert?.alertHeaderText
+                                : alert?.alertDescriptionText) ??
+                            "",
+                      ),
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: theme.colorScheme.primary,
+                    )
+                  ],
+                ),
               ),
             ),
           ),

@@ -9,8 +9,12 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_icon.dar
 
 class StopMarkerModal extends StatelessWidget {
   final StopFeature stopFeature;
-  const StopMarkerModal({Key? key, required this.stopFeature})
-      : super(key: key);
+  final int initialIndex;
+  const StopMarkerModal({
+    Key? key,
+    required this.stopFeature,
+    this.initialIndex = 0,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +42,7 @@ class StopMarkerModal extends StatelessWidget {
         Expanded(
           child: DefaultTabController(
             length: 3,
+            initialIndex: initialIndex,
             child: Material(
               color: Colors.white,
               child: Column(
