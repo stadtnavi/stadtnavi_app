@@ -111,7 +111,7 @@ class PoisLayer extends CustomLayer {
         markerSize = null;
         break;
       case 16:
-        markerSize = null;
+        markerSize = 20;
         break;
       case 17:
         markerSize = 25;
@@ -185,7 +185,7 @@ class PoisLayer extends CustomLayer {
                       alignment: Alignment.center,
                       child: Container(
                         decoration: BoxDecoration(
-                          color:subCategoryData != null ? fromStringToColor( subCategoryData.color):Colors.blue,
+                          color:subCategoryData != null ? fromStringToColor( subCategoryData.backgroundColor):Colors.blue,
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
