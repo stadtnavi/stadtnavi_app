@@ -25,6 +25,8 @@ import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/utils/map_utils/trufi_map_utils.dart';
 import 'dart:math' as math;
 
+import 'package:wakelock_plus/wakelock_plus.dart';
+
 class NextStepContainer {
   final LatLng point;
   final Widget widget;
@@ -61,6 +63,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
   @override
   void initState() {
     super.initState();
+    WakelockPlus.enable();
     _compassSubscription = FlutterCompass.events!.listen((CompassEvent event) {
       setState(() {
         currentHeading = event.heading;
@@ -97,6 +100,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
   void dispose() {
     _compassSubscription?.cancel();
     _locationSubscription?.cancel();
+    WakelockPlus.disable();
     super.dispose();
   }
 
@@ -377,7 +381,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
                           point: lastPosition!,
                           alignment: Alignment.center,
                           child: Transform.rotate(
-                            angle: (currentHeading! * math.pi / 180),
+                            angle: ((currentHeading ?? 0) * math.pi / 180),
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100),
@@ -419,16 +423,21 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Container(child: Icon(Icons.warning,color: Colors.red,),margin: EdgeInsets.only(right: 10),),
+                          Container(
+                            child: Icon(
+                              Icons.warning,
+                              color: Colors.red,
+                            ),
+                            margin: EdgeInsets.only(right: 10),
+                          ),
                           Expanded(
-                            child: Text(widget.warning
-                               ),
+                            child: Text(widget.warning),
                           ),
                           IconButton(
                             onPressed: () {
                               _popupShown = false;
                             },
-                            icon:Icon(Icons.close),
+                            icon: Icon(Icons.close),
                           ),
                         ],
                       ),
