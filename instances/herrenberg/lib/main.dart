@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_app_installations/firebase_app_installations.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,8 @@ import 'package:stadtnavi_core/stadtnavi_hive_init.dart';
 import 'branding_herrenberg.dart';
 import 'static_layer.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await CertificatedLetsencryptAndroid.workAroundCertificated();
@@ -69,6 +73,19 @@ void main() async {
     url: 'https://track.dev.stadtnavi.eu/matomo.php',
   );
   await HBLayerData.loadHbLayers();
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  const DarwinInitializationSettings initializationSettingsIOS =
+      DarwinInitializationSettings();
+  const InitializationSettings initializationSettings =
+      InitializationSettings(iOS: initializationSettingsIOS);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  if (Platform.isIOS) {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
   runApp(
     StadtnaviApp(
       appLifecycleReactorHandler: LifecycleReactorHandlerNotifications(
@@ -105,6 +122,20 @@ void main() async {
       alertsFeedIds: const ['hbg'],
     ),
   );
+}
+
+Future<void> initializeNotifications() async {
+  const DarwinInitializationSettings initializationSettingsIOS =
+      DarwinInitializationSettings();
+
+  const InitializationSettings initializationSettings =
+      InitializationSettings(iOS: initializationSettingsIOS);
+
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+  if (Platform.isIOS) {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
 }
 
 Future<void> _migrationOldData() async {
