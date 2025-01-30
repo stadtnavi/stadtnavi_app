@@ -84,8 +84,9 @@ class ParkingMarkerModal extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                       isEnglishCode ? 'Weather station' : 'Wetterstation',
-                      style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                      isEnglishCode ? 'Weather station' : 'Wetterstation',
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       parkingFeature.address,
@@ -153,7 +154,6 @@ class ParkingMarkerModal extends StatelessWidget {
                   formatDateWithoutSeconds(
                       parkingFeature.updatedAt!, languageCode),
                   theme,
-                  isLastUpdate: true,
                 ),
             ],
           ),
@@ -170,15 +170,18 @@ class ParkingMarkerModal extends StatelessWidget {
     );
   }
 
-  Widget _buildRow(String label, String value, ThemeData theme,
-      {bool isLastUpdate = false}) {
+  Widget _buildRow(
+    String label,
+    String value,
+    ThemeData theme,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 3, 
+            flex: 3,
             child: Text(
               "$label:",
               style: TextStyle(
@@ -188,13 +191,12 @@ class ParkingMarkerModal extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: 5, 
+            flex: 5,
             child: Text(
               value,
               style: TextStyle(
-                color: theme.textTheme.bodyLarge?.color
-                    ?.withOpacity(isLastUpdate ? .5 : 1),
-                fontSize: isLastUpdate ? 12 : null,
+                color: theme.textTheme.bodyLarge?.color?.withOpacity(1),
+                fontSize: null,
               ),
             ),
           ),
