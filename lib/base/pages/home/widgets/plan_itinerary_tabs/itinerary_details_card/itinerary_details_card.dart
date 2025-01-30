@@ -4,7 +4,6 @@ import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubi
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/mode_tracker_screen.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinarary_card/itinerary_card.dart';
@@ -45,8 +44,6 @@ class ItineraryDetailsCard extends StatelessWidget {
     final mapRouteState = mapRouteCubit.state;
     final compresedLegs = itinerary.compressLegs;
     final sizeLegs = compresedLegs.length;
-    final mapModesCubit = context.watch<MapModesCubit>();
-    final mapModesState = mapModesCubit.state;
     return Scrollbar(
       child: SingleChildScrollView(
         controller: ScrollController(),
