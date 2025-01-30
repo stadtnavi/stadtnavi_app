@@ -1,3 +1,5 @@
+import 'package:trufi_core/base/models/enums/transport_mode.dart';
+
 enum StopsLayerIds {
   bus,
   carpool,
@@ -6,6 +8,12 @@ enum StopsLayerIds {
 }
 
 extension StopsLayerIdsIdsToString on StopsLayerIds {
+  static Map<TransportMode, StopsLayerIds> transportModeStops = {
+    TransportMode.bus: StopsLayerIds.bus,
+    TransportMode.carPool: StopsLayerIds.carpool,
+    TransportMode.rail: StopsLayerIds.rail,
+    TransportMode.subway: StopsLayerIds.subway,
+  };
   String enumToString() {
     final Map<StopsLayerIds, String> enumStrings = {
       StopsLayerIds.bus: "Bus stops",
@@ -14,6 +22,10 @@ extension StopsLayerIdsIdsToString on StopsLayerIds {
       StopsLayerIds.subway: "Metro Station",
     };
     return enumStrings[this] ?? "Bus stops";
+  }
+
+  static StopsLayerIds? fromTransportMode(TransportMode transportMode) {
+    return transportModeStops[transportMode];
   }
 }
 
