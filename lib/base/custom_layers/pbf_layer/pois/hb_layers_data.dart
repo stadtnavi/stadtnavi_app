@@ -1,14 +1,25 @@
 import 'dart:convert';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:http/http.dart' as http;
 
 abstract class HBLayerData {
   static Map<String, SubCategory> subCategoriesList = {};
   static Future<void> loadHbLayers() async {
-    final String jsonString = await rootBundle
-        .loadString('packages/stadtnavi_core/assets/hb-layers.json');
-    final data = jsonDecode(jsonString);
-    for (final categoryData in data) {
-      _loadCategory(categoryData);
+    const String url =
+        'https://services.stadtnavi.eu/layer-categories/herrenberg/layers.json';
+
+    try {
+      final response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        for (final categoryData in data) {
+          _loadCategory(categoryData);
+        }
+      } else {
+        throw Exception('Failed to load data: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error loading HB layers: $e');
     }
   }
 
