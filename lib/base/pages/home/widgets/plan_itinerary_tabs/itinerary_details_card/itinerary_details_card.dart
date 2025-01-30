@@ -78,6 +78,7 @@ class ItineraryDetailsCard extends StatelessWidget {
                             localizationSB.commonStart,
                             style: TextStyle(
                               color: theme.primaryColor,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           const Icon(
