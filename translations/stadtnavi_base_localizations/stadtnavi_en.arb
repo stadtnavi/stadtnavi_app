@@ -341,5 +341,9 @@
   "poiTagDogs" : "Dogs allowed",
   "poiTagWifi" : "WiFi",
   "poiTagOperator" : "Operator: {operator}",
-  "poiTagBrand" : "Brand: {brand}"
+  "poiTagBrand" : "Brand: {brand}",
+  "bicycleWalkFromTransitNoDuration": "Walk your bike off the {transportMode}",
+  "bicycleWalkToTransitNoDuration": "Walk your bike to the {transportMode}",
+  "instructionVehicleLightRail": "Rail",
+  "instructionVehicleMetro": "Metro"
 }
