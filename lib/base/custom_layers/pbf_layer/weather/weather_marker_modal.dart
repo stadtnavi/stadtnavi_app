@@ -80,9 +80,18 @@ class ParkingMarkerModal extends StatelessWidget {
                 child: SvgPicture.string(roadWeatherIcons),
               ),
               Expanded(
-                child: Text(
-                  parkingFeature.address,
-                  style: const TextStyle(fontSize: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                       isEnglishCode ? 'Weather station' : 'Wetterstation',
+                      style: const TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      parkingFeature.address,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
               ),
             ],
@@ -94,61 +103,57 @@ class ParkingMarkerModal extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (parkingFeature.airTemperatureC != null)
-                Text(
-                  "${isEnglishCode ? 'Air Temperature' : 'Lufttemperatur'}: ${parkingFeature.airTemperatureC} °C",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyLarge?.color,
-                  ),
+                _buildRow(
+                  isEnglishCode ? 'Air Temperature' : 'Lufttemperatur',
+                  "${parkingFeature.airTemperatureC} °C",
+                  theme,
                 ),
               if (parkingFeature.airPressureRelhPa != null)
-                Text(
-                  "${isEnglishCode ? 'Air Pressure' : 'Luftdruck'}: ${parkingFeature.airPressureRelhPa} hPa",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyLarge?.color,
-                  ),
+                _buildRow(
+                  isEnglishCode ? 'Air Pressure' : 'Luftdruck',
+                  "${parkingFeature.airPressureRelhPa} hPa",
+                  theme,
                 ),
               if (parkingFeature.moisturePercentage != null)
-                Text(
-                  "${isEnglishCode ? 'Humidity' : 'Luftfeuchtigkeit'}: ${parkingFeature.moisturePercentage} %",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyLarge?.color,
-                  ),
+                _buildRow(
+                  isEnglishCode ? 'Humidity' : 'Luftfeuchtigkeit',
+                  "${parkingFeature.moisturePercentage} %",
+                  theme,
                 ),
               if (parkingFeature.roadTemperatureC != null)
-                Text(
-                  "${isEnglishCode ? 'Road Temperature' : 'Straßentemperatur'}: ${parkingFeature.roadTemperatureC} °C",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyLarge?.color,
-                  ),
+                _buildRow(
+                  isEnglishCode ? 'Road Temperature' : 'Straßentemperatur',
+                  "${parkingFeature.roadTemperatureC} °C",
+                  theme,
                 ),
               if (parkingFeature.precipitationType != null)
-                Text(
-                  "${isEnglishCode ? 'Precipitation' : 'Niederschlag'}: ${_mapPrecipitationType(int.tryParse(parkingFeature.precipitationType!), isEnglishCode)}",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyLarge?.color,
-                  ),
+                _buildRow(
+                  isEnglishCode ? 'Precipitation' : 'Niederschlag',
+                  _mapPrecipitationType(
+                      int.tryParse(parkingFeature.precipitationType!),
+                      isEnglishCode),
+                  theme,
                 ),
               if (parkingFeature.roadCondition != null)
-                Text(
-                  "${isEnglishCode ? 'Road Condition' : 'Straßenzustand'}: ${_mapRoadCondition(int.tryParse(parkingFeature.roadCondition!), isEnglishCode)}",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyLarge?.color,
-                  ),
+                _buildRow(
+                  isEnglishCode ? 'Road Condition' : 'Straßenzustand',
+                  _mapRoadCondition(int.tryParse(parkingFeature.roadCondition!),
+                      isEnglishCode),
+                  theme,
                 ),
               if (parkingFeature.icePercentage != null)
-                Text(
-                  "${isEnglishCode ? 'Ice Percentage' : 'Eisprozent'}: ${parkingFeature.icePercentage} %",
-                  style: TextStyle(
-                    color: theme.textTheme.bodyLarge?.color,
-                  ),
+                _buildRow(
+                  isEnglishCode ? 'Ice Percentage' : 'Eisprozent',
+                  "${parkingFeature.icePercentage} %",
+                  theme,
                 ),
               if (parkingFeature.updatedAt != null)
-                Text(
-                  "\n${isEnglishCode ? 'Last Update' : 'Daten von'}: ${formatDateWithoutSeconds(parkingFeature.updatedAt!, languageCode)}",
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: theme.textTheme.bodyLarge?.color?.withOpacity(.5),
-                  ),
+                _buildRow(
+                  isEnglishCode ? 'Last Update' : 'Daten von',
+                  formatDateWithoutSeconds(
+                      parkingFeature.updatedAt!, languageCode),
+                  theme,
+                  isLastUpdate: true,
                 ),
             ],
           ),
@@ -162,6 +167,39 @@ class ParkingMarkerModal extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildRow(String label, String value, ThemeData theme,
+      {bool isLastUpdate = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 3, 
+            child: Text(
+              "$label:",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: theme.textTheme.bodyLarge?.color,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 5, 
+            child: Text(
+              value,
+              style: TextStyle(
+                color: theme.textTheme.bodyLarge?.color
+                    ?.withOpacity(isLastUpdate ? .5 : 1),
+                fontSize: isLastUpdate ? 12 : null,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
