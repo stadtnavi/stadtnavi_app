@@ -12,14 +12,18 @@ class FormFieldsPortrait extends StatelessWidget {
   const FormFieldsPortrait({
     Key? key,
     required this.onSaveFrom,
+    required this.onClearFrom,
     required this.onSaveTo,
+    required this.onClearTo,
     required this.onFetchPlan,
     required this.onReset,
     required this.onSwap,
   }) : super(key: key);
 
   final void Function(TrufiLocation) onSaveFrom;
+  final void Function() onClearFrom;
   final void Function(TrufiLocation) onSaveTo;
+  final void Function() onClearTo;
   final void Function() onFetchPlan;
   final void Function() onReset;
   final void Function() onSwap;
@@ -35,11 +39,13 @@ class FormFieldsPortrait extends StatelessWidget {
         LocationFormField(
           isOrigin: true,
           onSaved: onSaveFrom,
+          onClear: onClearFrom,
           hintText: localization.searchPleaseSelectOrigin,
           textLeadingImage: mapConfiguratiom.markersConfiguration.fromMarker,
           trailing: mapRouteState.isPlacesDefined
-              ? ResetButton(
-                  onReset: onReset,
+              ? SwapButton(
+                  orientation: Orientation.portrait,
+                  onSwap: onSwap,
                   color: theme.appBarTheme.foregroundColor!,
                 )
               : null,
@@ -48,14 +54,11 @@ class FormFieldsPortrait extends StatelessWidget {
         LocationFormField(
           isOrigin: false,
           onSaved: onSaveTo,
+          onClear: onClearTo,
           hintText: localization.searchPleaseSelectDestination,
           textLeadingImage: mapConfiguratiom.markersConfiguration.toMarker,
           trailing: mapRouteState.isPlacesDefined
-              ? SwapButton(
-                  orientation: Orientation.portrait,
-                  onSwap: onSwap,
-                  color: theme.appBarTheme.foregroundColor!,
-                )
+              ? Container()
               : null,
           value: mapRouteState.toPlace,
         ),
