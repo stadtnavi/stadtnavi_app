@@ -11,6 +11,7 @@ class LocationFormField extends StatefulWidget {
     required this.hintText,
     required this.textLeadingImage,
     required this.onSaved,
+    required this.onClear,
     required this.isOrigin,
     this.value,
     this.leading,
@@ -21,6 +22,7 @@ class LocationFormField extends StatefulWidget {
   final String hintText;
   final Widget textLeadingImage;
   final Function(TrufiLocation) onSaved;
+  final Function() onClear;
   final TrufiLocation? value;
   final Widget? leading;
   final Widget? trailing;
@@ -95,7 +97,7 @@ class _LocationFormFieldState extends State<LocationFormField> {
               child: Row(
                 children: <Widget>[
                   SizedBox(height: 24.0, child: widget.textLeadingImage),
-                  Flexible(
+                  Expanded(
                     child: SingleChildScrollView(
                       controller: _scrollController,
                       scrollDirection: Axis.horizontal,
@@ -116,7 +118,12 @@ class _LocationFormFieldState extends State<LocationFormField> {
                               ),
                       ),
                     ),
-                  )
+                  ),
+                  if(widget.value != null)
+                  GestureDetector(
+                    child: const Icon(Icons.close),
+                    onTap: widget.onClear,
+                  ),
                 ],
               ),
             ),
