@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/poi_feature_model.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
