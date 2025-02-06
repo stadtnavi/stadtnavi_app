@@ -47,6 +47,9 @@ class ItineraryDetailsCard extends StatelessWidget {
     final sizeLegs = compresedLegs.length;
     final mapModesCubit = context.watch<MapModesCubit>();
     final mapModesState = mapModesCubit.state;
+    final bikeParked = compresedLegs.any((leg) =>
+        leg.toPlace?.bikeParkEntity != null ||
+        leg.fromPlace?.bikeParkEntity != null);
     return Scrollbar(
       child: SingleChildScrollView(
         controller: ScrollController(),
@@ -162,12 +165,48 @@ class ItineraryDetailsCard extends StatelessWidget {
                 final itineraryLeg = compresedLegs[index];
 
                 PlanItineraryLeg? previousLeg;
+                PlanItineraryLeg? nextLeg;
+                if (index + 1 < compresedLegs.length) {
+                  nextLeg = compresedLegs[index + 1];
+                }
                 if (index > 0) {
                   previousLeg = compresedLegs[index - 1];
                 }
                 final bikePark = previousLeg?.toPlace?.bikeParkEntity;
                 final fromBikePark = itineraryLeg.toPlace?.bikeParkEntity;
+                final showBicycleWalkLeg = nextLeg?.mode == 'RAIL' ||
+                    nextLeg?.mode == 'SUBWAY' ||
+                    previousLeg?.mode == 'RAIL' ||
+                    previousLeg?.mode == 'SUBWAY';
 
+                PlanItineraryLeg? bicycleWalkLeg;
+                if (nextLeg?.mode == 'BICYCLE_WALK' && !bikeParked) {
+                  bicycleWalkLeg = nextLeg;
+                }
+                if (previousLeg?.mode == 'BICYCLE_WALK' && !bikeParked) {
+                  bicycleWalkLeg = previousLeg;
+                }
+                if (showBicycleWalkLeg && !bikeParked) {
+                  PlaceEntity? fromPlace = itineraryLeg.fromPlace;
+                  if ((previousLeg?.mode == 'RAIL' ||
+                          previousLeg?.mode == 'SUBWAY') &&
+                      itineraryLeg.fromPlace?.stopEntity == null) {
+                    fromPlace = previousLeg?.toPlace;
+                  }
+                  bicycleWalkLeg = PlanItineraryLeg(
+                    points: '',
+                    routeLongName: '',
+                    transitLeg: false,
+                    duration: const Duration(),
+                    startTime: DateTime(0),
+                    endTime: DateTime(0),
+                    distance: 0,
+                    rentedBike: itineraryLeg.rentedBike,
+                    toPlace: itineraryLeg.toPlace,
+                    fromPlace: fromPlace,
+                    mode: 'BICYCLE_WALK',
+                  );
+                }
                 return Column(
                   children: [
                     // fromDashLine
@@ -218,6 +257,7 @@ class ItineraryDetailsCard extends StatelessWidget {
                       BicycleDash(
                         itinerary: itinerary,
                         leg: itineraryLeg,
+                        bicycleWalkLeg: bicycleWalkLeg,
                         moveInMap: moveInMap,
                         showBeforeLine: index != 0 &&
                             (index > 0 && !compresedLegs[index - 1].transitLeg),
