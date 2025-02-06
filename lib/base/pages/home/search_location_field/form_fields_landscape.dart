@@ -12,14 +12,18 @@ class FormFieldsLandscape extends StatelessWidget {
   const FormFieldsLandscape({
     Key? key,
     required this.onSaveFrom,
+    required this.onClearFrom,
     required this.onSaveTo,
+    required this.onClearTo,
     required this.onFetchPlan,
     required this.onReset,
     required this.onSwap,
   }) : super(key: key);
 
   final void Function(TrufiLocation) onSaveFrom;
+  final void Function() onClearFrom;
   final void Function(TrufiLocation) onSaveTo;
+  final void Function() onClearTo;
   final void Function() onFetchPlan;
   final void Function() onReset;
   final void Function() onSwap;
@@ -38,6 +42,7 @@ class FormFieldsLandscape extends StatelessWidget {
             hintText: localization.searchPleaseSelectOrigin,
             textLeadingImage: mapConfiguratiom.markersConfiguration.fromMarker,
             onSaved: onSaveFrom,
+            onClear: onClearFrom,
             value: mapRouteState.fromPlace,
           ),
         ),
@@ -57,17 +62,9 @@ class FormFieldsLandscape extends StatelessWidget {
             hintText: localization.searchPleaseSelectDestination,
             textLeadingImage: mapConfiguratiom.markersConfiguration.toMarker,
             onSaved: onSaveTo,
+            onClear: onClearTo,
             value: mapRouteState.toPlace,
           ),
-        ),
-        SizedBox(
-          width: 40.0,
-          child: mapRouteState.isPlacesDefined
-              ? ResetButton(
-                  onReset: onReset,
-                  color: theme.appBarTheme.foregroundColor!,
-                )
-              : null,
         ),
       ],
     );

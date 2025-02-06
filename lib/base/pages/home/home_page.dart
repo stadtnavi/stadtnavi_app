@@ -143,6 +143,13 @@ class _HomePageState extends State<HomePage>
                 _callFetchPlan(context);
               },
             ),
+            onClearFrom: () async {
+              mapRouteCubit.resetFromPlaceKeepingToPlace();
+              if (mapRouteCubit.state.plan != null) {
+                panelCubit.cleanPanel();
+                await mapModesCubit.reset();
+              }
+            },
             onSaveTo: (TrufiLocation toPlace) =>
                 mapRouteCubit.setToPlace(toPlace).then(
               (value) {
@@ -154,6 +161,13 @@ class _HomePageState extends State<HomePage>
                 _callFetchPlan(context);
               },
             ),
+            onClearTo: () async {
+              mapRouteCubit.resetToPlaceKeepingFromPlace();
+              if (mapRouteCubit.state.plan != null) {
+                panelCubit.cleanPanel();
+                await mapModesCubit.reset();
+              }
+            },
             onBackButton: () {
               HomePage.scaffoldKey.currentState?.openDrawer();
             },
