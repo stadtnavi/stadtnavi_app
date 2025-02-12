@@ -33,35 +33,40 @@ class FormFieldsPortrait extends StatelessWidget {
     final localization = TrufiBaseLocalization.of(context);
     final mapRouteState = context.watch<MapRouteCubit>().state;
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        LocationFormField(
-          isOrigin: true,
-          onSaved: onSaveFrom,
-          onClear: onClearFrom,
-          hintText: localization.searchPleaseSelectOrigin,
-          textLeadingImage: mapConfiguratiom.markersConfiguration.fromMarker,
-          trailing: mapRouteState.isPlacesDefined
-              ? SwapButton(
-                  orientation: Orientation.portrait,
-                  onSwap: onSwap,
-                  color: theme.appBarTheme.foregroundColor!,
-                )
-              : null,
-          value: mapRouteState.fromPlace,
+    return Row(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              LocationFormField(
+                isOrigin: true,
+                onSaved: onSaveFrom,
+                onClear: onClearFrom,
+                hintText: localization.searchPleaseSelectOrigin,
+                textLeadingImage:
+                    mapConfiguratiom.markersConfiguration.fromMarker,
+                trailing:  null,
+                value: mapRouteState.fromPlace,
+              ),
+              LocationFormField(
+                isOrigin: false,
+                onSaved: onSaveTo,
+                onClear: onClearTo,
+                hintText: localization.searchPleaseSelectDestination,
+                textLeadingImage: mapConfiguratiom.markersConfiguration.toMarker,
+                trailing:  null,
+                value: mapRouteState.toPlace,
+              ),
+            ],
+          ),
         ),
-        LocationFormField(
-          isOrigin: false,
-          onSaved: onSaveTo,
-          onClear: onClearTo,
-          hintText: localization.searchPleaseSelectDestination,
-          textLeadingImage: mapConfiguratiom.markersConfiguration.toMarker,
-          trailing: mapRouteState.isPlacesDefined
-              ? Container()
-              : null,
-          value: mapRouteState.toPlace,
-        ),
+        if (mapRouteState.isPlacesDefined)
+          SwapButton(
+            orientation: Orientation.portrait,
+            onSwap: onSwap,
+            color: theme.appBarTheme.foregroundColor!,
+          )
       ],
     );
   }
