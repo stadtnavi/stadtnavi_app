@@ -32,14 +32,14 @@ class PoisLayer extends CustomLayer {
   }
 
   @override
-  List<Marker>? buildLayerMarkersPriority(int? zoom) {
+  List<Marker>? buildLayerMarkersPriority(int zoom) {
     double? markerSize;
     switch (zoom) {
       case 15:
-        markerSize = null;
+        markerSize = 20;
         break;
       case 16:
-        markerSize = null;
+        markerSize = 20;
         break;
       case 17:
         markerSize = 25;
@@ -48,7 +48,7 @@ class PoisLayer extends CustomLayer {
         markerSize = 30;
         break;
       default:
-        markerSize = zoom != null && zoom > 18 ? 35 : null;
+        markerSize = zoom > 18 ? 35 : null;
     }
     final markersList = _pbfMarkers.values.toList();
     // avoid vertical wrong overlapping
@@ -57,7 +57,13 @@ class PoisLayer extends CustomLayer {
     );
 
     return markerSize != null
-        ? markersList.map((element) {
+        ? markersList.where((element) {
+              final subCategoryData =
+                  HBLayerData.subCategoriesList[element.category3];
+              if (subCategoryData == null) return false;
+              if (subCategoryData.minZoom == null) return true;
+              return subCategoryData.minZoom! <= zoom;
+            }).map((element) {
             final subCategoryData =
                 HBLayerData.subCategoriesList[element.category3];
             return Marker(
@@ -86,16 +92,12 @@ class PoisLayer extends CustomLayer {
                       ),
                     );
                   },
-                   child: Container(
-                      padding: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                          color:subCategoryData != null? fromStringToColor( subCategoryData.backgroundColor):null,
-                          borderRadius: BorderRadius.circular(50)),
-                      child: subCategoryData != null &&
-                              subCategoryData.icon.isNotEmpty
-                          ? SvgPicture.string(subCategoryData.icon,color:fromStringToColor( subCategoryData.color),)
-                          : const Icon(Icons.error),
-                    ),
+                  child: subCategoryData != null &&
+                          subCategoryData.icon.isNotEmpty
+                      ? SvgPicture.string(
+                          subCategoryData.icon,
+                        )
+                      : const Icon(Icons.error),
                 );
               }),
             );
@@ -104,14 +106,14 @@ class PoisLayer extends CustomLayer {
   }
 
   @override
-  Widget buildLayerOptions(int? zoom) {
+  Widget buildLayerOptions(int zoom) {
     double? markerSize;
     switch (zoom) {
       case 15:
-        markerSize = null;
+        markerSize = 20;
         break;
       case 16:
-        markerSize = null;
+        markerSize = 25;
         break;
       case 17:
         markerSize = 25;
@@ -120,7 +122,7 @@ class PoisLayer extends CustomLayer {
         markerSize = 30;
         break;
       default:
-        markerSize = zoom != null && zoom > 18 ? 35 : null;
+        markerSize = zoom > 18 ? 35 : null;
     }
     final markersList = _pbfMarkers.values.toList();
     // avoid vertical wrong overlapping
@@ -129,7 +131,13 @@ class PoisLayer extends CustomLayer {
     );
     return MarkerLayer(
       markers: markerSize != null
-          ? markersList.map((element) {
+          ? markersList.where((element) {
+              final subCategoryData =
+                  HBLayerData.subCategoriesList[element.category3];
+              if (subCategoryData == null) return false;
+              if (subCategoryData.minZoom == null) return true;
+              return subCategoryData.minZoom! <= zoom;
+            }).map((element) {
               final subCategoryData =
                   HBLayerData.subCategoriesList[element.category3];
               return Marker(
@@ -157,55 +165,31 @@ class PoisLayer extends CustomLayer {
                         ),
                       );
                     },
-                    child: Container(
-                      padding: EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                        
-                          color:subCategoryData != null? fromStringToColor( subCategoryData.backgroundColor):null,
-                          borderRadius: BorderRadius.circular(50)),
-                      child: subCategoryData != null &&
-                              subCategoryData.icon.isNotEmpty
-                          ? SvgPicture.string(subCategoryData.icon,color:fromStringToColor( subCategoryData.color),)
-                          : const Icon(Icons.error),
-                    ),
+                    child: subCategoryData != null &&
+                            subCategoryData.icon.isNotEmpty
+                        ? SvgPicture.string(
+                            subCategoryData.icon,
+                          )
+                        : const Icon(Icons.error),
                   );
                 }),
               );
             }).toList()
-          : zoom != null && zoom > 11
-              ? markersList
-                  .map(
-                    (element) {
-              final subCategoryData =
-                  HBLayerData.subCategoriesList[element.category3];
-                      return Marker(
-                      height: 5,
-                      width: 5,
-                      point: element.position,
-                      alignment: Alignment.center,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color:subCategoryData != null ? fromStringToColor( subCategoryData.color):Colors.blue,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    );
-                    },
-                  )
-                  .toList()
-              : [],
+          : [],
     );
   }
-static Color? fromStringToColor(String colorString) {
-  try {
-    String hexColor = colorString.replaceAll("#", "");
-    if (hexColor.length == 6) hexColor = "FF$hexColor";
-    if (hexColor.length != 8) return Colors.black;
-    return Color(int.parse(hexColor, radix: 16));
-  } catch (e) {
-    return Colors.black;
+
+  static Color? fromStringToColor(String colorString) {
+    try {
+      String hexColor = colorString.replaceAll("#", "");
+      if (hexColor.length == 6) hexColor = "FF$hexColor";
+      if (hexColor.length != 8) return Colors.black;
+      return Color(int.parse(hexColor, radix: 16));
+    } catch (e) {
+      return Colors.black;
+    }
   }
-}
+
   @override
   Widget? buildLayerOptionsPriority(int zoom) {
     return null;
@@ -262,20 +246,11 @@ static Color? fromStringToColor(String colorString) {
   String? _getIcon() {
     final subCategoryData =
         HBLayerData.subCategoriesList[poiCategoryEnum.selfCode];
-    // if (subCategoryData == null) {
-    //   return Icon(
-    //     Icons.error,
-    //   );
-    // }
-    if (subCategoryData != null && subCategoryData.icon.isNotEmpty) {
-      return subCategoryData.icon;
+    if (subCategoryData != null && subCategoryData.svgMenu.isNotEmpty) {
+      return subCategoryData.svgMenu;
     } else {
-      for (final code in poiCategoryEnum.codes) {
-        final internalSubCategoryData = HBLayerData.subCategoriesList[code];
-        if (internalSubCategoryData != null &&
-            internalSubCategoryData.icon.isNotEmpty) {
-          return internalSubCategoryData.icon;
-        }
+      if (subCategoryData != null && subCategoryData.categories.isNotEmpty) {
+        return subCategoryData.categories.first.svgMenu;
       }
     }
   }

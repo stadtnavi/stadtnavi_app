@@ -340,5 +340,9 @@
   "poiTagDogs" : "Hunde erlaubt",
   "poiTagWifi" : "WLAN",
   "poiTagOperator" : "Betreiber: {operator}",
-  "poiTagBrand" : "Marke: {brand}"
+  "poiTagBrand" : "Marke: {brand}",
+  "bicycleWalkFromTransitNoDuration": "Steigen Sie mit dem Fahrrad aus dem {transportMode} aus",
+  "bicycleWalkToTransitNoDuration": "Schieben Sie ihr Fahrrad zum/zur {transportMode}",
+  "instructionVehicleLightRail": "Zug",
+  "instructionVehicleMetro": "U-Bahn"
 }

@@ -71,10 +71,16 @@ class MapRouteCubit extends Cubit<MapRouteState> {
     await updateMapRouteState(
         state.copyWithNullable(fromPlace: const Optional.value(null)));
   }
+  Future<void> resetFromPlaceKeepingToPlace() async {    
+    await updateMapRouteState(MapRouteState(toPlace: state.toPlace));
+  }
 
-  Future<void> resetToPlace() async {
+  Future<void> resetToPlace() async {    
     await updateMapRouteState(
         state.copyWithNullable(toPlace: const Optional.value(null)));
+  }
+  Future<void> resetToPlaceKeepingFromPlace() async {    
+    await updateMapRouteState(MapRouteState(fromPlace: state.fromPlace));
   }
 
   Future<void> removeInfoBox() async {

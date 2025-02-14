@@ -25,6 +25,7 @@ extension StopsLayerIdsIdsToString on StopsLayerIds {
       StopsLayerIds.rail: 'Train stations',
       StopsLayerIds.carpool: 'Carpool stops',
       StopsLayerIds.subway: 'Metro stations',
+      StopsLayerIds.funicular: 'Funiculars and cog railways',
     };
     return enumStrings[this] ?? 'Bus stops';
   }
@@ -35,6 +36,7 @@ extension StopsLayerIdsIdsToString on StopsLayerIds {
       StopsLayerIds.rail: 'Bahnhöfe',
       StopsLayerIds.carpool: 'Mitfahrpunkte',
       StopsLayerIds.subway: 'U-Bahnhöfe',
+      StopsLayerIds.funicular: 'Seil- und Zahnradbahnen',
     };
     return enumStrings[this] ?? 'Bushaltestellen';
   }

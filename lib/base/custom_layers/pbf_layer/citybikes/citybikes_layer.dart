@@ -330,8 +330,8 @@ class CityBikesLayer extends CustomLayer {
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
     return localeName == "en"
-        ? "Car, Bike & Cargo bike sharing"
-        : "Carsharing & Fahrrad- / Lastenradverleih";
+        ? "Bicycle sharing"
+        : "Bikesharing";
   }
 
   @override

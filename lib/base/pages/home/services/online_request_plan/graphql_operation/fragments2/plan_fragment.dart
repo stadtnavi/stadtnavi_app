@@ -159,6 +159,7 @@ fragment planFragment on Plan {
           name
           code
           platformCode
+          vehicleMode
           zoneId
           id
           alerts {

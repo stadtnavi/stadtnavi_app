@@ -8,6 +8,7 @@ import 'package:stadtnavi_core/base/custom_layers/local_json_layer/custom_marker
 import 'package:stadtnavi_core/base/custom_layers/local_json_layer/layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/custom_poi_icons.dart';
 
 final List<CustomLayerContainer> customLayersHerrenberg = [
   CustomLayerContainer(
@@ -19,6 +20,7 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
       color: Colors.grey,
     ),
     layers: [
+      StaticTileLayers.stopsLayers[StopsLayerIds.funicular]!,
       StaticTileLayers.stopsLayers[StopsLayerIds.bus]!,
       StaticTileLayers.stopsLayers[StopsLayerIds.subway]!,
       StaticTileLayers.stopsLayers[StopsLayerIds.rail]!,
@@ -45,7 +47,7 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
       ),
       StaticTileLayers.poisLayers[PoiCategoryEnum.cycleNetwork]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.bikeShops]!,
-      StaticTileLayers.poisLayers[PoiCategoryEnum.bikeRental]!,
+      // StaticTileLayers.poisLayers[PoiCategoryEnum.bikeRental]!,
       // StaticTileLayers.poisLayers[PoiCategoryEnum.weatherStations]!,
       StaticTileLayers.weatherLayer,
       // StaticTileLayers.poisLayers[PoiCategoryEnum.roadworks]!,
@@ -53,15 +55,15 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
       StaticTileLayers.cifsLayer,
       StaticTileLayers.poisLayers[PoiCategoryEnum.parkAndRide]!,
 
-      StaticTileLayers.chargingLayer,
       // StaticTileLayers.poisLayers[PoiCategoryEnum.chargingStations]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.gasStations]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.workshopsMv]!,
+      StaticTileLayers.chargingLayer,
     ],
   ),
   CustomLayerContainer(
     name: (context) => TrufiBaseLocalization.of(context).localeName == "en"
-        ? "Sharing Services"
+        ? "Sharing"
         : "Sharing-Angebote",
     icon: (context) => const Icon(
       Icons.bike_scooter,
@@ -69,7 +71,8 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
     ),
     layers: [
       StaticTileLayers.poisLayers[PoiCategoryEnum.scooter]!,
-      StaticTileLayers.poisLayers[PoiCategoryEnum.bicycle]!,
+      StaticTileLayers.poisLayers[PoiCategoryEnum.cargoBicycle]!,
+      // StaticTileLayers.poisLayers[PoiCategoryEnum.bicycle]!,
       StaticTileLayers.citybikeLayer,
       StaticTileLayers.poisLayers[PoiCategoryEnum.car]!,
       StaticTileLayers.stopsLayers[StopsLayerIds.carpool]!,
@@ -80,65 +83,54 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
     name: (context) => TrufiBaseLocalization.of(context).localeName == "en"
         ? "Leisure & Tourisms"
         : "Freizeit & Tourismus",
-    icon: (context) => const Icon(
-      Icons.travel_explore,
-      color: Colors.grey,
-    ),
+    icon: (context) => SvgPicture.string(CustomPoiIcons.iconLeisureTourism,color: Colors.grey,),
     layers: [
-      // TODO fix icon
-      // StaticTileLayers.poisLayers[PoiCategoryEnum.sights]!,
+      StaticTileLayers.poisLayers[PoiCategoryEnum.sights]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.restaurants]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.cafes]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.barsAndPubs]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.entertainmentArtsAndCulture]!,
-      StaticTileLayers.poisLayers[PoiCategoryEnum.sportsParksPlaygrounds]!,
+      StaticTileLayers.poisLayers[PoiCategoryEnum.benchesAndViewpoints]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.accommodation]!,
+      StaticTileLayers.poisLayers[PoiCategoryEnum.sportsParksPlaygrounds]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.benchesAndViewpoints]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.drinkingWaterAndFountains]!,
 
-      // StaticTileLayers.poisLayers[PoiCategoryEnum.toilets]!,
+      StaticTileLayers.poisLayers[PoiCategoryEnum.toilets]!,
       Layer(
         LayerIds.publicToilets,
         '3',
         url: 'https://data.mfdz.de/hbg/dt-layers/toilet.geojson',
         isOnline: true,
       ),
-      // StaticTileLayers.poisLayers[PoiCategoryEnum.loarawanGateways]!,
-      Layer(
-        LayerIds.lorawanGateways,
-        '3',
-        url: 'https://data.mfdz.de/hbg/dt-layers/lorawan-gateways.geojson',
-        isOnline: true,
-      ),
+      StaticTileLayers.poisLayers[PoiCategoryEnum.loarawanGateways]!,
+      // Layer(
+      //   LayerIds.lorawanGateways,
+      //   '3',
+      //   url: 'https://data.mfdz.de/hbg/dt-layers/lorawan-gateways.geojson',
+      //   isOnline: true,
+      // ),
     ],
   ),
   CustomLayerContainer(
     name: (context) => TrufiBaseLocalization.of(context).localeName == "en"
         ? "Shopping & Services"
         : "Besorgungen",
-    icon: (context) => const Icon(
-      Icons.travel_explore,
-      color: Colors.grey,
-    ),
+    icon: (context) => SvgPicture.string(CustomPoiIcons.iconShoppingServices,color: Colors.grey,),
     layers: [
       StaticTileLayers.poisLayers[PoiCategoryEnum.groceriesAndBeverages]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.shops]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.secondHandAndSharing]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.finance]!,
-
-      // TODO fix icon
-      // StaticTileLayers
-      //     .poisLayers[PoiCategoryEnum.postMailboxesAndDeliveryPoints]!,
+      StaticTileLayers
+          .poisLayers[PoiCategoryEnum.postMailboxesAndDeliveryPoints]!,
     ],
   ),
   CustomLayerContainer(
     name: (context) => TrufiBaseLocalization.of(context).localeName == "en"
         ? "Public Facilities"
         : "Öffentliche Einrichtungen",
-    icon: (context) => const Icon(
-      Icons.public,
-      color: Colors.grey,
-    ),
+    icon: (context) => SvgPicture.string(CustomPoiIcons.iconPublicFacilities,color: Colors.grey,),
     layers: [
       StaticTileLayers.poisLayers[PoiCategoryEnum.administrativeFacilities]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.policeFireDepartment]!,
@@ -151,16 +143,11 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
     name: (context) => TrufiBaseLocalization.of(context).localeName == "en"
         ? "Health & Social Services"
         : "Gesundheit & Soziales",
-    icon: (context) => const Icon(
-      Icons.health_and_safety,
-      color: Colors.grey,
-    ),
+    icon: (context) => SvgPicture.string(CustomPoiIcons.iconHealthSocialServices,color: Colors.grey,),
     layers: [
-      StaticTileLayers.poisLayers[PoiCategoryEnum.medicalServices]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.education]!,
-
-      // TODO fix icon
-      // StaticTileLayers.poisLayers[PoiCategoryEnum.schoolRouteMap]!,
+      StaticTileLayers.poisLayers[PoiCategoryEnum.schoolRouteMap]!,
+      StaticTileLayers.poisLayers[PoiCategoryEnum.medicalServices]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.socialFacilities]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.childrenAndYouth]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.religiousSites]!,

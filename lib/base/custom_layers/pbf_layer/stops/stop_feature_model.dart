@@ -26,6 +26,7 @@ class StopFeature {
   // ignore: prefer_constructors_over_static_methods
   static StopFeature? fromGeoJsonPoint(GeoJsonPoint? geoJsonPoint) {
     if (geoJsonPoint?.properties == null) return null;
+    if (geoJsonPoint?.properties!['type'] == null) return null;
     final properties = geoJsonPoint?.properties ?? <String, VectorTileValue>{};
 
     String? code = properties['code']?.dartStringValue;
@@ -35,12 +36,12 @@ class StopFeature {
     String? patterns = properties['patterns']?.dartStringValue;
     String? platform = properties['platform']?.dartStringValue;
     StopsLayerIds? type = properties['type'] != null
-        ? stopsLayerIdsstringToEnum(
-            properties['type']?.dartStringValue ?? '')
+        ? stopsLayerIdsstringToEnum(properties['type']?.dartStringValue ?? '')
         : null;
     if (type == StopsLayerIds.carpool && !(name ?? '').contains("P+M")) {
       type = null;
     }
+    if (type == null) return null;
     return StopFeature(
       code: code,
       gtfsId: gtfsId,

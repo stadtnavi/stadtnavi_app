@@ -505,4 +505,20 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String poiTagBrand(Object brand) {
     return 'Brand: $brand';
   }
+
+  @override
+  String bicycleWalkFromTransitNoDuration(Object transportMode) {
+    return 'Walk your bike off the $transportMode';
+  }
+
+  @override
+  String bicycleWalkToTransitNoDuration(Object transportMode) {
+    return 'Walk your bike to the $transportMode';
+  }
+
+  @override
+  String get instructionVehicleLightRail => 'Rail';
+
+  @override
+  String get instructionVehicleMetro => 'Metro';
 }
