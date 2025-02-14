@@ -93,7 +93,7 @@ class PoisLayer extends CustomLayer {
                           borderRadius: BorderRadius.circular(50)),
                       child: subCategoryData != null &&
                               subCategoryData.icon.isNotEmpty
-                          ? SvgPicture.string(subCategoryData.icon,color:fromStringToColor( subCategoryData.color),)
+                          ? SvgPicture.string(subCategoryData.icon,)
                           : const Icon(Icons.error),
                     ),
                 );
@@ -165,7 +165,7 @@ class PoisLayer extends CustomLayer {
                           borderRadius: BorderRadius.circular(50)),
                       child: subCategoryData != null &&
                               subCategoryData.icon.isNotEmpty
-                          ? SvgPicture.string(subCategoryData.icon,color:fromStringToColor( subCategoryData.color),)
+                          ? SvgPicture.string(subCategoryData.icon,)
                           : const Icon(Icons.error),
                     ),
                   );
@@ -262,20 +262,12 @@ static Color? fromStringToColor(String colorString) {
   String? _getIcon() {
     final subCategoryData =
         HBLayerData.subCategoriesList[poiCategoryEnum.selfCode];
-    // if (subCategoryData == null) {
-    //   return Icon(
-    //     Icons.error,
-    //   );
-    // }
-    if (subCategoryData != null && subCategoryData.icon.isNotEmpty) {
-      return subCategoryData.icon;
+    if (subCategoryData != null && subCategoryData.svgMenu.isNotEmpty) {
+      return subCategoryData.svgMenu;
     } else {
-      for (final code in poiCategoryEnum.codes) {
-        final internalSubCategoryData = HBLayerData.subCategoriesList[code];
-        if (internalSubCategoryData != null &&
-            internalSubCategoryData.icon.isNotEmpty) {
-          return internalSubCategoryData.icon;
-        }
+      if(subCategoryData != null &&subCategoryData.categories.isNotEmpty){
+      return subCategoryData.categories.first.svgMenu;
+
       }
     }
   }

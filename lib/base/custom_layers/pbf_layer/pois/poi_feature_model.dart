@@ -97,6 +97,7 @@ class PoiFeature {
     final String? swimmingPool = properties['swimming_pool']?.dartStringValue;
     final String? website = properties['website']?.dartStringValue;
     final String? wheelchair = properties['wheelchair']?.dartStringValue;
+    final poiEnum=PoiCategoryEnum.fromCode(category1)??PoiCategoryEnum.fromCode(category2)??PoiCategoryEnum.fromCode(category3);
     return PoiFeature(
       geoJsonPoint: geoJsonPoint,
       id: id ?? '',
@@ -124,7 +125,7 @@ class PoiFeature {
       swimmingPool: swimmingPool,
       website: website,
       wheelchair: wheelchair,
-      poiEnum: PoiCategoryEnum.fromCode(category3),
+      poiEnum: poiEnum!,
       position: LatLng(
         geoJsonPoint.geometry?.coordinates[1] ?? 0,
         geoJsonPoint.geometry?.coordinates[0] ?? 0,
@@ -134,290 +135,94 @@ class PoiFeature {
 }
 
 enum PoiCategoryEnum {
-  bus(
-    selfCode: "bus",
-    codes: ["bus"],
-  ),
-  subway(
-    selfCode: "subway",
-    codes: ["subway"],
-  ),
-  rail(
-    selfCode: "rail",
-    codes: ["rail"],
-  ),
-  parkAndRideForBikes(
-    selfCode: "parkAndRideForBikes",
-    codes: ["parkAndRideForBikes"],
-  ),
-  bikeRepair(
-    selfCode: "bike_repair",
-    codes: ["bike_repair"],
-  ),
-  cycleNetwork(
-    selfCode: "cycle_network",
-    codes: ["cycle_network"],
-  ),
-  bikeShops(
-    selfCode: "bike_shops_rental",
-    codes: ["bike_shops_rental","bike_shop","bike_rental"],
-  ),
-  // bikeShops(
-  //   selfCode: "bike_shop",
-  //   codes: ["bike_shop"],
-  // ),
-  // bikeRental(
-  //   selfCode: "bike_rental",
-  //   codes: ["bike_rental"],
-  // ),
-  weatherStations(
-    selfCode: "weatherStations",
-    codes: ["weatherStations"],
-  ),
-  roadworks(
-    selfCode: "roadworks",
-    codes: ["roadworks"],
-  ),
-  parkAndRide(
-    selfCode: "parkAndRide",
-    codes: ["parkAndRide"],
-  ),
-  chargingStations(
-    selfCode: "chargingStations",
-    codes: ["chargingStations"],
-  ),
-  gasStations(
-    selfCode: "gas_stations",
-    codes: ["gas_station"],
-  ),
-  workshopsMv(
-    selfCode: "workshops_mv",
-    codes: ["workshop_car", "workshop_motorcycle_and_scooter"],
-  ),
-  scooter(
-    selfCode: "scooter",
-    codes: ["scooter"],
-  ),
-  bicycle(
-    selfCode: "bicycle",
-    codes: ["bicycle"],
-  ),
-  cargoBicycle(
-    selfCode: "cargo_bicycle",
-    codes: ["cargo_bicycle"],
-  ),
-  car(
-    selfCode: "car",
-    codes: ["car"],
-  ),
-  carpoolStops(
-    selfCode: "carpool_stops",
-    codes: ["carpool_stops"],
-  ),
-  taxi(
-    selfCode: "taxi",
-    codes: ["taxi"],
-  ),
-  sights(
-    selfCode: "sights",
-    codes: ["sights"],
-  ),
-  restaurants(
-    selfCode: "restaurants",
-    codes: ["restaurants", "beer_garden"],
-  ),
-  cafes(
-    selfCode: "cafes",
-    codes: ["cafe", "ice_cream"],
-  ),
-  barsAndPubs(
-    selfCode: "bars_and_pubs",
-    codes: ["bar_or_pub"],
-  ),
-  entertainmentArtsAndCulture(
-    selfCode: "entertainment_arts_and_culture",
-    codes: [
-      "theater_and_opera",
-      "museums_and_galleries",
-      "cinemas",
-      "event_fair_etc",
-      "music",
-      "other",
-      "tourist_information"
-    ],
-  ),
-  sportsParksPlaygrounds(
-    selfCode: "sports_parks_playgrounds",
-    codes: [
-      "other",
-      "football",
-      "tennis",
-      "baseball",
-      "basketball",
-      "boules_court",
-      "bowling_or_skittles",
-      "fitness_studio_and_sports_centers",
-      "golf",
-      "skatepark",
-      "swimming_pool_or_outdoor_pool",
-      "volleyball",
-      "table_tennis",
-      "park",
-      "playground",
-    ],
-  ),
-  accommodation(
-    selfCode: "accommodation",
-    codes: ["hotel", "youth_hostel"],
-  ),
-  benchesAndViewpoints(
-    selfCode: "benches_and_viewpoints",
-    codes: ["wave_lounger", "other_bench", "viewpoint"],
-  ),
-  drinkingWaterAndFountains(
-    selfCode: "drinking_water_and_fountains",
-    codes: ["fountain", "drinking_water"],
-  ),
-  toilets(
-    selfCode: "toilets",
-    codes: ["public_toilet", "friendly_toilet", "customer_toilet"],
-  ),
-  loarawanGateways(
-    selfCode: "loarawan_gateways",
-    codes: ["loarawan_gateways"],
-  ),
-  groceriesAndBeverages(
-    selfCode: "groceries_and_beverages",
-    codes: [
-      "supermarkets",
-      "beverages",
-      "bakery",
-      "organic_market",
-      "farmers_market",
-    ],
-  ),
-  shops(
-    selfCode: "shops",
-    codes: [
-      "shopping_center",
-      "clothing_and_accessories",
-      "shoes_shop",
-      "fabric_and_yarn",
-      "arts_and_crafts",
-      "photography",
-      "games",
-      "music",
-      "electronics",
-      "books",
-      "gifts",
-      "kiosk_stationery",
-      "garden_and_agriculture",
-      "pet_supplies",
-      "diy_store",
-      "furniture_and_home_decor",
-      "car",
-      "motorcycle_and_scooter",
-      "outdoor_and_sports",
-      "hairdresser",
-      "cosmetics_and_beauty",
-      "drugstore",
-    ],
-  ),
-  secondHandAndSharing(
-    selfCode: "second-hand_and_sharing",
-    codes: ["second-hand_and_sharing"],
-  ),
-  finance(
-    selfCode: "finance",
-    codes: ["bank", "cash_withdrawal", "atm"],
-  ),
+  bus(selfCode: "bus"),
+  subway(selfCode: "subway"),
+  rail(selfCode: "rail"),
+  parkAndRideForBikes(selfCode: "parkAndRideForBikes"),
+  bikeRepair(selfCode: "bike_repair"),
+  cycleNetwork(selfCode: "cycle_network"),
+  bikeShops(selfCode: "bike_shops_rental"),
+  bikeRental(selfCode: "bike_rental"),
+  weatherStations(selfCode: "weatherStations"),
+  roadworks(selfCode: "roadworks"),
+  parkAndRide(selfCode: "parkAndRide"),
+  chargingStations(selfCode: "chargingStations"),
+  gasStations(selfCode: "gas_stations"),
+  workshopsMv(selfCode: "workshops_mv"),
+  scooter(selfCode: "scooter"),
+  bicycle(selfCode: "bicycle"),
+  cargoBicycle(selfCode: "cargo_bicycle"),
+  car(selfCode: "car"),
+  carpoolStops(selfCode: "carpool"),
+  taxi(selfCode: "taxi"),
+  sights(selfCode: "sights"),
+  restaurants(selfCode: "restaurants"),
+  cafes(selfCode: "cafes"),
+  barsAndPubs(selfCode: "bars_and_pubs"),
+  entertainmentArtsAndCulture(selfCode: "entertainment_arts_and_culture"),
+  sportsParksPlaygrounds(selfCode: "sports_parks_playgrounds"),
+  accommodation(selfCode: "accommodation"),
+  benchesAndViewpoints(selfCode: "benches_and_viewpoints"),
+  drinkingWaterAndFountains(selfCode: "drinking_water_and_fountains"),
+  toilets(selfCode: "toilets"),
+  loarawanGateways(selfCode: "loarawan_gateways"),
+  groceriesAndBeverages(selfCode: "groceries_and_beverages"),
+  shops(selfCode: "shops"),
+  secondHandAndSharing(selfCode: "second-hand_and_sharing"),
+  finance(selfCode: "finance"),
   postMailboxesAndDeliveryPoints(
-    selfCode: "post_mailboxes_and_delivery_points",
-    codes: ["post_office", "mailbox", "parcel_station"],
-  ),
-  administrativeFacilities(
-    selfCode: "administrative_facilities",
-    codes: ["administrative_facility"],
-  ),
-  policeFireDepartment(
-    selfCode: "police_fire_department",
-    codes: ["police", "fire_department"],
-  ),
-  cemeteries(
-    selfCode: "cemeteries",
-    codes: ["cemetery"],
-  ),
-  trashBinsAndRecycling(
-    selfCode: "trash_bins_and_recycling",
-    codes: ["recycling", "trash_bin"],
-  ),
-  dogWasteBagStations(
-    selfCode: "dog_waste_bag_stations",
-    codes: ["dog_waste_bag_station"],
-  ),
-  medicalServices(
-    selfCode: "medical_services",
-    codes: [
-      "hospital",
-      "doctor",
-      "pharmacy",
-      "dentistry",
-      "hearing_aid_acoustics",
-      "optics",
-      "medical_supply_store_orthopedics",
-    ],
-  ),
-  education(
-    selfCode: "education",
-    codes: [
-      "universities_and_research",
-      "schools",
-      "community_colleges",
-      "library",
-      "music_and_language_school",
-    ],
-  ),
-  schoolRouteMap(
-    selfCode: "school_route_map",
-    codes: ["school_route_map"],
-  ),
-  socialFacilities(
-    selfCode: "social_facilities",
-    codes: ["community_center", "housing_care_and_nursing"],
-  ),
-  childrenAndYouth(
-    selfCode: "children_and_youth",
-    codes: ["youth_facility", "childcare"],
-  ),
-  religiousSites(
-    selfCode: "religious_sites",
-    codes: ["other", "church", "mosque", "synagogue"],
-  ),
-  animalFacilities(
-    selfCode: "animal_facilities",
-    codes: ["animal_shelter", "veterinarians_and_animal_clinic"],
-  );
+      selfCode: "post_mailboxes_and_delivery_points"),
+  administrativeFacilities(selfCode: "administrative_facilities"),
+  policeFireDepartment(selfCode: "police_fire_department"),
+  cemeteries(selfCode: "cemeteries"),
+  trashBinsAndRecycling(selfCode: "trash_bins_and_recycling"),
+  dogWasteBagStations(selfCode: "dog_waste_bag_stations"),
+  medicalServices(selfCode: "medical_services"),
+  education(selfCode: "education"),
+  schoolRouteMap(selfCode: "school_route_map"),
+  socialFacilities(selfCode: "social_facilities"),
+  childrenAndYouth(selfCode: "children_and_youth"),
+  religiousSites(selfCode: "religious_sites"),
+  animalFacilities(selfCode: "animal_facilities"),
+  transit(selfCode: "transit"),
+  funicular(selfCode: "funicular"),
+  vehicles(selfCode: "vehicles"),
+  administrativeFacility(selfCode: "administrative_facility"),
+  carShop(selfCode: "car_shop"),
+  supermarket(selfCode: "supermarkets"),
+  pharmacy(selfCode: "pharmacy"),
+  library(selfCode: "library"),
+  parcelStation(selfCode: "parcel_station"),
+  recycling(selfCode: "recycling"),
+  touristInformation(selfCode: "tourist_information"),
+  veterinariansAndAnimalClinic(selfCode: "veterinarians_and_animal_clinic"),
+  police(selfCode: "police"),
+  hospital(selfCode: "hospital"),
+  postOffice(selfCode: "post_office"),
+  university(selfCode: "universities_and_research"),
+  schools(selfCode: "schools"),
+  fireDepartment(selfCode: "fire_department"),
+  workshopsCar(selfCode: "workshop_car"),
+  workshopMotorcycleAndScooter(selfCode: "workshop_motorcycle_and_scooter");
 
   final String selfCode;
-  final List<String> codes;
 
-  const PoiCategoryEnum({required this.selfCode, required this.codes});
+  const PoiCategoryEnum({required this.selfCode});
 
   static PoiCategoryEnum? fromSelfCode(String code) {
-    return PoiCategoryEnum.values
-        .where((e) => e.selfCode == code)
-        .cast<PoiCategoryEnum?>()
-        .firstWhere((element) => element != null, orElse: () => null);
+    try {
+      return PoiCategoryEnum.values.firstWhere((e) => e.selfCode == code);
+    } catch (_) {
+      return null; // Manejo seguro de errores si el código no existe
+    }
   }
 
-  static PoiCategoryEnum fromCode(String code) {
+  static PoiCategoryEnum? fromCode(String code) {
     for (final value in PoiCategoryEnum.values) {
-      if (value.codes.contains(code)) return value;
+      if (value.selfCode==code) return value;
     }
-    throw Exception("Should never happened, $code enum doesn't exist ");
+    return null;
   }
 
   String toSelfCode() => selfCode;
-
-  List<String> toCodes() => codes;
 }

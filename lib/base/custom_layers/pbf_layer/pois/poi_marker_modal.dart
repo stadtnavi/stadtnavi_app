@@ -47,23 +47,12 @@ class PoiMarkerModal extends StatelessWidget {
                     height: 30,
                     width: 30,
                     margin: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: BoxDecoration(
-                          color: subCategoryData != null
-                              ? PoisLayer.fromStringToColor(
-                                  subCategoryData.backgroundColor)
-                              : null,
-                          borderRadius: BorderRadius.circular(50)),
-                      child: subCategoryData != null &&
-                              subCategoryData.icon.isNotEmpty
-                          ? SvgPicture.string(
-                              subCategoryData.icon,
-                              color: PoisLayer.fromStringToColor(
-                                  subCategoryData.color),
-                            )
-                          : const Icon(Icons.error),
-                    ),
+                    child: subCategoryData != null &&
+                            subCategoryData.icon.isNotEmpty
+                        ? SvgPicture.string(
+                            subCategoryData.icon,
+                          )
+                        : const Icon(Icons.error),
                   ),
                   Expanded(
                     child: Text(
