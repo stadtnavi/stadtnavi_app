@@ -50,6 +50,7 @@ class _LocationFormFieldState extends State<LocationFormField> {
   Widget build(BuildContext context) {
     final localization = TrufiBaseLocalization.of(context);
     final localizationSP = SavedPlacesLocalization.of(context);
+    final theme = Theme.of(context);
     return Row(
       children: [
         if (widget.leading != null)
@@ -68,12 +69,15 @@ class _LocationFormFieldState extends State<LocationFormField> {
               final TrufiLocation? location =
                   await Navigator.of(context).push<TrufiLocation?>(
                 MaterialPageRoute(
-                  builder: (_) => CustomLocationSearchPage(
-                    isOrigin: widget.isOrigin,
-                    hint: widget.isOrigin
-                        ? localization.searchHintOrigin
-                        : localization.searchHintDestination,
-                    defaultSearch: defaultSearch,
+                  builder: (_) => Theme(
+                    data: Theme.of(context),
+                    child: CustomLocationSearchPage(
+                      isOrigin: widget.isOrigin,
+                      hint: widget.isOrigin
+                          ? localization.searchHintOrigin
+                          : localization.searchHintDestination,
+                      defaultSearch: defaultSearch,
+                    ),
                   ),
                 ),
               );
@@ -119,11 +123,14 @@ class _LocationFormFieldState extends State<LocationFormField> {
                       ),
                     ),
                   ),
-                  if(widget.value != null)
-                  GestureDetector(
-                    child: const Icon(Icons.close),
-                    onTap: widget.onClear,
-                  ),
+                  if (widget.value != null)
+                    GestureDetector(
+                      child: Icon(
+                        Icons.close,
+                        color: theme.primaryColor,
+                      ),
+                      onTap: widget.onClear,
+                    ),
                 ],
               ),
             ),

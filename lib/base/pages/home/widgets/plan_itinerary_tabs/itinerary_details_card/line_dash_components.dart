@@ -650,7 +650,7 @@ class TransportDash extends StatelessWidget {
         if (showAfterLine)
           DashLinePlace(
             date: leg.endTimeString.toString(),
-            location: (leg.toPlace?.name ?? ''),
+            location: showAfterText ? (leg.toPlace?.name ?? '') : '',
             color: leg.primaryColor,
             alertSeverityIcon: AlertActionIcon.getActiveAlertSeverityLevel(
               alerts: leg.toPlace?.stopEntity?.alerts,

@@ -32,7 +32,6 @@ class PoisFeatureTile extends StatelessWidget {
                 ),
                 child: SvgPicture.string(
                   subCategoryData.icon,
-                  color: PoisLayer.fromStringToColor(subCategoryData.color),
                 ),
               ),
             ),
