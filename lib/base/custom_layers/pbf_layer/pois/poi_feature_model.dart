@@ -97,7 +97,7 @@ class PoiFeature {
     final String? swimmingPool = properties['swimming_pool']?.dartStringValue;
     final String? website = properties['website']?.dartStringValue;
     final String? wheelchair = properties['wheelchair']?.dartStringValue;
-    final poiEnum=PoiCategoryEnum.fromCode(category1)??PoiCategoryEnum.fromCode(category2)??PoiCategoryEnum.fromCode(category3);
+    final poiEnum=PoiCategoryEnum.fromCode(category2);
     return PoiFeature(
       geoJsonPoint: geoJsonPoint,
       id: id ?? '',
@@ -213,7 +213,7 @@ enum PoiCategoryEnum {
     try {
       return PoiCategoryEnum.values.firstWhere((e) => e.selfCode == code);
     } catch (_) {
-      return null; // Manejo seguro de errores si el código no existe
+      return null; 
     }
   }
 

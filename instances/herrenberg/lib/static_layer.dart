@@ -74,8 +74,8 @@ final List<CustomLayerContainer> customLayersHerrenberg = [
     layers: [
       StaticTileLayers.poisLayers[PoiCategoryEnum.scooter]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.cargoBicycle]!,
-      StaticTileLayers.poisLayers[PoiCategoryEnum.bicycle]!,
-      // StaticTileLayers.citybikeLayer,
+      // StaticTileLayers.poisLayers[PoiCategoryEnum.bicycle]!,
+      StaticTileLayers.citybikeLayer,
       StaticTileLayers.poisLayers[PoiCategoryEnum.car]!,
       StaticTileLayers.stopsLayers[StopsLayerIds.carpool]!,
       StaticTileLayers.poisLayers[PoiCategoryEnum.taxi]!,
