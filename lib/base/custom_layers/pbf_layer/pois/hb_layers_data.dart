@@ -13,7 +13,8 @@ abstract class HBLayerData {
       final response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
+            final String decodedBody = utf8.decode(response.bodyBytes);
+      final List<dynamic> data = jsonDecode(decodedBody);
         for (final categoryData in data) {
           categories.add(_loadCategory(categoryData));
         }

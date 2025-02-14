@@ -28,7 +28,7 @@ class PoiMarkerModal extends StatelessWidget {
     final theme = Theme.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
     final localizationST = StadtnaviBaseLocalization.of(context);
-
+    final isEnglishCode = languageCode == 'en';
     final subCategoryData = HBLayerData.subCategoriesList[element.category3];
     SimpleOpeningHours? openingHours;
     if (element.openingHours != null) {
@@ -56,7 +56,10 @@ class PoiMarkerModal extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      subCategoryData?.en ?? subCategoryData?.en ?? "",
+                      (isEnglishCode
+                              ? subCategoryData?.en
+                              : subCategoryData?.de) ??
+                          "",
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -187,7 +190,7 @@ class PoiMarkerModal extends StatelessWidget {
         if (openingHours != null) ...[
           const Divider(),
           Padding(
-            padding: const EdgeInsets.symmetric( horizontal: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: OpeningTimeTable(
               openingHours: openingHours,
               isOpenParking: openingHours.isOpenNow(),
