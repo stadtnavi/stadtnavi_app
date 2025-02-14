@@ -1,110 +1,120 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:stadtnavi_core/base/pages/home/search_location_field/components/suggestion.dart';
-
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/widgets/location_search_delegate/build_street_results.dart';
 
-class LocationSearchDelegate extends SearchDelegate<TrufiLocation?> {
+import 'package:stadtnavi_core/base/pages/home/search_location_field/components/suggestion.dart';
+
+class CustomLocationSearchPage extends StatefulWidget {
   final bool isOrigin;
   final String hint;
-  LocationSearchDelegate({
+  final String? defaultSearch;
+
+  const CustomLocationSearchPage({
+    Key? key,
     required this.isOrigin,
     required this.hint,
-  }) : super(
-          searchFieldLabel: hint,
-        );
+    this.defaultSearch,
+  }) : super(key: key);
 
+  @override
+  State<CustomLocationSearchPage> createState() =>
+      _CustomLocationSearchPageState();
+}
+
+class _CustomLocationSearchPageState extends State<CustomLocationSearchPage> {
+  late TextEditingController _controller;
   dynamic _result;
 
   @override
-  ThemeData appBarTheme(BuildContext context) {
-    final theme = context.watch<ThemeCubit>().themeData(context);
-    return theme.copyWith(
-      scaffoldBackgroundColor:
-          ThemeCubit.isDarkMode(theme) ? Colors.grey[900] : null,
-      textSelectionTheme: theme.textSelectionTheme.copyWith(
-        cursorColor: Colors.black87,
-        selectionColor: Colors.grey[300],
-      ),
-      hintColor: Colors.black54,
-      textTheme: theme.textTheme.copyWith(
-        headlineSmall: const TextStyle(
-          color: Colors.black,
-          fontSize: 16,
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.defaultSearch ?? '');
   }
 
   @override
-  Widget buildLeading(BuildContext context) {
-    final theme = context.watch<ThemeCubit>().themeData(context);
-    return BackButton(
-      onPressed: () {
-        if (_result != null) {
-          _result = null;
-          showSuggestions(context);
-        } else {
-          close(context, null);
-        }
-      },
-      color: theme.appBarTheme.foregroundColor,
-    );
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
-  @override
-  Widget buildSuggestions(BuildContext context) {
+  void _onSuggestionTap(TrufiLocation suggestion) {
+    Navigator.of(context).pop(suggestion);
+  }
+
+  void _onStreetTapped(TrufiStreet street) {
+    setState(() {
+      _result = street;
+    });
+  }
+
+  Widget _buildSuggestions() {
     return SuggestionList(
-      query: query,
-      isOrigin: isOrigin,
-      onSelected: (TrufiLocation suggestion) {
-        _result = suggestion;
-        close(context, suggestion);
-      },
-      onSelectedMap: (TrufiLocation location) {
-        _result = location;
-        showResults(context);
-      },
-      onStreetTapped: (TrufiStreet street) {
-        _result = street;
-        showResults(context);
-      },
+      query: _controller.text,
+      isOrigin: widget.isOrigin,
+      onSelected: (TrufiLocation suggestion) => _onSuggestionTap(suggestion),
+      onSelectedMap: (TrufiLocation location) => _onSuggestionTap(location),
+      onStreetTapped: (TrufiStreet street) => _onStreetTapped(street),
     );
   }
 
   @override
-  Widget buildResults(BuildContext context) {
-    if (_result != null) {
-      if (_result is TrufiStreet) {
-        return BuildStreetResults(
+  Widget build(BuildContext context) {
+    final theme = context.watch<ThemeCubit>().themeData(context);
+
+    if (_result != null && _result is TrufiStreet) {
+      return Scaffold(
+        appBar: AppBar(
+          leading: BackButton(
+            onPressed: () {
+              setState(() => _result = null);
+            },
+          ),
+          title: Text(widget.hint),
+        ),
+        body: BuildStreetResults(
           street: _result as TrufiStreet,
           onTap: (location) {
-            close(context, location);
-          },
-        );
-      } else {
-        Future.delayed(Duration.zero, () {
-          close(context, _result as TrufiLocation);
-        });
-      }
-    }
-    return buildSuggestions(context);
-  }
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return <Widget>[
-      if (query.isNotEmpty)
-        IconButton(
-          icon: const Icon(Icons.clear),
-          onPressed: () {
-            _result = null;
-            query = '';
-            showSuggestions(context);
+            Navigator.of(context).pop(location);
           },
         ),
-    ];
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: theme.appBarTheme.backgroundColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          color: theme.appBarTheme.foregroundColor,
+          onPressed: () => Navigator.of(context).pop(null),
+        ),
+        title: TextField(
+          controller: _controller,
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: widget.hint,
+            border: InputBorder.none,
+          ),
+          onChanged: (_) {
+            setState(() {});
+          },
+        ),
+        actions: [
+          if (_controller.text.isNotEmpty)
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _result = null;
+                  _controller.clear();
+                });
+              },
+              icon: const Icon(Icons.clear),
+            )
+        ],
+      ),
+      body: _buildSuggestions(),
+    );
   }
 }

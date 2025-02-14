@@ -32,6 +32,7 @@ dependencies:
   rive: ^0.13.4
   matomo_tracker: ^5.1.0
   flutter_compass: ^0.8.1
+  wakelock_plus: ^1.2.10
 
 dev_dependencies:
   flutter_test:

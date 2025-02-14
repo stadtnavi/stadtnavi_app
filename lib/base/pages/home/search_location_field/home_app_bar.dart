@@ -10,7 +10,9 @@ import 'package:trufi_core/base/models/trufi_place.dart';
 
 class HomeAppBar extends StatelessWidget {
   final void Function(TrufiLocation) onSaveFrom;
+  final void Function() onClearFrom;
   final void Function(TrufiLocation) onSaveTo;
+  final void Function() onClearTo;
   final void Function() onBackButton;
   final void Function() onFetchPlan;
   final void Function() onReset;
@@ -18,7 +20,9 @@ class HomeAppBar extends StatelessWidget {
   const HomeAppBar({
     Key? key,
     required this.onSaveFrom,
+    required this.onClearFrom,
     required this.onSaveTo,
+    required this.onClearTo,
     required this.onBackButton,
     required this.onFetchPlan,
     required this.onReset,
@@ -75,7 +79,9 @@ class HomeAppBar extends StatelessWidget {
                               onFetchPlan: onFetchPlan,
                               onReset: onReset,
                               onSaveFrom: onSaveFrom,
+                              onClearFrom:onClearFrom,
                               onSaveTo: onSaveTo,
+                              onClearTo:onClearTo,
                               onSwap: onSwap,
                             ),
                           )
@@ -86,7 +92,9 @@ class HomeAppBar extends StatelessWidget {
                               onFetchPlan: onFetchPlan,
                               onReset: onReset,
                               onSaveFrom: onSaveFrom,
+                              onClearFrom:onClearFrom,
                               onSaveTo: onSaveTo,
+                              onClearTo:onClearTo,
                               onSwap: onSwap,
                             ),
                           ),

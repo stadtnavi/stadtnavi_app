@@ -26,6 +26,7 @@ import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 class BicycleDash extends StatelessWidget {
   final PlanItinerary itinerary;
   final PlanItineraryLeg leg;
+  final PlanItineraryLeg? bicycleWalkLeg;
   final bool showBeforeLine;
   final bool showAfterLine;
   final MoveInMap moveInMap;
@@ -34,6 +35,7 @@ class BicycleDash extends StatelessWidget {
     Key? key,
     required this.itinerary,
     required this.leg,
+    required this.bicycleWalkLeg,
     required this.moveInMap,
     this.showBeforeLine = true,
     this.showAfterLine = false,
@@ -74,7 +76,6 @@ class BicycleDash extends StatelessWidget {
                 : 'Radfahren: $duration ($distance)');
     final isAvailibleBikes =
         leg.fromPlace?.bikeRentalStation?.bikesAvailable ?? 0;
-
     return Column(
       children: [
         if (showBeforeLine)
@@ -109,14 +110,7 @@ class BicycleDash extends StatelessWidget {
           color: isSimpleBicycle
               ? BikeRentalNetwork.cargoBike.color
               : Colors.grey[400],
-          separator: isSimpleBicycle
-              ? null
-              : Container(
-                  margin: const EdgeInsets.symmetric(vertical: 2),
-                  height: 19,
-                  width: 19,
-                  child: bikeSvg(),
-                ),
+          separator: null,
           child: GestureDetector(
             onTap: () {
               if (leg.fromPlace != null) {
@@ -228,46 +222,72 @@ class BicycleDash extends StatelessWidget {
                     child: InfoMessage(
                         message: localization.bikeRentalNetworkFreeFloating),
                   ),
-                if (leg.steps != null && leg.steps!.isNotEmpty)
-                  ExpansionTile(
-                    visualDensity: const VisualDensity(vertical: -4),
-                    title: Text(
-                      stopsDescription,
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    tilePadding: const EdgeInsets.symmetric(
-                      horizontal: 0,
-                      vertical: 0,
-                    ),
-                    textColor: theme.colorScheme.onSurface,
-                    collapsedTextColor: theme.colorScheme.onSurface,
-                    iconColor: theme.primaryColor,
-                    collapsedIconColor: theme.primaryColor,
-                    childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    children: leg.steps!.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final step = entry.value;
+                BicycleWalkLegDash(
+                  bicycleWalkLeg: bicycleWalkLeg,
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      if ((leg.steps != null && leg.steps!.isNotEmpty))
+                        ExpansionTile(
+                          visualDensity: const VisualDensity(vertical: -4),
+                          title: Text(
+                            stopsDescription,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          tilePadding: const EdgeInsets.symmetric(
+                            horizontal: 0,
+                            vertical: 0,
+                          ),
+                          textColor: theme.colorScheme.onSurface,
+                          collapsedTextColor: theme.colorScheme.onSurface,
+                          iconColor: theme.primaryColor,
+                          collapsedIconColor: theme.primaryColor,
+                          childrenPadding:
+                              const EdgeInsets.symmetric(horizontal: 10),
+                          children: leg.steps!.asMap().entries.map((entry) {
+                            final index = entry.key;
+                            final step = entry.value;
 
-                      return InkWell(
-                        onTap: () {
-                          if (step.lat != null && step.lon != null) {
-                            moveInMap(LatLng(step.lat!, step.lon!), zoom: 18);
-                          }
-                        },
-                        child: StepNavigationDetails(
-                          step: step,
-                          isFirst: index == 0,
+                            return InkWell(
+                              onTap: () {
+                                if (step.lat != null && step.lon != null) {
+                                  moveInMap(LatLng(step.lat!, step.lon!),
+                                      zoom: 18);
+                                }
+                              },
+                              child: StepNavigationDetails(
+                                step: step,
+                                isFirst: index == 0,
+                              ),
+                            );
+                          }).toList(),
+                        )
+                      else
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 7),
+                          child: Text(
+                            stopsDescription,
+                          ),
                         ),
-                      );
-                    }).toList(),
-                  )
-                else
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 7),
-                    child: Text(
-                      stopsDescription,
-                    ),
+                      Positioned(
+                        left: -24,
+                        top: 0,
+                        bottom: 0,
+                        child: Center(
+                          child: Container(
+                            color: Colors.white,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: 2),
+                              height: 20,
+                              width: 20,
+                              child: bikeSvg(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                ),
                 const Divider(height: 0),
               ],
             ),
@@ -276,6 +296,97 @@ class BicycleDash extends StatelessWidget {
       ],
     );
   }
+}
+
+class BicycleWalkLegDash extends StatelessWidget {
+  const BicycleWalkLegDash({
+    super.key,
+    required this.bicycleWalkLeg,
+    required this.child,
+  });
+  final PlanItineraryLeg? bicycleWalkLeg;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final localizationST = StadtnaviBaseLocalization.of(context);
+    final showAfterBicycleWalkLeg = bicycleWalkLeg?.toPlace?.stopEntity == null;
+
+    final walkDash = Container(
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Text(
+            showAfterBicycleWalkLeg
+                ? localizationST.bicycleWalkFromTransitNoDuration(
+                    bicycleWalkLeg?.fromPlace?.stopEntity?.vehicleMode
+                            ?.getSecondaryTranslate(localizationST) ??
+                        "",
+                  )
+                : localizationST.bicycleWalkToTransitNoDuration(
+                    bicycleWalkLeg?.toPlace?.stopEntity?.vehicleMode
+                            ?.getSecondaryTranslate(localizationST) ??
+                        "",
+                  ),
+          ),
+          Positioned(
+            left: -24,
+            top: -5,
+            child: Container(
+              color: Colors.white,
+              child: Container(
+                margin: const EdgeInsets.symmetric(vertical: 2),
+                height: 20,
+                width: 20,
+                child: bicycleWalkSvg(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (bicycleWalkLeg != null && showAfterBicycleWalkLeg) walkDash,
+        child,
+        if (bicycleWalkLeg != null && !showAfterBicycleWalkLeg) walkDash,
+      ],
+    );
+  }
+}
+
+extension TransportModeExtension on TransportMode {
+  static String? _secondaryTranslate(
+      TransportMode mode, StadtnaviBaseLocalization localization) {
+    return {
+      TransportMode.airplane: null,
+      TransportMode.bicycle: null,
+      TransportMode.bus: null,
+      TransportMode.cableCar: null,
+      TransportMode.car: null,
+      TransportMode.carPool: null,
+      TransportMode.ferry: localization.instructionVehicleMetro,
+      TransportMode.flexible: null,
+      TransportMode.funicular: null,
+      TransportMode.gondola: null,
+      TransportMode.legSwitch: null,
+      TransportMode.rail: localization.instructionVehicleLightRail,
+      TransportMode.subway: localization.instructionVehicleMetro,
+      TransportMode.tram: null,
+      TransportMode.transit: null,
+      TransportMode.walk: null,
+      // route icons for specific types of transportation
+      TransportMode.trufi: null,
+      TransportMode.micro: null,
+      TransportMode.miniBus: null,
+      TransportMode.lightRail: localization.instructionVehicleLightRail,
+    }[mode];
+  }
+
+  String getSecondaryTranslate(StadtnaviBaseLocalization localization) =>
+      _secondaryTranslate(this, localization) ?? 'No translate';
 }
 
 class CarDash extends StatelessWidget {
@@ -499,7 +610,7 @@ class TransportDash extends StatelessWidget {
         if (showAfterLine)
           DashLinePlace(
             date: leg.endTimeString.toString(),
-            location: showAfterText ? '' : leg.toPlace?.name ?? '',
+            location: showAfterText ? (leg.toPlace?.name ?? '') : '',
             color: leg.primaryColor,
           ),
       ],
