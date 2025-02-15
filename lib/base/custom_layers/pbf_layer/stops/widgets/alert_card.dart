@@ -117,7 +117,7 @@ class AlertStopCard extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: '\n$content',
+                    text: '\n$content ',
                     style: const TextStyle(),
                   ),
                   if (checkedUrl != null)
