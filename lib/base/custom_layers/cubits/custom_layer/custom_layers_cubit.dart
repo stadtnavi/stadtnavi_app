@@ -3,9 +3,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/local_json_layer/custom_marker_enum.dart';
-import 'package:stadtnavi_core/base/custom_layers/local_json_layer/layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'custom_layer_local_storage.dart';
 part 'custom_layers_state.dart';
@@ -16,7 +13,7 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
   CustomLayersCubit(this.layersContainer)
       : super(
           CustomLayersState(
-            layersSatus: layersContainer
+            layersStatus: layersContainer
                 .fold<List<CustomLayer>>(
                     [],
                     (previousValue, element) =>
@@ -43,57 +40,59 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
   }
   Future<void> _loadSavedStatus() async {
     final savedMap = await _localStorage.load();
-    emit(state.copyWith(layersSatus: {...state.layersSatus, ...savedMap}));
+    emit(state.copyWith(layersStatus: {...state.layersStatus, ...savedMap}));
   }
 
   void changeCustomMapLayerState({
     required CustomLayer customLayer,
     required bool newState,
   }) {
-    final Map<String, bool> tempMap = Map.from(state.layersSatus);
+    final Map<String, bool> tempMap = Map.from(state.layersStatus);
     tempMap[customLayer.id] = newState;
-    switch (customLayer.id) {
-      case 'Bicycle Network Space':
-        StaticTileLayers.bicycleNetworkLayer.load();
-        break;
-      case 'Parking Zones':
-        StaticTileLayers.parkingZonesLayer.load();
-        break;
-      default:
-    }
-    LayerIds.values.forEach(((id) {
-      if (id.enumString == customLayer.id) {
-        (customLayer as Layer).load();
-      }
-    }));
+    // switch (customLayer.id) {
+    //   case 'Bicycle Network Space':
+    //     StaticTileLayers.bicycleNetworkLayer.load();
+    //     break;
+    //   case 'Parking Zones':
+    //     StaticTileLayers.parkingZonesLayer.load();
+    //     break;
+    //   default:
+    // }
+    // LayerIds.values.forEach(((id) {
+    //   if (id.enumString == customLayer.id) {
+    //     (customLayer as Layer).load();
+    //   }
+    // }));
 
-    emit(state.copyWith(layersSatus: tempMap));
-    _localStorage.save(state.layersSatus);
+    emit(state.copyWith(layersStatus: tempMap));
+    _localStorage.save(state.layersStatus);
   }
 
   void changeCustomMapLayerContainerState({
     required CustomLayerContainer customLayer,
     required bool newState,
   }) {
-    final Map<String, bool> tempMap = Map.from(state.layersSatus);
+    final Map<String, bool> tempMap = Map.from(state.layersStatus);
     for (final CustomLayer layer in customLayer.layers) {
       tempMap[layer.id] = newState;
     }
 
-    emit(state.copyWith(layersSatus: tempMap));
-    _localStorage.save(state.layersSatus);
+    emit(state.copyWith(layersStatus: tempMap));
+    _localStorage.save(state.layersStatus);
   }
 
   List<Marker> markers(
     int zoom,
   ) {
     List<CustomLayer> listSort = state.layers
-        .where((element) => state.layersSatus[element.id] ?? false)
+        .where((element) => state.layersStatus[element.id] ?? false)
         .toList();
 
     listSort.sort((a, b) => a.weight.compareTo(b.weight));
     final allList = listSort
-        .map((element) => element.buildLayerMarkersPriority(zoom))
+        .map((element) {
+          return element.buildClusterMarkers(zoom);
+        })
         .toList();
     return allList.expand((list) => list ?? <Marker>[]).toList();
   }
@@ -110,7 +109,7 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
           listSort.where((element) => element.id == showLayerById).toList();
     } else {
       listSort = state.layers
-          .where((element) => state.layersSatus[element.id] ?? false)
+          .where((element) => state.layersStatus[element.id] ?? false)
           .toList();
     }
 
@@ -119,7 +118,7 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
     List<Widget> listPriority = [];
     Widget? layer;
     for (CustomLayer customL in listSort) {
-      layer = customL.buildLayerOptionsPriority(zoom);
+      layer = customL.buildOverlapLayer(zoom);
       if (layer != null) {
         listPriority.add(layer);
       }
@@ -128,7 +127,7 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
     List<Widget> listBackground = [];
     Widget? layerBackground;
     for (CustomLayer customL in listSort) {
-      layerBackground = customL.buildLayerOptionsBackground(zoom);
+      layerBackground = customL.buildAreaLayer(zoom);
       if (layerBackground != null) {
         listBackground.add(layerBackground);
       }
@@ -138,7 +137,7 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
             ...listBackground,
             ...layersMid,
             ...listSort
-                .map((element) => element.buildLayerOptions(zoom))
+                .map((element) => element.buildMarkerLayer(zoom))
                 .toList(),
             layersUnderMid,
             ...listPriority,
