@@ -103,7 +103,7 @@ class __CustomExpansionPanelState extends State<_CustomExpansionPanel> {
         },
         children: customLayersCubit.layersContainer.map((element) {
           final containerStatus =
-              element.checkStatus(customLayersCubit.state.layersSatus);
+              element.checkStatus(customLayersCubit.state.layersStatus);
           return ExpansionPanel(
               canTapOnHeader: true,
               headerBuilder: (_, __) {
@@ -170,7 +170,7 @@ class __CustomExpansionPanelState extends State<_CustomExpansionPanel> {
                           children: [
                             Checkbox(
                               value: customLayersCubit
-                                  .state.layersSatus[customLayer.id],
+                                  .state.layersStatus[customLayer.id],
                               onChanged: (value) {
                                 customLayersCubit.changeCustomMapLayerState(
                                   customLayer: customLayer,
