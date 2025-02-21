@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
+import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
@@ -18,34 +19,35 @@ import 'cifs_feature_model.dart';
 import 'cifs_icons.dart';
 import 'cifs_marker_modal.dart';
 
-class CifsLayer extends CustomLayer {
-  final Map<String, CifsFeature> _pbfMarkers = {};
+class RoadworksLayer extends CustomLayer {
+  final MapLayerCategory mapCategory;
 
-  CifsLayer(String id, String weight) : super(id, weight) {
-    // loop 30 seg
-  }
-  void addMarker(CifsFeature pointFeature) {
-    if (_pbfMarkers[pointFeature.id] == null) {
-      _pbfMarkers[pointFeature.id] = pointFeature;
-      refresh();
-    }
-  }
+  RoadworksLayer(this.mapCategory, int weight)
+      : super(mapCategory.code, weight);
+
 
   @override
-  List<Marker>? buildLayerMarkersPriority(int? zoom) {
-    // No required
-    return [];
-  }
-
-  @override
-  Widget? buildLayerOptionsBackground(int? zoom) {
+  Widget? buildAreaLayer(int? zoom) {
     return null;
   }
 
+  List<RoadworksFeature> _getMarkers(int zoom) {
+    final markersList = MapMarkersRepositoryContainer.roadworksFeature.values.toList();
+    return markersList.where((element) {
+      final targetMapLayerCategory =
+          MapLayerCategory.findCategoryWithProperties(
+        mapCategory,
+        mapCategory.code,
+      );
+      final layerMinZoom =
+          targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
+      return layerMinZoom < zoom;
+    }).toList();
+  }
+
   @override
-  Widget buildLayerOptions(int? zoom) {
+  Widget buildMarkerLayer(int zoom) {
     double? polylineSize;
-    double? markerSize;
     switch (zoom) {
       case 13:
         polylineSize = 3;
@@ -66,31 +68,11 @@ class CifsLayer extends CustomLayer {
         polylineSize = 8;
         break;
       default:
-        polylineSize = (zoom != null && zoom > 18) ? 8 : null;
+        polylineSize = (zoom > 18) ? 8 : null;
     }
-    switch (zoom) {
-      case 13:
-        markerSize = 15;
-        break;
-      case 14:
-        markerSize = 20;
-        break;
-      case 15:
-        markerSize = 23;
-        break;
-      case 16:
-        markerSize = 25;
-        break;
-      case 17:
-        markerSize = 25;
-        break;
-      case 18:
-        markerSize = 30;
-        break;
-      default:
-        markerSize = (zoom != null && zoom > 18) ? 35 : null;
-    }
-    final markersList = _pbfMarkers.values.toList();
+    final markersList = _getMarkers(zoom);
+
+    final markerSize = CustomLayer.getMarkerSize(zoom);
     return Stack(
       children: [
         if (polylineSize != null)
@@ -106,41 +88,34 @@ class CifsLayer extends CustomLayer {
           ),
         MarkerLayer(
           markers: [
-            if (markerSize != null)
-              ...markersList
-                  .map((element) => Marker(
-                        height: markerSize!,
-                        width: markerSize,
+            ...markersList
+                .map((element) => Marker(
+                      height: markerSize!,
+                      width: markerSize,
+                      point: element.startPoint,
+                      alignment: Alignment.center,
+                      child: _RoadworksFeatureMarker(
+                        element: element,
                         point: element.startPoint,
-                        alignment: Alignment.center,
-                        child: _CifsFeatureMarker(
-                          element: element,
-                          point: element.startPoint,
-                        ),
-                      ))
-                  .toList(),
-            if (markerSize != null)
-              ...markersList
-                  .map((element) => Marker(
-                        height: markerSize!,
-                        width: markerSize,
+                      ),
+                    ))
+                .toList(),
+            ...markersList
+                .map((element) => Marker(
+                      height: markerSize!,
+                      width: markerSize,
+                      point: element.endPoint,
+                      alignment: Alignment.center,
+                      child: _RoadworksFeatureMarker(
+                        element: element,
                         point: element.endPoint,
-                        alignment: Alignment.center,
-                        child: _CifsFeatureMarker(
-                          element: element,
-                          point: element.endPoint,
-                        ),
-                      ))
-                  .toList(),
+                      ),
+                    ))
+                .toList(),
           ],
         ),
       ],
     );
-  }
-
-  @override
-  Widget? buildLayerOptionsPriority(int zoom) {
-    return null;
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {
@@ -168,10 +143,10 @@ class CifsLayer extends CustomLayer {
             y: y,
             z: z,
           );
-          final CifsFeature? pointFeature =
-              CifsFeature.fromGeoJsonLine(geojson);
+          final RoadworksFeature? pointFeature =
+              RoadworksFeature.fromGeoJsonLine(geojson);
           if (pointFeature != null) {
-            StaticTileLayers.cifsLayer.addMarker(pointFeature);
+            MapMarkersRepositoryContainer.roadworksFeature[pointFeature.id] = pointFeature;
           }
         } else {
           throw Exception("Should never happened, Feature is not a point");
@@ -183,21 +158,25 @@ class CifsLayer extends CustomLayer {
   @override
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? "Roadworks" : "Baustellen";
+    return localeName == "en" ? mapCategory.en : mapCategory.de;
   }
 
   @override
   Widget icon(BuildContext context) {
-    return SvgPicture.string(
-      cifsIcons[CifsTypeIds.construction]!,
+    final icon = mapCategory.properties?.iconSvgMenu ??
+        mapCategory.categories.first.properties?.iconSvgMenu;
+    if (icon != null) return SvgPicture.string(icon);
+    return const Icon(
+      Icons.error,
+      color: Colors.blue,
     );
   }
 }
 
-class _CifsFeatureMarker extends StatelessWidget {
-  final CifsFeature element;
+class _RoadworksFeatureMarker extends StatelessWidget {
+  final RoadworksFeature element;
   final LatLng point;
-  const _CifsFeatureMarker({
+  const _RoadworksFeatureMarker({
     Key? key,
     required this.element,
     required this.point,
@@ -219,7 +198,7 @@ class _CifsFeatureMarker extends StatelessWidget {
               onFetchPlan: onFetchPlan,
               position: point,
             ),
-            positon: point,
+            position: point,
             minSize: 50,
           ),
         );

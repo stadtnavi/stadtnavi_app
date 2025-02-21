@@ -4,71 +4,50 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
+import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_feature_model.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_icons.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_marker_modal.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
 import 'package:stadtnavi_core/consts.dart';
 
 class WeatherLayer extends CustomLayer {
-  final Map<String, WeatherFeature> _pbfMarkers = {};
+  final MapLayerCategory mapCategory;
 
-  WeatherLayer(String id, String weight) : super(id, weight);
-  void addMarker(WeatherFeature pointFeature) {
-      _pbfMarkers[pointFeature.address] = pointFeature;
-      refresh();
-  }
+  WeatherLayer(this.mapCategory, int weight) : super(mapCategory.code, weight);
 
-  @override
-  List<Marker>? buildLayerMarkersPriority(int? zoom) {
-    return [];
-  }
-
-  @override
-  Widget? buildLayerOptionsBackground(int? zoom) {
-    return null;
-  }
-
-  @override
-  Widget buildLayerOptions(int? zoom) {
-    double? markerSize;
-    switch (zoom) {
-      case 15:
-        markerSize = 15;
-        break;
-      case 16:
-        markerSize = 20;
-        break;
-      case 17:
-        markerSize = 25;
-        break;
-      case 18:
-        markerSize = 30;
-        break;
-      default:
-        markerSize = zoom != null && zoom > 18 ? 35 : null;
-    }
-    final markersList = _pbfMarkers.values.toList();
-    // avoid vertical wrong overlapping
-    markersList.sort(
-      (b, a) => a.position.latitude.compareTo(b.position.latitude),
+  Marker buildMarker({
+    required WeatherFeature element,
+    required double markerSize,
+  }) {
+        final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
+      mapCategory,
+      mapCategory.code,
     );
-    return MarkerLayer(
-      markers: markerSize != null
-          ? markersList
-              .map((element) => Marker(
-                    height: markerSize!,
-                    width: markerSize,
-                    point: element.position,
-                    alignment: Alignment.center,
-                    child: Builder(builder: (context) {
-                      return GestureDetector(
-                        onTap: () {
+    final svgIcon = targetMapLayerCategory?.properties?.iconSvg;
+    return Marker(
+      key: Key("$id:${element.address}"),
+      height: markerSize,
+      width: markerSize ,
+      point: element.position,
+      alignment: Alignment.center,
+      child: Builder(builder: (context) {
+        return MarkerTileContainer(
+          menuBuilder: (_) => MarkerTileListItem(
+            name: element.address ,
+            icon: svgIcon != null
+                ? SvgPicture.string(
+                    svgIcon,
+                  )
+                : const Icon(Icons.error),
+          ),
+          child: GestureDetector(
+            onTap: () {
                           final panelCubit = context.read<PanelCubit>();
                           panelCubit.setPanel(
                             CustomMarkerPanel(
@@ -80,49 +59,61 @@ class WeatherLayer extends CustomLayer {
                                   ParkingMarkerModal(
                                 parkingFeature: element,
                                 onFetchPlan: onFetchPlan,
+                                icon:svgIcon != null
+                ? SvgPicture.string(
+                    svgIcon,
+                  )
+                : const Icon(Icons.error) ,
                               ),
-                              positon: element.position,
+                              position: element.position,
                               minSize: 50,
                             ),
                           );
-                        },
-                        child: SvgPicture.string(
-                          roadWeatherIcons,
-                        ),
-                      );
-                    }),
-                  ))
-              .toList()
-          : zoom != null && zoom > 11
-              ? markersList
-                  .map(
-                    (element) => Marker(
-                      height: 5,
-                      width: 5,
-                      point: element.position,
-                      alignment: Alignment.center,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList()
-              : [],
+            },
+            child: SvgPicture.string(svgIcon ?? ''),
+          ),
+        );
+      }),
     );
   }
 
-  @override
-  Widget? buildLayerOptionsPriority(int zoom) {
-    return null;
+  List<WeatherFeature> _getMarkers(int zoom) {
+    final markersList = MapMarkersRepositoryContainer.weatherFeature.values.toList();
+    markersList.sort(
+      (a, b) => a.position.latitude.compareTo(b.position.latitude),
+    );
+    return markersList.where((element) {
+      final targetMapLayerCategory =
+          MapLayerCategory.findCategoryWithProperties(
+        mapCategory,
+        mapCategory.code,
+      );
+      final layerMinZoom =
+          targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
+      return layerMinZoom < zoom;
+    }).toList();
   }
 
-  static bool isdisable = false;
+  @override
+  List<Marker>? buildClusterMarkers(int zoom) {
+    return _getMarkers(zoom)
+        .map((element) => buildMarker(
+            element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
+        .toList();
+  }
+
+  @override
+  Widget buildMarkerLayer(int zoom) {
+    return MarkerLayer(
+      markers: _getMarkers(zoom)
+          .map((element) => buildMarker(
+              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
+          .toList(),
+    );
+  }
+
 
   static Future<void> fetchPBF(int z, int x, int y) async {
-    if (isdisable) return;
     final uri = Uri(
       scheme: "https",
       host: ApiConfig().baseDomain,
@@ -146,7 +137,8 @@ class WeatherLayer extends CustomLayer {
           final WeatherFeature? pointFeature =
               WeatherFeature.fromGeoJsonPoint(geojson);
           if (pointFeature != null) {
-            StaticTileLayers.weatherLayer.addMarker(pointFeature);
+
+            MapMarkersRepositoryContainer.weatherFeature[pointFeature.address] = pointFeature;
           }
         } else {
           throw Exception("Should never happened, Feature is not a point");
@@ -158,13 +150,17 @@ class WeatherLayer extends CustomLayer {
   @override
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? "Road weather" : "Straßenwetter";
+    return localeName == "en" ? mapCategory.en : mapCategory.de;
   }
 
   @override
   Widget icon(BuildContext context) {
-    return SvgPicture.string(
-      roadWeatherIcons,
+    final icon = mapCategory.properties?.iconSvgMenu ??
+        mapCategory.categories.first.properties?.iconSvgMenu;
+    if (icon != null) return SvgPicture.string(icon);
+    return const Icon(
+      Icons.error,
+      color: Colors.blue,
     );
   }
 }
