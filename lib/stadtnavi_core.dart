@@ -82,7 +82,7 @@ class StadtnaviApp extends StatelessWidget {
       blocProviders: DefaultStadtnaviValues.blocProviders(
         otpGraphqlEndpoint: otpGraphqlEndpoint,
         mapConfiguration: MapConfiguration(
-          center: center,
+          center: center,onlineMaxZoom: 20,
           onlineZoom: onlineZoom ?? 13,
           markersConfiguration: const CustomMarkerConfiguration(),
           mapAttributionBuilder: stadtNaviAttributionBuilder,
@@ -125,5 +125,13 @@ class StadtnaviApp extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+extension IterableExtensions<T> on Iterable<T> {
+  T? firstWhereOrNull(bool Function(T) test) {
+    for (var element in this) {
+      if (test(element)) return element;
+    }
+    return null;
   }
 }

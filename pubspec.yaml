@@ -13,7 +13,6 @@ dependencies:
   flutter:
     sdk: flutter
   maps_toolkit: ^3.0.0
-  mqtt_client: ^10.5.1
   skeletonizer: ^1.4.2
   trufi_core:
     git:
@@ -33,6 +32,8 @@ dependencies:
   matomo_tracker: ^5.1.0
   flutter_compass: ^0.8.1
   wakelock_plus: ^1.2.10
+  mqtt_client: ^10.5.1
+  flutter_html: ^3.0.0-beta.2
 
 dev_dependencies:
   flutter_test:
