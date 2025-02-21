@@ -217,4 +217,7 @@ class UndefinedMapLayer extends CustomLayer {
   String name(BuildContext context) {
     return "TODO: implement name";
   }
+
+  @override
+  bool isDefaultOn() => false;
 }

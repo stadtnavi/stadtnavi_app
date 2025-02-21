@@ -19,7 +19,7 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
                     (previousValue, element) =>
                         [...previousValue, ...element.layers])
                 .asMap()
-                .map((key, value) => MapEntry(value.id, true)),
+                .map((key, value) => MapEntry(value.id, value.isDefaultOn())),
             layers: layersContainer.fold<List<CustomLayer>>(
                 [],
                 (previousValue, element) =>

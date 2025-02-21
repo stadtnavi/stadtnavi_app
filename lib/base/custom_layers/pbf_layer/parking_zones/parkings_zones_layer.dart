@@ -184,4 +184,6 @@ class ParkingZonesLayer extends CustomLayer {
   Widget icon(BuildContext context) {
     return SvgPicture.string(parkingZones);
   }
+  @override
+  bool isDefaultOn() => false;
 }

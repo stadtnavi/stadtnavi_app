@@ -242,4 +242,7 @@ class LiveBusLayer extends CustomLayer {
   Widget icon(BuildContext context) {
     return SvgPicture.string(menuLiveBusStop);
   }
+
+  @override
+  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault ?? false;
 }

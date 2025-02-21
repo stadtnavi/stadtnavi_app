@@ -171,6 +171,8 @@ class RoadworksLayer extends CustomLayer {
       color: Colors.blue,
     );
   }
+  @override
+  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault??false;
 }
 
 class _RoadworksFeatureMarker extends StatelessWidget {

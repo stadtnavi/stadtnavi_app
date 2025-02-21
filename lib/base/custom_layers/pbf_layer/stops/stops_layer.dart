@@ -159,4 +159,6 @@ class StopsLayer extends CustomLayer {
       color: Colors.orange,
     );
   }
+  @override
+  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault??false;
 }

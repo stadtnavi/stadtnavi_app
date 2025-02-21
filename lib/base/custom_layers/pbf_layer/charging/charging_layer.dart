@@ -189,4 +189,6 @@ class ChargingLayer extends CustomLayer {
       color: Colors.green,
     );
   }
+  @override
+  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault??false;
 }

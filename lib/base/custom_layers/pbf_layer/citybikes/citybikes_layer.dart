@@ -216,6 +216,9 @@ class CityBikesLayer extends CustomLayer {
       color: Colors.green,
     );
   }
+
+  @override
+  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault??false;
 }
 
 class SharingMarkerUpdater extends StatefulWidget {

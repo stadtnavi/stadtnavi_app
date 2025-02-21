@@ -163,4 +163,6 @@ class WeatherLayer extends CustomLayer {
       color: Colors.blue,
     );
   }
+  @override
+  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault??false;
 }

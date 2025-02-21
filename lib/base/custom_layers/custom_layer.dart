@@ -6,7 +6,7 @@ abstract class CustomLayer {
   final int weight;
   Function? onRefresh;
   CustomLayer(this.id, this.weight);
-
+  bool isDefaultOn();
   void refresh() {
     if (onRefresh != null) onRefresh!();
   }
@@ -27,8 +27,8 @@ abstract class CustomLayer {
     // return sizeMap[zoom] ?? (zoom > 18 ? 30 : 20);
   }
 
- static int getClusterSize(int zoom) {
-  return 30;
+  static int getClusterSize(int zoom) {
+    return 30;
     // const clusterSizeMap = <int, int>{
     //   15: 30,
     //   16: 30,
@@ -56,14 +56,13 @@ abstract class CustomLayer {
     // return markerClusterSizeMap[zoom] ?? const Size(25, 25);
   }
 
-  Widget? buildOverlapLayer(int zoom)=> null;
+  Widget? buildOverlapLayer(int zoom) => null;
 
-  List<Marker>? buildClusterMarkers(int zoom)=> null;
+  List<Marker>? buildClusterMarkers(int zoom) => null;
 
   Widget buildMarkerLayer(int zoom);
-  
-  Widget? buildAreaLayer(int zoom)=> null;
 
+  Widget? buildAreaLayer(int zoom) => null;
 
   String name(BuildContext context);
 
