@@ -3,7 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 
 abstract class CustomLayer {
   final String id;
-  final String weight;
+  final int weight;
   Function? onRefresh;
   CustomLayer(this.id, this.weight);
 
@@ -11,11 +11,59 @@ abstract class CustomLayer {
     if (onRefresh != null) onRefresh!();
   }
 
-  Widget buildLayerOptions(int zoom);
-  Widget? buildLayerOptionsBackground(int zoom);
+  // double getMarkerSize(int zoom) => (zoom < 15) ? 20 : 20 + (zoom - 15) * 5;
+  static double getMarkerSize(int zoom) {
+    return 20;
+    // print(zoom);
+    // const sizeMap = <int, double>{
+    //   15: 20,
+    //   16: 20,
+    //   17: 20,
+    //   18: 20,
+    //   19: 20,
+    //   20: 20,
+    // };
 
-  Widget? buildLayerOptionsPriority(int zoom);
-  List<Marker>? buildLayerMarkersPriority(int zoom);
+    // return sizeMap[zoom] ?? (zoom > 18 ? 30 : 20);
+  }
+
+ static int getClusterSize(int zoom) {
+  return 30;
+    // const clusterSizeMap = <int, int>{
+    //   15: 30,
+    //   16: 30,
+    //   17: 30,
+    //   18: 30,
+    //   19: 35,
+    //   20: 30,
+    // };
+
+    // return clusterSizeMap[zoom] ?? (zoom > 18 ? 30 : 20);
+  }
+
+  static Size getMarkerClusterSize(int zoom) {
+    return Size(30, 30);
+    // const markerClusterSizeMap = <int, Size>{
+    //   15: Size(30, 30),
+    //   16: Size(30, 30),
+    //   17: Size(30, 30),
+    //   18: Size(30, 30),
+    //   19: Size(30, 30),
+    //   20: Size(30, 30),
+    // };
+
+    // // Fallback, por ejemplo Size(30, 35) si no está en el map
+    // return markerClusterSizeMap[zoom] ?? const Size(25, 25);
+  }
+
+  Widget? buildOverlapLayer(int zoom)=> null;
+
+  List<Marker>? buildClusterMarkers(int zoom)=> null;
+
+  Widget buildMarkerLayer(int zoom);
+  
+  Widget? buildAreaLayer(int zoom)=> null;
+
 
   String name(BuildContext context);
 
