@@ -104,6 +104,10 @@ class MapLayerCategory {
   });
 
   factory MapLayerCategory.fromJson(Map<String, dynamic> json) {
+    if (json['properties'] != null && json["code"] == "school_route_map") {
+      json['properties']?['layer']?['url'] =
+          "https://data.mfdz.de/hbg/dt-layers/school_route_map.geojson";
+    }
     return MapLayerCategory(
       code: json['code'],
       en: json['translations']?['en'] ?? 'Unknown',
