@@ -32,8 +32,6 @@ class GeojsonMarkerModal extends StatelessWidget {
         _buildInfoRow(Icons.phone, element.phone!),
       if (_isNotEmpty(element.email))
         _buildInfoRow(Icons.email, element.email!),
-      if (_isNotEmpty(element.openingHours))
-        _buildInfoRow(Icons.access_time, element.openingHours!),
       if (_isNotEmpty(element.openingHoursLink))
         _buildLinkRow(Icons.schedule, element.openingHoursLink!),
     ];
@@ -60,7 +58,7 @@ class GeojsonMarkerModal extends StatelessWidget {
         ),
         if (_isNotEmpty(element.imageUrl))
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(bottom: 8),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -80,12 +78,30 @@ class GeojsonMarkerModal extends StatelessWidget {
           ),
         if (details.isNotEmpty)
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(bottom: 8),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 ...details,
+                const Divider(
+                  color: Colors.black87,
+                ),
+              ],
+            ),
+          ),
+        if (_isNotEmpty(element.openingHours))
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildInfoRow(
+                    Icons.access_time,
+                    element.openingHours == "off"
+                        ? element.openingHoursText ?? element.openingHours!
+                        : element.openingHours!),
                 const Divider(
                   color: Colors.black87,
                 ),
@@ -126,12 +142,19 @@ class GeojsonMarkerModal extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 10.0),
       child: Row(
         children: [
-          Icon(icon, size: 20),
+          Icon(
+            icon,
+            size: 20,
+            color: Color(0xFF747474),
+          ),
           const SizedBox(width: 8),
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(fontSize: 14),
+              style: const TextStyle(
+                fontSize: 14,
+                color: Color(0xFF747474),
+              ),
             ),
           ),
         ],
@@ -151,7 +174,8 @@ class GeojsonMarkerModal extends StatelessWidget {
         },
         child: Row(
           children: [
-            Icon(icon, size: 20),
+            Icon(icon, size: 20,
+            color: Color(0xFF747474),),
             const SizedBox(width: 8),
             Expanded(
               child: Text(

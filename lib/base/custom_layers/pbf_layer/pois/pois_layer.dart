@@ -84,7 +84,8 @@ class MapPoiLayer extends CustomLayer {
   }
 
   List<PoiFeature> _getMarkers(int zoom) {
-    final markersList = MapMarkersRepositoryContainer.poiFeatures.values.toList();
+    final markersList =
+        MapMarkersRepositoryContainer.poiFeatures.values.toList();
     markersList.sort(
       (a, b) => a.position.latitude.compareTo(b.position.latitude),
     );
@@ -155,7 +156,8 @@ class MapPoiLayer extends CustomLayer {
 
           final PoiFeature? pointFeature = PoiFeature.fromGeoJsonPoint(geojson);
           if (pointFeature != null) {
-            MapMarkersRepositoryContainer.poiFeatures[pointFeature.id] = pointFeature;
+            MapMarkersRepositoryContainer.poiFeatures[pointFeature.id] =
+                pointFeature;
             // final pbfLayer =
             //     StaticTileLayers.poisLayers[pointFeature.category2];
             // pbfLayer?.addMarker(pointFeature);
@@ -186,5 +188,5 @@ class MapPoiLayer extends CustomLayer {
     );
   }
   @override
-  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault??false;
+  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault ?? false;
 }

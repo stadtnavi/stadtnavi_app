@@ -1,5 +1,6 @@
 import 'package:latlong2/latlong.dart';
 
+
 class GeojsonMarker {
   final String? id;
   final LatLng position;
@@ -15,6 +16,7 @@ class GeojsonMarker {
   final String? email;
   final String? imageUrl;
 
+static final Map<String, String> cacheIcons = {};
   GeojsonMarker({
     required this.id,
     required this.position,
@@ -35,14 +37,19 @@ class GeojsonMarker {
     final properties = json['properties'] ?? {};
     final geometry = json['geometry'] ?? {};
     final coordinates = geometry['coordinates'] ?? [0.0, 0.0];
+    final iconId = properties['icon']['id'];
 
+    final svgTemp = properties['icon']['svg'] ?? cacheIcons[iconId];
+    if (properties['icon']['svg'] != null) {
+      cacheIcons[iconId] = properties['icon']['svg'];
+    }
     return GeojsonMarker(
       id: json['id']?.toString(),
       position: LatLng(
         (coordinates[1] as num).toDouble(),
         (coordinates[0] as num).toDouble(),
       ),
-      svgIcon: properties['icon']?['id'],
+      svgIcon: svgTemp,
       name: properties['name'],
       popupContent: properties['popupContent'],
       openingHours: properties['openingHours'],

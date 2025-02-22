@@ -96,7 +96,7 @@ class GeojsonLayer extends CustomLayer {
       mapCategory,
       mapCategory.code,
     );
-    final svgIcon = targetMapLayerCategory?.properties?.iconSvg;
+    final svgIcon =element.svgIcon?? targetMapLayerCategory?.properties?.iconSvg;
     return Marker(
       key: Key("$id:${element.id}:${element.name}:${element.address}"),
       height: markerSize,
