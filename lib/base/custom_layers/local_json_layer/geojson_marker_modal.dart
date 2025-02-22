@@ -23,7 +23,20 @@ class GeojsonMarkerModal extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     String title = element.name?.trim() ?? "";
-
+    final details = [
+      if (_isNotEmpty(element.address))
+        _buildInfoRow(Icons.place, element.address!),
+      if (_isNotEmpty(element.website))
+        _buildLinkRow(Icons.language, element.website!),
+      if (_isNotEmpty(element.phone))
+        _buildInfoRow(Icons.phone, element.phone!),
+      if (_isNotEmpty(element.email))
+        _buildInfoRow(Icons.email, element.email!),
+      if (_isNotEmpty(element.openingHours))
+        _buildInfoRow(Icons.access_time, element.openingHours!),
+      if (_isNotEmpty(element.openingHoursLink))
+        _buildLinkRow(Icons.schedule, element.openingHoursLink!),
+    ];
     return ListView(
       children: [
         Container(
@@ -45,51 +58,53 @@ class GeojsonMarkerModal extends StatelessWidget {
             ],
           ),
         ),
-
         if (_isNotEmpty(element.imageUrl))
-          Container(
-            height: 250,
-            padding: const EdgeInsets.all(8.0),
-            child: Image.network(element.imageUrl!),
-          ),
-
-        if (_isNotEmpty(element.address))
-          _buildInfoRow(Icons.place, element.address!),
-
-        if (_isNotEmpty(element.website))
-          _buildLinkRow(Icons.language, element.website!),
-
-        if (_isNotEmpty(element.phone))
-          _buildInfoRow(Icons.phone, element.phone!),
-
-        if (_isNotEmpty(element.email))
-          _buildInfoRow(Icons.email, element.email!),
-
-        if (_isNotEmpty(element.openingHours))
-          _buildInfoRow(Icons.access_time, element.openingHours!),
-
-        if (_isNotEmpty(element.openingHoursLink))
-          _buildLinkRow(Icons.schedule, element.openingHoursLink!),
-
-        if (_isNotEmpty(element.popupContent))
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Html(
-                  data: element.popupContent!,
-                  style: {
-                    "body": Style(
-                      color: theme.textTheme.bodyLarge?.color,
-                      fontSize: FontSize(16),
-                    ),
-                  },
+                Container(
+                  height: 250,
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.network(
+                    element.imageUrl!,
+                  ),
+                ),
+                const Divider(
+                  color: Colors.black87,
                 ),
               ],
             ),
           ),
-
+        if (details.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ...details,
+                const Divider(
+                  color: Colors.black87,
+                ),
+              ],
+            ),
+          ),
+        if (_isNotEmpty(element.popupContent))
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Html(
+                  data: element.popupContent!,
+                ),
+              ],
+            ),
+          ),
         CustomLocationSelector(
           onFetchPlan: onFetchPlan,
           locationData: LocationDetail(
