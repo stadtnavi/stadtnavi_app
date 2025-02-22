@@ -31,7 +31,7 @@ class GeojsonMarker {
     required this.imageUrl,
   });
 
-  factory GeojsonMarker.fromJson( json) {
+  factory GeojsonMarker.fromJson(json) {
     final properties = json['properties'] ?? {};
     final geometry = json['geometry'] ?? {};
     final coordinates = geometry['coordinates'] ?? [0.0, 0.0];
@@ -53,6 +53,35 @@ class GeojsonMarker {
       phone: properties['phone'],
       email: properties['email'],
       imageUrl: properties['imageUrl'],
+    );
+  }
+}
+
+class MultiLineStringModel {
+  final List<LatLng> coordinates;
+  final double weight;
+  final String color;
+
+  const MultiLineStringModel({
+    required this.coordinates,
+    required this.weight,
+    required this.color,
+  });
+
+  factory MultiLineStringModel.fromJson(Map<String, dynamic> map) {
+    final coordinates = <LatLng>[];
+
+    final List lines = map['geometry']?['coordinates'] ?? [];
+    for (var line in lines) {
+      for (var point in line) {
+        coordinates.add(LatLng(point[1], point[0]));
+      }
+    }
+
+    return MultiLineStringModel(
+      coordinates: coordinates,
+      weight: 2.5,
+      color: "#864A91",
     );
   }
 }

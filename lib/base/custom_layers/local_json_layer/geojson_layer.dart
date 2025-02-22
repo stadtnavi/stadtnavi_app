@@ -18,6 +18,7 @@ import 'package:http/http.dart' as http;
 
 class GeojsonLayer extends CustomLayer {
   List<GeojsonMarker> customMarkers = [];
+  List<MultiLineStringModel> polylines = [];
   final MapLayerCategory mapCategory;
   final String? url;
   final String? nameEN;
@@ -67,11 +68,26 @@ class GeojsonLayer extends CustomLayer {
         jsonDecode(utf8.decode(response.bodyBytes, allowMalformed: true));
     final List features = body["features"] as List;
     for (final feature in features) {
-      markers.add(GeojsonMarker.fromJson(feature));
+      if (feature['geometry']['type'] == "MultiLineString") {
+        polylines.add(MultiLineStringModel.fromJson(feature));
+      } else {
+        markers.add(GeojsonMarker.fromJson(feature));
+      }
     }
     return markers;
   }
-
+  @override
+  Widget? buildAreaLayer(int? zoom) {
+  return PolylineLayer(
+    polylines: polylines.map(
+      (path) => Polyline(
+        points: path.coordinates,
+        color: Color(int.parse(path.color.replaceFirst('#', '0xFF'))),
+        strokeWidth: path.weight,
+      ),
+    ).toList(),
+  );
+}
   Marker buildMarker({
     required GeojsonMarker element,
     required double markerSize,
@@ -191,6 +207,7 @@ class GeojsonLayer extends CustomLayer {
       color: Colors.green,
     );
   }
+
   @override
-  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault??false;
+  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault ?? false;
 }
