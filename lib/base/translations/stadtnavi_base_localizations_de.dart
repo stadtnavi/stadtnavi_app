@@ -521,4 +521,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get instructionVehicleMetro => 'U-Bahn';
+
+  @override
+  String get chooseOnMap => 'Wähle auf der Karte';
 }
