@@ -28,9 +28,8 @@ class PoiMarkerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final languageCode = Localizations.localeOf(context).languageCode;
+    final isEnglishCode = Localizations.localeOf(context).languageCode == 'en';
     final localizationST = StadtnaviBaseLocalization.of(context);
-    final isEnglishCode = languageCode == 'en';
     SimpleOpeningHours? openingHours;
     if (element.openingHours != null) {
       openingHours = SimpleOpeningHours(element.openingHours!);
