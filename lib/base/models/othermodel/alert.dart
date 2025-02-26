@@ -97,7 +97,7 @@ class Alert {
                     (x) => TranslatedString.fromJson(x as Map<String, dynamic>),
                   ))
                 : null,
-        alertUrl: json['alertUrl'].toString(),
+        alertUrl: json['alertUrl'],
         alertUrlTranslations: json['alertUrlTranslations'] != null
             ? List<TranslatedString>.from(
                 (json["alertUrlTranslations"] as List<dynamic>).map(
