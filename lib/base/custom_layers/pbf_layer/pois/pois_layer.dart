@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/hb_layers_data.dart';
+import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
+import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
@@ -14,168 +15,109 @@ import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
 import 'poi_feature_model.dart';
 import 'poi_marker_modal.dart';
 
-class PoisLayer extends CustomLayer {
-  final Map<String, PoiFeature> _pbfMarkers = {};
+class MapPoiLayer extends CustomLayer {
+  final MapLayerCategory mapCategory;
 
-  Map<String, PoiFeature> get data => _pbfMarkers;
+  MapPoiLayer(this.mapCategory, int weight) : super(mapCategory.code, weight);
 
-  final PoiCategoryEnum poiCategoryEnum;
-
-  PoisLayer(this.poiCategoryEnum, String weight)
-      : super(poiCategoryEnum.toSelfCode(), weight);
-
-  void addMarker(PoiFeature pointFeature) {
-    if (_pbfMarkers[pointFeature.id] == null) {
-      _pbfMarkers[pointFeature.id] = pointFeature;
-      refresh();
-    }
-  }
-
-  @override
-  List<Marker>? buildLayerMarkersPriority(int zoom) {
-    double? markerSize;
-    switch (zoom) {
-      case 15:
-        markerSize = 20;
-        break;
-      case 16:
-        markerSize = 20;
-        break;
-      case 17:
-        markerSize = 25;
-        break;
-      case 18:
-        markerSize = 30;
-        break;
-      default:
-        markerSize = zoom > 18 ? 35 : null;
-    }
-    final markersList = _pbfMarkers.values.toList();
-    // avoid vertical wrong overlapping
-    markersList.sort(
-      (b, a) => a.position.latitude.compareTo(b.position.latitude),
+  Marker buildMarker({
+    required PoiFeature element,
+    required double markerSize,
+  }) {
+    final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
+      mapCategory,
+      element.category3,
     );
-
-    return markerSize != null
-        ? markersList.where((element) {
-              final subCategoryData =
-                  HBLayerData.subCategoriesList[element.category3];
-              if (subCategoryData == null) return false;
-              if (subCategoryData.minZoom == null) return true;
-              return subCategoryData.minZoom! <= zoom;
-            }).map((element) {
-            final subCategoryData =
-                HBLayerData.subCategoriesList[element.category3];
-            return Marker(
-              key: Key("$id:${element.id}"),
-              height: markerSize! * .7,
-              width: markerSize * .7,
-              point: element.position,
-              alignment: Alignment.center,
-              child: Builder(builder: (context) {
-                return GestureDetector(
-                  onTap: () {
-                    final panelCubit = context.read<PanelCubit>();
-                    panelCubit.setPanel(
-                      CustomMarkerPanel(
-                        panel: (
-                          context,
-                          onFetchPlan, {
-                          isOnlyDestination,
-                        }) =>
-                            PoiMarkerModal(
-                          element: element,
-                          onFetchPlan: onFetchPlan,
-                        ),
-                        positon: element.position,
-                        minSize: 50,
-                      ),
-                    );
-                  },
-                  child: subCategoryData != null &&
-                          subCategoryData.icon.isNotEmpty
-                      ? SvgPicture.string(
-                          subCategoryData.icon,
-                        )
-                      : const Icon(Icons.error),
-                );
-              }),
+    final svgIcon = targetMapLayerCategory?.properties?.iconSvg;
+    return Marker(
+      key: Key("$id:${element.id}"),
+      height: markerSize,
+      width: markerSize,
+      point: element.position,
+      alignment: Alignment.center,
+      child: Builder(builder: (context) {
+        final languageCode = Localizations.localeOf(context).languageCode;
+        final isEnglishCode = languageCode == 'en';
+        return MarkerTileContainer(
+          menuBuilder: (_) {
+            return MarkerTileListItem(
+              // element: element,
+              icon: svgIcon != null
+                  ? SvgPicture.string(
+                      svgIcon,
+                    )
+                  : const Icon(Icons.error),
+              name: element.name ??
+                  (isEnglishCode
+                      ? targetMapLayerCategory?.en
+                      : targetMapLayerCategory?.de) ??
+                  "",
             );
-          }).toList()
-        : [];
+          },
+          child: GestureDetector(
+            onTap: () {
+              final panelCubit = context.read<PanelCubit>();
+              panelCubit.setPanel(
+                CustomMarkerPanel(
+                  panel: (
+                    context,
+                    onFetchPlan, {
+                    isOnlyDestination,
+                  }) =>
+                      PoiMarkerModal(
+                    element: element,
+                    onFetchPlan: onFetchPlan,
+                    targetMapLayerCategory: targetMapLayerCategory,
+                  ),
+                  position: element.position,
+                  minSize: 50,
+                ),
+              );
+            },
+            child: svgIcon != null
+                ? SvgPicture.string(svgIcon)
+                : const Icon(Icons.error),
+          ),
+        );
+      }),
+    );
+  }
+
+  List<PoiFeature> _getMarkers(int zoom) {
+    final markersList =
+        MapMarkersRepositoryContainer.poiFeatures.values.toList();
+    markersList.sort(
+      (a, b) => a.position.latitude.compareTo(b.position.latitude),
+    );
+    return markersList
+        .where((element) => mapCategory.code == element.category2)
+        .where((element) {
+      final targetMapLayerCategory =
+          MapLayerCategory.findCategoryWithProperties(
+        mapCategory,
+        element.category3,
+      );
+      final layerMinZoom =
+          targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
+      return layerMinZoom < zoom;
+    }).toList();
   }
 
   @override
-  Widget buildLayerOptions(int zoom) {
-    double? markerSize;
-    switch (zoom) {
-      case 15:
-        markerSize = 20;
-        break;
-      case 16:
-        markerSize = 25;
-        break;
-      case 17:
-        markerSize = 25;
-        break;
-      case 18:
-        markerSize = 30;
-        break;
-      default:
-        markerSize = zoom > 18 ? 35 : null;
-    }
-    final markersList = _pbfMarkers.values.toList();
-    // avoid vertical wrong overlapping
-    markersList.sort(
-      (b, a) => a.position.latitude.compareTo(b.position.latitude),
-    );
+  List<Marker>? buildClusterMarkers(int zoom) {
+    return _getMarkers(zoom)
+        .map((element) => buildMarker(
+            element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
+        .toList();
+  }
+
+  @override
+  Widget buildMarkerLayer(int zoom) {
     return MarkerLayer(
-      markers: markerSize != null
-          ? markersList.where((element) {
-              final subCategoryData =
-                  HBLayerData.subCategoriesList[element.category3];
-              if (subCategoryData == null) return false;
-              if (subCategoryData.minZoom == null) return true;
-              return subCategoryData.minZoom! <= zoom;
-            }).map((element) {
-              final subCategoryData =
-                  HBLayerData.subCategoriesList[element.category3];
-              return Marker(
-                height: markerSize! * .7,
-                width: markerSize * .7,
-                point: element.position,
-                alignment: Alignment.center,
-                child: Builder(builder: (context) {
-                  return GestureDetector(
-                    onTap: () {
-                      final panelCubit = context.read<PanelCubit>();
-                      panelCubit.setPanel(
-                        CustomMarkerPanel(
-                          panel: (
-                            context,
-                            onFetchPlan, {
-                            isOnlyDestination,
-                          }) =>
-                              PoiMarkerModal(
-                            element: element,
-                            onFetchPlan: onFetchPlan,
-                          ),
-                          positon: element.position,
-                          minSize: 50,
-                        ),
-                      );
-                    },
-                    child: subCategoryData != null &&
-                            subCategoryData.icon.isNotEmpty
-                        ? SvgPicture.string(
-                            subCategoryData.icon,
-                          )
-                        : const Icon(Icons.error),
-                  );
-                }),
-              );
-            }).toList()
-          : [],
+      markers: _getMarkers(zoom)
+          .map((element) => buildMarker(
+              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
+          .toList(),
     );
   }
 
@@ -188,16 +130,6 @@ class PoisLayer extends CustomLayer {
     } catch (e) {
       return Colors.black;
     }
-  }
-
-  @override
-  Widget? buildLayerOptionsPriority(int zoom) {
-    return null;
-  }
-
-  @override
-  Widget? buildLayerOptionsBackground(int? zoom) {
-    return null;
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {
@@ -221,13 +153,18 @@ class PoisLayer extends CustomLayer {
 
         if (feature.geometryType == GeometryType.Point) {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
+
           final PoiFeature? pointFeature = PoiFeature.fromGeoJsonPoint(geojson);
           if (pointFeature != null) {
-            final pbfLayer = StaticTileLayers.poisLayers[pointFeature.poiEnum];
-            pbfLayer?.addMarker(pointFeature);
+            MapMarkersRepositoryContainer.poiFeatures[pointFeature.id] =
+                pointFeature;
+            // final pbfLayer =
+            //     StaticTileLayers.poisLayers[pointFeature.category2];
+            // pbfLayer?.addMarker(pointFeature);
           }
         } else {
-          throw Exception("Should never happened, Feature is not a point");
+          throw Exception(
+              "It should never have happened. A feature is not a point");
         }
       }
     }
@@ -236,33 +173,20 @@ class PoisLayer extends CustomLayer {
   @override
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
-
-    final subCategoryData =
-        HBLayerData.subCategoriesList[poiCategoryEnum.selfCode];
-    if (subCategoryData == null) return poiCategoryEnum.selfCode;
-    return localeName == "en" ? subCategoryData.en : subCategoryData.de;
-  }
-
-  String? _getIcon() {
-    final subCategoryData =
-        HBLayerData.subCategoriesList[poiCategoryEnum.selfCode];
-    if (subCategoryData != null && subCategoryData.svgMenu.isNotEmpty) {
-      return subCategoryData.svgMenu;
-    } else {
-      if (subCategoryData != null && subCategoryData.categories.isNotEmpty) {
-        return subCategoryData.categories.first.svgMenu;
-      }
-    }
+    return localeName == "en" ? mapCategory.en : mapCategory.de;
   }
 
   @override
   Widget icon(BuildContext context) {
-    final icon = _getIcon();
+    final icon = mapCategory.properties?.iconSvgMenu ??
+        mapCategory.categories.first.properties?.iconSvgMenu;
 
     if (icon != null) return SvgPicture.string(icon);
-    return Icon(
+    return const Icon(
       Icons.error,
-      color: Colors.red,
+      color: Colors.green,
     );
   }
+  @override
+  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault ?? false;
 }

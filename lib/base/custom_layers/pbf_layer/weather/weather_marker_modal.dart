@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_feature_model.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_icons.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 
 class ParkingMarkerModal extends StatelessWidget {
   final WeatherFeature parkingFeature;
+  final Widget icon;
   final void Function() onFetchPlan;
 
   const ParkingMarkerModal({
     Key? key,
     required this.parkingFeature,
-    required this.onFetchPlan,
+    required this.onFetchPlan, required this.icon,
   }) : super(key: key);
 
   String _mapRoadCondition(int? value, bool isEnglish) {
@@ -77,7 +76,7 @@ class ParkingMarkerModal extends StatelessWidget {
             children: [
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 10),
-                child: SvgPicture.string(roadWeatherIcons),
+                child:icon,
               ),
               Expanded(
                 child: Column(

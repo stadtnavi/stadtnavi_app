@@ -167,7 +167,7 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
                                     isOnlyDestination:
                                         isOnlyDestination ?? true,
                                   ),
-                                  positon: parking.position,
+                                  position: parking.position,
                                   minSize: 50,
                                 ),
                               );
