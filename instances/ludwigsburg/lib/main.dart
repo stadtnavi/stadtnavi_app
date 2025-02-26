@@ -50,7 +50,7 @@ void main() async {
       .catchError((error) => {print("$error")});
   await initHiveForFlutter();
   // TODO we need to improve disable fetch˜ method
-  WeatherLayer.isdisable = true;
+  // WeatherLayer.isdisable = true;
   TransportModeExtension.visibleSettings[TransportMode.carPool] = false;
   // TODO we need to improve TransportMode Configuration
   TransportModeConfiguration.configure(transportColors: {

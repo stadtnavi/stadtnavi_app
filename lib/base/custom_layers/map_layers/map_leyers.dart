@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_core/base/custom_layers/map_layers/quad_tree.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
@@ -138,14 +139,13 @@ class MapLayer extends MapTileProvider {
             subdomains: const ["a", "b", "c"],
           ),
         ];
-      default:
-        return [];
-    }
+      }
   }
 }
 
 class CustomTileProvider extends TileProvider {
   final Map<String, String> customHeaders;
+
   final BuildContext context;
   CustomTileProvider({
     this.customHeaders = const {"Referer": "https://herrenberg.stadtnavi.de/"},
@@ -153,7 +153,7 @@ class CustomTileProvider extends TileProvider {
   });
   @override
   ImageProvider getImage(TileCoordinates coords, TileLayer options) {
-    if (coords.z.toInt() > 12) {
+    if (coords.z.toInt() > 13) {
       _fetchPBF(coords);
     }
     return CachedNetworkImageProvider(
@@ -163,80 +163,49 @@ class CustomTileProvider extends TileProvider {
   }
 
   Future<void> _fetchPBF(TileCoordinates coords) async {
-    // final layersStatus = context.read<CustomLayersCubit>().state.layersSatus;
-    // if (layersStatus["Sharing"] ?? false) {
-    // log("Tile coords: ${coords.z} ${coords.x} ${coords.y}");
-    await CityBikesLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
+    await Future.wait([
+      CityBikesLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ),
+      StopsLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ),
+      ParkingLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ),
+      MapPoiLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ),
+      BikeParkLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ),
+      RoadworksLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ),
+      WeatherLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      ),
+      ChargingLayer.fetchPBF(
+        coords.z.toInt(),
+        coords.x.toInt(),
+        coords.y.toInt(),
+      )
+    ]).catchError((error) {
       log("$error");
     });
-    // }
-    // if (StopsLayerIds.values
-    //     .any((element) => layersStatus[element.enumToString()] ?? false)) {
-    await StopsLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
-    // if (layersStatus["Parking"] ?? false) {
-    await ParkingLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    await PoisLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
-    // if (layersStatus["Bike Parking Space"] ?? false) {
-    await BikeParkLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
-
-    // if (layersStatus["Roadworks"] ?? false) {
-    await CifsLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
-
-    // if (layersStatus["Road Weather"] ?? false) {
-    await WeatherLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
-    // if (layersStatus["Charging"] ?? false) {
-    await ChargingLayer.fetchPBF(
-      coords.z.toInt(),
-      coords.x.toInt(),
-      coords.y.toInt(),
-    ).catchError((error) {
-      log("$error");
-    });
-    // }
   }
 }

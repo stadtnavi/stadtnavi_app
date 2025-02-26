@@ -33,19 +33,19 @@ class CustomMarkerPanel extends Equatable {
     void Function() onFetchPlan, {
     bool? isOnlyDestination,
   }) panel;
-  final LatLng positon;
+  final LatLng position;
   final double minSize;
 
   const CustomMarkerPanel({
     required this.panel,
-    required this.positon,
+    required this.position,
     required this.minSize,
   });
 
   @override
   List<Object?> get props => [
         panel,
-        positon,
+        position,
         minSize,
       ];
 }

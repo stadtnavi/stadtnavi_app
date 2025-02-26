@@ -51,10 +51,4 @@ static const iconOpenCarpark="""
 </svg>
 
 """;
-// static const icon_radnetz="""
-// """;
-// static const icon_radnetz="""
-// """;
-// static const icon_radnetz="""
-// """;
 }
