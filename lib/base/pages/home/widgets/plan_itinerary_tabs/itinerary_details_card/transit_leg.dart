@@ -7,6 +7,7 @@ import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart'
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_screen/route_stops_screen.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_marker_modal/stop_marker_modal.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_marker_modal/stop_marker_modal_base.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_enum.dart';
 import 'package:stadtnavi_core/base/models/othermodel/enums/alert_severity_level_type.dart';
 import 'package:stadtnavi_core/base/models/utils/alert_utils.dart';
@@ -227,7 +228,7 @@ class TransitLeg extends StatelessWidget {
                         _, {
                         isOnlyDestination,
                       }) =>
-                          StopMarkerModal(
+                          StopMarkerModalBase(
                         initialIndex: 2,
                         stopFeature: StopFeature(
                           code: leg.fromPlace?.stopEntity?.code,
@@ -236,14 +237,12 @@ class TransitLeg extends StatelessWidget {
                           parentStation: null,
                           patterns: null,
                           platform: null,
-                          type: StopsLayerIdsIdsToString.fromTransportMode(
-                            leg.transportMode,
-                          ),
+                          type:  leg.transportMode.name,
                           position:
                               LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon),
                         ),
                       ),
-                      positon: LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon),
+                      position: LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon),
                       minSize: 130,
                     ),
                   );
@@ -255,7 +254,7 @@ class TransitLeg extends StatelessWidget {
                         _, {
                         isOnlyDestination,
                       }) =>
-                          StopMarkerModal(
+                          StopMarkerModalBase(
                         initialIndex: 2,
                         stopFeature: StopFeature(
                           code: leg.toPlace?.stopEntity?.code,
@@ -264,13 +263,11 @@ class TransitLeg extends StatelessWidget {
                           parentStation: null,
                           patterns: null,
                           platform: null,
-                          type: StopsLayerIdsIdsToString.fromTransportMode(
-                            leg.transportMode,
-                          ),
+                          type:  leg.transportMode.name,
                           position: LatLng(leg.toPlace!.lat, leg.toPlace!.lon),
                         ),
                       ),
-                      positon: LatLng(leg.toPlace!.lat, leg.toPlace!.lon),
+                      position: LatLng(leg.toPlace!.lat, leg.toPlace!.lon),
                       minSize: 130,
                     ),
                   );

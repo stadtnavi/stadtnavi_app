@@ -1,27 +1,27 @@
 part of 'custom_layers_cubit.dart';
 
 class CustomLayersState extends Equatable {
-  final Map<String, bool> layersSatus;
+  final Map<String, bool> layersStatus;
   final List<CustomLayer> layers;
   const CustomLayersState({
-    required this.layersSatus,
+    required this.layersStatus,
     required this.layers,
   });
 
   CustomLayersState copyWith({
-    Map<String, bool>? layersSatus,
+    Map<String, bool>? layersStatus,
     List<CustomLayer>? layers,
     Widget? layer,
   }) {
     return CustomLayersState(
-      layersSatus: layersSatus ?? this.layersSatus,
+      layersStatus: layersStatus ?? this.layersStatus,
       layers: layers ?? this.layers,
     );
   }
 
   @override
   List<Object?> get props => [
-        layersSatus,
+        layersStatus,
         layers,
       ];
 }

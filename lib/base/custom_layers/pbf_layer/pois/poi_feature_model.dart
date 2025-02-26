@@ -30,7 +30,6 @@ class PoiFeature {
   final String? website;
   final String? wheelchair;
 
-  final PoiCategoryEnum poiEnum;
   final LatLng position;
 
   PoiFeature({
@@ -60,7 +59,6 @@ class PoiFeature {
     this.swimmingPool,
     this.website,
     this.wheelchair,
-    required this.poiEnum,
     required this.position,
   });
 
@@ -97,7 +95,6 @@ class PoiFeature {
     final String? swimmingPool = properties['swimming_pool']?.dartStringValue;
     final String? website = properties['website']?.dartStringValue;
     final String? wheelchair = properties['wheelchair']?.dartStringValue;
-    final poiEnum=PoiCategoryEnum.fromCode(category2);
     return PoiFeature(
       geoJsonPoint: geoJsonPoint,
       id: id ?? '',
@@ -125,104 +122,10 @@ class PoiFeature {
       swimmingPool: swimmingPool,
       website: website,
       wheelchair: wheelchair,
-      poiEnum: poiEnum!,
       position: LatLng(
         geoJsonPoint.geometry?.coordinates[1] ?? 0,
         geoJsonPoint.geometry?.coordinates[0] ?? 0,
       ),
     );
   }
-}
-
-enum PoiCategoryEnum {
-  bus(selfCode: "bus"),
-  subway(selfCode: "subway"),
-  rail(selfCode: "rail"),
-  parkAndRideForBikes(selfCode: "parkAndRideForBikes"),
-  bikeRepair(selfCode: "bike_repair"),
-  cycleNetwork(selfCode: "cycle_network"),
-  bikeShops(selfCode: "bike_shops_rental"),
-  bikeRental(selfCode: "bike_rental"),
-  weatherStations(selfCode: "weatherStations"),
-  roadworks(selfCode: "roadworks"),
-  parkAndRide(selfCode: "parkAndRide"),
-  chargingStations(selfCode: "chargingStations"),
-  gasStations(selfCode: "gas_stations"),
-  workshopsMv(selfCode: "workshops_mv"),
-  scooter(selfCode: "scooter"),
-  bicycle(selfCode: "bicycle"),
-  cargoBicycle(selfCode: "cargo_bicycle"),
-  car(selfCode: "car"),
-  carpoolStops(selfCode: "carpool"),
-  taxi(selfCode: "taxi"),
-  sights(selfCode: "sights"),
-  restaurants(selfCode: "restaurants"),
-  cafes(selfCode: "cafes"),
-  barsAndPubs(selfCode: "bars_and_pubs"),
-  entertainmentArtsAndCulture(selfCode: "entertainment_arts_and_culture"),
-  sportsParksPlaygrounds(selfCode: "sports_parks_playgrounds"),
-  accommodation(selfCode: "accommodation"),
-  benchesAndViewpoints(selfCode: "benches_and_viewpoints"),
-  drinkingWaterAndFountains(selfCode: "drinking_water_and_fountains"),
-  toilets(selfCode: "toilets"),
-  loarawanGateways(selfCode: "loarawan_gateways"),
-  groceriesAndBeverages(selfCode: "groceries_and_beverages"),
-  shops(selfCode: "shops"),
-  secondHandAndSharing(selfCode: "second-hand_and_sharing"),
-  finance(selfCode: "finance"),
-  postMailboxesAndDeliveryPoints(
-      selfCode: "post_mailboxes_and_delivery_points"),
-  administrativeFacilities(selfCode: "administrative_facilities"),
-  policeFireDepartment(selfCode: "police_fire_department"),
-  cemeteries(selfCode: "cemeteries"),
-  trashBinsAndRecycling(selfCode: "trash_bins_and_recycling"),
-  dogWasteBagStations(selfCode: "dog_waste_bag_stations"),
-  medicalServices(selfCode: "medical_services"),
-  education(selfCode: "education"),
-  schoolRouteMap(selfCode: "school_route_map"),
-  socialFacilities(selfCode: "social_facilities"),
-  childrenAndYouth(selfCode: "children_and_youth"),
-  religiousSites(selfCode: "religious_sites"),
-  animalFacilities(selfCode: "animal_facilities"),
-  transit(selfCode: "transit"),
-  funicular(selfCode: "funicular"),
-  vehicles(selfCode: "vehicles"),
-  administrativeFacility(selfCode: "administrative_facility"),
-  carShop(selfCode: "car_shop"),
-  supermarket(selfCode: "supermarkets"),
-  pharmacy(selfCode: "pharmacy"),
-  library(selfCode: "library"),
-  parcelStation(selfCode: "parcel_station"),
-  recycling(selfCode: "recycling"),
-  touristInformation(selfCode: "tourist_information"),
-  veterinariansAndAnimalClinic(selfCode: "veterinarians_and_animal_clinic"),
-  police(selfCode: "police"),
-  hospital(selfCode: "hospital"),
-  postOffice(selfCode: "post_office"),
-  university(selfCode: "universities_and_research"),
-  schools(selfCode: "schools"),
-  fireDepartment(selfCode: "fire_department"),
-  workshopsCar(selfCode: "workshop_car"),
-  workshopMotorcycleAndScooter(selfCode: "workshop_motorcycle_and_scooter");
-
-  final String selfCode;
-
-  const PoiCategoryEnum({required this.selfCode});
-
-  static PoiCategoryEnum? fromSelfCode(String code) {
-    try {
-      return PoiCategoryEnum.values.firstWhere((e) => e.selfCode == code);
-    } catch (_) {
-      return null; 
-    }
-  }
-
-  static PoiCategoryEnum? fromCode(String code) {
-    for (final value in PoiCategoryEnum.values) {
-      if (value.selfCode==code) return value;
-    }
-    return null;
-  }
-
-  String toSelfCode() => selfCode;
 }

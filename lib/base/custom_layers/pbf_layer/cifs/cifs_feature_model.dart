@@ -3,7 +3,7 @@ import 'package:vector_tile/vector_tile.dart';
 
 import 'bike_parks_enum.dart';
 
-class CifsFeature {
+class RoadworksFeature {
   final GeoJsonLineString? geoJsonPoint;
   final String id;
   final String locationStreet;
@@ -20,7 +20,7 @@ class CifsFeature {
 
   final CifsTypeIds? type;
   final CifsSubTypeIds? subType;
-  CifsFeature({
+  RoadworksFeature({
     required this.geoJsonPoint,
     required this.id,
     required this.locationStreet,
@@ -37,7 +37,7 @@ class CifsFeature {
   })  : startPoint = polyline.first,
         endPoint = polyline.last;
   // ignore: prefer_constructors_over_static_methods
-  static CifsFeature? fromGeoJsonLine(GeoJsonLineString? geoJsonPoint) {
+  static RoadworksFeature? fromGeoJsonLine(GeoJsonLineString? geoJsonPoint) {
     if (geoJsonPoint?.properties == null) return null;
     final properties = geoJsonPoint?.properties ?? <String, VectorTileValue>{};
     String? id = properties['id']?.dartStringValue;
@@ -69,7 +69,7 @@ class CifsFeature {
       );
     }
 
-    return CifsFeature(
+    return RoadworksFeature(
       geoJsonPoint: geoJsonPoint,
       id: id ?? '',
       locationStreet: locationStreet ?? '',
