@@ -10,6 +10,7 @@ import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
 import 'live_bus_enum.dart';
@@ -31,15 +32,15 @@ class OnLiveBusStateChangeContainer {
 }
 
 class LiveBusLayer extends CustomLayer {
+  final MapLayerCategory mapCategory;
   final Map<String, LiveBusFeature> _pbfMarkers = {};
   OnLiveBusStateChangeContainer? onLiveBusStateChangeContainer;
-  LiveBusLayer(String id, String weight) : super(id, weight) {
-    // ignore: body_might_complete_normally_catch_error
+  LiveBusLayer(this.mapCategory, int weight) : super(mapCategory.code, weight) {
     connect().catchError((error) {
-      // should not make any effect on layer behavior
+      print(error);
     });
     filterOldValues().catchError((error) {
-      // should not make any effect on layer behavior
+      print(error);
     });
   }
   Future<void> filterOldValues() async {
@@ -52,15 +53,15 @@ class LiveBusLayer extends CustomLayer {
   }
 
   Future<MqttServerClient> connect() async {
-    final MqttServerClient client = MqttServerClient.withPort(
-      'wss://api.dev.stadtnavi.eu/mqtt/',
-      'flutter_client',
-      443,
-    );
+    final MqttServerClient client = MqttServerClient(
+        "wss://vehiclepositions.stadtnavi.eu/mqtt/", "flutter_client");
+    client.port = 443;
     client.useWebSocket = true;
-    client.setProtocolV311();
+    client.keepAlivePeriod = 20;
+    // client.setProtocolV311();
     client.autoReconnect = true;
-    client.connectionMessage = MqttConnectMessage();
+    client.connectionMessage =
+        MqttConnectMessage().withWillQos(MqttQos.atLeastOnce).startClean();
     await client.connect();
 
     client.subscribe("/json/vp/#", MqttQos.atLeastOnce);
@@ -122,17 +123,7 @@ class LiveBusLayer extends CustomLayer {
   }
 
   @override
-  List<Marker>? buildLayerMarkersPriority(int? zoom) {
-    return [];
-  }
-
-  @override
-  Widget? buildLayerOptionsBackground(int? zoom) {
-    return null;
-  }
-
-  @override
-  Widget buildLayerOptions(int? zoom) {
+  Widget buildMarkerLayer(int? zoom) {
     double? markerSize;
     switch (zoom) {
       case 15:
@@ -182,7 +173,7 @@ class LiveBusLayer extends CustomLayer {
                                   onLiveBusStateChangeContainer:
                                       onLiveBusStateChangeContainer,
                                 ),
-                                positon: element.position,
+                                position: element.position,
                                 minSize: 50,
                               ),
                             );
@@ -242,18 +233,16 @@ class LiveBusLayer extends CustomLayer {
   }
 
   @override
-  Widget? buildLayerOptionsPriority(int zoom) {
-    return null;
-  }
-
-  @override
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? "Vehicle positions" : "Fahrzeugpositionen";
+    return localeName == "en" ? mapCategory.en : mapCategory.de;
   }
 
   @override
   Widget icon(BuildContext context) {
     return SvgPicture.string(menuLiveBusStop);
   }
+
+  @override
+  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault ?? false;
 }
