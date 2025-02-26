@@ -79,7 +79,7 @@ class OnlineSearchLocation implements SearchLocationRepository {
   }) async {
     final response = await http.get(
       Uri.parse(
-        "https://photon.stadtnavi.eu/pelias/v1/reverse?point.lat=${location.latitude}&point.lon=${location.longitude}&boundary.circle.radius=0.1&lang=$lang&size=1&layers=address&zones=1",
+        "https://photon-eu.stadtnavi.eu/pelias/v1/reverse?point.lat=${location.latitude}&point.lon=${location.longitude}&boundary.circle.radius=0.1&lang=$lang&size=1&layers=address&zones=1",
       ),
       headers: {},
     );

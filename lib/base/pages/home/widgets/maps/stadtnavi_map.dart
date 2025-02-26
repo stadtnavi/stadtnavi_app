@@ -5,7 +5,8 @@ import 'package:flutter_map_marker_cluster_2/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
-import 'package:stadtnavi_core/base/custom_layers/decoder_layer_data/decoder_data.dart';
+import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/map_legend.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/map_type_button.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/your_location_button.dart';
@@ -55,26 +56,26 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
     final customLayersCubit = context.watch<CustomLayersCubit>();
     final currentMapType = context.watch<MapTileProviderCubit>().state;
     final localizationST = StadtnaviBaseLocalization.of(context);
-    int? clusterSize;
-    Size? markerClusterSize;
-    switch (mapZoom) {
-      case 15:
-        clusterSize = 25;
-        markerClusterSize = const Size(30, 35);
-        break;
-      case 16:
-        clusterSize = 40;
-        markerClusterSize = const Size(35, 40);
-        break;
-      case 17:
-        clusterSize = 30;
-        markerClusterSize = const Size(25, 40);
-        break;
-      case 18:
-        clusterSize = 30;
-        markerClusterSize = const Size(35, 45);
-        break;
-    }
+    // int? clusterSize;
+    // Size? markerClusterSize;
+    // switch (mapZoom) {
+    //   case 15:
+    //     clusterSize = 25;
+    //     markerClusterSize = const Size(30, 30);
+    //     break;
+    //   case 16:
+    //     clusterSize = 40;
+    //     markerClusterSize = const Size(35, 35);
+    //     break;
+    //   case 17:
+    //     clusterSize = 30;
+    //     markerClusterSize = const Size(25, 40);
+    //     break;
+    //   case 18:
+    //     clusterSize = 30;
+    //     markerClusterSize = const Size(35, 45);
+    //     break;
+    // }
     // zoom 18 Size(30, 35) 30
     // zoom 17 Size(20, 25) 15
     // zoom 16 Size(30, 30) 25
@@ -158,8 +159,8 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
                           // );
                         },
                         alignment: Alignment.center,
-                        maxClusterRadius: clusterSize ?? 80,
-                        size: markerClusterSize ?? const Size(30, 30),
+                        maxClusterRadius: CustomLayer.getClusterSize(mapZoom),
+                        size: CustomLayer.getMarkerClusterSize(mapZoom),
                         centerMarkerOnClick: false,
                         zoomToBoundsOnClick: false,
                         // disableClusteringAtZoom: 15,

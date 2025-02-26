@@ -111,7 +111,11 @@ fragment planFragment on Plan {
             alertSeverityLevel
             effectiveEndDate
             effectiveStartDate
+            entities {
+              __typename
+            }
             alertHeaderText
+            alertDescriptionText
             alertUrl
             trip {
               id
@@ -155,13 +159,18 @@ fragment planFragment on Plan {
           name
           code
           platformCode
+          vehicleMode
           zoneId
           id
           alerts {
             alertSeverityLevel
             effectiveEndDate
             effectiveStartDate
+            entities {
+              __typename
+            }
             alertHeaderText
+            alertDescriptionText
             alertUrl
             id
             trip {
@@ -231,7 +240,11 @@ fragment planFragment on Plan {
           alertSeverityLevel
           effectiveEndDate
           effectiveStartDate
+          entities {
+            __typename
+          }
           alertHeaderText
+          alertDescriptionText
           alertUrl
           trip {
             id

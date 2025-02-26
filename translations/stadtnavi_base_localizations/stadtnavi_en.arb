@@ -332,10 +332,18 @@
   "swipeSrNewTabOpened": "Tab {number} opened.",
   "tripCo2EmissionsSr": "Carbondioxide emissions of the journey",
   "departureTimeInMinutes": "{minutes} min",
+  "itineraryDetailsRouteHasInfoAlert": "Route has alerts.",
+  "itineraryDetailsRouteHasSevereAlert": "Route has disruptions.",
+  "itineraryDetailsRouteHasUnknownAlert": "Route has disruptions.",
+  "itineraryDetailsRouteHasWarningAlert": "Route has disruptions.",
   "poiTagWheelchair": "Wheelchair accessible",
   "poiTagOutdoor" : "Outdoor seating",
   "poiTagDogs" : "Dogs allowed",
   "poiTagWifi" : "WiFi",
   "poiTagOperator" : "Operator: {operator}",
-  "poiTagBrand" : "Brand: {brand}"
+  "poiTagBrand" : "Brand: {brand}",
+  "bicycleWalkFromTransitNoDuration": "Walk your bike off the {transportMode}",
+  "bicycleWalkToTransitNoDuration": "Walk your bike to the {transportMode}",
+  "instructionVehicleLightRail": "Rail",
+  "instructionVehicleMetro": "Metro"
 }

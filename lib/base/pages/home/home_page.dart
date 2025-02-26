@@ -112,7 +112,7 @@ class _HomePageState extends State<HomePage>
     trufiMapController.onReady.then((value) {
       if (panelCubit.state.panel != null) {
         trufiMapController.move(
-          center: panelCubit.state.panel!.positon,
+          center: panelCubit.state.panel!.position,
           zoom: 16,
           tickerProvider: this,
         );
@@ -130,7 +130,12 @@ class _HomePageState extends State<HomePage>
       ),
       body: Column(
         children: [
-          const BannerAlerts(),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(child: const BannerAlerts()),
+            ],
+          ),
           HomeAppBar(
             onSaveFrom: (TrufiLocation fromPlace) =>
                 mapRouteCubit.setFromPlace(fromPlace).then(
@@ -143,6 +148,13 @@ class _HomePageState extends State<HomePage>
                 _callFetchPlan(context);
               },
             ),
+            onClearFrom: () async {
+              mapRouteCubit.resetFromPlaceKeepingToPlace();
+              if (mapRouteCubit.state.plan != null) {
+                panelCubit.cleanPanel();
+                await mapModesCubit.reset();
+              }
+            },
             onSaveTo: (TrufiLocation toPlace) =>
                 mapRouteCubit.setToPlace(toPlace).then(
               (value) {
@@ -154,6 +166,13 @@ class _HomePageState extends State<HomePage>
                 _callFetchPlan(context);
               },
             ),
+            onClearTo: () async {
+              mapRouteCubit.resetToPlaceKeepingFromPlace();
+              if (mapRouteCubit.state.plan != null) {
+                panelCubit.cleanPanel();
+                await mapModesCubit.reset();
+              }
+            },
             onBackButton: () {
               HomePage.scaffoldKey.currentState?.openDrawer();
             },

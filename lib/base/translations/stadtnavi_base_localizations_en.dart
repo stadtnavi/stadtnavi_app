@@ -475,6 +475,16 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   }
 
   @override
+  String get itineraryDetailsRouteHasInfoAlert => 'Route has alerts.';
+
+  @override
+  String get itineraryDetailsRouteHasSevereAlert => 'Route has disruptions.';
+
+  @override
+  String get itineraryDetailsRouteHasUnknownAlert => 'Route has disruptions.';
+
+  @override
+  String get itineraryDetailsRouteHasWarningAlert => 'Route has disruptions.';
   String get poiTagWheelchair => 'Wheelchair accessible';
 
   @override
@@ -495,4 +505,20 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String poiTagBrand(Object brand) {
     return 'Brand: $brand';
   }
+
+  @override
+  String bicycleWalkFromTransitNoDuration(Object transportMode) {
+    return 'Walk your bike off the $transportMode';
+  }
+
+  @override
+  String bicycleWalkToTransitNoDuration(Object transportMode) {
+    return 'Walk your bike to the $transportMode';
+  }
+
+  @override
+  String get instructionVehicleLightRail => 'Rail';
+
+  @override
+  String get instructionVehicleMetro => 'Metro';
 }
