@@ -17,9 +17,7 @@ extension AvailabilityParkingExtension on AvailabilityState {
         return SvgPicture.string(partialAvailabilityIcon);
       case AvailabilityState.unavailability:
         return SvgPicture.string(unavailabilityIcon);
-      default:
-        return null;
-    }
+      }
   }
 
   Widget getImage({double size = 24}) {

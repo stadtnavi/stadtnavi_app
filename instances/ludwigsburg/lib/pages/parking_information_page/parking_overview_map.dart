@@ -44,7 +44,7 @@ class _ParkingOverviewMapState extends State<ParkingOverviewMap>
     trufiMapController.onReady.then((value) {
       if (panelCubit.state.panel != null) {
         trufiMapController.move(
-          center: panelCubit.state.panel!.positon,
+          center: panelCubit.state.panel!.position,
           zoom: 17,
           tickerProvider: this,
         );

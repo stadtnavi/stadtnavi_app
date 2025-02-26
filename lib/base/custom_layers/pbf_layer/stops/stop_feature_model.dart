@@ -1,7 +1,6 @@
 import 'package:latlong2/latlong.dart';
 import 'package:vector_tile/vector_tile.dart';
 
-import 'stops_enum.dart';
 
 class StopFeature {
   final String? code;
@@ -10,7 +9,7 @@ class StopFeature {
   final String? parentStation;
   final String? patterns;
   final String? platform;
-  final StopsLayerIds? type;
+  final String type;
 
   final LatLng position;
   StopFeature({
@@ -35,10 +34,10 @@ class StopFeature {
     String? parentStation = properties['parentStation']?.dartStringValue;
     String? patterns = properties['patterns']?.dartStringValue;
     String? platform = properties['platform']?.dartStringValue;
-    StopsLayerIds? type = properties['type'] != null
-        ? stopsLayerIdsstringToEnum(properties['type']?.dartStringValue ?? '')
+    String? type = properties['type'] != null
+        ? properties['type']?.dartStringValue ?? ''
         : null;
-    if (type == StopsLayerIds.carpool && !(name ?? '').contains("P+M")) {
+    if (type == "carpool" && !(name ?? '').contains("P+M")) {
       type = null;
     }
     if (type == null) return null;

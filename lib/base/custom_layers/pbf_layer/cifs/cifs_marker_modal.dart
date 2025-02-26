@@ -8,7 +8,7 @@ import 'cifs_feature_model.dart';
 import 'cifs_icons.dart';
 
 class CifsMarkerModal extends StatelessWidget {
-  final CifsFeature element;
+  final RoadworksFeature element;
   final void Function() onFetchPlan;
   final LatLng position;
   const CifsMarkerModal({

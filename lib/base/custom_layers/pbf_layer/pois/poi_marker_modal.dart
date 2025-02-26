@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/simple_opening_hours.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/widgets/opening_time_table.dart';
 import "package:url_launcher/url_launcher.dart";
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/hb_layers_data.dart';
+import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/other_icons.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
@@ -16,20 +16,20 @@ import 'poi_feature_model.dart';
 class PoiMarkerModal extends StatelessWidget {
   final PoiFeature element;
   final void Function() onFetchPlan;
+  final MapLayerCategory? targetMapLayerCategory;
 
   const PoiMarkerModal({
     Key? key,
     required this.element,
     required this.onFetchPlan,
+    required this.targetMapLayerCategory,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final languageCode = Localizations.localeOf(context).languageCode;
+    final isEnglishCode = Localizations.localeOf(context).languageCode == 'en';
     final localizationST = StadtnaviBaseLocalization.of(context);
-    final isEnglishCode = languageCode == 'en';
-    final subCategoryData = HBLayerData.subCategoriesList[element.category3];
     SimpleOpeningHours? openingHours;
     if (element.openingHours != null) {
       openingHours = SimpleOpeningHours(element.openingHours!);
@@ -41,6 +41,8 @@ class PoiMarkerModal extends StatelessWidget {
       indent: 10,
       endIndent: 10,
     );
+
+            final svgIcon = targetMapLayerCategory?.properties?.iconSvg;
     return ListView(
       children: [
         Container(
@@ -53,18 +55,15 @@ class PoiMarkerModal extends StatelessWidget {
                     height: 30,
                     width: 30,
                     margin: const EdgeInsets.symmetric(horizontal: 10),
-                    child: subCategoryData != null &&
-                            subCategoryData.icon.isNotEmpty
-                        ? SvgPicture.string(
-                            subCategoryData.icon,
-                          )
-                        : const Icon(Icons.error),
+                            child: svgIcon != null
+                      ? SvgPicture.string(svgIcon)
+                      : const Icon(Icons.error),
                   ),
                   Expanded(
                     child: Text(
                       (isEnglishCode
-                              ? subCategoryData?.en
-                              : subCategoryData?.de) ??
+                              ? targetMapLayerCategory?.en
+                              : targetMapLayerCategory?.de) ??
                           "",
                       style: const TextStyle(
                         fontSize: 20,

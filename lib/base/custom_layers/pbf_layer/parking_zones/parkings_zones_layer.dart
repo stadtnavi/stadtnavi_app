@@ -17,18 +17,18 @@ class ParkingZonesLayer extends CustomLayer {
   final List<ParkingZoneMarkerModel> _parkingZoneMarkers = [];
   bool _isFetching = false;
 
-  ParkingZonesLayer(String id, String weight) : super(id, weight) {
+  ParkingZonesLayer(String id, int weight) : super(id, weight) {
     load();
   }
 
   @override
-  List<Marker>? buildLayerMarkersPriority(int? zoom) {
+  List<Marker>? buildClusterMarkers(int? zoom) {
     // No required
     return [];
   }
 
   @override
-  Widget? buildLayerOptionsBackground(int? zoom) {
+  Widget? buildAreaLayer(int? zoom) {
     if (_parkingZonePoligons.isEmpty) {
       load();
     }
@@ -68,14 +68,14 @@ class ParkingZonesLayer extends CustomLayer {
   }
 
   @override
-  Widget buildLayerOptions(int? zoom) {
+  Widget buildMarkerLayer(int? zoom) {
     return const PolygonLayer<Object>(
       polygons: [],
     );
   }
 
   @override
-  Widget? buildLayerOptionsPriority(int? zoom) {
+  Widget? buildOverlapLayer(int? zoom) {
     double? markerSize;
     switch (zoom) {
       case 15:
@@ -115,7 +115,7 @@ class ParkingZonesLayer extends CustomLayer {
                                   ParkingZoneModal(
                                 element: element,
                               ),
-                              positon: element.coordinates,
+                              position: element.coordinates,
                               minSize: 100,
                             ),
                           );
@@ -184,4 +184,6 @@ class ParkingZonesLayer extends CustomLayer {
   Widget icon(BuildContext context) {
     return SvgPicture.string(parkingZones);
   }
+  @override
+  bool isDefaultOn() => false;
 }

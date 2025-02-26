@@ -331,6 +331,10 @@
   "swipeSrNewTabOpened": "Tab {number} geöffnet.",
   "tripCo2EmissionsSr": "Kohlenstoffdioxid-Emissionen der Reise",
   "departureTimeInMinutes": "{minutes} m",
+  "itineraryDetailsRouteHasInfoAlert": "Route enthält Warnungen.",
+  "itineraryDetailsRouteHasSevereAlert": "Route enthält Störungen.",
+  "itineraryDetailsRouteHasUnknownAlert": "Route enthält Störungen.",
+  "itineraryDetailsRouteHasWarningAlert": "Route enthält Störungen.",
   "poiTagWheelchair": "Rollstuhlgerecht",
   "poiTagOutdoor" : "Sitzplätze im Freien",
   "poiTagDogs" : "Hunde erlaubt",
@@ -340,5 +344,6 @@
   "bicycleWalkFromTransitNoDuration": "Steigen Sie mit dem Fahrrad aus dem {transportMode} aus",
   "bicycleWalkToTransitNoDuration": "Schieben Sie ihr Fahrrad zum/zur {transportMode}",
   "instructionVehicleLightRail": "Zug",
-  "instructionVehicleMetro": "U-Bahn"
+  "instructionVehicleMetro": "U-Bahn",
+  "chooseOnMap" : "Wähle auf der Karte"
 }

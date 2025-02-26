@@ -475,6 +475,16 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   }
 
   @override
+  String get itineraryDetailsRouteHasInfoAlert => 'Route enthält Warnungen.';
+
+  @override
+  String get itineraryDetailsRouteHasSevereAlert => 'Route enthält Störungen.';
+
+  @override
+  String get itineraryDetailsRouteHasUnknownAlert => 'Route enthält Störungen.';
+
+  @override
+  String get itineraryDetailsRouteHasWarningAlert => 'Route enthält Störungen.';
   String get poiTagWheelchair => 'Rollstuhlgerecht';
 
   @override
@@ -511,4 +521,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get instructionVehicleMetro => 'U-Bahn';
+
+  @override
+  String get chooseOnMap => 'Wähle auf der Karte';
 }
