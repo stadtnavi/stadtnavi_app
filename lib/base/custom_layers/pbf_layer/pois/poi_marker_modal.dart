@@ -42,7 +42,7 @@ class PoiMarkerModal extends StatelessWidget {
       endIndent: 10,
     );
 
-            final svgIcon = targetMapLayerCategory?.properties?.iconSvg;
+    final svgIcon = targetMapLayerCategory?.properties?.iconSvg;
     return ListView(
       children: [
         Container(
@@ -55,9 +55,9 @@ class PoiMarkerModal extends StatelessWidget {
                     height: 30,
                     width: 30,
                     margin: const EdgeInsets.symmetric(horizontal: 10),
-                            child: svgIcon != null
-                      ? SvgPicture.string(svgIcon)
-                      : const Icon(Icons.error),
+                    child: svgIcon != null
+                        ? SvgPicture.string(svgIcon)
+                        : const Icon(Icons.error),
                   ),
                   Expanded(
                     child: Text(
@@ -204,18 +204,35 @@ class PoiMarkerModal extends StatelessWidget {
           ),
         ],
         if (element.wheelchair == 'yes')
-          LabelPOIsDetails(label: localizationST.poiTagWheelchair),
+          LabelPOIsDetails(
+            label: localizationST.poiTagWheelchair,
+            color: greyColor,
+          ),
         if (element.outdoorSeating == 'yes')
-          LabelPOIsDetails(label: localizationST.poiTagOutdoor),
+          LabelPOIsDetails(
+            label: localizationST.poiTagOutdoor,
+            color: greyColor,
+          ),
         if (element.dog == 'yes')
-          LabelPOIsDetails(label: localizationST.poiTagDogs),
+          LabelPOIsDetails(
+            label: localizationST.poiTagDogs,
+            color: greyColor,
+          ),
         if (element.internetAccess == 'wlan')
-          LabelPOIsDetails(label: localizationST.poiTagWifi),
+          LabelPOIsDetails(
+            label: localizationST.poiTagWifi,
+            color: greyColor,
+          ),
         if (element.operatorName != null)
           LabelPOIsDetails(
-              label: localizationST.poiTagOperator(element.operatorName!)),
+            label: localizationST.poiTagOperator(element.operatorName!),
+            color: greyColor,
+          ),
         if (element.brand != null)
-          LabelPOIsDetails(label: localizationST.poiTagBrand(element.brand!)),
+          LabelPOIsDetails(
+            label: localizationST.poiTagBrand(element.brand!),
+            color: greyColor,
+          ),
         CustomLocationSelector(
           onFetchPlan: onFetchPlan,
           locationData: LocationDetail(
@@ -233,14 +250,19 @@ class LabelPOIsDetails extends StatelessWidget {
   const LabelPOIsDetails({
     super.key,
     required this.label,
+    required this.color,
   });
   final String label;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-      child: Text(label),
+      child: Text(
+        label,
+        style: TextStyle(color: color),
+      ),
     );
   }
 }
