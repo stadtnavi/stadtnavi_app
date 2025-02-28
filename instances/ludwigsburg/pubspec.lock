@@ -382,6 +382,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.8.1"
+  flutter_html:
+    dependency: transitive
+    description:
+      name: flutter_html
+      sha256: "02ad69e813ecfc0728a455e4bf892b9379983e050722b1dce00192ee2e41d1ee"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0-beta.2"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -565,6 +573,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+  gtfs_realtime_bindings:
+    dependency: transitive
+    description:
+      name: gtfs_realtime_bindings
+      sha256: c0b73cfeaead1f225d578ff89245af5a36a81c692b6c365cfa05d0e216c5cbdc
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   hive:
     dependency: transitive
     description:
@@ -677,6 +693,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  list_counter:
+    dependency: transitive
+    description:
+      name: list_counter
+      sha256: c447ae3dfcd1c55f0152867090e67e219d42fe6d4f2807db4bbe8b8d69912237
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   lists:
     dependency: transitive
     description:
@@ -1141,11 +1165,11 @@ packages:
     dependency: transitive
     description:
       path: "."
-      ref: "3.26.0-stadtnavi-lts"
-      resolved-ref: de16a5ea79a371dcc923a5574a0551d9def95363
+      ref: "3.26.1-stadtnavi-lts"
+      resolved-ref: "3c1bd6d0c08cca7bd4e47694663cf18f8750c4ea"
       url: "https://github.com/trufi-association/trufi-core.git"
     source: git
-    version: "3.25.0"
+    version: "3.26.1"
   typed_data:
     dependency: transitive
     description:

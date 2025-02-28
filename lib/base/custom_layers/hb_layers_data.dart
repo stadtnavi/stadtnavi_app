@@ -15,7 +15,7 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.da
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 
 abstract class HBLayerData {
-  static Map<String, MapLayerCategory> categoriesMapDetails = {};
+  // static Map<String, MapLayerCategory> categoriesMapDetails = {};
   static final List<MapLayerCategory> categories = [];
 
   static Future<void> loadHbLayers() async {
@@ -37,6 +37,22 @@ abstract class HBLayerData {
     } catch (e) {
       print('Error loading HB layers: $e');
     }
+  }
+   static MapLayerCategory? findCategoryRecursively(
+    List<MapLayerCategory> categories,
+    String codeToFind,
+  ) {
+    for (final category in categories) {
+      if (category.code.toLowerCase() == codeToFind.toLowerCase()) {
+        return category;
+      }
+      final foundInChildren =
+          findCategoryRecursively(category.categories, codeToFind);
+      if (foundInChildren != null) {
+        return foundInChildren;
+      }
+    }
+    return null;
   }
 }
 

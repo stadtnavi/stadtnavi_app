@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -12,8 +11,8 @@ import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart'
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
-
-import 'live_bus_enum.dart';
+import 'dart:typed_data';
+import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
 import 'live_bus_icons.dart';
 import 'live_bus_marker_modal.dart';
 import 'live_bus_model.dart';
@@ -64,47 +63,27 @@ class LiveBusLayer extends CustomLayer {
         MqttConnectMessage().withWillQos(MqttQos.atLeastOnce).startClean();
     await client.connect();
 
-    client.subscribe("/json/vp/#", MqttQos.atLeastOnce);
+    client.subscribe("/gtfsrt/vp/hbg/#", MqttQos.atLeastOnce);
     client.updates?.listen((inputs) {
       for (final MqttReceivedMessage<MqttMessage> input in inputs) {
         final message = input.payload as MqttPublishMessage;
-        final payload = MqttPublishPayload.bytesToStringAsString(
+        final Uint8List payloadBytes = Uint8List.fromList(
           message.payload.message,
         );
-        //  1=gtfsrt
-        //  2=vp
-        //  3=feed_Id
-        //  4=agency_id
-        //  5=agency_name
-        //  6=mode
-        //  7=route_id
-        //  8=direction_id
-        //  9=trip_headsign
-        //  10=trip_id
-        //  11=next_stop
-        //  12=start_time
-        //  13=vehicle_id
-        //  14=geo_hash
-        //  15=short_name
-        //  16=color
-        //  17=??
-        //  18=name
+
+        final FeedMessage feedMessage = FeedMessage.fromBuffer(payloadBytes);
+
         final header = (message.variableHeader?.topicName ?? '').split("/");
-        if (header.length != 19) continue;
-        final data = jsonDecode(payload);
-        if (data["entity"] != null) {
-          final entities = data["entity"];
-          for (final entity in entities) {
-            if (entity["vehicle"] != null) {
-              final liveBusFeature = LiveBusFeature.fromGeoJsonLine(
-                entity["vehicle"] as Map,
-                tripId: header[10],
-                name: header[18],
-                to: header[9],
-                time: header[12],
-              );
-              addMarker(liveBusFeature);
-            }
+        if (header.length != 21) continue;
+
+        for (final entity in feedMessage.entity) {
+          if (entity.hasVehicle()) {
+            final liveBusFeature = LiveBusFeature.fromVehiclePosition(
+              entity.vehicle,
+              lastUpdate: feedMessage.header.timestamp.toInt(),
+              header: header,
+            );
+            addMarker(liveBusFeature);
           }
         }
       }
@@ -146,8 +125,8 @@ class LiveBusLayer extends CustomLayer {
       markers: markerSize != null
           ? markersList
               .map((element) => Marker(
-                    height: markerSize! * 1.5,
-                    width: markerSize * 1.5,
+                    height: markerSize! * 2,
+                    width: markerSize * 2,
                     point: element.position,
                     alignment: Alignment.center,
                     child: Builder(builder: (context) {
@@ -195,13 +174,15 @@ class LiveBusLayer extends CustomLayer {
                                   color: Colors.white,
                                   borderRadius:
                                       BorderRadius.circular(markerSize),
+                                      border: Border.all(color:hexToColor(element.color) )
                                 ),
                                 child: Center(
                                   child: Text(
                                     element.name,
                                     style: TextStyle(
+                                      fontWeight: FontWeight.bold,
                                       fontSize: markerSize / 2,
-                                      color: Colors.red,
+                                      color: hexToColor(element.color),
                                     ),
                                   ),
                                 ),
@@ -221,7 +202,7 @@ class LiveBusLayer extends CustomLayer {
                       alignment: Alignment.center,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: liveBusStateColor(element.type),
+                          color: hexToColor(element.color),
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
@@ -231,7 +212,10 @@ class LiveBusLayer extends CustomLayer {
               : [],
     );
   }
-
+  Color hexToColor(String hex) {
+    hex = hex.replaceAll("#", "");
+    return Color(int.parse("0xFF$hex"));
+  }
   @override
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;
