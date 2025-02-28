@@ -10,6 +10,7 @@ import 'package:mqtt_client/mqtt_server_client.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'dart:typed_data';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
@@ -101,121 +102,118 @@ class LiveBusLayer extends CustomLayer {
     }
   }
 
-  @override
-  Widget buildMarkerLayer(int? zoom) {
-    double? markerSize;
-    switch (zoom) {
-      case 15:
-        markerSize = 15;
-        break;
-      case 16:
-        markerSize = 20;
-        break;
-      case 17:
-        markerSize = 25;
-        break;
-      case 18:
-        markerSize = 30;
-        break;
-      default:
-        markerSize = zoom != null && zoom > 18 ? 35 : null;
+  Marker buildMarker({
+    required LiveBusFeature element,
+    required double markerSize,
+    required int zoom,
+  }) {
+    final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
+      mapCategory,
+      element.mode.toLowerCase(),
+    );
+    final layerMinZoom = targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
+    if (layerMinZoom >=zoom) {
+      return CustomLayer.buildDot(
+        point: element.position,
+        color: fromStringToColor(element.color),
+      );
     }
-    final markersList = _pbfMarkers.values.toList();
-    return MarkerLayer(
-      markers: markerSize != null
-          ? markersList
-              .map((element) => Marker(
-                    height: markerSize! * 2,
-                    width: markerSize * 2,
-                    point: element.position,
-                    alignment: Alignment.center,
-                    child: Builder(builder: (context) {
-                      return GestureDetector(
-                          onTap: () {
-                            onLiveBusStateChangeContainer =
-                                OnLiveBusStateChangeContainer(
-                              element.id,
-                              () {
-                                onLiveBusStateChangeContainer = null;
-                              },
-                            );
-                            final panelCubit = context.read<PanelCubit>();
-                            panelCubit.setPanel(
-                              CustomMarkerPanel(
-                                panel: (
-                                  context,
-                                  onFetchPlan, {
-                                  isOnlyDestination,
-                                }) =>
-                                    LiveBusMarkerModal(
-                                  mainElement: element,
-                                  onLiveBusStateChangeContainer:
-                                      onLiveBusStateChangeContainer,
-                                ),
-                                position: element.position,
-                                minSize: 50,
-                              ),
-                            );
-                          },
-                          child: Stack(
-                            children: [
-                              if (element.bearing != null)
-                                Transform.rotate(
-                                  angle: element.bearing! * pi / 180,
-                                  child: SvgPicture.string("""
+    return Marker(
+      height: markerSize,
+      width: markerSize,
+      point: element.position,
+      alignment: Alignment.center,
+      child: Builder(builder: (context) {
+        return GestureDetector(
+            onTap: () {
+              onLiveBusStateChangeContainer = OnLiveBusStateChangeContainer(
+                element.id,
+                () {
+                  onLiveBusStateChangeContainer = null;
+                },
+              );
+              final panelCubit = context.read<PanelCubit>();
+              panelCubit.setPanel(
+                CustomMarkerPanel(
+                  panel: (
+                    context,
+                    onFetchPlan, {
+                    isOnlyDestination,
+                  }) =>
+                      LiveBusMarkerModal(
+                    mainElement: element,
+                    onLiveBusStateChangeContainer:
+                        onLiveBusStateChangeContainer,
+                  ),
+                  position: element.position,
+                  minSize: 50,
+                ),
+              );
+            },
+            child: Stack(
+              children: [
+                if (element.bearing != null)
+                  Transform.rotate(
+                    angle: element.bearing! * pi / 180,
+                    child: SvgPicture.string("""
                                 <svg version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                                     <path fill="red" d="M50 0L32.4 14.08A40 40 0 0 0 10 50a40 40 0 0 0 40 40 40 40 0 0 0 40-40 40 40 0 0 0-22.398-35.918L50 0z" />
                                 </svg>
                               """),
-                                ),
-                              Container(
-                                margin: EdgeInsets.all(markerSize! / 5),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.circular(markerSize),
-                                      border: Border.all(color:hexToColor(element.color) )
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    element.name,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: markerSize / 2,
-                                      color: hexToColor(element.color),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ));
-                    }),
-                  ))
-              .toList()
-          : zoom != null && zoom > 11
-              ? markersList
-                  .map(
-                    (element) => Marker(
-                      height: 5,
-                      width: 5,
-                      point: element.position,
-                      alignment: Alignment.center,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: hexToColor(element.color),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                  ),
+                Container(
+                  // margin: EdgeInsets.all(markerSize / 10),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(markerSize),
+                      border:
+                          Border.all(color: fromStringToColor(element.color))),
+                  child: Center(
+                    child: Text(
+                      element.name,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: markerSize / element.name.length,
+                        color: fromStringToColor(element.color),
                       ),
                     ),
-                  )
-                  .toList()
-              : [],
+                  ),
+                ),
+              ],
+            ));
+      }),
     );
   }
-  Color hexToColor(String hex) {
-    hex = hex.replaceAll("#", "");
-    return Color(int.parse("0xFF$hex"));
+
+  List<LiveBusFeature> _getMarkers(int zoom) {
+    return _pbfMarkers.values.toList();
   }
+
+  // @override
+  // List<Marker>? buildClusterMarkers(int zoom) {
+  //   return _getMarkers(zoom)
+  //       .map((element) => buildMarker(
+  //           element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
+  //       .toList();
+  // }
+
+  @override
+  Widget buildMarkerLayer(int zoom) {
+    return MarkerLayer(
+      markers: zoom > CustomLayer.minRenderMarkers
+          ? _getMarkers(zoom)
+              .map(
+                (element) => buildMarker(
+                  element: element,
+                  markerSize: CustomLayer.getMarkerSize(zoom),
+                  zoom: zoom,
+                ),
+              )
+              .toList()
+          : [],
+    );
+  }
+
   @override
   String name(BuildContext context) {
     final localeName = TrufiBaseLocalization.of(context).localeName;

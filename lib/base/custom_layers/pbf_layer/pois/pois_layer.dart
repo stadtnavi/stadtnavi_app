@@ -121,17 +121,6 @@ class MapPoiLayer extends CustomLayer {
     );
   }
 
-  static Color? fromStringToColor(String colorString) {
-    try {
-      String hexColor = colorString.replaceAll("#", "");
-      if (hexColor.length == 6) hexColor = "FF$hexColor";
-      if (hexColor.length != 8) return Colors.black;
-      return Color(int.parse(hexColor, radix: 16));
-    } catch (e) {
-      return Colors.black;
-    }
-  }
-
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
@@ -187,6 +176,19 @@ class MapPoiLayer extends CustomLayer {
       color: Colors.green,
     );
   }
+
   @override
   bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault ?? false;
+}
+
+Color fromStringToColor(String? colorString) {
+  if (colorString == null) return Colors.black;
+  try {
+    String hexColor = colorString.replaceAll("#", "");
+    if (hexColor.length == 6) hexColor = "FF$hexColor";
+    if (hexColor.length != 8) return Colors.black;
+    return Color(int.parse(hexColor, radix: 16));
+  } catch (e) {
+    return Colors.black;
+  }
 }

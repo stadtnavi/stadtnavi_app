@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 import './live_bus_layer.dart';
 import 'live_bus_model.dart';
 import 'package:http/http.dart' as http;
@@ -179,7 +180,7 @@ class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
-                            color: hexToColor(
+                            color: fromStringToColor(
                               element.color,
                             ),
                           ),
@@ -246,10 +247,7 @@ class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
     );
   }
 
-  Color hexToColor(String hex) {
-    hex = hex.replaceAll("#", "");
-    return Color(int.parse("0xFF$hex"));
-  }
+
 
   String formatUnixTimestamp(int unixTimestamp) {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(unixTimestamp * 1000);
