@@ -38,7 +38,8 @@ abstract class HBLayerData {
       print('Error loading HB layers: $e');
     }
   }
-   static MapLayerCategory? findCategoryRecursively(
+
+  static MapLayerCategory? findCategoryRecursively(
     List<MapLayerCategory> categories,
     String codeToFind,
   ) {
@@ -85,13 +86,13 @@ class MapLayerProperties {
   factory MapLayerProperties.fromJson(json) {
     final layerMap = json['layer'];
     final iconMap = json['icon'];
-
+    final int? layerMinZoom = layerMap?['min_zoom'];
     return MapLayerProperties(
       // Campos de "layer"
       layerType: layerMap?['type'],
       layerUrl: layerMap?['url'],
       layerPriority: layerMap?['priority'],
-      layerMinZoom: layerMap?['min_zoom'],
+      layerMinZoom: layerMinZoom != null ? layerMinZoom - 1 : null,
       layerEnabledPerDefault: layerMap?['enabled_per_default'],
 
       // Campos de "icon"
