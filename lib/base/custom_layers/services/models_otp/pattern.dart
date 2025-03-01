@@ -1,4 +1,4 @@
-import 'alert.dart';
+import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
 import 'coordinates.dart';
 import 'geometry.dart';
 import 'route.dart';

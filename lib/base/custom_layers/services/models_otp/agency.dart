@@ -1,4 +1,5 @@
-import 'alert.dart';
+import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
+
 import 'route.dart';
 
 class Agency {
