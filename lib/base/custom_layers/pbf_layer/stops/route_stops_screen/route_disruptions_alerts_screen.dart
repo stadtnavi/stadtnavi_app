@@ -5,6 +5,7 @@ import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dar
 import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
 import 'package:stadtnavi_core/base/models/othermodel/route.dart';
 import 'package:stadtnavi_core/base/models/utils/alert_utils.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 
 class RouteDisruptionAlertsScreen extends StatefulWidget {
   final String routeId;
@@ -78,6 +79,7 @@ class _RouteDisruptionAlertsScreenState
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final stLocalization = StadtnaviBaseLocalization.of(context);
     return Column(
       children: [
         if (loading)
@@ -89,34 +91,47 @@ class _RouteDisruptionAlertsScreenState
           Expanded(
               child: SingleChildScrollView(
             child: Column(
-              children: alerts!
-                  .map(
-                    (e) => Column(
-                      children: [
-                        AlertStopCard(
-                          shortName: route!.shortName ?? "",
-                          startDateTime: DateTime.fromMillisecondsSinceEpoch(
-                            e.effectiveStartDate!.toInt() * 1000,
-                          ),
-                          endDateTime: DateTime.fromMillisecondsSinceEpoch(
-                            e.effectiveEndDate!.toInt() * 1000,
-                          ),
-                          content: e.alertDescriptionTextTranslations
-                                  ?.firstOrNull?.text ??
-                              "",
-                          alertUrl: e.alertUrl,
-                          transportMode: route!.mode,
-                          transportColor: route?.color != null
-                              ? Color(int.tryParse('0xFF${route!.color}')!)
-                              : null,
+              children: alerts!.isNotEmpty
+                  ? alerts!
+                      .map(
+                        (e) => Column(
+                          children: [
+                            AlertStopCard(
+                              shortName: route!.shortName ?? "",
+                              startDateTime:
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                e.effectiveStartDate!.toInt() * 1000,
+                              ),
+                              endDateTime: DateTime.fromMillisecondsSinceEpoch(
+                                e.effectiveEndDate!.toInt() * 1000,
+                              ),
+                              content: e.alertDescriptionTextTranslations
+                                      ?.firstOrNull?.text ??
+                                  "",
+                              alertUrl: e.alertUrl,
+                              transportMode: route!.mode,
+                              transportColor: route?.color != null
+                                  ? Color(int.tryParse('0xFF${route!.color}')!)
+                                  : null,
+                            ),
+                            const Divider(
+                              thickness: 1,
+                            ),
+                          ],
                         ),
-                        const Divider(
-                          thickness: 1,
+                      )
+                      .toList()
+                  : [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Center(
+                          child: Text(
+                            stLocalization.disruptionInfoNoAlerts,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ],
-                    ),
-                  )
-                  .toList(),
+                      )
+                    ],
             ),
           ))
         else

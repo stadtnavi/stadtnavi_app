@@ -114,7 +114,11 @@ class _DisruptionAlertsScreenState extends State<DisruptionAlertsScreen>
                         Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Center(
-                            child: Text(stLocalization.disruptionInfoNoAlerts),
+                            child: Text(
+                              stLocalization.disruptionInfoNoAlerts,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         )
                       ],
