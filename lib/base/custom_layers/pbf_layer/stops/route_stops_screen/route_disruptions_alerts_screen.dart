@@ -127,7 +127,10 @@ class _RouteDisruptionAlertsScreenState
                         child: Center(
                           child: Text(
                             stLocalization.disruptionInfoNoAlerts,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF666666),
+                            ),
                           ),
                         ),
                       )

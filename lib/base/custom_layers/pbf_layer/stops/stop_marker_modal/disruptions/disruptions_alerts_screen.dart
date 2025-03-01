@@ -116,8 +116,10 @@ class _DisruptionAlertsScreenState extends State<DisruptionAlertsScreen>
                           child: Center(
                             child: Text(
                               stLocalization.disruptionInfoNoAlerts,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF666666),
+                              ),
                             ),
                           ),
                         )
