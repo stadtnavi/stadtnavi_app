@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/widgets/alert_card.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/alert.dart';
+import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
 import 'package:stadtnavi_core/base/models/othermodel/route.dart';
+import 'package:stadtnavi_core/base/models/utils/alert_utils.dart';
 
 class RouteDisruptionAlertsScreen extends StatefulWidget {
   final String routeId;
@@ -39,7 +40,7 @@ class _RouteDisruptionAlertsScreenState
     });
   }
 
-  Future<void> _fetchStopData({DateTime? date}) async {
+  Future<void> _fetchStopData() async {
     if (!mounted) return;
     setState(() {
       fetchError = null;
@@ -50,9 +51,17 @@ class _RouteDisruptionAlertsScreenState
       patternId: widget.patternId,
     ).then((value) {
       if (mounted) {
+        final validAlerts = value.pattern.alerts
+                ?.where(
+                  (alert) => AlertUtils.isAlertValid(
+                      alert, DateTime.now().millisecondsSinceEpoch / 1000),
+                )
+                .toList() ??
+            [];
+
         setState(() {
           route = value.route;
-          alerts = value.pattern.alerts;
+          alerts = validAlerts;
           loading = false;
         });
       }
