@@ -346,5 +346,6 @@
   "bicycleWalkToTransitNoDuration": "Walk your bike to the {transportMode}",
   "instructionVehicleLightRail": "Rail",
   "instructionVehicleMetro": "Metro",
+  "disruptionInfoNoAlerts":"No known disruptions or diversions.",
   "chooseOnMap" : "Choose on map"
 }

@@ -947,6 +947,7 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'Route has disruptions.'**
   String get itineraryDetailsRouteHasWarningAlert;
+
   /// No description provided for @poiTagWheelchair.
   ///
   /// In en, this message translates to:
@@ -1006,6 +1007,12 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'Metro'**
   String get instructionVehicleMetro;
+
+  /// No description provided for @disruptionInfoNoAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'No known disruptions or diversions.'**
+  String get disruptionInfoNoAlerts;
 
   /// No description provided for @chooseOnMap.
   ///

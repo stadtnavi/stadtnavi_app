@@ -485,6 +485,8 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get itineraryDetailsRouteHasWarningAlert => 'Route enthält Störungen.';
+
+  @override
   String get poiTagWheelchair => 'Rollstuhlgerecht';
 
   @override
@@ -521,6 +523,9 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get instructionVehicleMetro => 'U-Bahn';
+
+  @override
+  String get disruptionInfoNoAlerts => 'Keine Störungsmeldungen.';
 
   @override
   String get chooseOnMap => 'Wähle auf der Karte';

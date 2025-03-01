@@ -3,6 +3,7 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/widgets/alert_
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
 import 'package:stadtnavi_core/base/models/utils/alert_utils.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 
 import '../../stop_feature_model.dart';
 
@@ -69,6 +70,7 @@ class _DisruptionAlertsScreenState extends State<DisruptionAlertsScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final stLocalization = StadtnaviBaseLocalization.of(context);
     return Column(
       children: [
         if (loading)
@@ -81,30 +83,41 @@ class _DisruptionAlertsScreenState extends State<DisruptionAlertsScreen>
               child: Scrollbar(
             child: SingleChildScrollView(
               child: Column(
-                children: alerts!
-                    .map(
-                      (e) => Column(
-                        children: [
-                          AlertStopCard(
-                            shortName: null,
-                            startDateTime: DateTime.fromMillisecondsSinceEpoch(
-                              e.effectiveStartDate!.toInt() * 1000,
-                            ),
-                            endDateTime: DateTime.fromMillisecondsSinceEpoch(
-                              e.effectiveEndDate!.toInt() * 1000,
-                            ),
-                            content: e.alertDescriptionText ?? "",
-                            alertUrl: e.alertUrl,
-                            transportMode: null,
-                            transportColor: null,
+                children: alerts!.isNotEmpty
+                    ? alerts!
+                        .map(
+                          (e) => Column(
+                            children: [
+                              AlertStopCard(
+                                shortName: null,
+                                startDateTime:
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                  e.effectiveStartDate!.toInt() * 1000,
+                                ),
+                                endDateTime:
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                  e.effectiveEndDate!.toInt() * 1000,
+                                ),
+                                content: e.alertDescriptionText ?? "",
+                                alertUrl: e.alertUrl,
+                                transportMode: null,
+                                transportColor: null,
+                              ),
+                              const Divider(
+                                thickness: 1,
+                              ),
+                            ],
                           ),
-                          const Divider(
-                            thickness: 1,
+                        )
+                        .toList()
+                    : [
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Center(
+                            child: Text(stLocalization.disruptionInfoNoAlerts),
                           ),
-                        ],
-                      ),
-                    )
-                    .toList(),
+                        )
+                      ],
               ),
             ),
           ))
