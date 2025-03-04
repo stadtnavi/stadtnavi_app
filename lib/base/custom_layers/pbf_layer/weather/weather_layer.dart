@@ -164,5 +164,5 @@ class WeatherLayer extends CustomLayer {
     );
   }
   @override
-  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault??false;
+  bool isDefaultOn() => mapCategory.isDefaultOn();
 }

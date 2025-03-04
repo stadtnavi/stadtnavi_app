@@ -154,7 +154,18 @@ class MapLayerCategory {
     }
     return null;
   }
+  bool isDefaultOn() {
+    if (properties?.layerEnabledPerDefault == true) {
+      return true;
+    }
 
+    for (var category in categories) {
+      if (category.isDefaultOn()) {
+        return true;
+      }
+    }
+    return false;
+  }
   CustomLayer toLayer() {
     final realType =
         properties?.layerType ?? categories.first.properties?.layerType;

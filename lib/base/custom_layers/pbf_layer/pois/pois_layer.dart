@@ -144,7 +144,7 @@ class MapPoiLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
 
           final PoiFeature? pointFeature = PoiFeature.fromGeoJsonPoint(geojson);
-          if (pointFeature != null&&pointFeature.osmId!=null) {
+          if (pointFeature != null && pointFeature.osmId != null) {
             MapMarkersRepositoryContainer.poiFeatures[pointFeature.osmId!] =
                 pointFeature;
             // final pbfLayer =
@@ -178,7 +178,7 @@ class MapPoiLayer extends CustomLayer {
   }
 
   @override
-  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault ?? false;
+  bool isDefaultOn() => mapCategory.isDefaultOn();
 }
 
 Color fromStringToColor(String? colorString) {

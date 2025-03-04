@@ -172,7 +172,7 @@ class RoadworksLayer extends CustomLayer {
     );
   }
   @override
-  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault??false;
+  bool isDefaultOn() => mapCategory.isDefaultOn();
 }
 
 class _RoadworksFeatureMarker extends StatelessWidget {
