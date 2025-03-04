@@ -2,8 +2,7 @@
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_marker_modal/time_table_tab/time_table_screen.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
-
-import 'alert.dart';
+import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
 import 'cluster.dart';
 import 'enums/stop/location_type.dart';
 import 'enums/stop/wheelchair_boarding.dart';

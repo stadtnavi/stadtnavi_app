@@ -1,4 +1,4 @@
-import 'alert.dart';
+import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
 import 'enums/bikes_allowed.dart';
 import 'enums/stop/wheelchair_boarding.dart';
 import 'geometry.dart';

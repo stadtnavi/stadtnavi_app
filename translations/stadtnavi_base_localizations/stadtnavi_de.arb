@@ -345,5 +345,6 @@
   "bicycleWalkToTransitNoDuration": "Schieben Sie ihr Fahrrad zum/zur {transportMode}",
   "instructionVehicleLightRail": "Zug",
   "instructionVehicleMetro": "U-Bahn",
+  "disruptionInfoNoAlerts":"Keine Störungsmeldungen.",
   "chooseOnMap" : "Wähle auf der Karte"
 }

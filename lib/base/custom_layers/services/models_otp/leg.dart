@@ -1,7 +1,7 @@
+import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 
 import 'agency.dart';
-import 'alert.dart';
 import 'enums/leg/pickup_dropoff_type.dart';
 import 'enums/leg/realtime_state.dart';
 import 'geometry.dart';

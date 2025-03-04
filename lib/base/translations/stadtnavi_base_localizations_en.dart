@@ -485,6 +485,8 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String get itineraryDetailsRouteHasWarningAlert => 'Route has disruptions.';
+
+  @override
   String get poiTagWheelchair => 'Wheelchair accessible';
 
   @override
@@ -521,6 +523,9 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String get instructionVehicleMetro => 'Metro';
+
+  @override
+  String get disruptionInfoNoAlerts => 'No known disruptions or diversions.';
 
   @override
   String get chooseOnMap => 'Choose on map';

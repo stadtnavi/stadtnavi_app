@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 
 import 'agency.dart';
-import 'alert.dart';
+import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
 import 'enums/bikes_allowed.dart';
 import 'pattern.dart';
 import 'stop.dart';
@@ -106,7 +106,7 @@ class RouteOtp {
         ? Color(int.tryParse('0xFF$color')!)
         : mode?.color ?? Colors.black;
   }
-  
+
   String get headsignFromRouteLongName {
     return longName ?? (longName ?? "");
   }
