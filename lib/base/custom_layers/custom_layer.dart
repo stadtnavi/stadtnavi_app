@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 
+import 'package:latlong2/latlong.dart';
+
 abstract class CustomLayer {
+static const int minRenderMarkers=10;
+
   final String id;
   final int weight;
   Function? onRefresh;
@@ -54,6 +58,20 @@ abstract class CustomLayer {
 
     // // Fallback, por ejemplo Size(30, 35) si no está en el map
     // return markerClusterSizeMap[zoom] ?? const Size(25, 25);
+  }
+  static Marker buildDot({required LatLng point,Color? color}){
+    return Marker(
+                      height: 5,
+                      width: 5,
+                      point: point,
+                      alignment: Alignment.center,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: color,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    );
   }
 
   Widget? buildOverlapLayer(int zoom) => null;

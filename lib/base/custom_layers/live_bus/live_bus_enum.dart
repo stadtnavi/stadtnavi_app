@@ -3,17 +3,26 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/live_bus/live_bus_icons.dart';
 
 enum LiveBusState {
-  standingRoomOnly,
-  fewSeatsAvailable,
+  empty,
   manySeatsAvailable,
+  fewSeatsAvailable,
+  standingRoomOnly,
+  crushedStandingRoomOnly,
+  full,
+  notAcceptingPassengers,
 }
-LiveBusState liveBusStateToEnum(String id) {
+LiveBusState liveBusStateToEnum(String status) {
   final Map<String, LiveBusState> enumStrings = {
-    "3": LiveBusState.standingRoomOnly,
-    "2": LiveBusState.fewSeatsAvailable,
-    "1": LiveBusState.manySeatsAvailable,
+    "EMPTY": LiveBusState.empty,
+    "MANY_SEATS_AVAILABLE": LiveBusState.manySeatsAvailable,
+    "FEW_SEATS_AVAILABLE": LiveBusState.fewSeatsAvailable,
+    "STANDING_ROOM_ONLY": LiveBusState.standingRoomOnly,
+    "CRUSHED_STANDING_ROOM_ONLY": LiveBusState.crushedStandingRoomOnly,
+    "FULL": LiveBusState.full,
+    "NOT_ACCEPTING_PASSENGERS": LiveBusState.notAcceptingPassengers,
   };
-  return enumStrings[id] ?? LiveBusState.manySeatsAvailable;
+
+  return enumStrings[status] ?? LiveBusState.manySeatsAvailable;
 }
 
 Widget liveBusStateIcon(LiveBusState? id) {

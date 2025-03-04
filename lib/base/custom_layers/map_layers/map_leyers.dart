@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/quad_tree.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
@@ -158,7 +159,7 @@ class CustomTileProvider extends TileProvider {
   });
   @override
   ImageProvider getImage(TileCoordinates coords, TileLayer options) {
-    if (coords.z.toInt() > 13) {
+    if (coords.z.toInt() > CustomLayer.minRenderMarkers) {
       _fetchPBF(coords);
     }
     return CachedNetworkImageProvider(
