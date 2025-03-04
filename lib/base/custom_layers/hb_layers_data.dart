@@ -21,21 +21,20 @@ abstract class HBLayerData {
   static Future<void> loadHbLayers() async {
     const String url =
         'https://services.stadtnavi.eu/layer-categories/herrenberg/layers.json';
-
+    http.Response response;
     try {
-      final response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        final String decodedBody = utf8.decode(response.bodyBytes);
-        final List<dynamic> data = jsonDecode(decodedBody);
-        for (final categoryData in data) {
-          categories.add(MapLayerCategory.fromJson(categoryData));
-        }
-      } else {
-        throw Exception('Failed to load data: ${response.statusCode}');
+      response = await http.get(Uri.parse(url));
+    } catch (error) {
+      throw Exception('Failed to load HBLayerData');
+    }
+    if (response.statusCode == 200) {
+      final String decodedBody = utf8.decode(response.bodyBytes);
+      final List<dynamic> data = jsonDecode(decodedBody);
+      for (final categoryData in data) {
+        categories.add(MapLayerCategory.fromJson(categoryData));
       }
-    } catch (e) {
-      print('Error loading HB layers: $e');
+    } else {
+      throw Exception('Failed to load HBLayerData: ${response.statusCode}');
     }
   }
 
@@ -154,6 +153,7 @@ class MapLayerCategory {
     }
     return null;
   }
+
   bool isDefaultOn() {
     if (properties?.layerEnabledPerDefault == true) {
       return true;
@@ -166,6 +166,7 @@ class MapLayerCategory {
     }
     return false;
   }
+
   CustomLayer toLayer() {
     final realType =
         properties?.layerType ?? categories.first.properties?.layerType;

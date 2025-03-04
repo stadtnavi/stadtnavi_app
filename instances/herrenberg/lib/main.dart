@@ -68,41 +68,46 @@ void main() async {
     siteId: '2',
     url: 'https://track.dev.stadtnavi.eu/matomo.php',
   );
-  await HBLayerData.loadHbLayers().catchError((error) => print("$error"));
   runApp(
-    StadtnaviApp(
-      appLifecycleReactorHandler: LifecycleReactorHandlerNotifications(
-        hasInAppNotifications: true,
-        hasPushNotifications: true,
+    CriticalLoader(
+      loadData: () async {
+        await HBLayerData.loadHbLayers();
+      },
+      builder: (_) => StadtnaviApp(
+        appLifecycleReactorHandler: LifecycleReactorHandlerNotifications(
+          hasInAppNotifications: true,
+          hasPushNotifications: true,
+        ),
+        appName: 'stadtnavi',
+        appNameTitle: 'stadtnavi|Herrenberg',
+        cityName: 'Herrenberg',
+        center: const LatLng(48.5950, 8.8672),
+        co2EmmissionUrl: "https://www.herrenberg.de/Mobilit%C3%A4t/CO2",
+        otpGraphqlEndpoint: ApiConfig().openTripPlannerUrl,
+        urlFeedback: 'https://stadtnavi.de/feedback/',
+        urlShareApp: 'https://herrenberg.stadtnavi.de/',
+        urlRepository: 'https://github.com/trufi-association/trufi-app',
+        urlImpressum: 'https://www.herrenberg.de/impressum',
+        reportDefectsUri:
+            Uri.parse('https://www.herrenberg.de/tools/mvs').replace(
+          fragment: "mvPagePictures",
+        ),
+        layersContainer: customLayersHerrenberg,
+        urlSocialMedia: const UrlSocialMedia(
+          urlFacebook: 'https://www.facebook.com/stadtnavi/',
+          urlInstagram: 'https://www.instagram.com/stadtnavi/',
+          urlTwitter: 'https://twitter.com/stadtnavi',
+          urlYoutube:
+              'https://www.youtube.com/channel/UCL_K2RPU0pxV5VYw0Aj_PUA',
+        ),
+        trufiBaseTheme: TrufiBaseTheme(
+          themeMode: ThemeMode.light,
+          brightness: Brightness.light,
+          theme: brandingStadtnaviHerrenberg,
+          darkTheme: brandingStadtnaviHerrenberg,
+        ),
+        alertsFeedIds: const ['hbg'],
       ),
-      appName: 'stadtnavi',
-      appNameTitle: 'stadtnavi|Herrenberg',
-      cityName: 'Herrenberg',
-      center: LatLng(48.5950, 8.8672),
-      co2EmmissionUrl: "https://www.herrenberg.de/Mobilit%C3%A4t/CO2",
-      otpGraphqlEndpoint: ApiConfig().openTripPlannerUrl,
-      urlFeedback: 'https://stadtnavi.de/feedback/',
-      urlShareApp: 'https://herrenberg.stadtnavi.de/',
-      urlRepository: 'https://github.com/trufi-association/trufi-app',
-      urlImpressum: 'https://www.herrenberg.de/impressum',
-      reportDefectsUri:
-          Uri.parse('https://www.herrenberg.de/tools/mvs').replace(
-        fragment: "mvPagePictures",
-      ),
-      layersContainer: customLayersHerrenberg,
-      urlSocialMedia: const UrlSocialMedia(
-        urlFacebook: 'https://www.facebook.com/stadtnavi/',
-        urlInstagram: 'https://www.instagram.com/stadtnavi/',
-        urlTwitter: 'https://twitter.com/stadtnavi',
-        urlYoutube: 'https://www.youtube.com/channel/UCL_K2RPU0pxV5VYw0Aj_PUA',
-      ),
-      trufiBaseTheme: TrufiBaseTheme(
-        themeMode: ThemeMode.light,
-        brightness: Brightness.light,
-        theme: brandingStadtnaviHerrenberg,
-        darkTheme: brandingStadtnaviHerrenberg,
-      ),
-      alertsFeedIds: const ['hbg'],
     ),
   );
 }
@@ -148,5 +153,102 @@ Future<void> _migration({
     }
   } catch (e) {
     e;
+  }
+}
+
+class CriticalLoader extends StatefulWidget {
+  final Future<void> Function() loadData;
+  final Widget Function(BuildContext) builder;
+
+  const CriticalLoader({
+    super.key,
+    required this.loadData,
+    required this.builder,
+  });
+
+  @override
+  CriticalLoaderState createState() => CriticalLoaderState();
+}
+
+class CriticalLoaderState extends State<CriticalLoader> {
+  bool _isLoading = true;
+  bool _hasError = false;
+  String? _errorMessage;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    setState(() {
+      _isLoading = true;
+      _hasError = false;
+      _errorMessage = null;
+    });
+
+    try {
+      await widget.loadData();
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (error) {
+      setState(() {
+        _isLoading = false;
+        _hasError = true;
+        _errorMessage = error.toString();
+      });
+    }
+  }
+
+  void _retry() {
+    _loadData();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isLoading) {
+      return  MaterialApp(
+        home: Scaffold(
+          backgroundColor:Color(0xff9BBF28) ,
+          body: Center(child: CircularProgressIndicator()),
+        ),
+      );
+    }
+
+    if (_hasError) {
+      return MaterialApp(
+        home: Scaffold(
+          backgroundColor:Color(0xff9BBF28) ,
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Failed to load data",
+                  style: TextStyle(color: Colors.red),
+                ),
+                if (_errorMessage != null) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    _errorMessage!,
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+                const SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: _retry,
+                  child: const Text("Retry"),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return widget.builder(context);
   }
 }
