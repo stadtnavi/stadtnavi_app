@@ -252,7 +252,7 @@ class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
   String formatUnixTimestamp(int unixTimestamp) {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(unixTimestamp * 1000);
 
-    return DateFormat.jms().format(date);
+    return DateFormat.Hms().format(date);
   }
 }
 
