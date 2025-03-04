@@ -68,6 +68,15 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
     _localStorage.save(state.layersStatus);
   }
 
+  List<Type> getActiveLayersType() => state.layers
+      .where((element) => state.layersStatus[element.id] ?? false)
+      .map((value) => value.runtimeType)
+      .toList();
+  List<String> getActiveLayersCode() => state.layers
+      .where((element) => state.layersStatus[element.id] ?? false)
+      .map((value) => value.id)
+      .toList();
+
   void changeCustomMapLayerContainerState({
     required CustomLayerContainer customLayer,
     required bool newState,
@@ -89,11 +98,9 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
         .toList();
 
     listSort.sort((a, b) => a.weight.compareTo(b.weight));
-    final allList = listSort
-        .map((element) {
-          return element.buildClusterMarkers(zoom);
-        })
-        .toList();
+    final allList = listSort.map((element) {
+      return element.buildClusterMarkers(zoom);
+    }).toList();
     return allList.expand((list) => list ?? <Marker>[]).toList();
   }
 
