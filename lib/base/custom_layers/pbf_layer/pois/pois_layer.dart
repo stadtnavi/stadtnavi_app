@@ -144,8 +144,8 @@ class MapPoiLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
 
           final PoiFeature? pointFeature = PoiFeature.fromGeoJsonPoint(geojson);
-          if (pointFeature != null) {
-            MapMarkersRepositoryContainer.poiFeatures[pointFeature.id] =
+          if (pointFeature != null&&pointFeature.osmId!=null) {
+            MapMarkersRepositoryContainer.poiFeatures[pointFeature.osmId!] =
                 pointFeature;
             // final pbfLayer =
             //     StaticTileLayers.poisLayers[pointFeature.category2];
