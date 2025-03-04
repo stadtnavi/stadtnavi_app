@@ -2,8 +2,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter/material.dart';
 import 'package:trufi_core/base/utils/util_icons/custom_icons.dart';
 
-import 'stops_enum.dart';
-
 const String _carpool = """
 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="27" viewBox="0 0 24 24">
     <path opacity="1" fill="#FFF" fill-opacity="1" fill-rule="nonzero" stroke="#9fc727" stroke-width="9.987" stroke-linejoin="round" stroke-miterlimit="2" stroke-opacity="1" paint-order="markers" d="M5.009 5.018h14.098v14.058H5.009z" />
@@ -93,7 +91,7 @@ Widget cautionNoExclNoStrokeIcon({Color? color = const Color(0xFFDC0451)}) {
   ));
 }
 
-const String _funicular=""""
+const String _funicular = """"
 <svg width="16" height="22" viewBox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_7_4)">
 <path d="M8.05883 15.5269C12.3505 15.5269 15.8296 12.0478 15.8296 7.7561C15.8296 3.4644 12.3505 -0.0147095 8.05883 -0.0147095C3.76713 -0.0147095 0.288025 3.4644 0.288025 7.7561C0.288025 12.0478 3.76713 15.5269 8.05883 15.5269Z" fill="#FFCC00" stroke="white"/>
@@ -113,17 +111,17 @@ const String _funicular=""""
 </svg>
 
 """;
-const Map<StopsLayerIds, String> stopsIcons = {
-  StopsLayerIds.carpool: _carpool,
-  StopsLayerIds.bus: _bus,
-  StopsLayerIds.rail: _rail,
-  StopsLayerIds.subway: _subway,
-  StopsLayerIds.funicular:_funicular,
+const Map<String, String> stopsIcons = {
+  'BUS': _carpool,
+  'CARPOOL': _bus,
+  'RAIL': _rail,
+  'SUBWAY': _subway,
+  'FUNICULAR': _funicular,
 };
-const Map<StopsLayerIds, Color> stopsIconsColor = {
-  StopsLayerIds.carpool: Color(0xff9fc727),
-  StopsLayerIds.bus: Color(0xffff0000),
-  StopsLayerIds.rail: Color(0xff008000),
-  StopsLayerIds.subway: Color(0xff0000FF),
-  StopsLayerIds.funicular: Color.fromARGB(255, 255, 234, 0),
-};
+// const Map<StopsLayerIds, Color> stopsIconsColor = {
+//   StopsLayerIds.carpool: Color(0xff9fc727),
+//   StopsLayerIds.bus: Color(0xffff0000),
+//   StopsLayerIds.rail: Color(0xff008000),
+//   StopsLayerIds.subway: Color(0xff0000FF),
+//   StopsLayerIds.funicular: Color.fromARGB(255, 255, 234, 0),
+// };
