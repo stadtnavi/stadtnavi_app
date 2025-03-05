@@ -209,10 +209,12 @@ class CriticalLoaderState extends State<CriticalLoader> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return  MaterialApp(
+      return const MaterialApp(
         home: Scaffold(
-          backgroundColor:Color(0xff9BBF28) ,
-          body: Center(child: CircularProgressIndicator()),
+          backgroundColor: Color(0xff9BBF28),
+          body: Center(
+            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white),),
+          ),
         ),
       );
     }
@@ -220,7 +222,7 @@ class CriticalLoaderState extends State<CriticalLoader> {
     if (_hasError) {
       return MaterialApp(
         home: Scaffold(
-          backgroundColor:Color(0xff9BBF28) ,
+          backgroundColor: Color(0xff9BBF28),
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
