@@ -188,7 +188,7 @@ class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
                       ],
                     ),
                     Text(
-                      "${languageCode == "en" ? "To " : "Ri. "}${trip?.pattern.headsign ?? ""}",
+                      "${languageCode == "en" ? "To " : "Richtung "}${trip?.pattern.headsign ?? ""}",
                       style: const TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ],
