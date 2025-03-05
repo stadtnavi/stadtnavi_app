@@ -213,7 +213,9 @@ class CriticalLoaderState extends State<CriticalLoader> {
         home: Scaffold(
           backgroundColor: Color(0xff9BBF28),
           body: Center(
-            child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(Colors.white),),
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
           ),
         ),
       );
@@ -222,30 +224,49 @@ class CriticalLoaderState extends State<CriticalLoader> {
     if (_hasError) {
       return MaterialApp(
         home: Scaffold(
-          backgroundColor: Color(0xff9BBF28),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "Failed to load data",
-                  style: TextStyle(color: Colors.red),
+          // backgroundColor: Color(0xff9BBF28),
+          body: Stack(
+            children: [
+              Positioned.fill(
+                child: Image.asset(
+                  "assets/splash.png",
+                  fit: BoxFit.cover,
                 ),
-                if (_errorMessage != null) ...[
-                  const SizedBox(height: 10),
-                  Text(
-                    _errorMessage!,
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
-                    textAlign: TextAlign.center,
+              ),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // const Text(
+                      //   "Failed to load data",
+                      //   style: TextStyle(color: Colors.red),
+                      // ),
+                      if (_errorMessage != null) ...[
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Failed to load data",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                      const SizedBox(height: 10),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: _retry,
+                          child: const Text("Retry"),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-                const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: _retry,
-                  child: const Text("Retry"),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );
