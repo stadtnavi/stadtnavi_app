@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'dart:developer';
-
+import 'package:http/http.dart' as http;
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 
@@ -29,12 +29,13 @@ class CachedTileProvider extends TileProvider {
 
   @override
   ImageProvider getImage(TileCoordinates coords, TileLayer options) {
-        if (coords.z.toInt() > CustomLayer.minRenderMarkers) {
+    if (coords.z.toInt() > CustomLayer.minRenderMarkers) {
       _fetchPBF(coords);
     }
     final url = getTileUrl(coords, options);
     return _CachedTileImageProvider(url, cacheManager);
   }
+
   Future<void> _fetchPBF(TileCoordinates coords) async {
     final types = context.read<CustomLayersCubit>().getActiveLayersType();
     final mapLayersFiltered = [
@@ -93,6 +94,38 @@ class CachedTileProvider extends TileProvider {
   }
 }
 
+Future<Uint8List> cachedFirstFetch(Uri uri) async {
+  final cacheManager = DefaultCacheManager();
+
+  FileInfo? cachedFile = await cacheManager.getFileFromCache(uri.toString());
+
+  Uint8List bodyByte;
+
+  if (cachedFile != null) {
+    // print("cachedFirstFetch");
+    bodyByte = await cachedFile.file.readAsBytes();
+  } else {
+    // print("no cachedFirstFetch");
+    final response = await http.get(uri);
+    if (response.statusCode != 200) {
+      throw Exception(
+        "Server Error on fetchPBF $uri with ${response.statusCode}",
+      );
+    }
+    bodyByte = response.bodyBytes;
+    final fileExtension = uri.path.split('.').last;
+    await cacheManager.putFile(
+      uri.toString(),
+      bodyByte,
+      fileExtension: fileExtension,
+      maxAge: const Duration(
+        days: 7,
+      ),
+    );
+  }
+  return bodyByte;
+}
+
 class _CachedTileImageProvider extends ImageProvider<_CachedTileImageProvider> {
   final String url;
   final BaseCacheManager cacheManager;
@@ -121,10 +154,10 @@ class _CachedTileImageProvider extends ImageProvider<_CachedTileImageProvider> {
     Uint8List bytes;
 
     if (cachedFile != null && cachedFile.file.existsSync()) {
-      print("cached");
+      // print("cached");
       bytes = await cachedFile.file.readAsBytes();
     } else {
-      print("new fetch");
+      // print("new fetch");
       final downloadedFile = await cacheManager.downloadFile(
         url,
         authHeaders: {"Referer": "https://herrenberg.stadtnavi.de/"},
