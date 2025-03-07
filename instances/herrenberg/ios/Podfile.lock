@@ -191,12 +191,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/wakelock_plus/ios"
 
 SPEC CHECKSUMS:
-  device_info_plus: 97af1d7e84681a90d0693e63169a5d50e0839a0d
+  device_info_plus: 71ffc6ab7634ade6267c7a93088ed7e4f74e5896
   Firebase: cf1b19f21410b029b6786a54e9764a0cacad3c99
-  firebase_app_installations: 4d2ca44b46fd4344730b6bef95a5144dacd06ec2
-  firebase_core: f8c5b220a8f9c436fdbd075ae321cef3d96ef181
-  firebase_in_app_messaging: 490af5ee931da3ca71f0b379397a7cb3e3ad0295
-  firebase_messaging: a7f18d98006bbd8fd0918f4db64b9a70df29aaa8
+  firebase_app_installations: 2a6d63da02638475bf126b877fa1c5944b3fdfe7
+  firebase_core: 059a3a579c00e241fcdcd66d17190878f4f6ed53
+  firebase_in_app_messaging: 2f5fe9698165d034a2141b29917ef5ebef587369
+  firebase_messaging: 2cf2397ef8ae51d39da705250e89c5cfeff57527
   FirebaseABTesting: aef1719704fade00b200827e7973f352efc4caee
   FirebaseCore: e0510f1523bc0eb21653cac00792e1e2bd6f1771
   FirebaseCoreInternal: 35731192cab10797b88411be84940d2beb33a238
@@ -204,22 +204,22 @@ SPEC CHECKSUMS:
   FirebaseInstallations: 6ef4a1c7eb2a61ee1f74727d7f6ce2e72acf1414
   FirebaseMessaging: f8a160d99c2c2e5babbbcc90c4a3e15db036aee2
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_compass: cbbd285cea1584c7ac9c4e0c3e1f17cbea55e855
-  geolocator_apple: 6cbaf322953988e009e5ecb481f07efece75c450
+  flutter_compass: b236ab69b61545cce89fd58527f401a7587d5cc1
+  geolocator_apple: d981750b9f47dbdb02427e1476d9a04397beb8d9
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
-  in_app_review: 318597b3a06c22bb46dc454d56828c85f444f99d
-  lodash_flutter: 67703deebcb443e5f1974da2b42767572159a40f
+  in_app_review: 8efcf4a4d3ba72d5d776d29e5a268f1abf64d184
+  lodash_flutter: 5d3d4780f04d21519048edccc11473c9fcadc3b4
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
-  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
-  path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
+  package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
-  rive_common: cbbac3192af00d7341f19dae2f26298e9e37d99e
-  share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
-  shared_preferences_foundation: fcdcbc04712aee1108ac7fda236f363274528f78
-  sqflite_darwin: a553b1fd6fe66f53bbb0fe5b4f5bab93f08d7a13
-  url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
-  wakelock_plus: 373cfe59b235a6dd5837d0fb88791d2f13a90d56
+  rive_common: 007aa316d587becf7c23da8cce6ff3d4b0be8ac7
+  share_plus: 50da8cb520a8f0f65671c6c6a99b3617ed10a58a
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+  sqflite_darwin: 44bb54cc302bff1fbe5752293aba1820b157cf1c
+  url_launcher_ios: 694010445543906933d732453a59da0a173ae33d
+  wakelock_plus: 04623e3f525556020ebd4034310f20fe7fda8b49
 
 PODFILE CHECKSUM: ad9642c61db90c633d272b9059a6d65ea9123323
 
