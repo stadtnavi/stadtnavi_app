@@ -50,15 +50,15 @@ class StopItemTile extends StatelessWidget {
               children: [
                 Expanded(
                   child:
-                      Text(stop.name ?? '', style: theme.textTheme. bodyLarge),
+                      Text(stop.name ?? '', style: theme.textTheme.bodyLarge),
                 ),
                 Text(
-                  '${stop.stopTimesForPattern![0].timeDiffInMinutes} ',
-                  style: theme.textTheme. bodyLarge,
+                  '${stop.stopTimesForPattern?.firstOrNull?.stopTimeAsString ?? ''}} ',
+                  style: theme.textTheme.bodyLarge,
                 ),
                 Text(
-                  '${stop.stopTimesForPattern![0].stopTimeAsString} ',
-                  style: theme.textTheme. bodyLarge
+                  '${stop.stopTimesForPattern?.firstOrNull?.stopTimeAsString ?? ''}} ',
+                  style: theme.textTheme.bodyLarge
                       ?.copyWith(fontWeight: FontWeight.w800),
                 ),
               ],
