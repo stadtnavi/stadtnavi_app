@@ -485,6 +485,8 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String get itineraryDetailsRouteHasWarningAlert => 'Route has disruptions.';
+
+  @override
   String get poiTagWheelchair => 'Wheelchair accessible';
 
   @override
@@ -521,6 +523,36 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String get instructionVehicleMetro => 'Metro';
+
+  @override
+  String get pickRentalMode => 'Your rental modes and operators';
+
+  @override
+  String get sharingOperatorsCarHeader => 'Cars';
+
+  @override
+  String get sharingOperatorsCargoBicycleHeader => 'Cargo bikes';
+
+  @override
+  String get sharingOperatorsBicycleHeader => 'Citybikes';
+
+  @override
+  String get sharingOperatorsScooterHeader => 'Scooters';
+
+  @override
+  String get sharingOperatorsMopedHeader => 'Rental Mopeds';
+
+  @override
+  String get bicycleParkingFilter => 'Bicycle parking options';
+
+  @override
+  String get bicycleParkingFilterAll => 'All parking spaces';
+
+  @override
+  String get bicycleParkingFilterFreeOnly => 'Only free ones';
+
+  @override
+  String get bicycleParkingFilterSecurePreferred => 'Secure preferred';
 
   @override
   String get chooseOnMap => 'Choose on map';
