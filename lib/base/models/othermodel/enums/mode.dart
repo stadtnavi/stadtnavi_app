@@ -119,6 +119,7 @@ extension ModeExtension on Mode {
         return null;
       case Mode.walk:
         return walkIcon(color: color ?? const Color(0xff000000));
+      // ignore: unreachable_switch_default
       default:
         return null;
     }

@@ -44,8 +44,6 @@ class ItineraryDetailsCard extends StatelessWidget {
     final mapRouteState = mapRouteCubit.state;
     final compresedLegs = itinerary.compressLegs;
     final sizeLegs = compresedLegs.length;
-    final mapModesCubit = context.watch<MapModesCubit>();
-    final mapModesState = mapModesCubit.state;
     final bikeParked = compresedLegs.any((leg) =>
         leg.toPlace?.bikeParkEntity != null ||
         leg.fromPlace?.bikeParkEntity != null);

@@ -1,19 +1,23 @@
 part of 'setting_fetch_cubit.dart';
 
 final initPayloadDataPlanState = SettingFetchState(
-  typeWalkingSpeed: WalkingSpeed.average,
+  walkSpeed: WalkingSpeed.average,
   avoidWalking: false,
   transportModes: defaultTransportModes,
   bikeRentalNetworks: defaultBikeRentalNetworks,
   triangleFactor: TriangleFactor.unknown,
   avoidTransfers: false,
   includeBikeSuggestions: true,
-  typeBikingSpeed: BikingSpeed.average,
+  bicycleParkingFilter: BicycleParkingFilter.all,
+  bikeSpeed: BikingSpeed.average,
+  showBikeAndParkItineraries: false,
   includeParkAndRideSuggestions: true,
   includeCarSuggestions: true,
   wheelchair: false,
   arriveBy: false,
   date: null,
+  allowedVehicleRentalNetworks:
+      CityBikeUtils.getDefaultNetworks(ConfigDefault.value),
 );
 
 @immutable
@@ -37,23 +41,32 @@ class SettingFetchState extends Equatable {
   static const String _triangleFactor = "triangleFactor";
   static const String _avoidTransfers = "avoidTransfers";
   static const String _includeBikeSuggestions = "includeBikeSuggestions";
+  static const String _bicycleParkingFilter = "bicycleParkingFilter";
   static const String _typeBikingSpeed = "typeBikingSpeed";
+  static const String _showBikeAndParkItineraries =
+      "showBikeAndParkItineraries";
   static const String _includeParkAndRideSuggestions =
       "includeParkAndRideSuggestions";
   static const String _includeCarSuggestions = "includeCarSuggestions";
   static const String _wheelchair = "wheelchair";
   static const String _date = "date";
+  static const String _allowedVehicleRentalFormFactors =
+      "allowedVehicleRentalFormFactors";
+  static const String _allowedVehicleRentalNetworks =
+      "allowedVehicleRentalNetworks";
   static const String _arriveBy = "arriveBy";
 
   const SettingFetchState({
-    required this.typeWalkingSpeed,
+    required this.walkSpeed,
     required this.avoidWalking,
     required this.transportModes,
     required this.bikeRentalNetworks,
     required this.triangleFactor,
     required this.avoidTransfers,
     required this.includeBikeSuggestions,
-    required this.typeBikingSpeed,
+    required this.bicycleParkingFilter,
+    required this.bikeSpeed,
+    required this.showBikeAndParkItineraries,
     required this.includeParkAndRideSuggestions,
     required this.includeCarSuggestions,
     required this.wheelchair,
@@ -61,16 +74,20 @@ class SettingFetchState extends Equatable {
     required this.date,
     this.isFreeParkToParkRide = false,
     this.isFreeParkToCarPark = false,
+    this.allowedVehicleRentalFormFactors = const <String>{},
+    this.allowedVehicleRentalNetworks = const <String>[],
   });
 
-  final WalkingSpeed typeWalkingSpeed;
+  final WalkingSpeed walkSpeed;
   final bool avoidWalking;
   final List<TransportMode> transportModes;
   final List<BikeRentalNetwork> bikeRentalNetworks;
   final TriangleFactor triangleFactor;
   final bool avoidTransfers;
   final bool includeBikeSuggestions;
-  final BikingSpeed typeBikingSpeed;
+  final BicycleParkingFilter bicycleParkingFilter;
+  final BikingSpeed bikeSpeed;
+  final bool showBikeAndParkItineraries;
   final bool includeParkAndRideSuggestions;
   final bool includeCarSuggestions;
   final bool wheelchair;
@@ -78,6 +95,8 @@ class SettingFetchState extends Equatable {
   final DateTime? date;
   final bool isFreeParkToParkRide;
   final bool isFreeParkToCarPark;
+  final Set<String> allowedVehicleRentalFormFactors;
+  final List<String> allowedVehicleRentalNetworks;
 
   SettingFetchState copyWith({
     WalkingSpeed? typeWalkingSpeed,
@@ -87,7 +106,9 @@ class SettingFetchState extends Equatable {
     bool? avoidTransfers,
     bool? avoidWalking,
     bool? includeBikeSuggestions,
-    BikingSpeed? typeBikingSpeed,
+    BicycleParkingFilter? bicycleParkingFilter,
+    BikingSpeed? bikeSpeed,
+    bool? showBikeAndParkItineraries,
     bool? includeParkAndRideSuggestions,
     bool? includeCarSuggestions,
     bool? wheelchair,
@@ -95,9 +116,11 @@ class SettingFetchState extends Equatable {
     DateTime? date,
     bool? isFreeParkToParkRide,
     bool? isFreeParkToCarPark,
+    Set<String>? allowedVehicleRentalFormFactors,
+    List<String>? allowedVehicleRentalNetworks,
   }) {
     return SettingFetchState(
-      typeWalkingSpeed: typeWalkingSpeed ?? this.typeWalkingSpeed,
+      walkSpeed: typeWalkingSpeed ?? this.walkSpeed,
       transportModes: transportModes ?? this.transportModes,
       bikeRentalNetworks: bikeRentalNetworks ?? this.bikeRentalNetworks,
       triangleFactor: triangleFactor ?? this.triangleFactor,
@@ -105,7 +128,10 @@ class SettingFetchState extends Equatable {
       avoidWalking: avoidWalking ?? this.avoidWalking,
       includeBikeSuggestions:
           includeBikeSuggestions ?? this.includeBikeSuggestions,
-      typeBikingSpeed: typeBikingSpeed ?? this.typeBikingSpeed,
+      bicycleParkingFilter: bicycleParkingFilter ?? this.bicycleParkingFilter,
+      bikeSpeed: bikeSpeed ?? this.bikeSpeed,
+      showBikeAndParkItineraries:
+          showBikeAndParkItineraries ?? this.showBikeAndParkItineraries,
       includeParkAndRideSuggestions:
           includeParkAndRideSuggestions ?? this.includeParkAndRideSuggestions,
       includeCarSuggestions:
@@ -115,6 +141,10 @@ class SettingFetchState extends Equatable {
       date: date ?? this.date,
       isFreeParkToParkRide: isFreeParkToParkRide ?? this.isFreeParkToParkRide,
       isFreeParkToCarPark: isFreeParkToCarPark ?? this.isFreeParkToCarPark,
+      allowedVehicleRentalFormFactors: allowedVehicleRentalFormFactors ??
+          this.allowedVehicleRentalFormFactors,
+      allowedVehicleRentalNetworks:
+          allowedVehicleRentalNetworks ?? this.allowedVehicleRentalNetworks,
     );
   }
 
@@ -123,25 +153,29 @@ class SettingFetchState extends Equatable {
     DateTime? date,
   }) {
     return SettingFetchState(
-      typeWalkingSpeed: typeWalkingSpeed,
+      walkSpeed: walkSpeed,
       transportModes: transportModes,
       bikeRentalNetworks: bikeRentalNetworks,
       triangleFactor: triangleFactor,
       avoidTransfers: avoidTransfers,
       avoidWalking: avoidWalking,
       includeBikeSuggestions: includeBikeSuggestions,
-      typeBikingSpeed: typeBikingSpeed,
+      bicycleParkingFilter: bicycleParkingFilter,
+      bikeSpeed: bikeSpeed,
+      showBikeAndParkItineraries: showBikeAndParkItineraries,
       includeParkAndRideSuggestions: includeParkAndRideSuggestions,
       includeCarSuggestions: includeCarSuggestions,
       wheelchair: wheelchair,
       arriveBy: arriveBy ?? this.arriveBy,
       date: date,
+      allowedVehicleRentalFormFactors: allowedVehicleRentalFormFactors,
+      allowedVehicleRentalNetworks: allowedVehicleRentalNetworks,
     );
   }
 
   factory SettingFetchState.fromJson(Map<String, dynamic> json) {
     return SettingFetchState(
-      typeWalkingSpeed: getWalkingSpeed(json[_typeWalkingSpeed] as String),
+      walkSpeed: getWalkingSpeed(json[_typeWalkingSpeed] as String),
       transportModes: json[_transportModes]
           .map<TransportMode>(
             (key) => getTransportMode(mode: key as String),
@@ -157,19 +191,33 @@ class SettingFetchState extends Equatable {
       avoidTransfers: json[_avoidTransfers] as bool,
       avoidWalking: json[_avoidWalking] as bool,
       includeBikeSuggestions: json[_includeBikeSuggestions] as bool,
-      typeBikingSpeed: getBikingSpeed(json[_typeBikingSpeed] as String),
+      bicycleParkingFilter:
+          getBicycleParkingFilter(json[_bicycleParkingFilter] as String),
+      bikeSpeed: getBikingSpeed(json[_typeBikingSpeed] as String),
+      showBikeAndParkItineraries: json[_showBikeAndParkItineraries],
       includeParkAndRideSuggestions:
           json[_includeParkAndRideSuggestions] as bool,
       includeCarSuggestions: json[_includeCarSuggestions] as bool,
       wheelchair: json[_wheelchair] as bool,
       arriveBy: json[_arriveBy] as bool,
       date: json[_date] != null ? DateTime.parse(json[_date] as String) : null,
+      allowedVehicleRentalFormFactors:
+          (json[_allowedVehicleRentalFormFactors] as List<dynamic>?)
+                  ?.map((item) => item as String)
+                  .toList()
+                  .toSet() ??
+              <String>{},
+      allowedVehicleRentalNetworks:
+          (json[_allowedVehicleRentalNetworks] as List<dynamic>?)
+                  ?.map((item) => item as String)
+                  .toList() ??
+              <String>[],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      _typeWalkingSpeed: typeWalkingSpeed.name,
+      _typeWalkingSpeed: walkSpeed.name,
       _avoidWalking: avoidWalking,
       _transportModes:
           transportModes.map((transportMode) => transportMode.name).toList(),
@@ -179,25 +227,32 @@ class SettingFetchState extends Equatable {
       _triangleFactor: triangleFactor.name,
       _avoidTransfers: avoidTransfers,
       _includeBikeSuggestions: includeBikeSuggestions,
-      _typeBikingSpeed: typeBikingSpeed.name,
+      _bicycleParkingFilter: bicycleParkingFilter.name,
+      _typeBikingSpeed: bikeSpeed.name,
+      _showBikeAndParkItineraries: showBikeAndParkItineraries,
       _includeParkAndRideSuggestions: includeParkAndRideSuggestions,
       _includeCarSuggestions: includeCarSuggestions,
       _wheelchair: wheelchair,
       _arriveBy: arriveBy,
       _date: date?.toIso8601String(),
+      _allowedVehicleRentalFormFactors:
+          allowedVehicleRentalFormFactors.toList(),
+      _allowedVehicleRentalNetworks: allowedVehicleRentalNetworks,
     };
   }
 
   @override
   List<Object?> get props => [
-        typeWalkingSpeed,
+        walkSpeed,
         avoidWalking,
         transportModes,
         bikeRentalNetworks,
         triangleFactor,
         avoidTransfers,
         includeBikeSuggestions,
-        typeBikingSpeed,
+        bicycleParkingFilter,
+        bikeSpeed,
+        showBikeAndParkItineraries,
         includeParkAndRideSuggestions,
         includeCarSuggestions,
         wheelchair,
@@ -205,5 +260,7 @@ class SettingFetchState extends Equatable {
         arriveBy,
         isFreeParkToParkRide,
         isFreeParkToCarPark,
+        allowedVehicleRentalFormFactors,
+        allowedVehicleRentalNetworks,
       ];
 }

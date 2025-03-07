@@ -6,6 +6,8 @@ import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/map_leyers.dart';
 import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/online_search_location.dart';
 import 'package:stadtnavi_core/configuration/attribution_map.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default/city_bike_utils.dart';
 import 'package:stadtnavi_core/configuration/custom_async_executor.dart';
 import 'package:stadtnavi_core/configuration/custom_marker_configuration.dart';
 import 'package:stadtnavi_core/default_stadtnavi_values.dart';
@@ -75,6 +77,7 @@ class StadtnaviApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CityBikeUtils.assertSharingIsInitialized(ConfigDefault.value);
     return TrufiApp(
       appNameTitle: appNameTitle,
       trufiBaseTheme: trufiBaseTheme,

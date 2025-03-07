@@ -12,7 +12,6 @@ import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/truf
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/utils/trufi_map_utils.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/step_navigation_details.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/transit_leg.dart';
-import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/widgets/custom_scrollable_container.dart';
@@ -163,7 +162,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
     currentRoute!.polylines.removeWhere((polyline) => polyline.points.isEmpty);
 
     if (currentRoute == null || currentRoute!.polylines.isEmpty) return null;
-    return currentRoute!.polylines!.first!.points.first;
+    return currentRoute!.polylines.first.points.first;
   }
 
   void navigationHeaderProcess(LatLng currentPosition) {
@@ -173,9 +172,9 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
     double closestDistance =
         _calculateDistance(currentPosition, nextSteps.first.point);
 
-    for (int i = 1; i < nextSteps!.length; i++) {
+    for (int i = 1; i < nextSteps.length; i++) {
       double distance =
-          _calculateDistance(currentPosition, nextSteps![i].point);
+          _calculateDistance(currentPosition, nextSteps[i].point);
       if (distance < closestDistance) {
         closestDistance = distance;
         closestIndex = i;
@@ -183,7 +182,7 @@ class _ModeTransportScreen extends State<ModeTrackerScreen>
     }
 
     if (closestIndex > 0) {
-      nextSteps!.removeRange(0, closestIndex);
+      nextSteps.removeRange(0, closestIndex);
     }
 
     if (mounted) {

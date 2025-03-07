@@ -81,6 +81,7 @@ extension RelativeDirectionExtension on RelativeDirection {
         return iconInstructionExitStationSvg;
       case RelativeDirection.followSigns:
         return iconInstructionFollowSignsSvg;
+      // ignore: unreachable_switch_default
       default:
         return null;
     }

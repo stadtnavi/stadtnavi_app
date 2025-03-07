@@ -4,17 +4,32 @@ import 'package:back_button_interceptor/back_button_interceptor.dart';
 
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/other_icons.dart';
+import 'package:stadtnavi_core/base/models/utils/mode_utils.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/setting_payload/setting_panel/sharing_settings_panel.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:stadtnavi_core/base/widgets/custom_switch_tile.dart';
 import 'package:stadtnavi_core/base/widgets/speed_expanded_tile.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default/default_settings.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
 class SettingPanel extends StatefulWidget {
   static const String route = "/setting-panel";
-  static const Divider _divider = Divider(thickness: 2);
-  static const Divider _dividerWeight = Divider(thickness: 10);
+  static const Divider dividerSection = Divider(
+    thickness: 1,
+    height: 0,
+  );
+  static const Divider dividerSubSection = Divider(
+    thickness: 1,
+    height: 0,
+    indent: 10,
+    endIndent: 10,
+  );
+  static const Divider dividerWeight = Divider(
+    thickness: 10,
+  );
   // TODO improve availability carpool-funicular
   // static bool enableFunicular = true;
 
@@ -79,8 +94,7 @@ class _SettingPanelState extends State<SettingPanel> {
                               e.translateValue(localization), e.speed),
                         )
                         .toList(),
-                    textSelected:
-                        state.typeWalkingSpeed.translateValue(localization),
+                    textSelected: state.walkSpeed.translateValue(localization),
                     onChanged: (value) {
                       final WalkingSpeed selected = WalkingSpeed.values
                           .firstWhere((element) =>
@@ -88,14 +102,15 @@ class _SettingPanelState extends State<SettingPanel> {
                       payloadDataPlanCubit.setWalkingSpeed(selected);
                     },
                   ),
-                  SettingPanel._divider,
+                  SettingPanel.dividerSection,
                   CustomSwitchTile(
                     title: localization.settingPanelAvoidWalking,
+                    isSubSection: true,
                     value: state.avoidWalking,
                     onChanged: (value) => payloadDataPlanCubit.setAvoidWalking(
                         avoidWalking: value),
                   ),
-                  SettingPanel._dividerWeight,
+                  SettingPanel.dividerWeight,
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
@@ -105,6 +120,7 @@ class _SettingPanelState extends State<SettingPanel> {
                   ),
                   CustomSwitchTile(
                     title: localizationBase.instructionVehicleBus,
+                    titleColor: TransportMode.bus.color,
                     secondary: Container(
                       decoration: BoxDecoration(
                         color: TransportMode.bus.color,
@@ -119,9 +135,10 @@ class _SettingPanelState extends State<SettingPanel> {
                       payloadDataPlanCubit.setTransportMode(TransportMode.bus);
                     },
                   ),
-                  SettingPanel._divider,
+                  SettingPanel.dividerSubSection,
                   CustomSwitchTile(
                     title: localizationBase.instructionVehicleCommuterTrain,
+                    titleColor: TransportMode.rail.color,
                     secondary: Container(
                       decoration: BoxDecoration(
                           color: TransportMode.rail.color,
@@ -135,9 +152,10 @@ class _SettingPanelState extends State<SettingPanel> {
                       payloadDataPlanCubit.setTransportMode(TransportMode.rail);
                     },
                   ),
-                  SettingPanel._divider,
+                  SettingPanel.dividerSubSection,
                   CustomSwitchTile(
                     title: localizationBase.instructionVehicleMetro,
+                    titleColor: TransportMode.subway.color,
                     secondary: Container(
                       decoration: BoxDecoration(
                           color: TransportMode.subway.color,
@@ -152,10 +170,12 @@ class _SettingPanelState extends State<SettingPanel> {
                           .setTransportMode(TransportMode.subway);
                     },
                   ),
-                  if (TransportMode.funicular.visible) SettingPanel._divider,
+                  if (TransportMode.funicular.visible)
+                    SettingPanel.dividerSubSection,
                   if (TransportMode.funicular.visible)
                     CustomSwitchTile(
                       title: localization.instructionVehicleRackRailway,
+                      titleColor: const Color(0xffFFCC02),
                       secondary: SizedBox(
                         height: 35,
                         width: 35,
@@ -168,10 +188,12 @@ class _SettingPanelState extends State<SettingPanel> {
                             .setTransportMode(TransportMode.funicular);
                       },
                     ),
-                  if (TransportMode.carPool.visible) SettingPanel._divider,
+                  if (TransportMode.carPool.visible)
+                    SettingPanel.dividerSubSection,
                   if (TransportMode.carPool.visible)
                     CustomSwitchTile(
                       title: localizationBase.instructionVehicleCarpool,
+                      titleColor: TransportMode.carPool.color,
                       secondary: SizedBox(
                         height: 35,
                         width: 35,
@@ -184,144 +206,152 @@ class _SettingPanelState extends State<SettingPanel> {
                             .setTransportMode(TransportMode.carPool);
                       },
                     ),
-                  SettingPanel._divider,
-                  CustomSwitchTile(
-                    title: localization.instructionVehicleSharing,
-                    secondary: SizedBox(
-                      height: 35,
-                      width: 35,
-                      child: Container(
-                        padding: const EdgeInsets.all(2),
-                        child: FittedBox(child: shareManuSvg),
-                      ),
-                    ),
-                    value: state.transportModes.contains(TransportMode.bicycle),
-                    onChanged: (_) {
-                      payloadDataPlanCubit
-                          .setTransportMode(TransportMode.bicycle);
-                    },
-                  ),
-                  if (state.transportModes.contains(TransportMode.bicycle))
-                    Container(
-                      margin:
-                          const EdgeInsets.only(left: 55, top: 5, bottom: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 5),
-                            child: Text(localization.commonCitybikes,
-                                style: theme.textTheme.bodyLarge),
-                          ),
-                          if (BikeRentalNetwork.cargoBike.visible)
-                            CustomSwitchTile(
-                              title: localization
-                                  .instructionVehicleSharingRegioRad,
-                              secondary: SizedBox(
-                                height: 35,
-                                width: 35,
-                                child: BikeRentalNetwork.cargoBike.image,
-                              ),
-                              value: state.bikeRentalNetworks
-                                  .contains(BikeRentalNetwork.cargoBike),
-                              onChanged: (_) {
-                                payloadDataPlanCubit.setBikeRentalNetwork(
-                                    BikeRentalNetwork.cargoBike);
-                              },
-                            ),
-                          if (BikeRentalNetwork.taxi.visible)
-                            CustomSwitchTile(
-                              title: localization.instructionVehicleSharingTaxi,
-                              secondary: SizedBox(
-                                height: 35,
-                                width: 35,
-                                child: BikeRentalNetwork.taxi.image,
-                              ),
-                              value: state.bikeRentalNetworks
-                                  .contains(BikeRentalNetwork.taxi),
-                              onChanged: (_) {
-                                payloadDataPlanCubit.setBikeRentalNetwork(
-                                    BikeRentalNetwork.taxi);
-                              },
-                            ),
-                          if (BikeRentalNetwork.carSharing.visible)
-                            CustomSwitchTile(
-                              title: localization
-                                  .instructionVehicleSharingCarSharing,
-                              secondary: SizedBox(
-                                height: 35,
-                                width: 35,
-                                child: BikeRentalNetwork.carSharing.image,
-                              ),
-                              value: state.bikeRentalNetworks
-                                  .contains(BikeRentalNetwork.carSharing),
-                              onChanged: (_) {
-                                payloadDataPlanCubit.setBikeRentalNetwork(
-                                    BikeRentalNetwork.carSharing);
-                              },
-                            ),
-                          if (BikeRentalNetwork.regioradStuttgart.visible)
-                            CustomSwitchTile(
-                              title: localization
-                                  .instructionVehicleSharingRegioRad,
-                              secondary: SizedBox(
-                                height: 35,
-                                width: 35,
-                                child:
-                                    BikeRentalNetwork.regioradStuttgart.image,
-                              ),
-                              value: state.bikeRentalNetworks.contains(
-                                  BikeRentalNetwork.regioradStuttgart),
-                              onChanged: (_) {
-                                payloadDataPlanCubit.setBikeRentalNetwork(
-                                    BikeRentalNetwork.regioradStuttgart);
-                              },
-                            ),
-                          if (BikeRentalNetwork.openbikeHerrenberg.visible)
-                            CustomSwitchTile(
-                              title: localization
-                                  .instructionVehicleSharingRegioRad,
-                              secondary: SizedBox(
-                                height: 35,
-                                width: 35,
-                                child:
-                                    BikeRentalNetwork.openbikeHerrenberg.image,
-                              ),
-                              value: state.bikeRentalNetworks.contains(
-                                  BikeRentalNetwork.openbikeHerrenberg),
-                              onChanged: (_) {
-                                payloadDataPlanCubit.setBikeRentalNetwork(
-                                    BikeRentalNetwork.openbikeHerrenberg);
-                              },
-                            ),
-                          if (BikeRentalNetwork.scooter.visible)
-                            CustomSwitchTile(
-                              title: "TIER Ludwigsburg",
-                              secondary: SizedBox(
-                                height: 35,
-                                width: 35,
-                                child: BikeRentalNetwork.scooter.image,
-                              ),
-                              value: state.bikeRentalNetworks
-                                  .contains(BikeRentalNetwork.scooter),
-                              onChanged: (_) {
-                                payloadDataPlanCubit.setBikeRentalNetwork(
-                                    BikeRentalNetwork.scooter);
-                              },
-                            ),
-                        ],
-                      ),
-                    )
-                  else
-                    Container(),
+                  // SettingPanel._dividerSubSection,
+                  // CustomSwitchTile(
+                  //   title: localization.instructionVehicleSharing,
+                  //   secondary: SizedBox(
+                  //     height: 35,
+                  //     width: 35,
+                  //     child: Container(
+                  //       padding: const EdgeInsets.all(2),
+                  //       child: FittedBox(child: shareManuSvg),
+                  //     ),
+                  //   ),
+                  //   value: state.transportModes.contains(TransportMode.bicycle),
+                  //   onChanged: (_) {
+                  //     payloadDataPlanCubit
+                  //         .setTransportMode(TransportMode.bicycle);
+                  //   },
+                  // ),
+                  // if (state.transportModes.contains(TransportMode.bicycle))
+                  //   Container(
+                  //     margin:
+                  //         const EdgeInsets.only(left: 55, top: 5, bottom: 20),
+                  //     child: Column(
+                  //       crossAxisAlignment: CrossAxisAlignment.start,
+                  //       children: [
+                  //         Container(
+                  //           padding: const EdgeInsets.symmetric(
+                  //               horizontal: 16.0, vertical: 5),
+                  //           child: Text(localization.commonCitybikes,
+                  //               style: theme.textTheme.bodyLarge),
+                  //         ),
+                  //         if (BikeRentalNetwork.cargoBike.visible)
+                  //           CustomSwitchTile(
+                  //             title: localization
+                  //                 .instructionVehicleSharingRegioRad,
+                  //             secondary: SizedBox(
+                  //               height: 35,
+                  //               width: 35,
+                  //               child: BikeRentalNetwork.cargoBike.image,
+                  //             ),
+                  //             value: state.bikeRentalNetworks
+                  //                 .contains(BikeRentalNetwork.cargoBike),
+                  //             onChanged: (_) {
+                  //               payloadDataPlanCubit.setBikeRentalNetwork(
+                  //                   BikeRentalNetwork.cargoBike);
+                  //             },
+                  //           ),
+                  //         if (BikeRentalNetwork.taxi.visible)
+                  //           CustomSwitchTile(
+                  //             title: localization.instructionVehicleSharingTaxi,
+                  //             secondary: SizedBox(
+                  //               height: 35,
+                  //               width: 35,
+                  //               child: BikeRentalNetwork.taxi.image,
+                  //             ),
+                  //             value: state.bikeRentalNetworks
+                  //                 .contains(BikeRentalNetwork.taxi),
+                  //             onChanged: (_) {
+                  //               payloadDataPlanCubit.setBikeRentalNetwork(
+                  //                   BikeRentalNetwork.taxi);
+                  //             },
+                  //           ),
+                  //         if (BikeRentalNetwork.carSharing.visible)
+                  //           CustomSwitchTile(
+                  //             title: localization
+                  //                 .instructionVehicleSharingCarSharing,
+                  //             secondary: SizedBox(
+                  //               height: 35,
+                  //               width: 35,
+                  //               child: BikeRentalNetwork.carSharing.image,
+                  //             ),
+                  //             value: state.bikeRentalNetworks
+                  //                 .contains(BikeRentalNetwork.carSharing),
+                  //             onChanged: (_) {
+                  //               payloadDataPlanCubit.setBikeRentalNetwork(
+                  //                   BikeRentalNetwork.carSharing);
+                  //             },
+                  //           ),
+                  //         if (BikeRentalNetwork.regioradStuttgart.visible)
+                  //           CustomSwitchTile(
+                  //             title: localization
+                  //                 .instructionVehicleSharingRegioRad,
+                  //             secondary: SizedBox(
+                  //               height: 35,
+                  //               width: 35,
+                  //               child:
+                  //                   BikeRentalNetwork.regioradStuttgart.image,
+                  //             ),
+                  //             value: state.bikeRentalNetworks.contains(
+                  //                 BikeRentalNetwork.regioradStuttgart),
+                  //             onChanged: (_) {
+                  //               payloadDataPlanCubit.setBikeRentalNetwork(
+                  //                   BikeRentalNetwork.regioradStuttgart);
+                  //             },
+                  //           ),
+                  //         if (BikeRentalNetwork.openbikeHerrenberg.visible)
+                  //           CustomSwitchTile(
+                  //             title: localization
+                  //                 .instructionVehicleSharingRegioRad,
+                  //             secondary: SizedBox(
+                  //               height: 35,
+                  //               width: 35,
+                  //               child:
+                  //                   BikeRentalNetwork.openbikeHerrenberg.image,
+                  //             ),
+                  //             value: state.bikeRentalNetworks.contains(
+                  //                 BikeRentalNetwork.openbikeHerrenberg),
+                  //             onChanged: (_) {
+                  //               payloadDataPlanCubit.setBikeRentalNetwork(
+                  //                   BikeRentalNetwork.openbikeHerrenberg);
+                  //             },
+                  //           ),
+                  //         if (BikeRentalNetwork.scooter.visible)
+                  //           CustomSwitchTile(
+                  //             title: "TIER Ludwigsburg",
+                  //             secondary: SizedBox(
+                  //               height: 35,
+                  //               width: 35,
+                  //               child: BikeRentalNetwork.scooter.image,
+                  //             ),
+                  //             value: state.bikeRentalNetworks
+                  //                 .contains(BikeRentalNetwork.scooter),
+                  //             onChanged: (_) {
+                  //               payloadDataPlanCubit.setBikeRentalNetwork(
+                  //                   BikeRentalNetwork.scooter);
+                  //             },
+                  //           ),
+                  //       ],
+                  //     ),
+                  //   )
+                  // else
+                  //   Container(),
+                  SettingPanel.dividerSection,
                   CustomSwitchTile(
                     title: localization.settingPanelAvoidTransfers,
+                    isSubSection: true,
                     value: state.avoidTransfers,
                     onChanged: (value) => payloadDataPlanCubit
                         .setAvoidTransfers(avoidTransfers: value),
                   ),
-                  SettingPanel._dividerWeight,
+                  if (ModeUtils.useCitybikes(
+                    ConfigDefault.value.cityBike.networks,
+                  )) ...[
+                    SettingPanel.dividerWeight,
+                    const SharingSettingsPanel(),
+                  ],
+                  SettingPanel.dividerWeight,
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
@@ -341,15 +371,41 @@ class _SettingPanelState extends State<SettingPanel> {
                         payloadDataPlanCubit.setIncludeBikeSuggestions(
                             includeBikeSuggestions: value),
                   ),
+                  SettingPanel.dividerSection,
+                  Container(
+                    margin: const EdgeInsets.only(left: 55, top: 5, bottom: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      "Bicycle parking options",
+                      style: theme.textTheme.bodyLarge,
+                    ),
+                  ),
+                  SpeedExpansionTile(
+                    title: null,
+                    isSubSection: true,
+                    dataSpeeds: BicycleParkingFilter.values
+                        .map(
+                          (e) => DataSpeed(e.translateValue(localization), ''),
+                        )
+                        .toList(),
+                    textSelected:
+                        state.bicycleParkingFilter.translateValue(localization),
+                    onChanged: (value) {
+                      final BicycleParkingFilter selected =
+                          BicycleParkingFilter.values.firstWhere((element) =>
+                              element.translateValue(localization) == value);
+                      payloadDataPlanCubit.setBicycleParkingFilter(selected);
+                    },
+                  ),
                   SpeedExpansionTile(
                     title: localization.settingPanelBikingSpeed,
-                    isSubtitle: true,
+                    isSubSection: true,
                     dataSpeeds: BikingSpeed.values
                         .map(
                           (e) => DataSpeed(e.translateValue(), ''),
                         )
                         .toList(),
-                    textSelected: state.typeBikingSpeed.translateValue(),
+                    textSelected: state.bikeSpeed.translateValue(),
                     onChanged: (value) {
                       final BikingSpeed selected = BikingSpeed.values
                           .firstWhere(
@@ -357,7 +413,19 @@ class _SettingPanelState extends State<SettingPanel> {
                       payloadDataPlanCubit.setBikingSpeed(selected);
                     },
                   ),
-                  SettingPanel._divider,
+                  Container(
+                    margin: const EdgeInsets.only(left: 55, top: 5, bottom: 20),
+                    child: CustomSwitchTile(
+                      title: localization.settingPanelMyModesTransportBikeRide,
+                      secondary: null,
+                      isSubSection: true,
+                      value: state.showBikeAndParkItineraries,
+                      onChanged: (value) =>
+                          payloadDataPlanCubit.setShowBikeAndParkItineraries(
+                              showBikeAndParkItineraries: value),
+                    ),
+                  ),
+                  SettingPanel.dividerSection,
                   CustomSwitchTile(
                     title: localization.settingPanelMyModesTransportParkRide,
                     secondary: SizedBox(
@@ -369,7 +437,7 @@ class _SettingPanelState extends State<SettingPanel> {
                     onChanged: (value) =>
                         payloadDataPlanCubit.setParkRide(parkRide: value),
                   ),
-                  SettingPanel._divider,
+                  SettingPanel.dividerSection,
                   CustomSwitchTile(
                     title: localizationBase.instructionVehicleCar,
                     secondary: SizedBox(
@@ -381,7 +449,7 @@ class _SettingPanelState extends State<SettingPanel> {
                     onChanged: (value) => payloadDataPlanCubit
                         .setIncludeCarSuggestions(includeCarSuggestions: value),
                   ),
-                  SettingPanel._dividerWeight,
+                  SettingPanel.dividerWeight,
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
