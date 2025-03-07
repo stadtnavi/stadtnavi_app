@@ -70,7 +70,6 @@ void main() async {
     siteId: '2',
     url: 'https://track.dev.stadtnavi.eu/matomo.php',
   );
-  await HBLayerData.loadHbLayers();
   ConfigDefault.instance.configData = configHerrenbergMerged;
   runApp(
     CriticalLoader(
