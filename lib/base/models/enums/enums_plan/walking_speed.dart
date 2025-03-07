@@ -39,6 +39,7 @@ extension WalkingSpeedExtension on WalkingSpeed {
         return localization.typeSpeedAverage;
       case WalkingSpeed.fast:
         return localization.typeSpeedFast;
+      // ignore: unreachable_switch_default
       default:
         return 'typeError';
     }

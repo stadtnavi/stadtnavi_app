@@ -61,6 +61,28 @@ class ModesTransport {
         'onDemandTaxiPlan': onDemandTaxiPlan?.toMap(),
       };
 
+  ModesTransport copyWith({
+    Plan? walkPlan,
+    Plan? bikePlan,
+    Plan? bikeAndPublicPlan,
+    Plan? bikeParkPlan,
+    Plan? carPlan,
+    Plan? carParkPlan,
+    Plan? parkRidePlan,
+    Plan? onDemandTaxiPlan,
+  }) {
+    return ModesTransport(
+      walkPlan: walkPlan ?? this.walkPlan,
+      bikePlan: bikePlan ?? this.bikePlan,
+      bikeAndPublicPlan: bikeAndPublicPlan ?? this.bikeAndPublicPlan,
+      bikeParkPlan: bikeParkPlan ?? this.bikeParkPlan,
+      carPlan: carPlan ?? this.carPlan,
+      carParkPlan: carParkPlan ?? this.carParkPlan,
+      parkRidePlan: parkRidePlan ?? this.parkRidePlan,
+      onDemandTaxiPlan: onDemandTaxiPlan ?? this.onDemandTaxiPlan,
+    );
+  }
+
   ModesTransportEntity toModesTransport() {
     return ModesTransportEntity(
       walkPlan: walkPlan?.toPlan().copyWith(type: 'walkPlan'),

@@ -33,7 +33,6 @@ extension ModesTransportTypeExtension on ModesTransportType {
       case ModesTransportType.onDemandTaxi:
         currentPlan = modesTransport?.onDemandTaxiPlan;
         break;
-      default:
     }
     return currentPlan;
   }
@@ -148,16 +147,16 @@ class ModesTransportEntity extends Equatable {
 
   // Always show the walk plan to the user,
   bool get existWalkPlan =>
-      (walkPlan?.itineraries?.isNotEmpty ?? false) && true;
-      // (walkPlan!.itineraries![0].walkDistance) <
-      //     SettingFetchState.maxWalkDistance;
+      (walkPlan?.itineraries?.isNotEmpty ?? false) &&
+      (walkPlan!.itineraries![0].walkDistance) <
+          ConfigDefault.value.suggestWalkMaxDistance;
 
   bool get existBikePlan =>
       (bikePlan?.itineraries?.isNotEmpty ?? false) &&
       !bikePlan!.itineraries!.every((itinerary) => itinerary.legs
           .every((leg) => leg.transportMode == TransportMode.walk)) &&
       bikePlan!.itineraries![0].totalBikingDistance <
-          SettingFetchState.suggestBikeMaxDistance;
+          ConfigDefault.value.suggestBikeMaxDistance;
 
   bool get existBikeAndVehicle =>
       _bikeAndPublicPlanHasItineraries || _bikeParkPlanHasItineraries;

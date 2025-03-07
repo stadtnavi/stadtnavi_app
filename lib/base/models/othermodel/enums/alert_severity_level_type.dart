@@ -35,6 +35,7 @@ extension AlertSeverityLevelTypeExtension on AlertSeverityLevelType {
         return localization.itineraryDetailsRouteHasUnknownAlert;
       case AlertSeverityLevelType.severe:
         return localization.itineraryDetailsRouteHasWarningAlert;
+      // ignore: unreachable_switch_default
       default:
         return 'typeError';
     }
@@ -53,6 +54,7 @@ extension AlertSeverityLevelTypeExtension on AlertSeverityLevelType {
           color: Colors.white,
           backColor: const Color(0xFFDC0451),
         );
+      // ignore: unreachable_switch_default
       default:
         return null;
     }

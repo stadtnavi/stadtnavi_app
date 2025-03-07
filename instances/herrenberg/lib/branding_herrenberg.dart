@@ -24,7 +24,7 @@ final brandingStadtnaviHerrenberg = ThemeData.from(
     errorColor: Colors.red,
   ),
 ).copyWith(
-  scaffoldBackgroundColor: Colors.grey[200],
+  scaffoldBackgroundColor:Colors.grey[50],
   appBarTheme: const AppBarTheme(
     backgroundColor: Color(0xff9BBF28),
     foregroundColor: Colors.white,

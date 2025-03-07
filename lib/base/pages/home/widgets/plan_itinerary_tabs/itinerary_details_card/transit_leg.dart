@@ -6,12 +6,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_screen/route_stops_screen.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_feature_model.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_marker_modal/stop_marker_modal.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_marker_modal/stop_marker_modal_base.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_enum.dart';
 import 'package:stadtnavi_core/base/models/othermodel/enums/alert_severity_level_type.dart';
 import 'package:stadtnavi_core/base/models/utils/alert_utils.dart';
-import 'package:stadtnavi_core/config_default.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -288,7 +286,7 @@ class TransitLeg extends StatelessWidget {
                       ),
                     Expanded(
                       child: Text(
-                        (ConfigDefault.showAlertHeader
+                        (ConfigDefault.value.showAlertHeader
                                 ? alert?.alertHeaderText
                                 : alert?.alertDescriptionText) ??
                             "",

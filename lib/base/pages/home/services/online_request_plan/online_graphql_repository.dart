@@ -43,9 +43,17 @@ class OnlineGraphQLRepository {
         toLocation: to,
         advancedOptions: advancedOptions,
         locale: localeName,
-        defaultFecth: true,
+        useDefaultModes: true,
       );
     }
+    planData = planData.copyWith(
+      itineraries: planData.itineraries
+          ?.where(
+            (itinerary) =>
+                !(itinerary.legs ?? []).every((leg) => leg.mode == Mode.walk),
+          )
+          .toList(),
+    );
     PlanEntity planEntity = planData.toPlan();
     if (!planEntity.isOnlyWalk) {
       planEntity = planData
@@ -82,6 +90,14 @@ class OnlineGraphQLRepository {
       locale: localeName,
       numItineraries: 5,
     );
+    planData = planData.copyWith(
+      itineraries: planData.itineraries
+          ?.where(
+            (itinerary) =>
+                !(itinerary.legs ?? []).every((leg) => leg.mode == Mode.walk),
+          )
+          .toList(),
+    );
     final mainFetchIsEmpty = planData.itineraries?.isEmpty ?? true;
     PlanEntity planEntity = planData.toPlan();
 
@@ -100,12 +116,22 @@ class OnlineGraphQLRepository {
     required SettingFetchState advancedOptions,
     required String localeName,
   }) async {
-    final ModesTransport planEntityData =
+    ModesTransport planEntityData =
         await _graphQLPlanRepository.fetchWalkBikePlanQuery(
       fromLocation: from,
       toLocation: to,
       advancedOptions: advancedOptions,
       locale: localeName,
+    );
+    planEntityData = planEntityData.copyWith(
+      parkRidePlan: planEntityData.parkRidePlan?.copyWith(
+        itineraries: planEntityData.parkRidePlan?.itineraries
+            ?.where(
+              (itinerary) =>
+                  (itinerary.legs ?? []).any((leg) => leg.transitLeg??false),
+            )
+            .toList(),
+      ),
     );
     return planEntityData.toModesTransport();
   }

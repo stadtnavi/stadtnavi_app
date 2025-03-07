@@ -347,5 +347,15 @@
   "instructionVehicleLightRail": "Rail",
   "instructionVehicleMetro": "Metro",
   "disruptionInfoNoAlerts":"No known disruptions or diversions.",
+  "pickRentalMode": "Your rental modes and operators",
+  "sharingOperatorsCarHeader": "Cars",
+  "sharingOperatorsCargoBicycleHeader": "Cargo bikes",
+  "sharingOperatorsBicycleHeader": "Citybikes",
+  "sharingOperatorsScooterHeader": "Scooters",
+  "sharingOperatorsMopedHeader": "Rental Mopeds",
+  "bicycleParkingFilter": "Bicycle parking options",
+  "bicycleParkingFilterAll": "All parking spaces",
+  "bicycleParkingFilterFreeOnly": "Only free ones",
+  "bicycleParkingFilterSecurePreferred": "Secure preferred",
   "chooseOnMap" : "Choose on map"
 }

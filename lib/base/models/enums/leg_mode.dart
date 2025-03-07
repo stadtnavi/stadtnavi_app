@@ -2,7 +2,10 @@ enum LegMode {
   bicycle,
   bicycleWalk,
   cityBike,
+  scooter,
   walk,
+  car,
+  rail,
   undefined,
 }
 
@@ -18,7 +21,10 @@ extension LegModeExtension on LegMode {
     LegMode.bicycle: 'BICYCLE',
     LegMode.bicycleWalk: 'BICYCLE_WALK',
     LegMode.cityBike: 'CITYBIKE',
+    LegMode.scooter: 'SCOOTER',
     LegMode.walk: 'WALK',
+    LegMode.car: 'CAR',
+    LegMode.rail: 'RAIL',
     LegMode.undefined: 'UNDEFINED',
   };
 

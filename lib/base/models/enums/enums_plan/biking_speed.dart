@@ -41,6 +41,7 @@ extension BikingSpeedExtension on BikingSpeed {
         return '25 Km/h';
       case BikingSpeed.fast:
         return '30 Km/h';
+      // ignore: unreachable_switch_default
       default:
         return 'typeError';
     }
