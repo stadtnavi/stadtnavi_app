@@ -18,10 +18,10 @@ import 'package:stadtnavi_core/base/models/othermodel/plan.dart';
 import 'package:stadtnavi_core/base/models/utils/geo_utils.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
 
-import 'graphql_operation/fragments2/plan_fragment.dart' as plan_fragment;
-import 'graphql_operation/queries2/modes_plan_queries.dart'
+import 'graphql_operation/fragments/plan_fragment.dart' as plan_fragment;
+import 'graphql_operation/queries/modes_plan_queries.dart'
     as modes_plan_queries;
-import 'graphql_operation/queries2/plan_queries.dart' as plan_queries;
+import 'graphql_operation/queries/plan_queries.dart' as plan_queries;
 import 'graphql_operation/query_utils.dart';
 
 class GraphQLPlanRepository {
