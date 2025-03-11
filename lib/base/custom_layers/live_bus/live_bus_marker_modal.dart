@@ -188,7 +188,7 @@ class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
                       ],
                     ),
                     Text(
-                      "${languageCode == "en" ? "To " : "Ri. "}${trip?.pattern.headsign ?? ""}",
+                      "${languageCode == "en" ? "To " : "Richtung "}${trip?.pattern.headsign ?? ""}",
                       style: const TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ],
@@ -252,7 +252,7 @@ class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
   String formatUnixTimestamp(int unixTimestamp) {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(unixTimestamp * 1000);
 
-    return DateFormat.jms().format(date);
+    return DateFormat.Hms().format(date);
   }
 }
 
