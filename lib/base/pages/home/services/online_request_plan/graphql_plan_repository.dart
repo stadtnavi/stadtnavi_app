@@ -521,7 +521,7 @@ class GraphQLPlanRepository {
         advancedOptions.walkSpeed.value,
         defaultOptions.walkSpeed,
       ),
-      'walkReluctance': advancedOptions.avoidTransfers
+      'walkReluctance': advancedOptions.avoidWalking
           ? defaultOptions.walkReluctance.least
           : defaultSettings.walkReluctance,
       'walkBoardCost': advancedOptions.avoidTransfers
