@@ -113,7 +113,7 @@ class Alert {
         effectiveEndDate: double.tryParse(json['effectiveEndDate'].toString()),
         entities: json['entities'] != null
             ? List<String>.from((json["entities"] as List<dynamic>).map(
-                (x) => x["__typename"],
+                (x) => x["__typename"] ?? '',
               ))
             : null,
         sourceAlert: json['sourceAlert'],

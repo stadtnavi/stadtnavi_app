@@ -1067,6 +1067,11 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'Secure preferred'**
   String get bicycleParkingFilterSecurePreferred;
+  /// No description provided for @disruptionInfoNoAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'No known disruptions or diversions.'**
+  String get disruptionInfoNoAlerts;
 
   /// No description provided for @chooseOnMap.
   ///

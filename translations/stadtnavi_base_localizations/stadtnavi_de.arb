@@ -355,5 +355,6 @@
   "bicycleParkingFilterAll": "Alle Abstellanlagen",
   "bicycleParkingFilterFreeOnly": "Nur kostenlose Anlagen",
   "bicycleParkingFilterSecurePreferred": "Sichere bevorzugt",
+  "disruptionInfoNoAlerts":"Keine Störungsmeldungen.",
   "chooseOnMap" : "Wähle auf der Karte"
 }

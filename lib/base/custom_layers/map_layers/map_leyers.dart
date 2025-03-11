@@ -4,11 +4,15 @@ import 'package:flutter/material.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
+import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/quad_tree.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_parks_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_layer.dart';
@@ -98,114 +102,50 @@ class MapLayer extends MapTileProvider {
   }
 
   List<Widget> mapLayerOptions(MapLayerIds id, BuildContext context) {
-    switch (id) {
-      case MapLayerIds.streets:
-        return [
-          TileLayer(
-            tileProvider: CustomTileProvider(context: context),
-            urlTemplate:
-                "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
-          ),
-        ];
-      case MapLayerIds.satellite:
-        return [
-          TileLayer(
-            tileProvider: CustomTileProvider(context: context),
-            urlTemplate:
-                "https://tiles.stadtnavi.eu/orthophoto/{z}/{x}/{y}.jpg",
-          ),
-          TileLayer(
-            tileProvider: CustomTileProvider(context: context),
-            // backgroundColor: Colors.transparent,
-            urlTemplate:
-                "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
-          ),
-        ];
-      case MapLayerIds.bike:
-        return [
-          TileLayer(
-            tileProvider: CustomTileProvider(context: context),
-            urlTemplate:
-                "https://tiles.stadtnavi.eu/bicycle/{z}/{x}/{y}@2x.png",
-            subdomains: const ["a", "b", "c"],
-          ),
-        ];
-      case MapLayerIds.terrain:
-        return [
-          TileLayer(
-            tileProvider: CustomTileProvider(context: context),
-            urlTemplate:
-                "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
-            subdomains: const ["a", "b", "c"],
-          ),
-        ];
-      }
-  }
-}
+    final codes = context.read<CustomLayersCubit>().getActiveLayersCode();
 
-class CustomTileProvider extends TileProvider {
-  final Map<String, String> customHeaders;
-
-  final BuildContext context;
-  CustomTileProvider({
-    this.customHeaders = const {"Referer": "https://herrenberg.stadtnavi.de/"},
-    required this.context,
-  });
-  @override
-  ImageProvider getImage(TileCoordinates coords, TileLayer options) {
-    if (coords.z.toInt() > 13) {
-      _fetchPBF(coords);
-    }
-    return CachedNetworkImageProvider(
-      getTileUrl(coords, options),
-      headers: customHeaders,
-    );
-  }
-
-  Future<void> _fetchPBF(TileCoordinates coords) async {
-    await Future.wait([
-      CityBikesLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ),
-      StopsLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ),
-      ParkingLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ),
-      MapPoiLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ),
-      BikeParkLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ),
-      RoadworksLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ),
-      WeatherLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      ),
-      ChargingLayer.fetchPBF(
-        coords.z.toInt(),
-        coords.x.toInt(),
-        coords.y.toInt(),
-      )
-    ]).catchError((error) {
-      log("$error");
-    });
+    return [
+      if (id == MapLayerIds.streets)
+        TileLayer(
+          tileProvider: CachedTileProvider(context: context),
+          urlTemplate: "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
+        ),
+      if (id == MapLayerIds.satellite) ...[
+        TileLayer(
+          tileProvider: CachedTileProvider(context: context),
+          urlTemplate: "https://tiles.stadtnavi.eu/orthophoto/{z}/{x}/{y}.jpg",
+        ),
+        TileLayer(
+          tileProvider: CachedTileProvider(context: context),
+          // backgroundColor: Colors.transparent,
+          urlTemplate:
+              "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
+        ),
+      ],
+      if (id == MapLayerIds.bike)
+        TileLayer(
+          tileProvider: CachedTileProvider(context: context),
+          urlTemplate: "https://tiles.stadtnavi.eu/bicycle/{z}/{x}/{y}@2x.png",
+          subdomains: const ["a", "b", "c"],
+        ),
+      if (id == MapLayerIds.terrain)
+        TileLayer(
+          tileProvider: CachedTileProvider(context: context),
+          urlTemplate:
+              "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
+          subdomains: const ["a", "b", "c"],
+        ),
+      if (codes.contains("cycle_network"))
+        TileLayer(
+          wmsOptions: WMSTileLayerOptions(
+            baseUrl: 'https://api.mobidata-bw.de/geoserver/MobiData-BW/wms?',
+            layers: ['MobiData-BW:radvis_cycle_network'],
+            format: 'image/png',
+            transparent: true,
+            version: "1.1.1",
+          ),
+          tileProvider: CachedTileProvider(context: context),
+        ),
+    ];
   }
 }

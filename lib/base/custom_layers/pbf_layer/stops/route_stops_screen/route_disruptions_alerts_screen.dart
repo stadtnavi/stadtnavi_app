@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/widgets/alert_card.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/alert.dart';
+import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
 import 'package:stadtnavi_core/base/models/othermodel/route.dart';
+import 'package:stadtnavi_core/base/models/utils/alert_utils.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 
 class RouteDisruptionAlertsScreen extends StatefulWidget {
   final String routeId;
@@ -39,7 +41,7 @@ class _RouteDisruptionAlertsScreenState
     });
   }
 
-  Future<void> _fetchStopData({DateTime? date}) async {
+  Future<void> _fetchStopData() async {
     if (!mounted) return;
     setState(() {
       fetchError = null;
@@ -50,9 +52,17 @@ class _RouteDisruptionAlertsScreenState
       patternId: widget.patternId,
     ).then((value) {
       if (mounted) {
+        final validAlerts = value.pattern.alerts
+                ?.where(
+                  (alert) => AlertUtils.isAlertValid(
+                      alert, DateTime.now().millisecondsSinceEpoch / 1000),
+                )
+                .toList() ??
+            [];
+
         setState(() {
           route = value.route;
-          alerts = value.pattern.alerts;
+          alerts = validAlerts;
           loading = false;
         });
       }
@@ -69,6 +79,7 @@ class _RouteDisruptionAlertsScreenState
   @override
   Widget build(BuildContext context) {
     super.build(context);
+    final stLocalization = StadtnaviBaseLocalization.of(context);
     return Column(
       children: [
         if (loading)
@@ -80,34 +91,50 @@ class _RouteDisruptionAlertsScreenState
           Expanded(
               child: SingleChildScrollView(
             child: Column(
-              children: alerts!
-                  .map(
-                    (e) => Column(
-                      children: [
-                        AlertStopCard(
-                          shortName: route!.shortName ?? "",
-                          startDateTime: DateTime.fromMillisecondsSinceEpoch(
-                            e.effectiveStartDate!.toInt() * 1000,
-                          ),
-                          endDateTime: DateTime.fromMillisecondsSinceEpoch(
-                            e.effectiveEndDate!.toInt() * 1000,
-                          ),
-                          content: e.alertDescriptionTextTranslations
-                                  ?.firstOrNull?.text ??
-                              "",
-                          alertUrl: e.alertUrl,
-                          transportMode: route!.mode,
-                          transportColor: route?.color != null
-                              ? Color(int.tryParse('0xFF${route!.color}')!)
-                              : null,
+              children: alerts!.isNotEmpty
+                  ? alerts!
+                      .map(
+                        (e) => Column(
+                          children: [
+                            AlertStopCard(
+                              shortName: route!.shortName ?? "",
+                              startDateTime:
+                                  DateTime.fromMillisecondsSinceEpoch(
+                                e.effectiveStartDate!.toInt() * 1000,
+                              ),
+                              endDateTime: DateTime.fromMillisecondsSinceEpoch(
+                                e.effectiveEndDate!.toInt() * 1000,
+                              ),
+                              content: e.alertDescriptionTextTranslations
+                                      ?.firstOrNull?.text ??
+                                  "",
+                              alertUrl: e.alertUrl,
+                              transportMode: route!.mode,
+                              transportColor: route?.color != null
+                                  ? Color(int.tryParse('0xFF${route!.color}')!)
+                                  : null,
+                            ),
+                            const Divider(
+                              thickness: 1,
+                            ),
+                          ],
                         ),
-                        const Divider(
-                          thickness: 1,
+                      )
+                      .toList()
+                  : [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Center(
+                          child: Text(
+                            stLocalization.disruptionInfoNoAlerts,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF666666),
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
-                  )
-                  .toList(),
+                      )
+                    ],
             ),
           ))
         else

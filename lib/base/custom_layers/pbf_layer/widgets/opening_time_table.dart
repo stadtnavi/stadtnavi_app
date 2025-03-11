@@ -33,7 +33,7 @@ class _OpeningTimeTableState extends State<OpeningTimeTable> {
       children: [
         ExpansionTile(
           textColor: Colors.black,
-          collapsedIconColor: Colors.black,
+          collapsedIconColor: iconColor,
           iconColor: Colors.red,
           tilePadding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
           childrenPadding:
@@ -55,12 +55,15 @@ class _OpeningTimeTableState extends State<OpeningTimeTable> {
               widget.isOpenParking
                   ? Text(
                       "${localizationST.commonOpen} : ${widget.currentOpeningTime}",
-                      style: theme.textTheme.bodyMedium,
+                      style: theme.textTheme.bodyMedium
+                          ?.copyWith(color: iconColor),
                     )
                   : Text(
                       localizationST.commonClosed,
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: iconColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
             ],
           ),
@@ -68,6 +71,9 @@ class _OpeningTimeTableState extends State<OpeningTimeTable> {
             isAlwaysOpen
                 ? Text(
                     localizationST.commonOpenAlways,
+                    style: const TextStyle(
+                      color: iconColor,
+                    ),
                   )
                 : Column(
                     children: widget.openingHours.openingHours.entries.map(
@@ -85,6 +91,7 @@ class _OpeningTimeTableState extends State<OpeningTimeTable> {
                                     day.key, localizationST),
                                 style: TextStyle(
                                   fontWeight: isBold ? FontWeight.bold : null,
+                                  color: iconColor,
                                 ),
                               ),
                               Column(
@@ -96,10 +103,17 @@ class _OpeningTimeTableState extends State<OpeningTimeTable> {
                                                 fontWeight: isBold
                                                     ? FontWeight.bold
                                                     : null,
+                                                color: iconColor,
                                               ),
                                             ))
                                         .toList()
-                                    : [Text(localizationST.commonClosed)],
+                                    : [
+                                        Text(
+                                          localizationST.commonClosed,
+                                          style:
+                                              const TextStyle(color: iconColor),
+                                        )
+                                      ],
                               )
                             ],
                           ),

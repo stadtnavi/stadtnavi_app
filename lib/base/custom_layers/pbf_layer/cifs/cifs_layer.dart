@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
+import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
@@ -124,13 +127,8 @@ class RoadworksLayer extends CustomLayer {
       host: ApiConfig().baseDomain,
       path: "/map/v1/cifs/$z/$x/$y.pbf",
     );
-    final response = await http.get(uri);
-    if (response.statusCode != 200) {
-      throw Exception(
-        "Server Error on fetchPBF $uri with ${response.statusCode}",
-      );
-    }
-    final bodyByte = response.bodyBytes;
+
+    Uint8List bodyByte = await cachedFirstFetch(uri);
     final tile = VectorTile.fromBytes(bytes: bodyByte);
 
     for (final VectorTileLayer layer in tile.layers) {
@@ -172,7 +170,7 @@ class RoadworksLayer extends CustomLayer {
     );
   }
   @override
-  bool isDefaultOn() => mapCategory.properties?.layerEnabledPerDefault??false;
+  bool isDefaultOn() => mapCategory.isDefaultOn();
 }
 
 class _RoadworksFeatureMarker extends StatelessWidget {

@@ -356,5 +356,6 @@
   "bicycleParkingFilterAll": "All parking spaces",
   "bicycleParkingFilterFreeOnly": "Only free ones",
   "bicycleParkingFilterSecurePreferred": "Secure preferred",
+  "disruptionInfoNoAlerts":"No known disruptions or diversions.",
   "chooseOnMap" : "Choose on map"
 }

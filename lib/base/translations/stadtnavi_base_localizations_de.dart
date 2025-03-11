@@ -553,6 +553,9 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get bicycleParkingFilterSecurePreferred => 'Sichere bevorzugt';
+  
+  @override
+  String get disruptionInfoNoAlerts => 'Keine Störungsmeldungen.';
 
   @override
   String get chooseOnMap => 'Wähle auf der Karte';

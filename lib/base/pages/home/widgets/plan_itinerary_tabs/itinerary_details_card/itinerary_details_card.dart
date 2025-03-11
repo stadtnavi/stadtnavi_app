@@ -275,8 +275,7 @@ class ItineraryDetailsCard extends StatelessWidget {
                         showBeforeLine: index != 0,
                         showAfterLine: index != sizeLegs - 1 &&
                             !compresedLegs[index + 1].transitLeg,
-                        showAfterText: index != sizeLegs - 1 &&
-                            compresedLegs[index + 1].mode == 'BICYCLE',
+                        showAfterText: index != sizeLegs - 1,
                       )
                     else
                       WalkDash(

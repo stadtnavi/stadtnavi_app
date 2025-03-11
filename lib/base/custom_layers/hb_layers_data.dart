@@ -15,28 +15,44 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.da
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 
 abstract class HBLayerData {
-  static Map<String, MapLayerCategory> categoriesMapDetails = {};
+  // static Map<String, MapLayerCategory> categoriesMapDetails = {};
   static final List<MapLayerCategory> categories = [];
 
   static Future<void> loadHbLayers() async {
     const String url =
         'https://services.stadtnavi.eu/layer-categories/herrenberg/layers.json';
-
+    http.Response response;
     try {
-      final response = await http.get(Uri.parse(url));
-
-      if (response.statusCode == 200) {
-        final String decodedBody = utf8.decode(response.bodyBytes);
-        final List<dynamic> data = jsonDecode(decodedBody);
-        for (final categoryData in data) {
-          categories.add(MapLayerCategory.fromJson(categoryData));
-        }
-      } else {
-        throw Exception('Failed to load data: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Error loading HB layers: $e');
+      response = await http.get(Uri.parse(url));
+    } catch (error) {
+      throw Exception('Failed to load HBLayerData');
     }
+    if (response.statusCode == 200) {
+      final String decodedBody = utf8.decode(response.bodyBytes);
+      final List<dynamic> data = jsonDecode(decodedBody);
+      for (final categoryData in data) {
+        categories.add(MapLayerCategory.fromJson(categoryData));
+      }
+    } else {
+      throw Exception('Failed to load HBLayerData: ${response.statusCode}');
+    }
+  }
+
+  static MapLayerCategory? findCategoryRecursively(
+    List<MapLayerCategory> categories,
+    String codeToFind,
+  ) {
+    for (final category in categories) {
+      if (category.code.toLowerCase() == codeToFind.toLowerCase()) {
+        return category;
+      }
+      final foundInChildren =
+          findCategoryRecursively(category.categories, codeToFind);
+      if (foundInChildren != null) {
+        return foundInChildren;
+      }
+    }
+    return null;
   }
 }
 
@@ -69,13 +85,13 @@ class MapLayerProperties {
   factory MapLayerProperties.fromJson(json) {
     final layerMap = json['layer'];
     final iconMap = json['icon'];
-
+    final int? layerMinZoom = layerMap?['min_zoom'];
     return MapLayerProperties(
       // Campos de "layer"
       layerType: layerMap?['type'],
       layerUrl: layerMap?['url'],
       layerPriority: layerMap?['priority'],
-      layerMinZoom: layerMap?['min_zoom'],
+      layerMinZoom: layerMinZoom != null ? layerMinZoom - 1 : null,
       layerEnabledPerDefault: layerMap?['enabled_per_default'],
 
       // Campos de "icon"
@@ -136,6 +152,19 @@ class MapLayerCategory {
       }
     }
     return null;
+  }
+
+  bool isDefaultOn() {
+    if (properties?.layerEnabledPerDefault == true) {
+      return true;
+    }
+
+    for (var category in categories) {
+      if (category.isDefaultOn()) {
+        return true;
+      }
+    }
+    return false;
   }
 
   CustomLayer toLayer() {
