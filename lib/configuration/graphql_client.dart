@@ -8,6 +8,7 @@ GraphQLClient getClient(
     endpoint,
     defaultHeaders: {
       'accept-language': 'en',
+      "otptimeout": "20000",
     },
   );
   return GraphQLClient(
@@ -16,6 +17,7 @@ GraphQLClient getClient(
       partialDataPolicy: partialDataPolicy,
     ),
     link: _httpLink,
+    queryRequestTimeout: const Duration(seconds: 20),
   );
 }
 
@@ -28,6 +30,7 @@ GraphQLClient updateClient({
     endpoint,
     defaultHeaders: {
       'accept-language': langugeEncode ?? 'en',
+      "otptimeout": "20000",
     },
   );
   return graphQLClient.copyWith(link: httpLink);
