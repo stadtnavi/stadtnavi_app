@@ -2,7 +2,7 @@ import 'package:latlong2/latlong.dart';
 
 
 class GeojsonMarker {
-  final String? id;
+  final String id;
   final LatLng position;
   final String? svgIcon;
   final String? name;
@@ -33,7 +33,9 @@ static final Map<String, String> cacheIcons = {};
     required this.imageUrl,
   });
 
-  factory GeojsonMarker.fromJson(json) {
+  static  GeojsonMarker? fromJson(json) {
+    final id=json['id'];
+    if(id==null)return null;
     final properties = json['properties'] ?? {};
     final geometry = json['geometry'] ?? {};
     final coordinates = geometry['coordinates'] ?? [0.0, 0.0];
@@ -44,7 +46,7 @@ static final Map<String, String> cacheIcons = {};
       cacheIcons[iconId] = properties['icon']['svg'];
     }
     return GeojsonMarker(
-      id: json['id']?.toString(),
+      id: id,
       position: LatLng(
         (coordinates[1] as num).toDouble(),
         (coordinates[0] as num).toDouble(),

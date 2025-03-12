@@ -36,7 +36,7 @@ class StopsLayer extends CustomLayer {
     return Marker(
       key: Key("$id:${element.gtfsId}"),
       height: markerSize,
-      width: markerSize ,
+      width: markerSize,
       point: element.position,
       alignment: Alignment.topCenter,
       child: Builder(builder: (context) {
@@ -75,14 +75,23 @@ class StopsLayer extends CustomLayer {
     );
   }
 
+  List<StopFeature> _cachedStopMarkers = [];
+  int _lastStopZoom = -1;
+  int _lastStopItemsLength = -1;
+
   List<StopFeature> _getMarkers(int zoom) {
-    final markersList = MapMarkersRepositoryContainer.stopFeature.values.toList();
-    markersList.sort(
-      (a, b) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return markersList.where((element) {
-      return element.type.toLowerCase() == mapCategory.code;
-    }) .where((element) {
+    final itemsLength = MapMarkersRepositoryContainer.stopFeature.items.length;
+
+    if (zoom == _lastStopZoom && itemsLength == _lastStopItemsLength) {
+      return _cachedStopMarkers;
+    }
+
+    _lastStopZoom = zoom;
+    _lastStopItemsLength = itemsLength;
+
+    _cachedStopMarkers = MapMarkersRepositoryContainer.stopFeature.items
+        .where((element) => element.type.toLowerCase() == mapCategory.code)
+        .where((element) {
       final targetMapLayerCategory =
           MapLayerCategory.findCategoryWithProperties(
         mapCategory,
@@ -92,6 +101,8 @@ class StopsLayer extends CustomLayer {
           targetMapLayerCategory?.properties?.layerMinZoom ?? 13;
       return layerMinZoom < zoom;
     }).toList();
+
+    return _cachedStopMarkers;
   }
 
   @override
@@ -130,8 +141,8 @@ class StopsLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final StopFeature? pointFeature =
               StopFeature.fromGeoJsonPoint(geojson);
-          if (pointFeature != null && pointFeature.gtfsId != null) {
-            MapMarkersRepositoryContainer.stopFeature[pointFeature.gtfsId!] = pointFeature;
+          if (pointFeature != null) {
+            MapMarkersRepositoryContainer.stopFeature.add(pointFeature);
           }
         } else {
           throw Exception('Should never happened, Feature is not a point');
@@ -157,6 +168,7 @@ class StopsLayer extends CustomLayer {
       color: Colors.orange,
     );
   }
+
   @override
   bool isDefaultOn() => mapCategory.isDefaultOn();
 }

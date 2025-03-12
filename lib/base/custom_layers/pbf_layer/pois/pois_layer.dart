@@ -86,13 +86,21 @@ class MapPoiLayer extends CustomLayer {
     );
   }
 
+  List<PoiFeature> _cachedMarkers = [];
+  int _lastZoom = -1;
+  int _lastItemsLength = -1;
+
   List<PoiFeature> _getMarkers(int zoom) {
-    final markersList =
-        MapMarkersRepositoryContainer.poiFeatures.values.toList();
-    markersList.sort(
-      (a, b) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return markersList
+    final itemsLength = MapMarkersRepositoryContainer.poiFeatures.items.length;
+
+    if (zoom == _lastZoom && itemsLength == _lastItemsLength) {
+      return _cachedMarkers;
+    }
+
+    _lastZoom = zoom;
+    _lastItemsLength = itemsLength;
+
+    _cachedMarkers = MapMarkersRepositoryContainer.poiFeatures.items
         .where((element) => mapCategory.code == element.category2)
         .where((element) {
       final targetMapLayerCategory =
@@ -104,6 +112,8 @@ class MapPoiLayer extends CustomLayer {
           targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
       return layerMinZoom < zoom;
     }).toList();
+
+    return _cachedMarkers;
   }
 
   @override
@@ -142,9 +152,8 @@ class MapPoiLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
 
           final PoiFeature? pointFeature = PoiFeature.fromGeoJsonPoint(geojson);
-          if (pointFeature != null && pointFeature.osmId != null) {
-            MapMarkersRepositoryContainer.poiFeatures[pointFeature.osmId!] =
-                pointFeature;
+          if (pointFeature != null) {
+            MapMarkersRepositoryContainer.poiFeatures.add(pointFeature);
             // final pbfLayer =
             //     StaticTileLayers.poisLayers[pointFeature.category2];
             // pbfLayer?.addMarker(pointFeature);

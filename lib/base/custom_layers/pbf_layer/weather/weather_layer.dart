@@ -28,7 +28,7 @@ class WeatherLayer extends CustomLayer {
     required WeatherFeature element,
     required double markerSize,
   }) {
-        final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
+    final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
       mapCategory,
       mapCategory.code,
     );
@@ -36,13 +36,13 @@ class WeatherLayer extends CustomLayer {
     return Marker(
       key: Key("$id:${element.address}"),
       height: markerSize,
-      width: markerSize ,
+      width: markerSize,
       point: element.position,
       alignment: Alignment.center,
       child: Builder(builder: (context) {
         return MarkerTileContainer(
           menuBuilder: (_) => MarkerTileListItem(
-            name: element.address ,
+            name: element.address,
             icon: svgIcon != null
                 ? SvgPicture.string(
                     svgIcon,
@@ -51,27 +51,27 @@ class WeatherLayer extends CustomLayer {
           ),
           child: GestureDetector(
             onTap: () {
-                          final panelCubit = context.read<PanelCubit>();
-                          panelCubit.setPanel(
-                            CustomMarkerPanel(
-                              panel: (
-                                context,
-                                onFetchPlan, {
-                                isOnlyDestination,
-                              }) =>
-                                  ParkingMarkerModal(
-                                parkingFeature: element,
-                                onFetchPlan: onFetchPlan,
-                                icon:svgIcon != null
-                ? SvgPicture.string(
-                    svgIcon,
-                  )
-                : const Icon(Icons.error) ,
-                              ),
-                              position: element.position,
-                              minSize: 50,
-                            ),
-                          );
+              final panelCubit = context.read<PanelCubit>();
+              panelCubit.setPanel(
+                CustomMarkerPanel(
+                  panel: (
+                    context,
+                    onFetchPlan, {
+                    isOnlyDestination,
+                  }) =>
+                      ParkingMarkerModal(
+                    parkingFeature: element,
+                    onFetchPlan: onFetchPlan,
+                    icon: svgIcon != null
+                        ? SvgPicture.string(
+                            svgIcon,
+                          )
+                        : const Icon(Icons.error),
+                  ),
+                  position: element.position,
+                  minSize: 50,
+                ),
+              );
             },
             child: SvgPicture.string(svgIcon ?? ''),
           ),
@@ -80,12 +80,23 @@ class WeatherLayer extends CustomLayer {
     );
   }
 
+  List<WeatherFeature> _cachedWeatherMarkers = [];
+  int _lastWeatherZoom = -1;
+  int _lastWeatherItemsLength = -1;
+
   List<WeatherFeature> _getMarkers(int zoom) {
-    final markersList = MapMarkersRepositoryContainer.weatherFeature.values.toList();
-    markersList.sort(
-      (a, b) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return markersList.where((element) {
+    final itemsLength =
+        MapMarkersRepositoryContainer.weatherFeature.items.length;
+
+    if (zoom == _lastWeatherZoom && itemsLength == _lastWeatherItemsLength) {
+      return _cachedWeatherMarkers;
+    }
+
+    _lastWeatherZoom = zoom;
+    _lastWeatherItemsLength = itemsLength;
+
+    _cachedWeatherMarkers =
+        MapMarkersRepositoryContainer.weatherFeature.items.where((element) {
       final targetMapLayerCategory =
           MapLayerCategory.findCategoryWithProperties(
         mapCategory,
@@ -95,6 +106,8 @@ class WeatherLayer extends CustomLayer {
           targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
       return layerMinZoom < zoom;
     }).toList();
+
+    return _cachedWeatherMarkers;
   }
 
   @override
@@ -115,7 +128,6 @@ class WeatherLayer extends CustomLayer {
     );
   }
 
-
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
@@ -135,8 +147,7 @@ class WeatherLayer extends CustomLayer {
           final WeatherFeature? pointFeature =
               WeatherFeature.fromGeoJsonPoint(geojson);
           if (pointFeature != null) {
-
-            MapMarkersRepositoryContainer.weatherFeature[pointFeature.address] = pointFeature;
+            MapMarkersRepositoryContainer.weatherFeature.add(pointFeature);
           }
         } else {
           throw Exception("Should never happened, Feature is not a point");
@@ -161,6 +172,7 @@ class WeatherLayer extends CustomLayer {
       color: Colors.blue,
     );
   }
+
   @override
   bool isDefaultOn() => mapCategory.isDefaultOn();
 }

@@ -7,7 +7,7 @@ import 'parkings_enum.dart';
 
 class ParkingFeature {
   final GeoJsonPoint? geoJsonPoint;
-  final String? id;
+  final String id;
   final String? name;
   final String? note;
   final String? url;
@@ -61,6 +61,7 @@ class ParkingFeature {
     if (geoJsonPoint?.properties == null) return null;
     final properties = geoJsonPoint?.properties ?? <String, VectorTileValue>{};
     String? id = properties['id']?.dartStringValue;
+    if(id==null)return null;
     String? name = properties['name']?.dartStringValue;
     String? note = properties['note']?.dartStringValue;
     String? url = properties['detailsUrl']?.dartStringValue;
