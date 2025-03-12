@@ -3,6 +3,9 @@ import 'package:hive/hive.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default/city_bike_utils.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default/default_settings.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
@@ -88,6 +91,13 @@ class SettingFetchCubit extends Cubit<SettingFetchState> {
         state.copyWith(includeBikeSuggestions: includeBikeSuggestions));
   }
 
+  Future<void> setShowBikeAndParkItineraries({
+    required bool showBikeAndParkItineraries,
+  }) async {
+    await updateMapRouteState(
+        state.copyWith(showBikeAndParkItineraries: showBikeAndParkItineraries));
+  }
+
   Future<void> setParkRide({
     required bool parkRide,
   }) async {
@@ -95,8 +105,12 @@ class SettingFetchCubit extends Cubit<SettingFetchState> {
         state.copyWith(includeParkAndRideSuggestions: parkRide));
   }
 
+  Future<void> setBicycleParkingFilter(BicycleParkingFilter bicycleParkingFilter) async {
+    await updateMapRouteState(state.copyWith(bicycleParkingFilter: bicycleParkingFilter));
+  }
+
   Future<void> setBikingSpeed(BikingSpeed bikingSpeed) async {
-    await updateMapRouteState(state.copyWith(typeBikingSpeed: bikingSpeed));
+    await updateMapRouteState(state.copyWith(bikeSpeed: bikingSpeed));
   }
 
   Future<void> setIncludeCarSuggestions({
@@ -118,5 +132,42 @@ class SettingFetchCubit extends Cubit<SettingFetchState> {
   }) async {
     await updateMapRouteState(
         state.copyWithDateNull(date: date, arriveBy: arriveBy));
+  }
+
+  Future<void> setAllowedVehicleRentalFormFactors({
+    required String rentalFormFactorsId,
+    bool isDelete = false,
+  }) async {
+    final allowedVehicleRentalFormFactorsTemp = <String>{
+      ...state.allowedVehicleRentalFormFactors
+    };
+    if (isDelete) {
+      allowedVehicleRentalFormFactorsTemp.remove(rentalFormFactorsId);
+    } else {
+      allowedVehicleRentalFormFactorsTemp.add(rentalFormFactorsId);
+    }
+
+    await updateMapRouteState(state.copyWith(
+      allowedVehicleRentalFormFactors: allowedVehicleRentalFormFactorsTemp,
+    ));
+  }
+
+  Future<void> setAllowedVehicleRentalNetworks({
+    required List<String> rentalNetworkIds,
+    bool isDelete = false,
+  }) async {
+    final allowedVehicleRentalNetworksTemp = <String>[
+      ...state.allowedVehicleRentalNetworks
+    ];
+    if (isDelete) {
+      allowedVehicleRentalNetworksTemp
+          .removeWhere((e) => rentalNetworkIds.contains(e));
+    } else {
+      allowedVehicleRentalNetworksTemp.addAll(rentalNetworkIds
+          .where((e) => !allowedVehicleRentalNetworksTemp.contains(e)));
+    }
+    await updateMapRouteState(state.copyWith(
+      allowedVehicleRentalNetworks: allowedVehicleRentalNetworksTemp,
+    ));
   }
 }

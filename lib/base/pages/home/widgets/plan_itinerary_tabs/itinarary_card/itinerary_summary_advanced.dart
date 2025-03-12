@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/icons_transport_modes.dart';
@@ -130,7 +132,7 @@ class ItinerarySummaryAdvanced extends StatelessWidget {
           maxWidth: newMaxWidth,
           beforeLeg: index - 1 >= 0 ? compressLegs[index - 1] : null,
           leg: leg,
-          legLength: legLength,
+          legLength: min(legLength,10) ,
         ));
       }
       if (waiting) {

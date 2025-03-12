@@ -7,12 +7,14 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:herrenberg/config_herrenberg_merged.dart';
 import 'package:herrenberg/firebase_options.dart';
 import 'package:hive/hive.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:matomo_tracker/matomo_tracker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
 import 'package:stadtnavi_core/notifications/lifecycle_reactor_handler_notifications.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
@@ -68,6 +70,7 @@ void main() async {
     siteId: '2',
     url: 'https://track.dev.stadtnavi.eu/matomo.php',
   );
+  ConfigDefault.instance.configData = configHerrenbergMerged;
   runApp(
     CriticalLoader(
       loadData: () async {

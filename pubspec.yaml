@@ -35,6 +35,7 @@ dependencies:
   mqtt_client: ^10.5.1
   flutter_html: ^3.0.0-beta.2
   gtfs_realtime_bindings: ^1.1.0
+  graphql: ^5.2.0-beta.11
 
 dev_dependencies:
   flutter_test:

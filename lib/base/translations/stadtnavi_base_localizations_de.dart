@@ -525,6 +525,36 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get instructionVehicleMetro => 'U-Bahn';
 
   @override
+  String get pickRentalMode => 'Sharing-Angebote';
+
+  @override
+  String get sharingOperatorsCarHeader => 'Car-Sharing';
+
+  @override
+  String get sharingOperatorsCargoBicycleHeader => 'Leih-Lastenräder';
+
+  @override
+  String get sharingOperatorsBicycleHeader => 'Leihräder';
+
+  @override
+  String get sharingOperatorsScooterHeader => 'Leih-Scooter';
+
+  @override
+  String get sharingOperatorsMopedHeader => 'Leih-Mopeds';
+
+  @override
+  String get bicycleParkingFilter => 'Bevorzugte Abstellart';
+
+  @override
+  String get bicycleParkingFilterAll => 'Alle Abstellanlagen';
+
+  @override
+  String get bicycleParkingFilterFreeOnly => 'Nur kostenlose Anlagen';
+
+  @override
+  String get bicycleParkingFilterSecurePreferred => 'Sichere bevorzugt';
+  
+  @override
   String get disruptionInfoNoAlerts => 'Keine Störungsmeldungen.';
 
   @override

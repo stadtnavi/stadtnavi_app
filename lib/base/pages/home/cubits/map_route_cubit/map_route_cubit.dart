@@ -71,15 +71,17 @@ class MapRouteCubit extends Cubit<MapRouteState> {
     await updateMapRouteState(
         state.copyWithNullable(fromPlace: const Optional.value(null)));
   }
-  Future<void> resetFromPlaceKeepingToPlace() async {    
+
+  Future<void> resetFromPlaceKeepingToPlace() async {
     await updateMapRouteState(MapRouteState(toPlace: state.toPlace));
   }
 
-  Future<void> resetToPlace() async {    
+  Future<void> resetToPlace() async {
     await updateMapRouteState(
         state.copyWithNullable(toPlace: const Optional.value(null)));
   }
-  Future<void> resetToPlaceKeepingFromPlace() async {    
+
+  Future<void> resetToPlaceKeepingFromPlace() async {
     await updateMapRouteState(MapRouteState(fromPlace: state.fromPlace));
   }
 
@@ -155,7 +157,9 @@ class MapRouteCubit extends Cubit<MapRouteState> {
         }
         return value;
       });
-      newDateTime = newItinerary.endTime.subtract(const Duration(minutes: 1));
+      newDateTime = newItinerary.endTime
+          .subtract(const Duration(minutes: 1))
+          .copyWith(second: 0);
     } else {
       final newItinerary = itineraries.reduce((value, element) {
         if (element.startTime.isAfter(value.startTime)) {
@@ -163,7 +167,9 @@ class MapRouteCubit extends Cubit<MapRouteState> {
         }
         return value;
       });
-      newDateTime = newItinerary.startTime;
+      newDateTime = newItinerary.startTime
+          .add(const Duration(minutes: 1))
+          .copyWith(second: 0);
     }
 
     final PlanEntity? planEntity = await _fetchPlanPart(
@@ -224,7 +230,10 @@ class MapRouteCubit extends Cubit<MapRouteState> {
         }
         return value;
       });
-      newDateTime = newItinerary.startTime.add(const Duration(minutes: 1));
+      newDateTime =
+          newItinerary.startTime.add(const Duration(minutes: 1)).copyWith(
+                second: 0,
+              );
     } else {
       final newItinerary = itineraries.reduce((value, element) {
         if (element.startTime.isBefore(value.startTime)) {
@@ -232,12 +241,17 @@ class MapRouteCubit extends Cubit<MapRouteState> {
         }
         return value;
       });
-      newDateTime = newItinerary.endTime.subtract(const Duration(minutes: 1));
+      newDateTime =
+          newItinerary.endTime.subtract(const Duration(minutes: 1)).copyWith(
+                second: 0,
+              );
     }
 
     final PlanEntity? planEntity = await _fetchPlanPart(
       advancedOptions: advancedOptions.copyWith(
-          date: newDateTime, arriveBy: !isFetchEarlier),
+        date: newDateTime,
+        arriveBy: !isFetchEarlier,
+      ),
       localeName: localeName,
     ).catchError((error) async {
       emit(state.copyWith(

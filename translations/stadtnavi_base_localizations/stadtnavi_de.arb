@@ -345,6 +345,16 @@
   "bicycleWalkToTransitNoDuration": "Schieben Sie ihr Fahrrad zum/zur {transportMode}",
   "instructionVehicleLightRail": "Zug",
   "instructionVehicleMetro": "U-Bahn",
+  "pickRentalMode": "Sharing-Angebote",
+  "sharingOperatorsCarHeader": "Car-Sharing",
+  "sharingOperatorsCargoBicycleHeader": "Leih-Lastenräder",
+  "sharingOperatorsBicycleHeader": "Leihräder",
+  "sharingOperatorsScooterHeader": "Leih-Scooter",
+  "sharingOperatorsMopedHeader": "Leih-Mopeds",
+  "bicycleParkingFilter": "Bevorzugte Abstellart",
+  "bicycleParkingFilterAll": "Alle Abstellanlagen",
+  "bicycleParkingFilterFreeOnly": "Nur kostenlose Anlagen",
+  "bicycleParkingFilterSecurePreferred": "Sichere bevorzugt",
   "disruptionInfoNoAlerts":"Keine Störungsmeldungen.",
   "chooseOnMap" : "Wähle auf der Karte"
 }

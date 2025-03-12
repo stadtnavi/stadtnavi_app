@@ -1008,6 +1008,65 @@ abstract class StadtnaviBaseLocalization {
   /// **'Metro'**
   String get instructionVehicleMetro;
 
+  /// No description provided for @pickRentalMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Your rental modes and operators'**
+  String get pickRentalMode;
+
+  /// No description provided for @sharingOperatorsCarHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Cars'**
+  String get sharingOperatorsCarHeader;
+
+  /// No description provided for @sharingOperatorsCargoBicycleHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Cargo bikes'**
+  String get sharingOperatorsCargoBicycleHeader;
+
+  /// No description provided for @sharingOperatorsBicycleHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Citybikes'**
+  String get sharingOperatorsBicycleHeader;
+
+  /// No description provided for @sharingOperatorsScooterHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Scooters'**
+  String get sharingOperatorsScooterHeader;
+
+  /// No description provided for @sharingOperatorsMopedHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Rental Mopeds'**
+  String get sharingOperatorsMopedHeader;
+
+  /// No description provided for @bicycleParkingFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Bicycle parking options'**
+  String get bicycleParkingFilter;
+
+  /// No description provided for @bicycleParkingFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All parking spaces'**
+  String get bicycleParkingFilterAll;
+
+  /// No description provided for @bicycleParkingFilterFreeOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'Only free ones'**
+  String get bicycleParkingFilterFreeOnly;
+
+  /// No description provided for @bicycleParkingFilterSecurePreferred.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure preferred'**
+  String get bicycleParkingFilterSecurePreferred;
   /// No description provided for @disruptionInfoNoAlerts.
   ///
   /// In en, this message translates to:

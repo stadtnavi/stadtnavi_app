@@ -37,7 +37,7 @@ Map<String, String?> parseCarMode(LatLng destiny) {
 
   return {
     "mode": TransportMode.car.name,
-    'qualifier': isInHerrenbergOldTown ? 'PARK' : null,
+    if (isInHerrenbergOldTown) 'qualifier': 'PARK',
   };
 }
 
