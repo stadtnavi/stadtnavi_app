@@ -9,6 +9,7 @@ import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 
+import 'dart:ui' as ui;
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ class CachedTileProvider extends TileProvider {
       _fetchPBF(coords);
     }
     final url = getTileUrl(coords, options);
-    return _CachedTileImageProvider(url, cacheManager);
+    return _CachedTileImageProvider(url);
   }
 
   Future<void> _fetchPBF(TileCoordinates coords) async {
@@ -94,43 +95,30 @@ class CachedTileProvider extends TileProvider {
   }
 }
 
+final Map<Uri, Uint8List> _cache = {};
+
 Future<Uint8List> cachedFirstFetch(Uri uri) async {
-  final cacheManager = DefaultCacheManager();
-
-  FileInfo? cachedFile = await cacheManager.getFileFromCache(uri.toString());
-
-  Uint8List bodyByte;
-
-  if (cachedFile != null) {
-    // print("cachedFirstFetch");
-    bodyByte = await cachedFile.file.readAsBytes();
-  } else {
-    // print("no cachedFirstFetch");
-    final response = await http.get(uri);
-    if (response.statusCode != 200) {
-      throw Exception(
-        "Server Error on fetchPBF $uri with ${response.statusCode}",
-      );
-    }
-    bodyByte = response.bodyBytes;
-    final fileExtension = uri.path.split('.').last;
-    await cacheManager.putFile(
-      uri.toString(),
-      bodyByte,
-      fileExtension: fileExtension,
-      maxAge: const Duration(
-        days: 7,
-      ),
+  if (_cache.containsKey(uri)) {
+      print("cachedFirstFetch ${uri.path}");
+    return _cache[uri]!;
+  }
+  final response = await http.get(uri);
+  if (response.statusCode != 200) {
+    throw Exception(
+      "Server Error on fetchPBF $uri with ${response.statusCode}",
     );
   }
-  return bodyByte;
+
+  _cache[uri] = response.bodyBytes;
+
+  return response.bodyBytes;
 }
 
 class _CachedTileImageProvider extends ImageProvider<_CachedTileImageProvider> {
   final String url;
-  final BaseCacheManager cacheManager;
+  static final Map<String, Uint8List> _cache = {};
 
-  const _CachedTileImageProvider(this.url, this.cacheManager);
+  const _CachedTileImageProvider(this.url);
 
   @override
   Future<_CachedTileImageProvider> obtainKey(ImageConfiguration configuration) {
@@ -148,24 +136,24 @@ class _CachedTileImageProvider extends ImageProvider<_CachedTileImageProvider> {
     );
   }
 
-  Future<Codec> _loadAsync(ImageDecoderCallback decode) async {
-    final cachedFile = await cacheManager.getFileFromCache(url);
-
-    Uint8List bytes;
-
-    if (cachedFile != null && cachedFile.file.existsSync()) {
-      // print("cached");
-      bytes = await cachedFile.file.readAsBytes();
-    } else {
-      // print("new fetch");
-      final downloadedFile = await cacheManager.downloadFile(
-        url,
-        authHeaders: {"Referer": "https://herrenberg.stadtnavi.de/"},
-      );
-      bytes = await downloadedFile.file.readAsBytes();
+  Future<ui.Codec> _loadAsync(ImageDecoderCallback decode) async {
+    if (_cache.containsKey(url)) {
+      print("cached $url");
+      final buffer = await ImmutableBuffer.fromUint8List(_cache[url]!);
+      return decode(buffer);
     }
 
-    final buffer = await ImmutableBuffer.fromUint8List(bytes);
+    final response = await http.get(Uri.parse(url), headers: {
+      "Referer": "https://herrenberg.stadtnavi.de/",
+    });
+
+    if (response.statusCode != 200) {
+      throw Exception("Failed to load image: $url");
+    }
+
+    _cache[url] = response.bodyBytes;
+
+    final buffer = await ImmutableBuffer.fromUint8List(response.bodyBytes);
     return decode(buffer);
   }
 
