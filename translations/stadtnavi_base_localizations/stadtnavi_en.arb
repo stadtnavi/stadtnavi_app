@@ -87,7 +87,7 @@
   "@settingPanelWheelchair": {
     "description": "Wheelchair configuration panel label"
   },
-  "settingPanelMyModesTransportBike": "Bike",
+  "settingPanelMyModesTransportBike": "Bicycle",
   "@settingPanelMyModesTransportBike": {
     "description": "Bike configuration panel label"
   },

@@ -1,8 +1,6 @@
 import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/city_bike_config.dart';
-import 'package:stadtnavi_core/configuration/config_default/config_default/default_options.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/default_settings.dart';
-import 'package:stadtnavi_core/configuration/config_default/config_default/transport_mode_config.dart';
 
 final configHerrenberg = ConfigData(
   defaultSettings: DefaultSettings(
@@ -41,6 +39,61 @@ final configHerrenberg = ConfigData(
           "en": "https://stuttgart.stadtmobil.de/"
         },
       ),
+      "stadtmobil_karlsruhe": NetworkConfig(
+        icon: "brand_stadtmobil",
+        operator: "stadtmobil",
+        name: {"de": "Stadtmobil Karlsruhe", "en": "Stadtmobil Karlsruhe"},
+        formFactors: ["car"],
+        type: "car",
+        hideCode: true,
+        enabled: true,
+        url: {
+          "de": "https://karlsruhe.stadtmobil.de/",
+          "en": "https://karlsruhe.stadtmobil.de/"
+        },
+      ),
+      "flinkster_carsharing": NetworkConfig(
+        icon: "brand_flinkster",
+        operator: "flinkster",
+        name: {"de": "Flinkster", "en": "Flinkster"},
+        formFactors: ["car"],
+        type: "car",
+        hideCode: true,
+        enabled: true,
+        url: {
+          "de": "https://www.flinkster.de/de/start",
+          "en": "https://www.flinkster.de/en/home",
+        },
+      ),
+      "oekostadt_renningen": NetworkConfig(
+        icon: "brand_stadtmobil",
+        operator: "stadtmobil",
+        name: {
+          "de": "Ökostadt Renningen e.V.",
+          "en": "Ökostadt Renningen e.V."
+        },
+        formFactors: ["car"],
+        type: "car",
+        hideCode: true,
+        enabled: true,
+        url: {
+          "de": "https://carsharing-renningen.de/",
+          "en": "https://carsharing-renningen.de/",
+        },
+      ),
+      "teilauto_neckar-alb": NetworkConfig(
+        icon: "brand_stadtmobil",
+        operator: "stadtmobil",
+        name: {"de": "Teilauto Neckar-Alb", "en": "Teilauto Neckar-Alb"},
+        formFactors: ["car"],
+        type: "car",
+        hideCode: true,
+        enabled: true,
+        url: {
+          "de": "https://www.teilauto-neckar-alb.de/",
+          "en": "https://www.teilauto-neckar-alb.de/",
+        },
+      ),
       "regiorad_stuttgart": NetworkConfig(
         icon: "brand_regiorad",
         operator: "regiorad",
@@ -73,6 +126,19 @@ final configHerrenberg = ConfigData(
         hideCode: true,
         enabled: true,
         url: {"de": "https://www.bolt.eu/", "en": "https://www.bolt.eu/"},
+      ),
+      "zeo_bruchsal": NetworkConfig(
+        icon: "brand_zeus",
+        operator: "other",
+        name: {"de": "Zeo Bruchsal", "en": "Zeo Bruchsal"},
+        formFactors: ["car"],
+        type: "car",
+        hideCode: true,
+        enabled: true,
+        url: {
+          "de": "https://www.zeo-carsharing.de/",
+          "en": "https://www.zeo-carsharing.de/",
+        },
       ),
       "zeus_ludwigsburg": NetworkConfig(
         icon: "brand_zeus",
@@ -113,183 +179,141 @@ final configHerrenberg = ConfigData(
           "en": "https://zeusscooters.com"
         },
       ),
-      "voi_karlsruhe": NetworkConfig(
+      "voi_de": NetworkConfig(
         icon: "brand_voi",
         operator: "voi",
-        name: {"de": "Voi Scooter Karlsruhe", "en": "Voi Scooter Karlsruhe"},
+        name: {"de": "Voi Scooter", "en": "Voi Scooter"},
         type: "scooter",
         formFactors: ["scooter"],
         hideCode: true,
         enabled: true,
       ),
-      "tier_ludwigsburg": NetworkConfig(
-        icon: "tier_scooter",
-        name: {"de": "TIER Ludwigsburg", "en": "TIER Ludwigsburg"},
+      "dott_boblingen": NetworkConfig(
+        icon: "brand_dott",
+        operator: "dott",
+        name: {
+          "de": "Dott Böblingen",
+          "en": "Dott Böblingen",
+        },
         type: "scooter",
-        url: {"de": "https://www.tier.app/de", "en": "https://www.tier.app/"},
+        url: {
+          "de": "https://ridedott.com/de/fahr-mit-uns/",
+          "en": "https://ridedott.com/ride-with-us/",
+        },
         visibleInSettingsUi: true,
         hideCode: true,
         enabled: true,
       ),
-      "taxi": NetworkConfig(
-        icon: "brand_taxi",
-        operator: "taxi",
-        name: {"de": "Taxi", "en": "Taxi"},
-        type: "taxi",
-        formFactors: ["car"],
+      "dott_ludwigsburg": NetworkConfig(
+        icon: "brand_dott",
+        operator: "dott",
+        name: {
+          "de": "Dott Ludwigsburg",
+          "en": "Dott Ludwigsburg",
+        },
+        type: "scooter",
+        url: {
+          "de": "https://ridedott.com/de/fahr-mit-uns/",
+          "en": "https://ridedott.com/ride-with-us/",
+        },
+        visibleInSettingsUi: true,
         hideCode: true,
         enabled: true,
-        season: SeasonConfig.futureSeason(),
       ),
-      "cargo-bike": NetworkConfig(
+      "dott_reutlingen": NetworkConfig(
+        icon: "brand_dott",
+        operator: "dott",
+        name: {
+          "de": "Dott Reutlingen",
+          "en": "Dott Reutlingen",
+        },
+        type: "scooter",
+        formFactors: ["scooter", "bicycle"],
+        url: {
+          "de": "https://ridedott.com/de/fahr-mit-uns/",
+          "en": "https://ridedott.com/ride-with-us/",
+        },
+        visibleInSettingsUi: true,
+        hideCode: true,
+        enabled: true,
+      ),
+      "dott_stuttgart": NetworkConfig(
+        icon: "brand_dott",
+        operator: "dott",
+        name: {
+          "de": "Dott Stuttgart",
+          "en": "Dott Stuttgart",
+        },
+        type: "scooter",
+        url: {
+          "de": "https://ridedott.com/de/fahr-mit-uns/",
+          "en": "https://ridedott.com/ride-with-us/",
+        },
+        visibleInSettingsUi: true,
+        hideCode: true,
+        enabled: true,
+      ),
+      "dott_tubingen": NetworkConfig(
+        icon: "brand_dott",
+        operator: "dott",
+        name: {
+          "de": "Dott Tübingen",
+          "en": "Dott Tübingen",
+        },
+        type: "scooter",
+        formFactors: ["scooter", "bicycle"],
+        url: {
+          "de": "https://ridedott.com/de/fahr-mit-uns/",
+          "en": "https://ridedott.com/ride-with-us/",
+        },
+        visibleInSettingsUi: true,
+        hideCode: true,
+        enabled: true,
+      ),
+      "de.stadtnavi.gbfs.alf": NetworkConfig(
         icon: "cargobike",
         operator: "other",
         name: {
-          "de": "Freie Lastenräder Herrenberg",
-          "en": "Free cargo bikes Herrenberg"
+          "de": "Lastenrad Alf",
+          "en": "Cargobike Alf",
         },
         type: "cargo_bicycle",
         enabled: true,
         season: SeasonConfig.futureSeason(),
       ),
-      "de.openbikebox.stadt-herrenberg": NetworkConfig(
+      "de.stadtnavi.gbfs.gueltstein": NetworkConfig(
         icon: "cargobike",
         operator: "other",
-        name: {"de": "Lastenrad Herrenberg", "en": "Cargo bike Herrenberg"},
+        name: {
+          "de": "Lastenrad Gültstein-Mobil",
+          "en": "Cargobike Gültstein-Mobil",
+        },
+        type: "cargo_bicycle",
+        enabled: true,
+        season: SeasonConfig.futureSeason(),
+      ),
+      "de.stadtnavi.gbfs.stadtrad": NetworkConfig(
+        icon: "cargobike",
+        operator: "other",
+        name: {
+          "de": "stadtRad der Stadt Herrenberg",
+          "en": "City of Herrenberg's StadtRad",
+        },
+        type: "cargo_bicycle",
+        enabled: true,
+        season: SeasonConfig.futureSeason(),
+      ),
+      "de.stadtnavi.gbfs.bananologen": NetworkConfig(
+        icon: "cargobike",
+        operator: "other",
+        name: {
+          "de": "Lastenrad Bananologen",
+          "en": "Cargobike Bananologen",
+        },
         type: "cargo_bicycle",
         enabled: true,
         season: SeasonConfig.futureSeason(),
       ),
     },
   ),
-);
-
-final configStadtnavi = ConfigData(
-  showBikeAndPublicItineraries: true,
-  showBikeAndParkItineraries: true,
-  optimize: 'TRIANGLE',
-  suggestCarMinDistance: 800,
-  suggestWalkMaxDistance: 3000,
-  suggestBikeAndPublicMinDistance: 3000,
-  suggestBikeAndParkMinDistance: 3000,
-  defaultSettings: DefaultSettings(
-    optimize: 'TRIANGLE',
-    safetyFactor: 0.4,
-    slopeFactor: 0.3,
-    timeFactor: 0.3,
-    walkReluctance: 3,
-    walkBoardCost: 150,
-  ),
-  defaultOptions: DefaultOptions(
-    walkSpeed: [0.83, 1.38, 1.94],
-  ),
-  cityBike: CityBikeConfig(
-    minZoomStopsNearYou: 10,
-    showStationId: false,
-    useSpacesAvailable: false,
-    showCityBikes: true,
-    operators: {
-      "taxi": OperatorConfig(
-        icon: "brand_taxi",
-        name: {"de": "Taxi"},
-        colors: {"background": "#FFCD00"},
-      ),
-      "deer": OperatorConfig(
-        icon: "brand_deer",
-        name: {"de": "deer"},
-        url: {"de": "https://www.deer-carsharing.de/"},
-        colors: {"background": "#3C8325"},
-      ),
-      "bolt": OperatorConfig(
-        icon: "brand_bolt",
-        name: {"de": "bolt"},
-        colors: {"background": "#30D287"},
-      ),
-      "voi": OperatorConfig(
-        icon: "brand_voi",
-        name: {"de": "VOI"},
-        colors: {"background": "#F26961"},
-      ),
-      "regiorad": OperatorConfig(
-        icon: "brand_regiorad",
-        name: {"de": "RegioRad"},
-        colors: {"background": "#009fe4"},
-      ),
-      "stadtmobil": OperatorConfig(
-        icon: "brand_stadtmobil",
-        name: {"de": "stadtmobil"},
-        colors: {"background": "#FF8A36"},
-      ),
-      "zeus": OperatorConfig(
-        icon: "brand_zeus",
-        name: {"de": "ZEUS Scooters", "en": "ZEUS Scooters"},
-        colors: {"background": "#F75118"},
-      ),
-      "other": OperatorConfig(
-        icon: "brand_other",
-        name: {"de": "Weitere Anbieter"},
-        colors: {"background": "#C84674"},
-      ),
-    },
-    networks: {},
-  ),
-  transportModes: {
-    "nearYouTitle": TransportModeConfig(
-      nearYouLabel: {"de": "Fahrpläne und Routen"},
-    ),
-    "bus": TransportModeConfig(
-      availableForSelection: true,
-      defaultValue: true,
-      smallIconZoom: 16,
-      nearYouLabel: {"de": "Bushaltestellen in der Nähe"},
-    ),
-    "rail": TransportModeConfig(
-      availableForSelection: true,
-      defaultValue: true,
-      nearYouLabel: {"de": "Bahnhaltestellen in der Nähe"},
-    ),
-    "tram": TransportModeConfig(
-      availableForSelection: false,
-      defaultValue: false,
-      nearYouLabel: {"de": "Tramhaltestellen in der Nähe"},
-    ),
-    "subway": TransportModeConfig(
-      availableForSelection: true,
-      defaultValue: true,
-      nearYouLabel: {"de": "U-Bahnhaltestellen in der Nähe"},
-    ),
-    "airplane": TransportModeConfig(
-      availableForSelection: false,
-      defaultValue: false,
-      nearYouLabel: {"de": "Flughäfen in der Nähe"},
-    ),
-    "ferry": TransportModeConfig(
-      availableForSelection: false,
-      defaultValue: false,
-      nearYouLabel: {"de": "Fähranleger in der Nähe"},
-    ),
-    "carpool": TransportModeConfig(
-      availableForSelection: true,
-      defaultValue: true,
-      nearYouLabel: {
-        "de": "Mitfahrpunkte in der Nähe",
-        "en": "Nearby carpool stops on the map",
-      },
-    ),
-    "funicular": TransportModeConfig(
-      availableForSelection: true,
-      defaultValue: true,
-    ),
-    "citybike": TransportModeConfig(
-      availableForSelection: true,
-      defaultValue: false,
-      nearYouLabel: {
-        "de": "Sharing-Angebote in der Nähe",
-        "en": "Shared mobility near you",
-      },
-    ),
-  },
-  modeToOTP: {
-    'carpool': 'CARPOOL',
-  },
 );

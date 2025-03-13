@@ -73,7 +73,7 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get settingPanelWheelchair => 'Wheelchair';
 
   @override
-  String get settingPanelMyModesTransportBike => 'Bike';
+  String get settingPanelMyModesTransportBike => 'Bicycle';
 
   @override
   String get typeSpeedAverage => 'Normal';
