@@ -33,7 +33,7 @@ class MapPoiLayer extends CustomLayer {
     );
     final svgIcon = targetMapLayerCategory?.properties?.iconSvg;
     return Marker(
-      key: Key("$id:${element.id}"),
+      key: Key("$id:${element.osmId}"),
       height: markerSize,
       width: markerSize,
       point: element.position,

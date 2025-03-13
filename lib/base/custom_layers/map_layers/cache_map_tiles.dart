@@ -91,25 +91,29 @@ class CachedTileProvider extends TileProvider {
     ];
     await Future.wait(mapLayersFiltered).catchError((error) {
       log("$error");
+      return [];
     });
   }
 }
 
-final Map<Uri, Uint8List> _cache = {};
+final Map<Uri, bool> _cache = {};
 
 Future<Uint8List> cachedFirstFetch(Uri uri) async {
   if (_cache.containsKey(uri)) {
-      print("cachedFirstFetch ${uri.path}");
-    return _cache[uri]!;
+    // print("cachedFirstFetch ${uri.path}");
+    throw Exception(
+      "already fetched",
+    );
   }
+
+  _cache[uri] = true;
   final response = await http.get(uri);
   if (response.statusCode != 200) {
+    _cache[uri] = false;
     throw Exception(
       "Server Error on fetchPBF $uri with ${response.statusCode}",
     );
   }
-
-  _cache[uri] = response.bodyBytes;
 
   return response.bodyBytes;
 }
