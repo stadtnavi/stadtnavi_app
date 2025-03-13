@@ -94,12 +94,23 @@ class ParkingLayer extends CustomLayer {
     );
   }
 
+  List<ParkingFeature> _cachedParkingMarkers = [];
+  int _lastParkingZoom = -1;
+  int _lastParkingItemsLength = -1;
+
   List<ParkingFeature> _getMarkers(int zoom) {
-    final markersList = MapMarkersRepositoryContainer.parkingFeature.values.toList();
-    markersList.sort(
-      (a, b) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return markersList.where((element) {
+    final itemsLength =
+        MapMarkersRepositoryContainer.parkingFeature.items.length;
+
+    if (zoom == _lastParkingZoom && itemsLength == _lastParkingItemsLength) {
+      return _cachedParkingMarkers;
+    }
+
+    _lastParkingZoom = zoom;
+    _lastParkingItemsLength = itemsLength;
+
+    _cachedParkingMarkers =
+        MapMarkersRepositoryContainer.parkingFeature.items.where((element) {
       final targetMapLayerCategory =
           MapLayerCategory.findCategoryWithProperties(
         mapCategory,
@@ -109,6 +120,8 @@ class ParkingLayer extends CustomLayer {
           targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
       return layerMinZoom < zoom;
     }).toList();
+
+    return _cachedParkingMarkers;
   }
 
   @override
@@ -152,8 +165,8 @@ class ParkingLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final ParkingFeature? pointFeature =
               ParkingFeature.fromGeoJsonPoint(geojson);
-          if (pointFeature != null && pointFeature.id != null) {            
-            MapMarkersRepositoryContainer.parkingFeature[pointFeature.id!] = pointFeature;
+          if (pointFeature != null) {
+            MapMarkersRepositoryContainer.parkingFeature.add(pointFeature);
           }
         } else {
           throw Exception("Should never happened, Feature is not a point");
@@ -184,6 +197,7 @@ class ParkingLayer extends CustomLayer {
       color: Colors.blue,
     );
   }
+
   @override
   bool isDefaultOn() => mapCategory.isDefaultOn();
 }

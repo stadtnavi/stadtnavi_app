@@ -1,10 +1,9 @@
 import 'package:latlong2/latlong.dart';
 import 'package:vector_tile/vector_tile.dart';
 
-
 class StopFeature {
   final String? code;
-  final String? gtfsId;
+  final String gtfsId;
   final String? name;
   final String? parentStation;
   final String? patterns;
@@ -30,6 +29,7 @@ class StopFeature {
 
     String? code = properties['code']?.dartStringValue;
     String? gtfsId = properties['gtfsId']?.dartStringValue;
+    if (gtfsId == null) return null;
     String? name = properties['name']?.dartStringValue;
     String? parentStation = properties['parentStation']?.dartStringValue;
     String? patterns = properties['patterns']?.dartStringValue;

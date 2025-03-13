@@ -9,6 +9,7 @@ import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart'
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
+import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'geojson_marker_modal.dart';
 import 'geojson_marker_model.dart';
@@ -17,7 +18,10 @@ import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 
 class GeojsonLayer extends CustomLayer {
-  List<GeojsonMarker> customMarkers = [];
+  SortedList<GeojsonMarker> customMarkers = SortedList(
+    compare: (a, b) => a.position.latitude.compareTo(b.position.latitude),
+    getId: (pointFeature) => pointFeature.id,
+  );
   List<MultiLineStringModel> polylines = [];
   final MapLayerCategory mapCategory;
   final String? url;
@@ -36,7 +40,7 @@ class GeojsonLayer extends CustomLayer {
     });
   }
   Future<void> load() async {
-    if (customMarkers.isNotEmpty) {
+    if (customMarkers.items.isNotEmpty) {
       return;
     }
     try {
@@ -44,7 +48,7 @@ class GeojsonLayer extends CustomLayer {
         return;
       }
       _isFetching = true;
-      customMarkers = await _markersFromUrl(url!);
+      await _markersFromUrl(url!);
       refresh();
       _isFetching = false;
     } catch (e) {
@@ -55,8 +59,8 @@ class GeojsonLayer extends CustomLayer {
     }
   }
 
-  Future<List<GeojsonMarker>> _markersFromUrl(String path) async {
-    final List<GeojsonMarker> markers = [];
+  Future<void> _markersFromUrl(String path) async {
+
     final uri = Uri.parse(path);
     final response = await http.get(uri);
     if (response.statusCode != 200) {
@@ -71,23 +75,27 @@ class GeojsonLayer extends CustomLayer {
       if (feature['geometry']['type'] == "MultiLineString") {
         polylines.add(MultiLineStringModel.fromJson(feature));
       } else {
-        markers.add(GeojsonMarker.fromJson(feature));
+        final element=GeojsonMarker.fromJson(feature);
+        if(element!=null)customMarkers.add(element);
       }
     }
-    return markers;
   }
+
   @override
   Widget? buildAreaLayer(int? zoom) {
-  return PolylineLayer(
-    polylines: polylines.map(
-      (path) => Polyline(
-        points: path.coordinates,
-        color: Color(int.parse(path.color.replaceFirst('#', '0xFF'))),
-        strokeWidth: path.weight,
-      ),
-    ).toList(),
-  );
-}
+    return PolylineLayer(
+      polylines: polylines
+          .map(
+            (path) => Polyline(
+              points: path.coordinates,
+              color: Color(int.parse(path.color.replaceFirst('#', '0xFF'))),
+              strokeWidth: path.weight,
+            ),
+          )
+          .toList(),
+    );
+  }
+
   Marker buildMarker({
     required GeojsonMarker element,
     required double markerSize,
@@ -155,12 +163,22 @@ class GeojsonLayer extends CustomLayer {
     );
   }
 
+  List<GeojsonMarker> _cachedGeojsonMarkers = [];
+  int _lastGeojsonZoom = -1;
+  int _lastGeojsonItemsLength = -1;
+
   List<GeojsonMarker> _getMarkers(int zoom) {
-    final markersList = customMarkers.toList();
-    markersList.sort(
-      (a, b) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return markersList.where((element) {
+    final itemsLength = customMarkers.length;
+
+    if (zoom == _lastGeojsonZoom && itemsLength == _lastGeojsonItemsLength) {
+      return _cachedGeojsonMarkers;
+    }
+
+    _lastGeojsonZoom = zoom;
+    _lastGeojsonItemsLength = itemsLength;
+
+    _cachedGeojsonMarkers = customMarkers.items
+        .where((element) {
       final targetMapLayerCategory =
           MapLayerCategory.findCategoryWithProperties(
         mapCategory,
@@ -170,6 +188,8 @@ class GeojsonLayer extends CustomLayer {
           targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
       return layerMinZoom < zoom;
     }).toList();
+
+    return _cachedGeojsonMarkers;
   }
 
   @override
@@ -203,7 +223,7 @@ class GeojsonLayer extends CustomLayer {
 
     if (icon != null) return SvgPicture.string(icon);
     return const Icon(
-      Icons.error,
+          Icons.error,
       color: Colors.green,
     );
   }
