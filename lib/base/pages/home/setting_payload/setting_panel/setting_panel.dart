@@ -364,7 +364,7 @@ class _SettingPanelState extends State<SettingPanel> {
                     secondary: SizedBox(
                       height: 35,
                       width: 35,
-                      child: bikeSvg(),
+                      child: bicycleSvg(),
                     ),
                     value: state.includeBikeSuggestions,
                     onChanged: (value) =>
@@ -373,10 +373,10 @@ class _SettingPanelState extends State<SettingPanel> {
                   ),
                   SettingPanel.dividerSection,
                   Container(
-                    margin: const EdgeInsets.only(left: 55, top: 5, bottom: 12),
+                    margin: const EdgeInsets.only(left: 55, top: 12, bottom: 12),
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Text(
-                      "Bicycle parking options",
+                     localization.bicycleParkingFilter,
                       style: theme.textTheme.bodyLarge,
                     ),
                   ),
