@@ -14,6 +14,14 @@ import 'package:latlong2/latlong.dart';
 import 'package:matomo_tracker/matomo_tracker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_parks_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
 import 'package:stadtnavi_core/notifications/lifecycle_reactor_handler_notifications.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
@@ -74,7 +82,55 @@ void main() async {
   runApp(
     CriticalLoader(
       loadData: () async {
-        await HBLayerData.loadHbLayers();
+        // await HBLayerData.loadHbLayers();
+
+        // final mapLayersFiltered = [
+        //   CityBikesLayer.fetchPBF(
+        //     13,
+        //     4297,
+        //     2827,
+        //   ),
+        //   StopsLayer.fetchPBF(
+        //     13,
+        //     4297,
+        //     2827,
+        //   ),
+        //   ParkingLayer.fetchPBF(
+        //     13,
+        //     4297,
+        //     2827,
+        //   ),
+        //   MapPoiLayer.fetchPBF(
+        //     13,
+        //     4297,
+        //     2827,
+        //   ),
+        //   BikeParkLayer.fetchPBF(
+        //     13,
+        //     4297,
+        //     2827,
+        //   ),
+        //   RoadworksLayer.fetchPBF(
+        //     13,
+        //     4297,
+        //     2827,
+        //   ),
+        //   WeatherLayer.fetchPBF(
+        //     13,
+        //     4297,
+        //     2827,
+        //   ),
+        //   ChargingLayer.fetchPBF(
+        //     13,
+        //     4297,
+        //     2827,
+        //   ),
+        // ];
+
+        // await Future.wait(mapLayersFiltered).catchError((error) {
+        //   log("$error");
+        //   return [];
+        // });
       },
       builder: (_) => StadtnaviApp(
         appLifecycleReactorHandler: LifecycleReactorHandlerNotifications(

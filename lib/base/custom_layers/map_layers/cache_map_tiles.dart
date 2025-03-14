@@ -38,61 +38,61 @@ class CachedTileProvider extends TileProvider {
   }
 
   Future<void> _fetchPBF(TileCoordinates coords) async {
-    final types = context.read<CustomLayersCubit>().getActiveLayersType();
-    final mapLayersFiltered = [
-      if (types.contains(CityBikesLayer))
-        CityBikesLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(StopsLayer))
-        StopsLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(ParkingLayer))
-        ParkingLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(MapPoiLayer))
-        MapPoiLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(BikeParkLayer))
-        BikeParkLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(RoadworksLayer))
-        RoadworksLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(WeatherLayer))
-        WeatherLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(ChargingLayer))
-        ChargingLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        )
-    ];
-    await Future.wait(mapLayersFiltered).catchError((error) {
-      log("$error");
-      return [];
-    });
+    // final types = context.read<CustomLayersCubit>().getActiveLayersType();
+    // final mapLayersFiltered = [
+    //   if (types.contains(CityBikesLayer))
+    //     CityBikesLayer.fetchPBF(
+    //       coords.z.toInt(),
+    //       coords.x.toInt(),
+    //       coords.y.toInt(),
+    //     ),
+    //   if (types.contains(StopsLayer))
+    //     StopsLayer.fetchPBF(
+    //       coords.z.toInt(),
+    //       coords.x.toInt(),
+    //       coords.y.toInt(),
+    //     ),
+    //   if (types.contains(ParkingLayer))
+    //     ParkingLayer.fetchPBF(
+    //       coords.z.toInt(),
+    //       coords.x.toInt(),
+    //       coords.y.toInt(),
+    //     ),
+    //   if (types.contains(MapPoiLayer))
+    //     MapPoiLayer.fetchPBF(
+    //       coords.z.toInt(),
+    //       coords.x.toInt(),
+    //       coords.y.toInt(),
+    //     ),
+    //   if (types.contains(BikeParkLayer))
+    //     BikeParkLayer.fetchPBF(
+    //       coords.z.toInt(),
+    //       coords.x.toInt(),
+    //       coords.y.toInt(),
+    //     ),
+    //   if (types.contains(RoadworksLayer))
+    //     RoadworksLayer.fetchPBF(
+    //       coords.z.toInt(),
+    //       coords.x.toInt(),
+    //       coords.y.toInt(),
+    //     ),
+    //   if (types.contains(WeatherLayer))
+    //     WeatherLayer.fetchPBF(
+    //       coords.z.toInt(),
+    //       coords.x.toInt(),
+    //       coords.y.toInt(),
+    //     ),
+    //   if (types.contains(ChargingLayer))
+    //     ChargingLayer.fetchPBF(
+    //       coords.z.toInt(),
+    //       coords.x.toInt(),
+    //       coords.y.toInt(),
+    //     )
+    // ];
+    // await Future.wait(mapLayersFiltered).catchError((error) {
+    //   log("$error");
+    //   return [];
+    // });
   }
 }
 
