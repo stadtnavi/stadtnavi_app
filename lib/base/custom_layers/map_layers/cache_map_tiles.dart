@@ -34,7 +34,7 @@ class CachedTileProvider extends TileProvider {
       _fetchPBF(coords);
     }
     final url = getTileUrl(coords, options);
-    return _CachedTileImageProvider(url);
+    return CachedTileImageProvider(url);
   }
 
   Future<void> _fetchPBF(TileCoordinates coords) async {
@@ -118,20 +118,20 @@ Future<Uint8List> cachedFirstFetch(Uri uri) async {
   return response.bodyBytes;
 }
 
-class _CachedTileImageProvider extends ImageProvider<_CachedTileImageProvider> {
+class CachedTileImageProvider extends ImageProvider<CachedTileImageProvider> {
   final String url;
-  static final Map<String, Uint8List> _cache = {};
+  static final BaseCacheManager _cacheManager = CustomCacheManager.instance;
 
-  const _CachedTileImageProvider(this.url);
+  const CachedTileImageProvider(this.url);
 
   @override
-  Future<_CachedTileImageProvider> obtainKey(ImageConfiguration configuration) {
-    return SynchronousFuture<_CachedTileImageProvider>(this);
+  Future<CachedTileImageProvider> obtainKey(ImageConfiguration configuration) {
+    return SynchronousFuture<CachedTileImageProvider>(this);
   }
 
   @override
   ImageStreamCompleter loadImage(
-    _CachedTileImageProvider key,
+    CachedTileImageProvider key,
     ImageDecoderCallback decode,
   ) {
     return MultiFrameImageStreamCompleter(
@@ -141,30 +141,55 @@ class _CachedTileImageProvider extends ImageProvider<_CachedTileImageProvider> {
   }
 
   Future<ui.Codec> _loadAsync(ImageDecoderCallback decode) async {
-    if (_cache.containsKey(url)) {
-      print("cached $url");
-      final buffer = await ImmutableBuffer.fromUint8List(_cache[url]!);
-      return decode(buffer);
+    final fileInfo = await _cacheManager.getFileFromCache(url);
+    Uint8List bytes;
+
+    if (fileInfo != null) {
+      // print("Loaded from disk cache: $url");
+      bytes = await fileInfo.file.readAsBytes();
+    } else {
+      // print("Downloading: $url");
+      final response = await http.get(Uri.parse(url), headers: {
+        "Referer": "https://herrenberg.stadtnavi.de/",
+      });
+
+      if (response.statusCode != 200) {
+        throw Exception("Failed to load image: $url");
+      }
+
+      bytes = response.bodyBytes;
+      await _cacheManager.putFile(url, bytes);
     }
 
-    final response = await http.get(Uri.parse(url), headers: {
-      "Referer": "https://herrenberg.stadtnavi.de/",
-    });
-
-    if (response.statusCode != 200) {
-      throw Exception("Failed to load image: $url");
-    }
-
-    _cache[url] = response.bodyBytes;
-
-    final buffer = await ImmutableBuffer.fromUint8List(response.bodyBytes);
+    final buffer = await ImmutableBuffer.fromUint8List(bytes);
     return decode(buffer);
   }
 
   @override
   bool operator ==(Object other) =>
-      other is _CachedTileImageProvider && other.url == url;
+      other is CachedTileImageProvider && other.url == url;
 
   @override
   int get hashCode => url.hashCode;
+}
+
+class CustomCacheManager extends CacheManager {
+  static const String key = "customTileCache";
+
+  static final CustomCacheManager instance = CustomCacheManager._internal();
+
+  factory CustomCacheManager() {
+    return instance;
+  }
+
+  CustomCacheManager._internal()
+      : super(
+          Config(
+            key,
+            stalePeriod: const Duration(days: 20), // Cache expiration time
+            maxNrOfCacheObjects: 500, // Max cache size (adjust as needed)
+            repo: JsonCacheInfoRepository(databaseName: key),
+            fileService: HttpFileService(),
+          ),
+        );
 }
