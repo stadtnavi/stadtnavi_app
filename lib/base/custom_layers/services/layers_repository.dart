@@ -176,7 +176,19 @@ class LayersRepository {
     return patternOtp;
   }
 
+  static final Map<String, _CacheEntry> _cache = {};
+  static const Duration cacheDuration = Duration(minutes: 1);
+
   static Future<CityBikeDataFetch> fetchCityBikesData(String cityBikeId) async {
+    final now = DateTime.now();
+
+    if (_cache.containsKey(cityBikeId)) {
+      final cacheEntry = _cache[cityBikeId]!;
+      if (now.isBefore(cacheEntry.expiration)) {
+        return cacheEntry.data;
+      }
+    }
+
     final WatchQueryOptions cityBikeQuery = WatchQueryOptions(
       document: addFragments(parseString(stops_queries.citybikeQuery),
           [stops_fragments.bikeRentalStationFragment]),
@@ -186,14 +198,24 @@ class LayersRepository {
       fetchPolicy: FetchPolicy.noCache,
       fetchResults: true,
     );
+
     final bikeRentalStation = await client.query(cityBikeQuery);
-    if (bikeRentalStation.hasException && bikeRentalStation.data == null) {
+    if (bikeRentalStation.hasException || bikeRentalStation.data == null) {
       throw Exception("Bad request");
     }
+
     final bikeRentalStationData = BikeRentalStation.fromJson(
         bikeRentalStation.data!['bikeRentalStation'] as Map<String, dynamic>);
 
-    return CityBikeDataFetch.fromBikeRentalStation(bikeRentalStationData);
+    final fetchedData =
+        CityBikeDataFetch.fromBikeRentalStation(bikeRentalStationData);
+
+    _cache[cityBikeId] = _CacheEntry(
+      data: fetchedData,
+      expiration: now.add(cacheDuration),
+    );
+
+    return fetchedData;
   }
 
   static Future<VehicleParkingDataFetch> fetchPark(String parkId) async {
@@ -214,4 +236,11 @@ class LayersRepository {
 
     return VehicleParkingDataFetch.fromVehicleParking(parkingData);
   }
+}
+
+class _CacheEntry {
+  final CityBikeDataFetch data;
+  final DateTime expiration;
+
+  _CacheEntry({required this.data, required this.expiration});
 }

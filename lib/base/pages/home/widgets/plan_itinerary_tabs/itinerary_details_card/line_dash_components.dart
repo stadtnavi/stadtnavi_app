@@ -610,7 +610,7 @@ class TransportDash extends StatelessWidget {
                       initialIndex: 2,
                       stopFeature: StopFeature(
                         code: leg.fromPlace?.stopEntity?.code,
-                        gtfsId: leg.fromPlace?.stopEntity?.gtfsId,
+                        gtfsId: leg.fromPlace?.stopEntity?.gtfsId??"",
                         name: leg.fromPlace?.stopEntity?.name,
                         parentStation: null,
                         patterns: null,
@@ -665,7 +665,7 @@ class TransportDash extends StatelessWidget {
                       initialIndex: 2,
                       stopFeature: StopFeature(
                         code: leg.toPlace?.stopEntity?.code,
-                        gtfsId: leg.toPlace?.stopEntity?.gtfsId,
+                        gtfsId: leg.toPlace?.stopEntity?.gtfsId??"",
                         name: leg.toPlace?.stopEntity?.name,
                         parentStation: null,
                         patterns: null,

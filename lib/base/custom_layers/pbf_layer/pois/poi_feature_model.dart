@@ -4,7 +4,7 @@ import 'package:vector_tile/vector_tile.dart';
 class PoiFeature {
   final GeoJsonPoint? geoJsonPoint;
   final String id;
-  final String? osmId;
+  final String osmId;
 
   final String? address;
   final String? brand;
@@ -35,7 +35,7 @@ class PoiFeature {
   PoiFeature({
     this.geoJsonPoint,
     required this.id,
-    this.osmId,
+   required this.osmId,
     this.address,
     this.brand,
     required this.category1,
@@ -69,7 +69,7 @@ class PoiFeature {
 
     final String? id = properties['id']?.dartIntValue?.toString();
     final String? osmId = properties['osm_id']?.dartIntValue?.toString();
-
+    if (osmId == null) return null;
     final String? address = properties['address']?.dartStringValue;
     final String? brand = properties['brand']?.dartStringValue;
     final String category1 = properties['category1']!.dartStringValue!;
