@@ -130,18 +130,30 @@ class CityBikesLayer extends CustomLayer {
   }
 
   void forceAddMarker(CityBikeFeature pointFeature) {
-    MapMarkersRepositoryContainer.cityBikeFeature[pointFeature.id] =
-        pointFeature;
+    MapMarkersRepositoryContainer.cityBikeFeature.add(
+      pointFeature,
+      replace: true,
+    );
     refresh();
   }
 
+  List<CityBikeFeature> _cachedCityBikeMarkers = [];
+  int _lastCityBikeZoom = -1;
+  int _lastCityBikeItemsLength = -1;
+
   List<CityBikeFeature> _getMarkers(int zoom) {
-    final markersList =
-        MapMarkersRepositoryContainer.cityBikeFeature.values.toList();
-    markersList.sort(
-      (a, b) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return markersList.where((element) {
+    final itemsLength =
+        MapMarkersRepositoryContainer.cityBikeFeature.items.length;
+
+    if (zoom == _lastCityBikeZoom && itemsLength == _lastCityBikeItemsLength) {
+      return _cachedCityBikeMarkers;
+    }
+
+    _lastCityBikeZoom = zoom;
+    _lastCityBikeItemsLength = itemsLength;
+
+    _cachedCityBikeMarkers =
+        MapMarkersRepositoryContainer.cityBikeFeature.items.where((element) {
       final targetMapLayerCategory =
           MapLayerCategory.findCategoryWithProperties(
         mapCategory,
@@ -151,6 +163,7 @@ class CityBikesLayer extends CustomLayer {
           targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
       return layerMinZoom < zoom;
     }).toList();
+    return _cachedCityBikeMarkers;
   }
 
   @override
@@ -188,11 +201,8 @@ class CityBikesLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final CityBikeFeature? pointFeature =
               CityBikeFeature.fromGeoJsonPoint(geojson);
-          if (pointFeature != null &&
-              MapMarkersRepositoryContainer.cityBikeFeature[pointFeature.id] ==
-                  null) {
-            MapMarkersRepositoryContainer.cityBikeFeature[pointFeature.id] =
-                pointFeature;
+          if (pointFeature != null) {
+            MapMarkersRepositoryContainer.cityBikeFeature.add(pointFeature);
           }
         } else {
           throw Exception("Should never happened, Feature is not a point");

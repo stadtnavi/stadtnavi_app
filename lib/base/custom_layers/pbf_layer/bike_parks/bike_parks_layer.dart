@@ -34,7 +34,7 @@ class BikeParkLayer extends CustomLayer {
     return Marker(
       key: Key("$id:${element.id}"),
       height: markerSize,
-      width: markerSize ,
+      width: markerSize,
       point: element.position,
       alignment: Alignment.center,
       child: Builder(builder: (context) {
@@ -73,12 +73,23 @@ class BikeParkLayer extends CustomLayer {
     );
   }
 
+  List<BikeParkFeature> _cachedBikeParkMarkers = [];
+  int _lastBikeParkZoom = -1;
+  int _lastBikeParkItemsLength = -1;
+
   List<BikeParkFeature> _getMarkers(int zoom) {
-    final markersList = MapMarkersRepositoryContainer.bikeParkFeature.values.toList();
-    markersList.sort(
-      (a, b) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return markersList.where((element) {
+    final itemsLength =
+        MapMarkersRepositoryContainer.bikeParkFeature.items.length;
+
+    if (zoom == _lastBikeParkZoom && itemsLength == _lastBikeParkItemsLength) {
+      return _cachedBikeParkMarkers;
+    }
+
+    _lastBikeParkZoom = zoom;
+    _lastBikeParkItemsLength = itemsLength;
+
+    _cachedBikeParkMarkers =
+        MapMarkersRepositoryContainer.bikeParkFeature.items.where((element) {
       final targetMapLayerCategory =
           MapLayerCategory.findCategoryWithProperties(
         mapCategory,
@@ -88,6 +99,8 @@ class BikeParkLayer extends CustomLayer {
           targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
       return layerMinZoom < zoom;
     }).toList();
+
+    return _cachedBikeParkMarkers;
   }
 
   @override
@@ -128,7 +141,7 @@ class BikeParkLayer extends CustomLayer {
               BikeParkFeature.fromGeoJsonPoint(geojson);
 
           if (pointFeature != null) {
-            MapMarkersRepositoryContainer.bikeParkFeature[pointFeature.id] = pointFeature;
+            MapMarkersRepositoryContainer.bikeParkFeature.add(pointFeature);
           }
         } else {
           throw Exception("Should never happened, Feature is not a point");
@@ -153,6 +166,7 @@ class BikeParkLayer extends CustomLayer {
       color: Colors.blue,
     );
   }
+
   @override
   bool isDefaultOn() => mapCategory.isDefaultOn();
 }

@@ -106,12 +106,23 @@ class ChargingLayer extends CustomLayer {
     );
   }
 
+  List<ChargingFeature> _cachedChargingMarkers = [];
+  int _lastChargingZoom = -1;
+  int _lastChargingItemsLength = -1;
+
   List<ChargingFeature> _getMarkers(int zoom) {
-    final markersList = MapMarkersRepositoryContainer.chargingFeature.values.toList();
-    markersList.sort(
-      (a, b) => a.position.latitude.compareTo(b.position.latitude),
-    );
-    return markersList.where((element) {
+    final itemsLength =
+        MapMarkersRepositoryContainer.chargingFeature.items.length;
+
+    if (zoom == _lastChargingZoom && itemsLength == _lastChargingItemsLength) {
+      return _cachedChargingMarkers;
+    }
+
+    _lastChargingZoom = zoom;
+    _lastChargingItemsLength = itemsLength;
+
+    _cachedChargingMarkers =
+        MapMarkersRepositoryContainer.chargingFeature.items.where((element) {
       final targetMapLayerCategory =
           MapLayerCategory.findCategoryWithProperties(
         mapCategory,
@@ -121,6 +132,8 @@ class ChargingLayer extends CustomLayer {
           targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
       return layerMinZoom < zoom;
     }).toList();
+
+    return _cachedChargingMarkers;
   }
 
   @override
@@ -159,9 +172,8 @@ class ChargingLayer extends CustomLayer {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final ChargingFeature? pointFeature =
               ChargingFeature.fromGeoJsonPoint(geojson);
-          if (pointFeature != null &&
-              MapMarkersRepositoryContainer.cityBikeFeature[pointFeature.id] == null) {
-            MapMarkersRepositoryContainer.chargingFeature[pointFeature.id] = pointFeature;
+          if (pointFeature != null) {
+            MapMarkersRepositoryContainer.chargingFeature.add(pointFeature);
           }
         } else {
           throw Exception("Should never happened, Feature is not a point");
@@ -187,6 +199,7 @@ class ChargingLayer extends CustomLayer {
       color: Colors.green,
     );
   }
+
   @override
   bool isDefaultOn() => mapCategory.isDefaultOn();
 }

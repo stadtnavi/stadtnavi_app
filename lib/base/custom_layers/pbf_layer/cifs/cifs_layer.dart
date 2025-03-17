@@ -28,15 +28,24 @@ class RoadworksLayer extends CustomLayer {
   RoadworksLayer(this.mapCategory, int weight)
       : super(mapCategory.code, weight);
 
-
-  @override
-  Widget? buildAreaLayer(int? zoom) {
-    return null;
-  }
+  List<RoadworksFeature> _cachedRoadworksMarkers = [];
+  int _lastRoadworksZoom = -1;
+  int _lastRoadworksItemsLength = -1;
 
   List<RoadworksFeature> _getMarkers(int zoom) {
-    final markersList = MapMarkersRepositoryContainer.roadworksFeature.values.toList();
-    return markersList.where((element) {
+    final itemsLength =
+        MapMarkersRepositoryContainer.roadworksFeature.items.length;
+
+    if (zoom == _lastRoadworksZoom &&
+        itemsLength == _lastRoadworksItemsLength) {
+      return _cachedRoadworksMarkers;
+    }
+
+    _lastRoadworksZoom = zoom;
+    _lastRoadworksItemsLength = itemsLength;
+
+    _cachedRoadworksMarkers =
+        MapMarkersRepositoryContainer.roadworksFeature.items.where((element) {
       final targetMapLayerCategory =
           MapLayerCategory.findCategoryWithProperties(
         mapCategory,
@@ -46,6 +55,8 @@ class RoadworksLayer extends CustomLayer {
           targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
       return layerMinZoom < zoom;
     }).toList();
+
+    return _cachedRoadworksMarkers;
   }
 
   @override
@@ -144,7 +155,7 @@ class RoadworksLayer extends CustomLayer {
           final RoadworksFeature? pointFeature =
               RoadworksFeature.fromGeoJsonLine(geojson);
           if (pointFeature != null) {
-            MapMarkersRepositoryContainer.roadworksFeature[pointFeature.id] = pointFeature;
+            MapMarkersRepositoryContainer.roadworksFeature.add(pointFeature);
           }
         } else {
           throw Exception("Should never happened, Feature is not a point");
@@ -169,6 +180,7 @@ class RoadworksLayer extends CustomLayer {
       color: Colors.blue,
     );
   }
+
   @override
   bool isDefaultOn() => mapCategory.isDefaultOn();
 }

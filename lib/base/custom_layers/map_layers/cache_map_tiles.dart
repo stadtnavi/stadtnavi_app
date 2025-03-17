@@ -9,6 +9,7 @@ import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 
+import 'dart:ui' as ui;
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +34,7 @@ class CachedTileProvider extends TileProvider {
       _fetchPBF(coords);
     }
     final url = getTileUrl(coords, options);
-    return _CachedTileImageProvider(url, cacheManager);
+    return CachedTileImageProvider(url);
   }
 
   Future<void> _fetchPBF(TileCoordinates coords) async {
@@ -90,56 +91,47 @@ class CachedTileProvider extends TileProvider {
     ];
     await Future.wait(mapLayersFiltered).catchError((error) {
       log("$error");
+      return [];
     });
   }
 }
 
+final Map<Uri, bool> _cache = {};
+
 Future<Uint8List> cachedFirstFetch(Uri uri) async {
-  final cacheManager = DefaultCacheManager();
-
-  FileInfo? cachedFile = await cacheManager.getFileFromCache(uri.toString());
-
-  Uint8List bodyByte;
-
-  if (cachedFile != null) {
-    // print("cachedFirstFetch");
-    bodyByte = await cachedFile.file.readAsBytes();
-  } else {
-    // print("no cachedFirstFetch");
-    final response = await http.get(uri);
-    if (response.statusCode != 200) {
-      throw Exception(
-        "Server Error on fetchPBF $uri with ${response.statusCode}",
-      );
-    }
-    bodyByte = response.bodyBytes;
-    final fileExtension = uri.path.split('.').last;
-    await cacheManager.putFile(
-      uri.toString(),
-      bodyByte,
-      fileExtension: fileExtension,
-      maxAge: const Duration(
-        days: 7,
-      ),
+  if (_cache.containsKey(uri)) {
+    // print("cachedFirstFetch ${uri.path}");
+    throw Exception(
+      "already fetched",
     );
   }
-  return bodyByte;
+
+  _cache[uri] = true;
+  final response = await http.get(uri);
+  if (response.statusCode != 200) {
+    _cache[uri] = false;
+    throw Exception(
+      "Server Error on fetchPBF $uri with ${response.statusCode}",
+    );
+  }
+
+  return response.bodyBytes;
 }
 
-class _CachedTileImageProvider extends ImageProvider<_CachedTileImageProvider> {
+class CachedTileImageProvider extends ImageProvider<CachedTileImageProvider> {
   final String url;
-  final BaseCacheManager cacheManager;
+  static final BaseCacheManager _cacheManager = CustomCacheManager.instance;
 
-  const _CachedTileImageProvider(this.url, this.cacheManager);
+  const CachedTileImageProvider(this.url);
 
   @override
-  Future<_CachedTileImageProvider> obtainKey(ImageConfiguration configuration) {
-    return SynchronousFuture<_CachedTileImageProvider>(this);
+  Future<CachedTileImageProvider> obtainKey(ImageConfiguration configuration) {
+    return SynchronousFuture<CachedTileImageProvider>(this);
   }
 
   @override
   ImageStreamCompleter loadImage(
-    _CachedTileImageProvider key,
+    CachedTileImageProvider key,
     ImageDecoderCallback decode,
   ) {
     return MultiFrameImageStreamCompleter(
@@ -148,21 +140,25 @@ class _CachedTileImageProvider extends ImageProvider<_CachedTileImageProvider> {
     );
   }
 
-  Future<Codec> _loadAsync(ImageDecoderCallback decode) async {
-    final cachedFile = await cacheManager.getFileFromCache(url);
-
+  Future<ui.Codec> _loadAsync(ImageDecoderCallback decode) async {
+    final fileInfo = await _cacheManager.getFileFromCache(url);
     Uint8List bytes;
 
-    if (cachedFile != null && cachedFile.file.existsSync()) {
-      // print("cached");
-      bytes = await cachedFile.file.readAsBytes();
+    if (fileInfo != null) {
+      // print("Loaded from disk cache: $url");
+      bytes = await fileInfo.file.readAsBytes();
     } else {
-      // print("new fetch");
-      final downloadedFile = await cacheManager.downloadFile(
-        url,
-        authHeaders: {"Referer": "https://herrenberg.stadtnavi.de/"},
-      );
-      bytes = await downloadedFile.file.readAsBytes();
+      // print("Downloading: $url");
+      final response = await http.get(Uri.parse(url), headers: {
+        "Referer": "https://herrenberg.stadtnavi.de/",
+      });
+
+      if (response.statusCode != 200) {
+        throw Exception("Failed to load image: $url");
+      }
+
+      bytes = response.bodyBytes;
+      await _cacheManager.putFile(url, bytes);
     }
 
     final buffer = await ImmutableBuffer.fromUint8List(bytes);
@@ -171,8 +167,29 @@ class _CachedTileImageProvider extends ImageProvider<_CachedTileImageProvider> {
 
   @override
   bool operator ==(Object other) =>
-      other is _CachedTileImageProvider && other.url == url;
+      other is CachedTileImageProvider && other.url == url;
 
   @override
   int get hashCode => url.hashCode;
+}
+
+class CustomCacheManager extends CacheManager {
+  static const String key = "customTileCache";
+
+  static final CustomCacheManager instance = CustomCacheManager._internal();
+
+  factory CustomCacheManager() {
+    return instance;
+  }
+
+  CustomCacheManager._internal()
+      : super(
+          Config(
+            key,
+            stalePeriod: const Duration(days: 20), // Cache expiration time
+            maxNrOfCacheObjects: 500, // Max cache size (adjust as needed)
+            repo: JsonCacheInfoRepository(databaseName: key),
+            fileService: HttpFileService(),
+          ),
+        );
 }

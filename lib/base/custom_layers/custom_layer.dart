@@ -4,7 +4,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 abstract class CustomLayer {
-static const int minRenderMarkers=10;
+static const int minRenderMarkers=13;
 
   final String id;
   final int weight;
