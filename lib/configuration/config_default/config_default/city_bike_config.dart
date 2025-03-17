@@ -1,9 +1,20 @@
 class CityBikeConfig {
-  bool showFullInfo;
-  int cityBikeMinZoom;
-  int cityBikeSmallIconZoom;
-  int fewAvailableCount;
-  Map<String, String> buyInstructions;
+  static final defaultData = CityBikeConfig(
+    showFullInfo: false,
+    cityBikeMinZoom: 14,
+    cityBikeSmallIconZoom: 14,
+    fewAvailableCount: 3,
+    buyInstructions: const {
+      "fi": "Osta käyttöoikeutta päiväksi, viikoksi tai koko kaudeksi",
+      "sv": "Köp ett abonnemang för en dag, en vecka eller för en hel säsong",
+      "en": "Buy a daily, weekly or season pass",
+    },
+  );
+  late bool showFullInfo;
+  late int cityBikeMinZoom;
+  late int cityBikeSmallIconZoom;
+  late int fewAvailableCount;
+  late Map<String, String> buyInstructions;
   int? minZoomStopsNearYou;
   bool? showStationId;
   bool? useSpacesAvailable;
@@ -13,15 +24,11 @@ class CityBikeConfig {
   Map<String, FormFactor>? formFactors;
 
   CityBikeConfig({
-    this.showFullInfo = false,
-    this.cityBikeMinZoom = 14,
-    this.cityBikeSmallIconZoom = 14,
-    this.fewAvailableCount = 3,
-    this.buyInstructions = const {
-      "fi": "Osta käyttöoikeutta päiväksi, viikoksi tai koko kaudeksi",
-      "sv": "Köp ett abonnemang för en dag, en vecka eller för en hel säsong",
-      "en": "Buy a daily, weekly or season pass",
-    },
+    bool? showFullInfo,
+    int? cityBikeMinZoom,
+    int? cityBikeSmallIconZoom,
+    int? fewAvailableCount,
+    Map<String, String>? buyInstructions,
     this.minZoomStopsNearYou,
     this.showStationId,
     this.useSpacesAvailable,
@@ -29,8 +36,46 @@ class CityBikeConfig {
     this.networks,
     this.operators,
     this.formFactors,
-  });
+  }) {
+    this.showFullInfo = showFullInfo ?? defaultData.showFullInfo;
+    this.cityBikeMinZoom = cityBikeMinZoom ?? defaultData.cityBikeMinZoom;
+    this.cityBikeSmallIconZoom =
+        cityBikeSmallIconZoom ?? defaultData.cityBikeSmallIconZoom;
+    this.fewAvailableCount = fewAvailableCount ?? defaultData.fewAvailableCount;
+    this.buyInstructions = buyInstructions ?? defaultData.buyInstructions;
+  }
 
+  factory CityBikeConfig.fromJson(Map<String, dynamic> json) {
+    return CityBikeConfig(
+      showFullInfo: json['showFullInfo'] ?? defaultData.showFullInfo,
+      cityBikeMinZoom: json['cityBikeMinZoom'] ?? defaultData.cityBikeMinZoom,
+      cityBikeSmallIconZoom:
+          json['cityBikeSmallIconZoom'] ?? defaultData.cityBikeSmallIconZoom,
+      fewAvailableCount:
+          json['fewAvailableCount'] ?? defaultData.fewAvailableCount,
+      buyInstructions: Map<String, String>.from(
+          json['buyInstructions'] ?? defaultData.buyInstructions),
+      minZoomStopsNearYou: json['minZoomStopsNearYou'],
+      showStationId: json['showStationId'],
+      useSpacesAvailable: json['useSpacesAvailable'],
+      showCityBikes: json['showCityBikes'],
+      networks: json['networks'] != null
+          ? (json['networks'] as Map<String, dynamic>).map(
+              (key, value) => MapEntry(key, NetworkConfig.fromJson(value)),
+            )
+          : null,
+      operators: json['operators'] != null
+          ? (json['operators'] as Map<String, dynamic>).map(
+              (key, value) => MapEntry(key, OperatorConfig.fromJson(value)),
+            )
+          : null,
+      formFactors: json['formFactors'] != null
+          ? (json['formFactors'] as Map<String, dynamic>).map(
+              (key, value) => MapEntry(key, FormFactor.fromJson(value)),
+            )
+          : null,
+    );
+  }
   CityBikeConfig copyWith({
     bool? showFullInfo,
     int? cityBikeMinZoom,
@@ -85,6 +130,23 @@ class NetworkConfig {
     this.visibleInSettingsUi,
     this.season,
   });
+
+  factory NetworkConfig.fromJson(Map<String, dynamic> json) {
+    return NetworkConfig(
+      icon: json['icon'] ?? '',
+      operator: json['operator'],
+      name: Map<String, String>.from(json['name'] ?? {}),
+      type: json['type'],
+      formFactors: json['formFactors'] != null
+          ? List<String>.from(json['formFactors'])
+          : null,
+      hideCode: json['hideCode'] ?? true,
+      enabled: json['enabled'] ?? false,
+      url: json['url'] != null ? Map<String, String>.from(json['url']) : null,
+      visibleInSettingsUi: json['visibleInSettingsUi'],
+      season: json['season'] != null ? SeasonConfig.futureSeason() : null,
+    );
+  }
 }
 
 class SeasonConfig {
@@ -106,6 +168,13 @@ class SeasonConfig {
       preSeasonStart: DateTime(DateTime.now().year, 1, 1),
     );
   }
+  // factory SeasonConfig.fromJson(Map<String, dynamic> json) {
+  //   return SeasonConfig(
+  //     start: DateTime.parse(json['start']),
+  //     end: DateTime.parse(json['end']),
+  //     preSeasonStart: DateTime.parse(json['preSeasonStart']),
+  //   );
+  // }
 }
 
 class OperatorConfig {
@@ -124,6 +193,20 @@ class OperatorConfig {
     this.url,
     this.colors,
   });
+
+  factory OperatorConfig.fromJson(Map<String, dynamic> json) {
+    return OperatorConfig(
+      operatorId: json['operatorId'],
+      icon: json['icon'],
+      iconCode: json['iconCode'],
+      name:
+          json['name'] != null ? Map<String, String>.from(json['name']) : null,
+      url: json['url'] != null ? Map<String, String>.from(json['url']) : null,
+      colors: json['colors'] != null
+          ? Map<String, String>.from(json['colors'])
+          : null,
+    );
+  }
 }
 
 class FormFactor {
@@ -134,4 +217,15 @@ class FormFactor {
     this.operatorIds,
     this.networkIds,
   });
+
+  factory FormFactor.fromJson(Map<String, dynamic> json) {
+    return FormFactor(
+      operatorIds: json['operatorIds'] != null
+          ? Set<String>.from(json['operatorIds'])
+          : null,
+      networkIds: json['networkIds'] != null
+          ? Set<String>.from(json['networkIds'])
+          : null,
+    );
+  }
 }
