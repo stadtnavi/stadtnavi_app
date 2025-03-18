@@ -119,7 +119,7 @@ class GeojsonMarkerModal extends StatelessWidget {
                   data: element.popupContent!,
                   style: {
                     ".text-light": Style(
-                      color: const Color(0xFF747474),
+                      color: const Color(0xFF666666),
                       margin: Margins.only(top: 5, bottom: 5),
                       fontSize: FontSize(13)
                     ),
