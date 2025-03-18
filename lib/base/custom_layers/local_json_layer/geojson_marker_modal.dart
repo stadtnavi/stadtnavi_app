@@ -117,6 +117,13 @@ class GeojsonMarkerModal extends StatelessWidget {
               children: [
                 Html(
                   data: element.popupContent!,
+                  style: {
+                    ".text-light": Style(
+                      color: const Color(0xFF666666),
+                      margin: Margins.only(top: 5, bottom: 5),
+                      fontSize: FontSize(13)
+                    ),
+                  },
                 ),
               ],
             ),
@@ -174,8 +181,11 @@ class GeojsonMarkerModal extends StatelessWidget {
         },
         child: Row(
           children: [
-            Icon(icon, size: 20,
-            color: Color(0xFF747474),),
+            Icon(
+              icon,
+              size: 20,
+              color: Color(0xFF747474),
+            ),
             const SizedBox(width: 8),
             Expanded(
               child: Text(
