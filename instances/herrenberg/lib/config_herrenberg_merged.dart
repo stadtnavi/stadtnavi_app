@@ -55,6 +55,61 @@ final configHerrenbergMerged = ConfigData(
           "en": "https://stuttgart.stadtmobil.de/"
         },
       ),
+      "stadtmobil_karlsruhe": NetworkConfig(
+        icon: "brand_stadtmobil",
+        operator: "stadtmobil",
+        name: {"de": "Stadtmobil Karlsruhe", "en": "Stadtmobil Karlsruhe"},
+        formFactors: ["car"],
+        type: "car",
+        hideCode: true,
+        enabled: true,
+        url: {
+          "de": "https://karlsruhe.stadtmobil.de/",
+          "en": "https://karlsruhe.stadtmobil.de/"
+        },
+      ),
+      "flinkster_carsharing": NetworkConfig(
+        icon: "brand_flinkster",
+        operator: "flinkster",
+        name: {"de": "Flinkster", "en": "Flinkster"},
+        formFactors: ["car"],
+        type: "car",
+        hideCode: true,
+        enabled: true,
+        url: {
+          "de": "https://www.flinkster.de/de/start",
+          "en": "https://www.flinkster.de/en/home",
+        },
+      ),
+      "oekostadt_renningen": NetworkConfig(
+        icon: "brand_stadtmobil",
+        operator: "stadtmobil",
+        name: {
+          "de": "Ökostadt Renningen e.V.",
+          "en": "Ökostadt Renningen e.V."
+        },
+        formFactors: ["car"],
+        type: "car",
+        hideCode: true,
+        enabled: true,
+        url: {
+          "de": "https://carsharing-renningen.de/",
+          "en": "https://carsharing-renningen.de/",
+        },
+      ),
+      "teilauto_neckar-alb": NetworkConfig(
+        icon: "brand_stadtmobil",
+        operator: "stadtmobil",
+        name: {"de": "Teilauto Neckar-Alb", "en": "Teilauto Neckar-Alb"},
+        formFactors: ["car"],
+        type: "car",
+        hideCode: true,
+        enabled: true,
+        url: {
+          "de": "https://www.teilauto-neckar-alb.de/",
+          "en": "https://www.teilauto-neckar-alb.de/",
+        },
+      ),
       "regiorad_stuttgart": NetworkConfig(
         icon: "brand_regiorad",
         operator: "regiorad",
@@ -87,6 +142,19 @@ final configHerrenbergMerged = ConfigData(
         hideCode: true,
         enabled: true,
         url: {"de": "https://www.bolt.eu/", "en": "https://www.bolt.eu/"},
+      ),
+      "zeo_bruchsal": NetworkConfig(
+        icon: "brand_zeus",
+        operator: "other",
+        name: {"de": "Zeo Bruchsal", "en": "Zeo Bruchsal"},
+        formFactors: ["car"],
+        type: "car",
+        hideCode: true,
+        enabled: true,
+        url: {
+          "de": "https://www.zeo-carsharing.de/",
+          "en": "https://www.zeo-carsharing.de/",
+        },
       ),
       "zeus_ludwigsburg": NetworkConfig(
         icon: "brand_zeus",
@@ -127,49 +195,137 @@ final configHerrenbergMerged = ConfigData(
           "en": "https://zeusscooters.com"
         },
       ),
-      "voi_karlsruhe": NetworkConfig(
+      "voi_de": NetworkConfig(
         icon: "brand_voi",
         operator: "voi",
-        name: {"de": "Voi Scooter Karlsruhe", "en": "Voi Scooter Karlsruhe"},
+        name: {"de": "Voi Scooter", "en": "Voi Scooter"},
         type: "scooter",
         formFactors: ["scooter"],
         hideCode: true,
         enabled: true,
       ),
-      "tier_ludwigsburg": NetworkConfig(
-        icon: "tier_scooter",
-        name: {"de": "TIER Ludwigsburg", "en": "TIER Ludwigsburg"},
+      "dott_boblingen": NetworkConfig(
+        icon: "brand_dott",
+        operator: "dott",
+        name: {
+          "de": "Dott Böblingen",
+          "en": "Dott Böblingen",
+        },
         type: "scooter",
-        url: {"de": "https://www.tier.app/de", "en": "https://www.tier.app/"},
+        url: {
+          "de": "https://ridedott.com/de/fahr-mit-uns/",
+          "en": "https://ridedott.com/ride-with-us/",
+        },
         visibleInSettingsUi: true,
         hideCode: true,
         enabled: true,
       ),
-      "taxi": NetworkConfig(
-        icon: "brand_taxi",
-        operator: "taxi",
-        name: {"de": "Taxi", "en": "Taxi"},
-        type: "taxi",
-        formFactors: ["car"],
+      "dott_ludwigsburg": NetworkConfig(
+        icon: "brand_dott",
+        operator: "dott",
+        name: {
+          "de": "Dott Ludwigsburg",
+          "en": "Dott Ludwigsburg",
+        },
+        type: "scooter",
+        url: {
+          "de": "https://ridedott.com/de/fahr-mit-uns/",
+          "en": "https://ridedott.com/ride-with-us/",
+        },
+        visibleInSettingsUi: true,
         hideCode: true,
         enabled: true,
-        season: SeasonConfig.futureSeason(),
       ),
-      "cargo-bike": NetworkConfig(
+      "dott_reutlingen": NetworkConfig(
+        icon: "brand_dott",
+        operator: "dott",
+        name: {
+          "de": "Dott Reutlingen",
+          "en": "Dott Reutlingen",
+        },
+        type: "scooter",
+        formFactors: ["scooter", "bicycle"],
+        url: {
+          "de": "https://ridedott.com/de/fahr-mit-uns/",
+          "en": "https://ridedott.com/ride-with-us/",
+        },
+        visibleInSettingsUi: true,
+        hideCode: true,
+        enabled: true,
+      ),
+      "dott_stuttgart": NetworkConfig(
+        icon: "brand_dott",
+        operator: "dott",
+        name: {
+          "de": "Dott Stuttgart",
+          "en": "Dott Stuttgart",
+        },
+        type: "scooter",
+        url: {
+          "de": "https://ridedott.com/de/fahr-mit-uns/",
+          "en": "https://ridedott.com/ride-with-us/",
+        },
+        visibleInSettingsUi: true,
+        hideCode: true,
+        enabled: true,
+      ),
+      "dott_tubingen": NetworkConfig(
+        icon: "brand_dott",
+        operator: "dott",
+        name: {
+          "de": "Dott Tübingen",
+          "en": "Dott Tübingen",
+        },
+        type: "scooter",
+        formFactors: ["scooter", "bicycle"],
+        url: {
+          "de": "https://ridedott.com/de/fahr-mit-uns/",
+          "en": "https://ridedott.com/ride-with-us/",
+        },
+        visibleInSettingsUi: true,
+        hideCode: true,
+        enabled: true,
+      ),
+      "de.stadtnavi.gbfs.alf": NetworkConfig(
         icon: "cargobike",
         operator: "other",
         name: {
-          "de": "Freie Lastenräder Herrenberg",
-          "en": "Free cargo bikes Herrenberg"
+          "de": "Lastenrad Alf",
+          "en": "Cargobike Alf",
         },
         type: "cargo_bicycle",
         enabled: true,
         season: SeasonConfig.futureSeason(),
       ),
-      "de.openbikebox.stadt-herrenberg": NetworkConfig(
+      "de.stadtnavi.gbfs.gueltstein": NetworkConfig(
         icon: "cargobike",
         operator: "other",
-        name: {"de": "Lastenrad Herrenberg", "en": "Cargo bike Herrenberg"},
+        name: {
+          "de": "Lastenrad Gültstein-Mobil",
+          "en": "Cargobike Gültstein-Mobil",
+        },
+        type: "cargo_bicycle",
+        enabled: true,
+        season: SeasonConfig.futureSeason(),
+      ),
+      "de.stadtnavi.gbfs.stadtrad": NetworkConfig(
+        icon: "cargobike",
+        operator: "other",
+        name: {
+          "de": "stadtRad der Stadt Herrenberg",
+          "en": "City of Herrenberg's StadtRad",
+        },
+        type: "cargo_bicycle",
+        enabled: true,
+        season: SeasonConfig.futureSeason(),
+      ),
+      "de.stadtnavi.gbfs.bananologen": NetworkConfig(
+        icon: "cargobike",
+        operator: "other",
+        name: {
+          "de": "Lastenrad Bananologen",
+          "en": "Cargobike Bananologen",
+        },
         type: "cargo_bicycle",
         enabled: true,
         season: SeasonConfig.futureSeason(),
@@ -275,8 +431,45 @@ final configHerrenbergMerged = ConfigData(
        inkscape:label="path-TA" />
   </g>
 </svg>""",
-        name: {"de": "Taxi"},
+        name: {"de": "Taxi", "en": "Taxi"},
         colors: {"background": "#FFCD00"},
+      ),
+      "flinkster": OperatorConfig(
+        icon: "brand_flinkster",
+        iconCode: """
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="225px" height="225px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g><path style="opacity:1" fill="#fffefe" d="M -0.5,-0.5 C 74.5,-0.5 149.5,-0.5 224.5,-0.5C 224.5,23.8333 224.5,48.1667 224.5,72.5C 149.5,72.5 74.5,72.5 -0.5,72.5C -0.5,48.1667 -0.5,23.8333 -0.5,-0.5 Z"/></g>
+<g><path style="opacity:1" fill="#ed201e" d="M 82.5,12.5 C 102.925,12.0236 123.259,12.5236 143.5,14C 144.701,14.9025 145.535,16.0692 146,17.5C 146.963,31.2611 146.63,44.9278 145,58.5C 144.25,59.1258 143.416,59.6258 142.5,60C 122.167,60.6667 101.833,60.6667 81.5,60C 80.6667,59.1667 79.8333,58.3333 79,57.5C 78.3333,43.8333 78.3333,30.1667 79,16.5C 80.1022,15.051 81.2689,13.7177 82.5,12.5 Z"/></g>
+<g><path style="opacity:1" fill="#fff1f2" d="M 83.5,17.5 C 102.503,17.3334 121.503,17.5001 140.5,18C 141.489,30.42 141.822,42.92 141.5,55.5C 122.164,55.6666 102.83,55.5 83.5,55C 82.1759,42.5001 82.1759,30.0001 83.5,17.5 Z"/></g>
+<g><path style="opacity:1" fill="#ed181d" d="M 114.5,21.5 C 121.284,21.0796 127.95,21.5796 134.5,23C 137.649,27.9618 136.982,32.2951 132.5,36C 137.738,39.2738 138.904,43.7738 136,49.5C 134.581,50.4601 133.081,51.2935 131.5,52C 125.843,52.4994 120.176,52.6661 114.5,52.5C 114.5,42.1667 114.5,31.8333 114.5,21.5 Z"/></g>
+<g><path style="opacity:1" fill="#ec0f17" d="M 87.5,21.5 C 107.526,17.9183 115.026,25.9183 110,45.5C 108.878,47.6238 107.378,49.4571 105.5,51C 99.6208,52.4101 93.6208,52.9101 87.5,52.5C 87.5,42.1667 87.5,31.8333 87.5,21.5 Z"/></g>
+<g><path style="opacity:1" fill="#fefbfb" d="M 99.5,26.5 C 100.794,27.2899 101.961,28.2899 103,29.5C 103.667,34.1667 103.667,38.8333 103,43.5C 101.682,46.9414 99.1816,48.2747 95.5,47.5C 95.5,40.5 95.5,33.5 95.5,26.5C 96.8333,26.5 98.1667,26.5 99.5,26.5 Z"/></g>
+<g><path style="opacity:1" fill="#fff0f0" d="M 122.5,25.5 C 129.004,25.1377 130.671,27.6377 127.5,33C 125.866,33.4935 124.199,33.6602 122.5,33.5C 122.5,30.8333 122.5,28.1667 122.5,25.5 Z"/></g>
+<g><path style="opacity:1" fill="#f79fa3" d="M 99.5,26.5 C 98.1667,26.5 96.8333,26.5 95.5,26.5C 95.5,33.5 95.5,40.5 95.5,47.5C 94.5084,40.3524 94.175,33.0191 94.5,25.5C 96.4147,25.2155 98.0813,25.5489 99.5,26.5 Z"/></g>
+<g><path style="opacity:1" fill="#fef8f9" d="M 122.5,39.5 C 124.527,39.3379 126.527,39.5045 128.5,40C 131.167,42.3333 131.167,44.6667 128.5,47C 126.527,47.4955 124.527,47.6621 122.5,47.5C 122.5,44.8333 122.5,42.1667 122.5,39.5 Z"/></g>
+<g><path style="opacity:1" fill="#ec0116" d="M -0.5,72.5 C 74.5,72.5 149.5,72.5 224.5,72.5C 224.5,123.167 224.5,173.833 224.5,224.5C 149.5,224.5 74.5,224.5 -0.5,224.5C -0.5,173.833 -0.5,123.167 -0.5,72.5 Z"/></g>
+<g><path style="opacity:1" fill="#fff4f4" d="M 61.5,112.5 C 80.2135,112.066 98.8802,112.566 117.5,114C 129.67,118.085 141.003,123.752 151.5,131C 162.828,133.665 174.162,136.332 185.5,139C 195.548,143.269 199.048,150.769 196,161.5C 195.167,163.667 193.667,165.167 191.5,166C 187.568,167.655 183.568,168.655 179.5,169C 178.167,167.333 178.167,165.667 179.5,164C 183.099,162.691 186.599,161.191 190,159.5C 192.711,151.226 189.877,146.059 181.5,144C 170.736,142.047 160.069,139.714 149.5,137C 139.003,129.752 127.67,124.085 115.5,120C 97.8862,118.389 80.2195,118.056 62.5,119C 52.1568,125.334 42.9901,133.168 35,142.5C 34.3333,148.833 34.3333,155.167 35,161.5C 37.3914,162.429 39.2247,163.929 40.5,166C 39.7916,168.723 38.1249,169.723 35.5,169C 32.4173,168.214 30.2506,166.381 29,163.5C 28.3333,155.833 28.3333,148.167 29,140.5C 36.5,133 44,125.5 51.5,118C 54.7667,115.87 58.1,114.037 61.5,112.5 Z"/></g>
+<g><path style="opacity:1" fill="#fef6f6" d="M 92.5,124.5 C 94.1439,124.286 95.6439,124.62 97,125.5C 97.2069,129.089 97.7069,132.589 98.5,136C 109.833,136.333 121.167,136.667 132.5,137C 133.991,139.022 133.658,140.688 131.5,142C 119.833,142.667 108.167,142.667 96.5,142C 94.3333,141.167 92.8333,139.667 92,137.5C 91.2316,133.08 91.3982,128.747 92.5,124.5 Z"/></g>
+<g><path style="opacity:1" fill="#fff4f5" d="M 56.5,154.5 C 72.9972,154.183 78.8306,161.85 74,177.5C 65.9629,186.366 57.6295,186.699 49,178.5C 43.6717,167.862 46.1717,159.862 56.5,154.5 Z"/></g>
+<g><path style="opacity:1" fill="#fff4f4" d="M 152.5,154.5 C 165.999,153.171 172.499,159.171 172,172.5C 166.232,185.555 157.566,187.889 146,179.5C 139.709,168.87 141.876,160.537 152.5,154.5 Z"/></g>
+<g><path style="opacity:1" fill="#ec101a" d="M 153.5,160.5 C 163.859,160.014 167.692,164.681 165,174.5C 159.963,179.712 154.963,179.712 150,174.5C 148.543,171.634 148.21,168.634 149,165.5C 150.707,163.963 152.207,162.296 153.5,160.5 Z"/></g>
+<g><path style="opacity:1" fill="#ec111a" d="M 57.5,160.5 C 68.8085,160.285 72.3085,165.285 68,175.5C 61.8382,180.134 56.8382,179.134 53,172.5C 52.3333,170.167 52.3333,167.833 53,165.5C 54.3657,163.638 55.8657,161.972 57.5,160.5 Z"/></g>
+<g><path style="opacity:1" fill="#fef7f7" d="M 83.5,166.5 C 100.837,166.333 118.17,166.5 135.5,167C 136.991,169.022 136.658,170.688 134.5,172C 117.5,172.667 100.5,172.667 83.5,172C 82.2475,170.172 82.2475,168.339 83.5,166.5 Z"/></g>
+</svg>
+""",
+        name: {
+          "de": "Flinkster",
+          "en": "Flinkster",
+        },
+        url: {
+          "de": "https://www.flinkster.de/de/start",
+          "en": "https://www.flinkster.de/en/home"
+        },
+        colors: {
+          "background": "#D50F0F",
+        },
       ),
       "deer": OperatorConfig(
         icon: "brand_deer",
@@ -405,7 +598,7 @@ M160.392273,149.011292
 	C175.145798,148.461777 167.975433,148.782211 160.392273,149.011292 
 z"/>
 </svg>""",
-        name: {"de": "deer"},
+        name: {"de": "deer", "en": "deer"},
         url: {"de": "https://www.deer-carsharing.de/"},
         colors: {"background": "#3C8325"},
       ),
@@ -503,7 +696,7 @@ z"/>
    id="path18" />
 </svg>
 """,
-        name: {"de": "bolt"},
+        name: {"de": "bolt", "en": "bolt"},
         colors: {"background": "#30D287"},
       ),
       "voi": OperatorConfig(
@@ -571,8 +764,32 @@ M186.922455,167.100906
 	C199.119812,149.685577 196.168106,160.202057 186.922455,167.100906 
 z"/>
 </svg>""",
-        name: {"de": "VOI"},
+        name: {"de": "VOI", "en": "VOI"},
         colors: {"background": "#F26961"},
+      ),
+      "dott": OperatorConfig(
+        icon: "brand_dott",
+        iconCode: """
+<svg width="335" height="355" viewBox="0 0 335 355" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect
+       style="fill:#009DDB;"
+       id="rect"
+       width="370"
+       height="370"
+       x="0"
+       y="0" />
+<g transform="scale(0.9) translate(20 120)">
+<path d="M248.075 87.4225C237.39 85.9385 237.983 74.3361 237.983 65.5669V46.5444H256.452C257.903 46.5444 259.09 45.3302 259.09 43.8462V23.6095C259.09 22.1254 257.903 20.9112 256.452 20.9112H237.983V2.69823C237.983 1.2142 236.796 0 235.345 0H213.249C211.798 0 210.611 1.2142 210.611 2.69823C210.611 16.8639 210.611 51.4012 210.611 62.3965C210.611 73.8639 210.149 86.4107 215.69 96.7988C221.758 108.131 234.422 113.191 246.69 113.325H264.367C265.818 113.325 267.005 112.111 267.005 110.627V90.7278C267.005 89.2438 265.818 88.0296 264.367 88.0296C259.024 88.0296 253.154 88.0971 248.075 87.4225Z" fill="#ffffff"/>
+<path d="M316.005 87.4225C305.32 85.9385 305.913 74.3361 305.913 65.5669V46.5444H324.381C325.832 46.5444 327.02 45.3302 327.02 43.8462V23.6095C327.02 22.1254 325.832 20.9112 324.381 20.9112H305.913V2.69823C305.913 1.2142 304.726 0 303.275 0H281.179C279.728 0 278.541 1.2142 278.541 2.69823C278.541 16.8639 278.541 51.4012 278.541 62.3965C278.541 73.8639 278.079 86.4107 283.619 96.7988C289.688 108.131 302.351 113.191 314.62 113.325H332.296C333.747 113.325 334.935 112.111 334.935 110.627V90.7278C334.935 89.2438 333.747 88.0296 332.296 88.0296C326.954 88.0296 321.083 88.0971 316.005 87.4225Z" fill="#ffffff"/>
+<path d="M150.984 20.8438C125.854 20.8438 105.473 41.6875 105.473 67.3881C105.473 93.0887 125.854 113.932 150.984 113.932C176.114 113.932 196.494 93.0887 196.494 67.3881C196.494 41.6875 176.179 20.8438 150.984 20.8438ZM150.984 89.5135C139.045 89.5135 129.349 79.5976 129.349 67.3881C129.349 55.1786 139.045 45.2627 150.984 45.2627C162.922 45.2627 172.618 55.1786 172.618 67.3881C172.618 79.5976 162.922 89.5135 150.984 89.5135Z" fill="#ffffff"/>
+<path d="M63.9185 2.69822V24.9586C32.9843 10.9278 -2.23722 36.426 0.137268 70.8284C2.37984 103.409 37.4694 123.849 65.9632 109.076C81.1995 101.049 90.8953 85.0615 90.9613 67.5231V2.69822C90.9613 1.2142 89.774 0 88.3229 0H66.5568C65.0398 0 63.9185 1.2142 63.9185 2.69822ZM45.7142 89.5136C33.7758 89.5136 24.08 79.5976 24.08 67.3882C24.08 55.1787 33.7758 45.2627 45.7142 45.2627C57.6525 45.2627 67.3483 55.1787 67.3483 67.3882C67.2164 79.5976 57.5866 89.3787 45.7142 89.5136Z" fill="#ffffff"/>
+</g>
+</svg>
+""",
+        name: {"de": "dott", "en": "dott"},
+        colors: {
+          "background": "#009DDB",
+        },
       ),
       "regiorad": OperatorConfig(
         icon: "brand_regiorad",
@@ -599,7 +816,7 @@ z"/>
 </defs>
 </svg>
 """,
-        name: {"de": "RegioRad"},
+        name: {"de": "RegioRad", "en": "RegioRad"},
         colors: {"background": "#009fe4"},
       ),
       "stadtmobil": OperatorConfig(
@@ -624,7 +841,7 @@ z"/>
      style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none" />
    </g>
 </svg>""",
-        name: {"de": "stadtmobil"},
+        name: {"de": "stadtmobil", "en": "stadtmobil"},
         colors: {"background": "#FF8A36"},
       ),
       "zeus": OperatorConfig(
@@ -685,7 +902,7 @@ z"/>
         icon: "brand_other",
         iconCode: """
 <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"></svg>""",
-        name: {"de": "Weitere Anbieter"},
+        name: {"de": "Weitere Anbieter", "en": "Other Operators"},
         colors: {"background": "#C84674"},
       ),
     },

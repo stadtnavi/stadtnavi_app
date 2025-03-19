@@ -38,6 +38,24 @@ extension BicycleParkingFilterExtension on BicycleParkingFilter {
 }
 
 class DefaultSettings {
+  static final defaultData = DefaultSettings(
+    optimize: null,
+    safetyFactor: null,
+    slopeFactor: null,
+    timeFactor: null,
+    accessibilityOption: false,
+    bikeSpeed: 5.55,
+    bicycleParkingFilter: BicycleParkingFilter.all,
+    ticketTypes: 'none',
+    walkBoardCost: 600,
+    walkReluctance: 2.0,
+    walkSpeed: 1.2,
+    includeBikeSuggestions: true,
+    includeParkAndRideSuggestions: false,
+    includeCarSuggestions: false,
+    showBikeAndParkItineraries: false,
+  );
+  
   String? optimize;
   double? safetyFactor;
   double? slopeFactor;
