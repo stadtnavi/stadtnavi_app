@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/local_json_layer/geojson_marker_model.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
-import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 

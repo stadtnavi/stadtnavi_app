@@ -553,9 +553,72 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
 
   @override
   String get bicycleParkingFilterSecurePreferred => 'Sichere bevorzugt';
-  
+
   @override
   String get disruptionInfoNoAlerts => 'Keine Störungsmeldungen.';
+
+  @override
+  String get taxiAvailability => 'Taxis verfügbar';
+
+  @override
+  String get bicycleAvailability => 'Fahrräder verfügbar';
+
+  @override
+  String get carAvailability => 'Carsharing-Fahrzeuge verfügbar';
+
+  @override
+  String get cargoBicycleAvailability => 'Lastenräder verfügbar';
+
+  @override
+  String get parkAndRideAvailability => 'Plätze verfügbar';
+
+  @override
+  String get scooterAvailability => 'E-Scooter ausleihbar';
+
+  @override
+  String get scooterStationNoId => 'E-Scooter';
+
+  @override
+  String get bicycleStationNoId => 'Leihrad-Station';
+
+  @override
+  String get cargoBicycleStationNoId => 'Lastenrad-Station';
+
+  @override
+  String get carStationNoId => 'Carsharing-Station';
+
+  @override
+  String get taxiStationNoId => 'Taxistand';
+
+  @override
+  String get regioradStartUsing => 'Leihrad buchen';
+
+  @override
+  String get stadtradStartUsing => 'Leihrad buchen';
+
+  @override
+  String get scooterStartUsing => 'Buchen Sie einen E-Scooter';
+
+  @override
+  String get scooterStartUsingInfo => 'Mehr Informationen bei';
+
+  @override
+  String get bicycleStartUsing => 'Beginne Leihrad-Nutzung';
+
+  @override
+  String get bicycleStartUsingInfo => 'Mehr Informationen bei';
+
+  @override
+  String get cargoBicycleStartUsing => 'Beginne Lastenrad-Nutzung';
+
+  @override
+  String get cargoBicycleStartUsingInfo => 'Mehr Informationen bei';
+
+  @override
+  String get carStartUsing => 'Buchen Sie ein Carsharing-Fahrzeug';
+
+  @override
+  String get carStartUsingInfo => 'Mehr Informationen bei';
 
   @override
   String get chooseOnMap => 'Wähle auf der Karte';

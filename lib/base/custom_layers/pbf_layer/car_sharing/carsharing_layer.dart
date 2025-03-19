@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
@@ -54,7 +55,9 @@ class CarSharingLayer extends CustomLayer {
             name: element.name ?? "",
             icon: svgIcon != null
                 ? SvgPicture.string(
-                    svgIcon,
+                    ConfigDefault.value.cityBike
+                            .operators?[element.network?.operator]?.iconCode ??
+                        "",
                   )
                 : const Icon(Icons.error),
           ),
@@ -87,8 +90,22 @@ class CarSharingLayer extends CustomLayer {
                     top: markerSize / 5,
                   ),
                   child: svgIcon != null
-                      ? SvgPicture.string(
-                          svgIcon,
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: SvgPicture.string(
+                            svgIcon,
+                            colorFilter: ColorFilter.mode(
+                              hexToColor(
+                                ConfigDefault
+                                        .value
+                                        .cityBike
+                                        .operators?[element.network?.operator]
+                                        ?.colors?['background'] ??
+                                    "#FF000000",
+                              ),
+                              BlendMode.color,
+                            ),
+                          ),
                         )
                       : const Icon(Icons.error),
                 ),
@@ -97,10 +114,11 @@ class CarSharingLayer extends CustomLayer {
                   top: 0,
                   child: Container(
                     padding: EdgeInsets.all(2.5),
-                    // width: markerSize/ 1.5, 
+                    // width: markerSize/ 1.5,
                     // height: markerSize/ 1.5,
                     decoration: BoxDecoration(
-                      color: circleColor,border: Border.all(color: Colors.white, width: 1),
+                      color: circleColor,
+                      border: Border.all(color: Colors.white, width: 1),
                       shape: BoxShape.circle,
                     ),
                     child: Text(
@@ -119,6 +137,14 @@ class CarSharingLayer extends CustomLayer {
         );
       }),
     );
+  }
+
+  Color hexToColor(String hex) {
+    hex = hex.replaceFirst('#', '');
+    if (hex.length == 6) {
+      hex = 'FF$hex';
+    }
+    return Color(int.parse('0x$hex'));
   }
 
   List<CarSharingFeature> _cachedParkingMarkers = [];
