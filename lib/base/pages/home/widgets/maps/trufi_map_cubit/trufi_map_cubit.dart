@@ -13,7 +13,6 @@ import 'package:stadtnavi_core/base/pages/home/widgets/maps/utils/trufi_map_util
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/utils/map_utils/trufi_map_utils.dart';
-import 'package:trufi_core/base/widgets/maps/utils/trufi_map_animations.dart';
 
 part 'trufi_map_state.dart';
 
@@ -189,16 +188,7 @@ class TrufiMapController extends Cubit<TrufiMapState> {
     required double zoom,
     TickerProvider? tickerProvider,
   }) {
-    if (tickerProvider == null) {
-      mapController.move(center, zoom);
-    } else {
-      TrufiMapAnimations.move(
-        center: center,
-        zoom: zoom,
-        vsync: tickerProvider,
-        mapController: mapController,
-      );
-    }
+    mapController.move(center, zoom);
   }
 
   void _fitBounds({
@@ -206,17 +196,9 @@ class TrufiMapController extends Cubit<TrufiMapState> {
     TickerProvider? tickerProvider,
   }) {
     if (bounds == null) return;
-    if (tickerProvider == null) {
-      mapController.fitCamera(CameraFit.bounds(
-        bounds: bounds,
-        padding: EdgeInsets.all(50),
-      ));
-    } else {
-      TrufiMapAnimations.fitBounds(
-        bounds: bounds,
-        vsync: tickerProvider,
-        mapController: mapController,
-      );
-    }
+    mapController.fitCamera(CameraFit.bounds(
+      bounds: bounds,
+      padding: EdgeInsets.all(50),
+    ));
   }
 }
