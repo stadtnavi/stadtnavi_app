@@ -6,11 +6,13 @@ import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/live_bus/live_bus_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/local_json_layer/geojson_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_parks_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/car_sharing/carsharing_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/scooter/scooter_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 
@@ -171,8 +173,9 @@ class MapLayerCategory {
     final realType =
         properties?.layerType ?? categories.first.properties?.layerType;
     if (realType == "otp_layer") {
-      final whiteList = ["rail", "subway", "bus", "funicular"];
-      if (whiteList.contains(code)) return StopsLayer(this, 4);
+      if (["rail", "subway", "bus", "funicular"].contains(code)) {
+        return StopsLayer(this, 4);
+      }
       if (code == "vehicles") {
         return LiveBusLayer(this, 3);
       }
@@ -185,16 +188,10 @@ class MapLayerCategory {
       }
 
       if (code == "scooter") {
-        return MapPoiLayer(this, 3);
+        return ScooterLayer(this, 3);
       }
-      if (code == "cargo_bicycle") {
-        return MapPoiLayer(this, 3);
-      }
-      if (code == "bicycle") {
-        return CityBikesLayer(this, 5);
-      }
-      if (code == "car") {
-        return MapPoiLayer(this, 3);
+      if (["car", "cargo_bicycle", "bicycle"].contains(code)) {
+        return CarSharingLayer(this, 4);
       }
       if (code == "carpool") {
         return StopsLayer(this, 3);

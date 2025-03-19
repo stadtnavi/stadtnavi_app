@@ -8,6 +8,7 @@ import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_lay
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/car_sharing/carsharing_layer.dart';
 
 import 'dart:ui' as ui;
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
@@ -18,6 +19,7 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_la
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/scooter/scooter_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
 
@@ -84,6 +86,18 @@ class CachedTileProvider extends TileProvider {
         ),
       if (types.contains(ChargingLayer))
         ChargingLayer.fetchPBF(
+          coords.z.toInt(),
+          coords.x.toInt(),
+          coords.y.toInt(),
+        ),
+      if (types.contains(CarSharingLayer))
+        CarSharingLayer.fetchPBF(
+          coords.z.toInt(),
+          coords.x.toInt(),
+          coords.y.toInt(),
+        ),
+      if (types.contains(ScooterLayer))
+        ScooterLayer.fetchPBF(
           coords.z.toInt(),
           coords.x.toInt(),
           coords.y.toInt(),
