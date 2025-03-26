@@ -110,27 +110,6 @@ class CachedTileProvider extends TileProvider {
   }
 }
 
-final Map<Uri, bool> _cache = {};
-
-Future<Uint8List> cachedFirstFetch(Uri uri) async {
-  if (_cache.containsKey(uri)) {
-    // print("cachedFirstFetch ${uri.path}");
-    throw Exception(
-      "already fetched",
-    );
-  }
-
-  _cache[uri] = true;
-  final response = await http.get(uri);
-  if (response.statusCode != 200) {
-    _cache[uri] = false;
-    throw Exception(
-      "Server Error on fetchPBF $uri with ${response.statusCode}",
-    );
-  }
-
-  return response.bodyBytes;
-}
 
 class CachedTileImageProvider extends ImageProvider<CachedTileImageProvider> {
   final String url;
@@ -225,7 +204,7 @@ class CustomCacheManager extends CacheManager {
           Config(
             key,
             stalePeriod: const Duration(days: 20),
-            maxNrOfCacheObjects: 100000,
+            maxNrOfCacheObjects: 10000000,
             repo: JsonCacheInfoRepository(databaseName: key),
             fileService: HttpFileService(),
           ),

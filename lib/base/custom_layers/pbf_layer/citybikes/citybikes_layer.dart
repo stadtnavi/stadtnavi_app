@@ -7,6 +7,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
+import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/city_bike_feature_tile.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
@@ -190,7 +191,7 @@ class CityBikesLayer extends CustomLayer {
       host: ApiConfig().baseDomain,
       path: "/routing/v1/router/vectorTiles/citybikes/$z/$x/$y.pbf",
     );
-    Uint8List bodyByte = await cachedFirstFetch(uri);
+    Uint8List bodyByte = await cachedFirstFetch(uri, z, x, y);
     final tile = VectorTile.fromBytes(bytes: bodyByte);
 
     for (final VectorTileLayer layer in tile.layers) {

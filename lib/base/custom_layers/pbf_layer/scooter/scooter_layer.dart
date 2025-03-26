@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
+import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
@@ -168,7 +169,7 @@ class ScooterLayer extends CustomLayer {
       path: "/otp/routers/default/vectorTiles/rentalVehicles/$z/$x/$y.pbf",
     );
 
-    Uint8List bodyByte = await cachedFirstFetch(uri);
+    Uint8List bodyByte = await cachedFirstFetch(uri, z, x, y);
     final tile = VectorTile.fromBytes(bytes: bodyByte);
 
     for (final VectorTileLayer layer in tile.layers) {
