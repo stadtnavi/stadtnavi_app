@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
+import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cancellable_network.dart';
 import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
@@ -95,16 +96,16 @@ class MapLayer extends MapTileProvider {
     return [
       if (id == MapLayerIds.streets)
         TileLayer(
-          tileProvider: CancellableNetworkTileProvider(context: context),
+          tileProvider: CachedTileProvider(context: context),
           urlTemplate: "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
         ),
       if (id == MapLayerIds.satellite) ...[
         TileLayer(
-          tileProvider: CancellableNetworkTileProvider(context: context),
+          tileProvider: CachedTileProvider(context: context),
           urlTemplate: "https://tiles.stadtnavi.eu/orthophoto/{z}/{x}/{y}.jpg",
         ),
         TileLayer(
-          tileProvider: CancellableNetworkTileProvider(context: context),
+          tileProvider: CachedTileProvider(context: context),
           // backgroundColor: Colors.transparent,
           urlTemplate:
               "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
@@ -112,13 +113,13 @@ class MapLayer extends MapTileProvider {
       ],
       if (id == MapLayerIds.bike)
         TileLayer(
-          tileProvider: CancellableNetworkTileProvider(context: context),
+          tileProvider: CachedTileProvider(context: context),
           urlTemplate: "https://tiles.stadtnavi.eu/bicycle/{z}/{x}/{y}@2x.png",
           subdomains: const ["a", "b", "c"],
         ),
       if (id == MapLayerIds.terrain)
         TileLayer(
-          tileProvider: CancellableNetworkTileProvider(context: context),
+          tileProvider: CachedTileProvider(context: context),
           urlTemplate:
               "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
           subdomains: const ["a", "b", "c"],
@@ -132,7 +133,7 @@ class MapLayer extends MapTileProvider {
             transparent: true,
             version: "1.1.1",
           ),
-          tileProvider: CancellableNetworkTileProvider(context: context),
+          tileProvider: CachedTileProvider(context: context),
         ),
     ];
   }
