@@ -553,9 +553,72 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String get bicycleParkingFilterSecurePreferred => 'Secure preferred';
-  
+
   @override
   String get disruptionInfoNoAlerts => 'No known disruptions or diversions.';
+
+  @override
+  String get taxiAvailability => 'Taxis available at the station right now';
+
+  @override
+  String get bicycleAvailability => 'Bikes available';
+
+  @override
+  String get carAvailability => 'Shared cars available';
+
+  @override
+  String get cargoBicycleAvailability => 'Cargo bikes available at the station right now';
+
+  @override
+  String get parkAndRideAvailability => 'Spaces available';
+
+  @override
+  String get scooterAvailability => 'Kick scooters available at the station right now';
+
+  @override
+  String get scooterStationNoId => 'e-scooter';
+
+  @override
+  String get bicycleStationNoId => 'Bike station';
+
+  @override
+  String get cargoBicycleStationNoId => 'Cargo bike rental station';
+
+  @override
+  String get carStationNoId => 'Car Sharing Station';
+
+  @override
+  String get taxiStationNoId => 'Taxi rank';
+
+  @override
+  String get regioradStartUsing => 'Leihrad buchen';
+
+  @override
+  String get stadtradStartUsing => 'Leihrad buchen';
+
+  @override
+  String get scooterStartUsing => 'Book an e-scooter';
+
+  @override
+  String get scooterStartUsingInfo => 'More information at';
+
+  @override
+  String get bicycleStartUsing => 'Start using rental bikes';
+
+  @override
+  String get bicycleStartUsingInfo => 'More information at';
+
+  @override
+  String get cargoBicycleStartUsing => 'Book a cargo bike';
+
+  @override
+  String get cargoBicycleStartUsingInfo => 'More information at';
+
+  @override
+  String get carStartUsing => 'Book a shared car';
+
+  @override
+  String get carStartUsingInfo => 'More information at';
 
   @override
   String get chooseOnMap => 'Choose on map';

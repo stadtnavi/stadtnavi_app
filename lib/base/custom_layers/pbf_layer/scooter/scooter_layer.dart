@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
@@ -22,8 +23,7 @@ import 'scooter_marker_modal.dart';
 class ScooterLayer extends CustomLayer {
   final MapLayerCategory mapCategory;
 
-  ScooterLayer(this.mapCategory, int weight)
-      : super(mapCategory.code, weight);
+  ScooterLayer(this.mapCategory, int weight) : super(mapCategory.code, weight);
   Marker buildMarker({
     required ScooterFeature element,
     required double markerSize,
@@ -45,7 +45,9 @@ class ScooterLayer extends CustomLayer {
             name: element.name ?? "",
             icon: svgIcon != null
                 ? SvgPicture.string(
-                    svgIcon,
+                    ConfigDefault.value.cityBike
+                            .operators?[element.network?.operator]?.iconCode ??
+                        "",
                   )
                 : const Icon(Icons.error),
           ),
@@ -73,24 +75,43 @@ class ScooterLayer extends CustomLayer {
               children: [
                 Container(
                   margin: EdgeInsets.only(
-                    left: markerSize! / 5,
+                    left: markerSize / 5,
                     top: markerSize / 5,
                   ),
                   child: svgIcon != null
-                      ? SvgPicture.string(
-                          svgIcon,
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(50),
+                          child: SvgPicture.string(
+                            svgIcon,
+                            colorFilter: ColorFilter.mode(
+                              hexToColor(
+                                ConfigDefault
+                                        .value
+                                        .cityBike
+                                        .operators?[element.network?.operator]
+                                        ?.colors?['background'] ??
+                                    "#FF000000",
+                              ),
+                              BlendMode.color,
+                            ),
+                          ),
                         )
                       : const Icon(Icons.error),
                 ),
-                // if (availabilityParking != null)
-                //   availabilityParking.getImage(size: markerSize / 2),
               ],
             ),
-            // child: SvgPicture.string(svgIcon ?? ''),
           ),
         );
       }),
     );
+  }
+
+  Color hexToColor(String hex) {
+    hex = hex.replaceFirst('#', '');
+    if (hex.length == 6) {
+      hex = 'FF$hex';
+    }
+    return Color(int.parse('0x$hex'));
   }
 
   List<ScooterFeature> _cachedParkingMarkers = [];
@@ -144,8 +165,7 @@ class ScooterLayer extends CustomLayer {
     final uri = Uri(
       scheme: "https",
       host: ApiConfig().baseDomain,
-      path:
-          "/otp/routers/default/vectorTiles/rentalVehicles/$z/$x/$y.pbf",
+      path: "/otp/routers/default/vectorTiles/rentalVehicles/$z/$x/$y.pbf",
     );
 
     Uint8List bodyByte = await cachedFirstFetch(uri);
