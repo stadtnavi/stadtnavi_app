@@ -231,7 +231,7 @@ abstract class StadtnaviBaseLocalization {
   /// Bike configuration panel label
   ///
   /// In en, this message translates to:
-  /// **'Bike'**
+  /// **'Bicycle'**
   String get settingPanelMyModesTransportBike;
 
   /// Average speed type
@@ -1067,11 +1067,138 @@ abstract class StadtnaviBaseLocalization {
   /// In en, this message translates to:
   /// **'Secure preferred'**
   String get bicycleParkingFilterSecurePreferred;
+
   /// No description provided for @disruptionInfoNoAlerts.
   ///
   /// In en, this message translates to:
   /// **'No known disruptions or diversions.'**
   String get disruptionInfoNoAlerts;
+
+  /// No description provided for @taxiAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Taxis available at the station right now'**
+  String get taxiAvailability;
+
+  /// No description provided for @bicycleAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Bikes available'**
+  String get bicycleAvailability;
+
+  /// No description provided for @carAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared cars available'**
+  String get carAvailability;
+
+  /// No description provided for @cargoBicycleAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Cargo bikes available at the station right now'**
+  String get cargoBicycleAvailability;
+
+  /// No description provided for @parkAndRideAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Spaces available'**
+  String get parkAndRideAvailability;
+
+  /// No description provided for @scooterAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Kick scooters available at the station right now'**
+  String get scooterAvailability;
+
+  /// No description provided for @scooterStationNoId.
+  ///
+  /// In en, this message translates to:
+  /// **'e-scooter'**
+  String get scooterStationNoId;
+
+  /// No description provided for @bicycleStationNoId.
+  ///
+  /// In en, this message translates to:
+  /// **'Bike station'**
+  String get bicycleStationNoId;
+
+  /// No description provided for @cargoBicycleStationNoId.
+  ///
+  /// In en, this message translates to:
+  /// **'Cargo bike rental station'**
+  String get cargoBicycleStationNoId;
+
+  /// No description provided for @carStationNoId.
+  ///
+  /// In en, this message translates to:
+  /// **'Car Sharing Station'**
+  String get carStationNoId;
+
+  /// No description provided for @taxiStationNoId.
+  ///
+  /// In en, this message translates to:
+  /// **'Taxi rank'**
+  String get taxiStationNoId;
+
+  /// No description provided for @regioradStartUsing.
+  ///
+  /// In en, this message translates to:
+  /// **'Leihrad buchen'**
+  String get regioradStartUsing;
+
+  /// No description provided for @stadtradStartUsing.
+  ///
+  /// In en, this message translates to:
+  /// **'Leihrad buchen'**
+  String get stadtradStartUsing;
+
+  /// No description provided for @scooterStartUsing.
+  ///
+  /// In en, this message translates to:
+  /// **'Book an e-scooter'**
+  String get scooterStartUsing;
+
+  /// No description provided for @scooterStartUsingInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'More information at'**
+  String get scooterStartUsingInfo;
+
+  /// No description provided for @bicycleStartUsing.
+  ///
+  /// In en, this message translates to:
+  /// **'Start using rental bikes'**
+  String get bicycleStartUsing;
+
+  /// No description provided for @bicycleStartUsingInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'More information at'**
+  String get bicycleStartUsingInfo;
+
+  /// No description provided for @cargoBicycleStartUsing.
+  ///
+  /// In en, this message translates to:
+  /// **'Book a cargo bike'**
+  String get cargoBicycleStartUsing;
+
+  /// No description provided for @cargoBicycleStartUsingInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'More information at'**
+  String get cargoBicycleStartUsingInfo;
+
+  /// No description provided for @carStartUsing.
+  ///
+  /// In en, this message translates to:
+  /// **'Book a shared car'**
+  String get carStartUsing;
+
+  /// No description provided for @carStartUsingInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'More information at'**
+  String get carStartUsingInfo;
 
   /// No description provided for @chooseOnMap.
   ///
