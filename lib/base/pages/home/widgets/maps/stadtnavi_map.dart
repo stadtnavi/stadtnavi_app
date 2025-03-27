@@ -56,30 +56,6 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
     final customLayersCubit = context.watch<CustomLayersCubit>();
     final currentMapType = context.watch<MapTileProviderCubit>().state;
     final localizationST = StadtnaviBaseLocalization.of(context);
-    // int? clusterSize;
-    // Size? markerClusterSize;
-    // switch (mapZoom) {
-    //   case 15:
-    //     clusterSize = 25;
-    //     markerClusterSize = const Size(30, 30);
-    //     break;
-    //   case 16:
-    //     clusterSize = 40;
-    //     markerClusterSize = const Size(35, 35);
-    //     break;
-    //   case 17:
-    //     clusterSize = 30;
-    //     markerClusterSize = const Size(25, 40);
-    //     break;
-    //   case 18:
-    //     clusterSize = 30;
-    //     markerClusterSize = const Size(35, 45);
-    //     break;
-    // }
-    // zoom 18 Size(30, 35) 30
-    // zoom 17 Size(20, 25) 15
-    // zoom 16 Size(30, 30) 25
-    // zoom 15 Size(25, 25) 20
     return Stack(
       children: [
         StreamBuilder<LatLng?>(
@@ -103,10 +79,22 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
                   onTap: widget.onTap,
                   onLongPress: widget.onLongPress,
                   initialCenter: mapConfiguratiom.center,
-                  onMapReady: () {
+                  onMapReady: () async {
                     if (!widget.trufiMapController.readyCompleter.isCompleted) {
                       widget.trufiMapController.readyCompleter.complete();
                     }
+                    final originalCenter =
+                        widget.trufiMapController.mapController.camera.center;
+                    final originalZoom =
+                        widget.trufiMapController.mapController.camera.zoom;
+
+                    widget.trufiMapController.mapController
+                        .move(originalCenter, originalZoom + 0.0001);
+
+                    await Future.delayed(Duration(milliseconds: 50));
+
+                    widget.trufiMapController.mapController
+                        .move(originalCenter, originalZoom);
                   },
                   onPositionChanged: (
                     MapCamera position,
