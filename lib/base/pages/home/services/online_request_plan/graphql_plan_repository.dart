@@ -32,6 +32,7 @@ class GraphQLPlanRepository {
       : client = getClient(
           endpoint,
         );
+  static const maxRetries = 5;
 
   Future<Plan> fetchPlanAdvanced({
     required TrufiLocation fromLocation,
@@ -101,12 +102,35 @@ class GraphQLPlanRepository {
         ],
       ),
     );
-    final planAdvancedData = await client.query(planAdvancedQuery);
+
+    int attempt = 0;
+    QueryResult<Object?>? planAdvancedData;
+    while (attempt < maxRetries) {
+      try {
+        planAdvancedData = await client.query(planAdvancedQuery);
+        if (!(planAdvancedData.hasException && planAdvancedData.data == null)) {
+          break;
+        } else {
+          // print("Request failed (status ${response.statusCode}), retrying...");
+        }
+      } catch (e) {
+        // print("Error fetching image (attempt ${attempt + 1}): $e");
+      }
+
+      attempt++;
+      if (attempt < maxRetries) {
+        await Future.delayed(const Duration(seconds: 1));
+      }
+    }
+    if (planAdvancedData == null) {
+      throw Exception("Failed to load intineraries");
+    }
     if (planAdvancedData.hasException && planAdvancedData.data == null) {
       throw planAdvancedData.exception!.graphqlErrors.isNotEmpty
           ? Exception("Bad request")
           : Exception("Error connection");
     }
+
     if (planAdvancedData.source?.isEager ?? false) {
       await Future.delayed(const Duration(milliseconds: 200));
     }
@@ -259,7 +283,29 @@ class GraphQLPlanRepository {
       //         ],
       // },
     );
-    final walkBikePlanData = await client.query(walkBikePlanQuery);
+
+    int attempt = 0;
+    QueryResult<Object?>? walkBikePlanData;
+    while (attempt < maxRetries) {
+      try {
+        walkBikePlanData = await client.query(walkBikePlanQuery);
+        if (!(walkBikePlanData.hasException && walkBikePlanData.data == null)) {
+          break;
+        } else {
+          // print("Request failed (status ${response.statusCode}), retrying...");
+        }
+      } catch (e) {
+        // print("Error fetching image (attempt ${attempt + 1}): $e");
+      }
+
+      attempt++;
+      if (attempt < maxRetries) {
+        await Future.delayed(const Duration(seconds: 1));
+      }
+    }
+    if (walkBikePlanData == null) {
+      throw Exception("Failed to load intinerary-modes");
+    }
     if (walkBikePlanData.hasException && walkBikePlanData.data == null) {
       throw walkBikePlanData.exception!.graphqlErrors.isNotEmpty
           ? Exception("Bad request")
