@@ -110,27 +110,6 @@ class CachedTileProvider extends TileProvider {
   }
 }
 
-final Map<Uri, bool> _cache = {};
-
-Future<Uint8List> cachedFirstFetch(Uri uri) async {
-  if (_cache.containsKey(uri)) {
-    // print("cachedFirstFetch ${uri.path}");
-    throw Exception(
-      "already fetched",
-    );
-  }
-
-  _cache[uri] = true;
-  final response = await http.get(uri);
-  if (response.statusCode != 200) {
-    _cache[uri] = false;
-    throw Exception(
-      "Server Error on fetchPBF $uri with ${response.statusCode}",
-    );
-  }
-
-  return response.bodyBytes;
-}
 
 class CachedTileImageProvider extends ImageProvider<CachedTileImageProvider> {
   final String url;
@@ -162,13 +141,37 @@ class CachedTileImageProvider extends ImageProvider<CachedTileImageProvider> {
       // print("Loaded from disk cache: $url");
       bytes = await fileInfo.file.readAsBytes();
     } else {
-      // print("Downloading: $url");
-      final response = await http.get(Uri.parse(url), headers: {
-        "Referer": "https://herrenberg.stadtnavi.de/",
-      });
+      const maxRetries = 5;
+      int attempt = 0;
+      http.Response? response;
 
-      if (response.statusCode != 200) {
-        throw Exception("Failed to load image: $url");
+      while (attempt < maxRetries) {
+        try {
+          response = await http.get(
+            Uri.parse(url),
+            headers: {
+              "Referer": "https://herrenberg.stadtnavi.de/",
+            },
+          );
+
+          if (response.statusCode == 200) {
+            break;
+          } else {
+            // print("Request failed (status ${response.statusCode}), retrying...");
+          }
+        } catch (e) {
+          // print("Error fetching image (attempt ${attempt + 1}): $e");
+        }
+
+        attempt++;
+        if (attempt < maxRetries) {
+          await Future.delayed(Duration(seconds: 1));
+        }
+      }
+
+      if (response == null || response.statusCode != 200) {
+        throw Exception(
+            "Failed to load image after $maxRetries attempts: $url");
       }
 
       bytes = response.bodyBytes;
@@ -200,8 +203,8 @@ class CustomCacheManager extends CacheManager {
       : super(
           Config(
             key,
-            stalePeriod: const Duration(days: 20), // Cache expiration time
-            maxNrOfCacheObjects: 500, // Max cache size (adjust as needed)
+            stalePeriod: const Duration(days: 20),
+            maxNrOfCacheObjects: 10000000,
             repo: JsonCacheInfoRepository(databaseName: key),
             fileService: HttpFileService(),
           ),

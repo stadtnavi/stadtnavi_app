@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
+import 'package:stadtnavi_core/consts.dart';
 import './live_bus_layer.dart';
 import 'live_bus_model.dart';
 import 'package:http/http.dart' as http;
@@ -94,8 +95,7 @@ class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
 
   Future<Trip> _fetchData(String tripId) async {
     final response = await http.post(
-      Uri.parse(
-          "https://api.dev.stadtnavi.eu/otp/routers/default/index/graphql"),
+      Uri.parse(ApiConfig().openTripPlannerUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
@@ -246,8 +246,6 @@ class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
       ],
     );
   }
-
-
 
   String formatUnixTimestamp(int unixTimestamp) {
     DateTime date = DateTime.fromMillisecondsSinceEpoch(unixTimestamp * 1000);

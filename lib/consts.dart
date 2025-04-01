@@ -1,7 +1,5 @@
 class ApiConfig {
-  ApiConfig._privateConstructor() {
-    _checkDateAndUpdateDomain();
-  }
+  ApiConfig._privateConstructor();
 
   static final ApiConfig _instance = ApiConfig._privateConstructor();
 
@@ -9,17 +7,8 @@ class ApiConfig {
     return _instance;
   }
 
-  String baseDomain = "api.dev.stadtnavi.eu";
+  String baseDomain = "api.stadtnavi.eu";
 
-  void _checkDateAndUpdateDomain() {
-    var currentDate = DateTime.now();
-    var switchDate = DateTime(2023, 12, 28);
-    if (currentDate.isAfter(switchDate)) {
-      baseDomain = "api.dev.stadtnavi.eu";
-    }
-  }
-
-  String get openTripPlannerUrl =>
-      "https://$baseDomain/routing/v1/router/index/graphql";
+  String get openTripPlannerUrl => "https://$baseDomain/otp/gtfs/v1";
   String get faresURL => "https://$baseDomain/fares";
 }

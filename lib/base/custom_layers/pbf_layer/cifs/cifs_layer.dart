@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
+import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
@@ -139,7 +140,7 @@ class RoadworksLayer extends CustomLayer {
       path: "/map/v1/cifs/$z/$x/$y.pbf",
     );
 
-    Uint8List bodyByte = await cachedFirstFetch(uri);
+    Uint8List bodyByte = await cachedFirstFetch(uri, z, x, y);
     final tile = VectorTile.fromBytes(bytes: bodyByte);
 
     for (final VectorTileLayer layer in tile.layers) {
