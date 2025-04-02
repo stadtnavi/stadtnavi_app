@@ -113,7 +113,7 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
                     Expanded(
                       child: Text(
                         localizationST.translate(
-                            "${widget.element.network?.formFactors?.firstOrNull}-station-no-id"),
+                            "${widget.element.network?.type}-station-no-id"),
                       ),
                     ),
                   ],
@@ -135,7 +135,7 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
                           children: [
                             TextSpan(
                               text: localizationST.translate(
-                                  "${widget.element.network?.formFactors?.firstOrNull}-availability"),
+                                  "${widget.element.network?.type}-availability"),
                             ),
                             TextSpan(
                               text: '($vehiclesAvailable)',
@@ -167,7 +167,7 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
                             Expanded(
                               child: Text(
                                 localizationST.translate(
-                                    "${widget.element.network?.formFactors?.firstOrNull}-start-using"),
+                                    "${widget.element.network?.type}-start-using"),
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -189,7 +189,7 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
                                   }
                                 },
                                 child: Text(
-                                  "${localizationST.translate("${widget.element.network?.formFactors?.firstOrNull}-start-using-info")}${(networkName != null ? " $networkName" : '')}",
+                                  "${localizationST.translate("${widget.element.network?.type}-start-using-info")}${(networkName != null ? " $networkName" : '')}",
                                   style: const TextStyle(
                                     fontSize: 14,
                                     color: Color(0xff9BBF28),
