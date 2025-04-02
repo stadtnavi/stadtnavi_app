@@ -54,7 +54,7 @@ class MapModesCubit extends Cubit<MapModesState> {
     required String localeName,
   }) async {
     emit(state.copyWithNullable(
-      isFetchingModes: true,
+      isFetchingModes: false,
       modesTransport: const Optional.value(null),
     ));
     final modesTransportEntity = await _fetchPlanModesState(
@@ -96,6 +96,12 @@ class MapModesCubit extends Cubit<MapModesState> {
         isFetchingModes: false,
       ),
     );
+  }
+
+  Future<void> updateIsFetchingModes(bool isFetchingModes) async {
+    emit(state.copyWith(
+      isFetchingModes: isFetchingModes,
+    ));
   }
 
   Future<MapModesState> fetchPlanModeRidePark({

@@ -295,18 +295,28 @@ class _HomePageState extends State<HomePage>
       context: context,
       onExecute: () async {
         await mapModesCubit.reset();
+        mapModesCubit
+            .fetchModesPlans(
+          from: mapRouteState.fromPlace!,
+          to: mapRouteState.toPlace!,
+          advancedOptions: settingFetchState,
+          localeName: languageCode,
+        )
+            .then(
+          (voids) {
+            if (!mapRouteCubit.state.isPlacesDefined) {
+              mapModesCubit.reset();
+            }
+          },
+        );
         await mapRouteCubit.fetchPlan(
           advancedOptions: settingFetchState,
           localeName: languageCode,
         );
       },
       onFinish: (_) {
-        mapModesCubit.fetchModesPlans(
-          from: mapRouteState.fromPlace!,
-          to: mapRouteState.toPlace!,
-          advancedOptions: settingFetchState,
-          localeName: languageCode,
-        );
+        mapModesCubit
+            .updateIsFetchingModes(mapModesCubit.state.modesTransport == null);
       },
     );
   }
