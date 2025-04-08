@@ -61,6 +61,7 @@ void main() async {
   await _migrationOldData();
   TransportModeExtension.visibleSettings[TransportMode.funicular] = true;
   defaultTransportModes.add(TransportMode.funicular);
+  defaultTransportModes.add(TransportMode.carPool);
   // TODO we need to improve TransportMode Configuration
   TransportModeConfiguration.configure(transportColors: {
     TransportMode.bicycle: const Color(0xffFECC01),
