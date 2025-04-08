@@ -609,7 +609,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get bicycleStartUsingInfo => 'Mehr Informationen bei';
 
   @override
-  String get cargoBicycleStartUsing => 'Beginne Lastenrad-Nutzung';
+  String get cargoBicycleStartUsing => 'Buchen Sie ein Lastenrad';
 
   @override
   String get cargoBicycleStartUsingInfo => 'Mehr Informationen bei';

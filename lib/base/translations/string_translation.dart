@@ -13,6 +13,7 @@ extension StadtnaviLocalizationExtension on StadtnaviBaseLocalization {
       "bicycle-availability": () => bicycleAvailability,
       "car-availability": () => carAvailability,
       "cargoBicycle-availability": () => cargoBicycleAvailability,
+      "cargo_bicycle-availability": () => cargoBicycleAvailability,
       "parkAndRide-availability": () => parkAndRideAvailability,
       "scooter-availability": () => scooterAvailability,
       "scooter-station-no-id": () => scooterStationNoId,
