@@ -128,7 +128,7 @@ class StopsLayer extends CustomLayer {
     final uri = Uri(
       scheme: 'https',
       host: ApiConfig().baseDomain,
-      path: '/routing/v1/router/vectorTiles/stops/$z/$x/$y.pbf',
+      path: '/otp/routers/default/vectorTiles/stops/$z/$x/$y.pbf',
     );
 
     Uint8List bodyByte = await cachedFirstFetch(uri, z, x, y);

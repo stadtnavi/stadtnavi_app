@@ -39,7 +39,7 @@ class ParkingInformationServices {
     final uri = Uri(
       scheme: "https",
       host: ApiConfig().baseDomain,
-      path: "/routing/v1/router/vectorTiles/parking/$z/$x/$y.pbf",
+      path: "/otp/routers/default/vectorTiles/parking/$z/$x/$y.pbf",
     );
     final response = await http.get(uri);
     if (response.statusCode != 200) {
