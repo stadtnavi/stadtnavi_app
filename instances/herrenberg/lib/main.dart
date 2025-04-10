@@ -69,7 +69,7 @@ void main() async {
   });
   await MatomoTracker.instance.initialize(
     siteId: '2',
-    url: 'https://track.dev.stadtnavi.eu/matomo.php',
+    url: 'https://track.stadtnavi.eu/matomo.php',
   );
   ConfigDefault.instance.configData = configHerrenbergMerged;
   runApp(

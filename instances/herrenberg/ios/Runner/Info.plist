@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>stadtnavi Test</string>
+	<string>stadtnavi</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>stadtnavi Test</string>
+	<string>stadtnavi</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -34,9 +34,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>stadtnavi app is using your location to display it on a map.</string>
+	<string>Your location is used to show your position on the map and to plan routes starting from where you are.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>stadtnavi app is using your location to display it on a map.</string>
+	<string>Your location is used to show your position on the map and to plan routes starting from where you are.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>

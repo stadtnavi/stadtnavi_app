@@ -50,21 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBBxw003OV3h5Zq7-9f-6J5hxuCuMl3Mc0',
-    appId: '1:624400633028:android:006cf714ace4f09bb50d91',
-    messagingSenderId: '624400633028',
-    projectId: 'stadtnavi-herrenberg-int-dfbbd',
-    storageBucket: 'stadtnavi-herrenberg-int-dfbbd.appspot.com',
+    apiKey: 'AIzaSyBqBnUtnMrbjhDMJIjXwLpXzv0UmPfL32c',
+    appId: '1:653530321104:android:9826517cef5b169a0e8ed5',
+    messagingSenderId: '653530321104',
+    projectId: 'stadtnavi-herrenberg',
+    storageBucket: 'stadtnavi-herrenberg.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAb1vtCqGIgVYMYSgBzTwVp1fGNLL2WbK8',
-    appId: '1:624400633028:ios:40a720ec8dab28a1b50d91',
-    messagingSenderId: '624400633028',
-    projectId: 'stadtnavi-herrenberg-int-dfbbd',
-    storageBucket: 'stadtnavi-herrenberg-int-dfbbd.appspot.com',
-    iosClientId: '624400633028-i6sg6gb5hbpoqsfquq8h1ehq33gss0h4.apps.googleusercontent.com',
-    iosBundleId: 'de.stadtnavi.herrenberg.internal',
+    apiKey: 'AIzaSyDv_qQhsUoi4xac81Prgz026Yh496nUSok',
+    appId: '1:653530321104:ios:36a8043592e1995b0e8ed5',
+    messagingSenderId: '653530321104',
+    projectId: 'stadtnavi-herrenberg',
+    storageBucket: 'stadtnavi-herrenberg.appspot.com',
+    iosClientId: '653530321104-d0380gl1h7sf695d1bcjgh2peeome7me.apps.googleusercontent.com',
+    iosBundleId: 'de.stadtnavi.herrenberg',
   );
 
 }

@@ -1,37 +1,37 @@
 {
   "project_info": {
-    "project_number": "624400633028",
-    "project_id": "stadtnavi-herrenberg-int-dfbbd",
-    "storage_bucket": "stadtnavi-herrenberg-int-dfbbd.appspot.com"
+    "project_number": "653530321104",
+    "project_id": "stadtnavi-herrenberg",
+    "storage_bucket": "stadtnavi-herrenberg.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:624400633028:android:006cf714ace4f09bb50d91",
+        "mobilesdk_app_id": "1:653530321104:android:9826517cef5b169a0e8ed5",
         "android_client_info": {
-          "package_name": "de.stadtnavi.herrenberg.internal"
+          "package_name": "de.stadtnavi.herrenberg"
         }
       },
       "oauth_client": [
         {
-          "client_id": "624400633028-jnojpi1ngcvhsmf2eqjp1q4tokh4gtuc.apps.googleusercontent.com",
+          "client_id": "653530321104-jb8f0o2k4t3f4qs0juvrg84j7nrp4nfv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBBxw003OV3h5Zq7-9f-6J5hxuCuMl3Mc0"
+          "current_key": "AIzaSyBqBnUtnMrbjhDMJIjXwLpXzv0UmPfL32c"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "624400633028-jnojpi1ngcvhsmf2eqjp1q4tokh4gtuc.apps.googleusercontent.com",
+              "client_id": "653530321104-jb8f0o2k4t3f4qs0juvrg84j7nrp4nfv.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "624400633028-i6sg6gb5hbpoqsfquq8h1ehq33gss0h4.apps.googleusercontent.com",
+              "client_id": "653530321104-82cr31iho781p02f2a3qn395uai9odjb.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
                 "bundle_id": "de.stadtnavi.herrenberg.internal"
