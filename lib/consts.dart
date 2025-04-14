@@ -7,7 +7,7 @@ class ApiConfig {
     return _instance;
   }
 
-  String baseDomain = "api.stadtnavi.eu";
+  String baseDomain = "api.stadtnavi.de";
 
   String get openTripPlannerUrl => "https://$baseDomain/otp/gtfs/v1";
   String get faresURL => "https://$baseDomain/fares";
