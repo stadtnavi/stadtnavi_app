@@ -14,7 +14,6 @@ import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'geojson_marker_modal.dart';
 import 'geojson_marker_model.dart';
 import 'dart:convert';
-import 'package:latlong2/latlong.dart';
 import 'package:http/http.dart' as http;
 
 class GeojsonLayer extends CustomLayer {

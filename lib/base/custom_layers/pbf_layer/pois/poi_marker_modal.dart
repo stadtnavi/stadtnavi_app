@@ -5,7 +5,6 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/simple_openi
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/widgets/opening_time_table.dart';
 import "package:url_launcher/url_launcher.dart";
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/other_icons.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';

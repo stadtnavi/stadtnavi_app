@@ -5,13 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
-import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
-import 'package:stadtnavi_core/base/pages/home/widgets/maps/utils/trufi_map_utils.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/load_location.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
@@ -113,15 +111,15 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
     }
   }
 
-  void _handleOnMapTap(BuildContext context, LatLng point) {
-    final PlanItinerary? tappedItinerary = itineraryForPoint(
-        widget.trufiMapController.itineraries,
-        widget.trufiMapController.state.unselectedPolylinesLayer!.polylines,
-        point);
-    if (tappedItinerary != null) {
-      context.read<MapRouteCubit>().selectItinerary(tappedItinerary);
-    }
-  }
+  // void _handleOnMapTap(BuildContext context, LatLng point) {
+  //   final PlanItinerary? tappedItinerary = itineraryForPoint(
+  //       widget.trufiMapController.itineraries,
+  //       widget.trufiMapController.state.unselectedPolylinesLayer!.polylines,
+  //       point);
+  //   if (tappedItinerary != null) {
+  //     context.read<MapRouteCubit>().selectItinerary(tappedItinerary);
+  //   }
+  // }
 
   void onLongMapPress(BuildContext context, LatLng location) {
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;

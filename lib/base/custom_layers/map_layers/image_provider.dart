@@ -7,6 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:meta/meta.dart';
 
+// ignore: invalid_internal_annotation
 @internal
 @visibleForTesting
 class CancellableNetworkImageProvider

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map_marker_cluster_2/src/node/marker_node.dart';
-import 'package:stadtnavi_core/base/custom_layers/live_bus/live_bus_layer.dart';
+// ignore: implementation_imports
+import 'package:flutter_map_marker_cluster/src/node/marker_node.dart';
 
 class ShowOverlappingData extends StatelessWidget {
   final Key keyData;

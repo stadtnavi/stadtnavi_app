@@ -19,7 +19,6 @@ class GeojsonMarkerModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     String title = element.name?.trim() ?? "";
     final details = [
       if (_isNotEmpty(element.address))
