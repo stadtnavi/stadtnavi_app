@@ -37,7 +37,7 @@ class StopFeature {
     String? type = properties['type'] != null
         ? properties['type']?.dartStringValue ?? ''
         : null;
-    if (type == "carpool" &&
+    if (type == "CARPOOL" &&
         !(name ?? '').contains("P+M") &&
         !(gtfsId).contains(":mfdz:") &&
         !(gtfsId).contains(":bbnavi:")) {
