@@ -709,14 +709,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  lodash_flutter:
-    dependency: transitive
-    description:
-      name: lodash_flutter
-      sha256: f9c09da0b04c085a09b3c7558110609867d55eac9df23167ed6294a3988398da
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.3"
   logger:
     dependency: transitive
     description:
@@ -1120,7 +1112,7 @@ packages:
       path: "../.."
       relative: true
     source: path
-    version: "3.26.1"
+    version: "3.29.3"
   stream_channel:
     dependency: transitive
     description:
@@ -1164,10 +1156,12 @@ packages:
   trufi_core:
     dependency: transitive
     description:
-      path: "../../../trufi-core"
-      relative: true
-    source: path
-    version: "3.29.0"
+      path: "."
+      ref: "3.29.3-stadtnavi-lts"
+      resolved-ref: f983060a004ae06434278c3a22be62078bef87f6
+      url: "https://github.com/trufi-association/trufi-core.git"
+    source: git
+    version: "3.29.3"
   typed_data:
     dependency: transitive
     description:
