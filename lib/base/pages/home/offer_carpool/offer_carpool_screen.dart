@@ -550,8 +550,8 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
         "lat": widget.planItineraryLeg.toPlace?.lat,
         "lon": widget.planItineraryLeg.toPlace?.lon,
       },
-      "email": phoneController.text,
-      "phoneNumber": emailAddressController.text,
+      "email": emailAddressController.text,
+      "phoneNumber": phoneController.text,
       "time": offerType == 0
           ? {
               "type": "one-off",
