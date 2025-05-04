@@ -2,7 +2,8 @@ import 'package:graphql/client.dart';
 
 GraphQLClient getClient(
   String endpoint, {
-  PartialDataCachePolicy partialDataPolicy = PartialDataCachePolicy.accept,
+  // PartialDataCachePolicy partialDataPolicy = PartialDataCachePolicy.accept,
+  PartialDataCachePolicy partialDataPolicy = PartialDataCachePolicy.reject,
 }) {
   final HttpLink _httpLink = HttpLink(
     endpoint,

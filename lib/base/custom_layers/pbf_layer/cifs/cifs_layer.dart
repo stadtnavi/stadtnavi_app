@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
-import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
@@ -105,7 +103,7 @@ class RoadworksLayer extends CustomLayer {
           markers: [
             ...markersList
                 .map((element) => Marker(
-                      height: markerSize!,
+                      height: markerSize,
                       width: markerSize,
                       point: element.startPoint,
                       alignment: Alignment.center,
@@ -117,7 +115,7 @@ class RoadworksLayer extends CustomLayer {
                 .toList(),
             ...markersList
                 .map((element) => Marker(
-                      height: markerSize!,
+                      height: markerSize,
                       width: markerSize,
                       point: element.endPoint,
                       alignment: Alignment.center,

@@ -147,7 +147,6 @@ class _LiveBusMarkerModalState extends State<LiveBusMarkerModal> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final languageCode = Localizations.localeOf(context).languageCode;
     final targetMapLayerCategory = element.category != null
         ? MapLayerCategory.findCategoryWithProperties(

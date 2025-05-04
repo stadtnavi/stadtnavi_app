@@ -96,7 +96,7 @@ class _ParkingStateUpdaterState extends State<ParkingStateUpdater> {
       fetchError = null;
       loading = true;
     });
-    await LayersRepository.fetchPark(widget.parkingFeature.id ?? '')
+    await LayersRepository.fetchPark(widget.parkingFeature.id)
         .then((value) {
       setState(() {
         ParkingFeature tempData = widget.parkingFeature;

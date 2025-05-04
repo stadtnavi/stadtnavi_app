@@ -1,3 +1,7 @@
+## 3.29.3
+🎉 Support for Flutter 3.29.3
+🎉 Support trufi-core = 3.29.3-stadtnavi-lts
+
 ## 3.26.1
 🎉 Enhanced pedestrian navigation with detailed, step-by-step visual instructions(IMPROVEMENTS).
 

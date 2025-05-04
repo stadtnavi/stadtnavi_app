@@ -18,6 +18,7 @@ import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/pages/home/repository/hive_local_repository.dart';
 import 'package:trufi_core/base/pages/saved_places/repository/local_repository/hive_local_repository.dart';
 import 'package:trufi_core/base/pages/transport_list/repository/hive_local_repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Initializes Hive with the path from [getApplicationDocumentsDirectory].
 ///
@@ -37,6 +38,13 @@ Future<void> initHiveForFlutter({
       path = join(path, subDir);
     }
     HiveStore.init(onPath: path);
+  }
+  // TODO remove this part in the future
+  final prefs = await SharedPreferences.getInstance();
+  final cleared = prefs.getBool('graphql_cache_cleared') ?? false;
+  if (!cleared) {
+    await Hive.deleteBoxFromDisk(HiveStore.defaultBoxName);
+    await prefs.setBool('graphql_cache_cleared', true);
   }
   await HiveStore.open(boxName: HiveStore.defaultBoxName);
   for (var box in boxes) {

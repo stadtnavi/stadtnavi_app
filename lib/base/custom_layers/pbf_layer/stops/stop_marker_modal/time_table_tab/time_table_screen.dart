@@ -43,7 +43,7 @@ class _TimeTableScreenState extends State<TimeTableScreen>
       fetchError = null;
       loading = true;
     });
-    await LayersRepository.fetchTimeTable(widget.stopFeature.gtfsId ?? '',
+    await LayersRepository.fetchTimeTable(widget.stopFeature.gtfsId,
             date: date)
         .then((value) {
       if (mounted) {

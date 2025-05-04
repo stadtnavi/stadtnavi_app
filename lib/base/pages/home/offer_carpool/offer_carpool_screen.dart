@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
+import 'package:stadtnavi_core/consts.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -57,6 +58,7 @@ class OfferCarpoolScreen extends StatefulWidget {
 }
 
 class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
+  TextEditingController emailAddressController= TextEditingController();
   TextEditingController phoneController = TextEditingController();
   int offerType = 0;
   bool termsChecked = false;
@@ -313,39 +315,81 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                                   .toList(),
                             ),
                           ),
-                        Form(
-                          key: globalKey,
-                          child: TextFormField(
-                            controller: phoneController,
-                            style: const TextStyle(color: Colors.black),
-                            keyboardType: TextInputType.phone,
-                            decoration: InputDecoration(
-                              labelText: localeName == "en"
-                                  ? "Add your phone number"
-                                  : "Bitte fügen Sie Ihre Telefonnummer hinzu:",
-                            ),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) {
-                              if (value?.isEmpty ?? false) {
-                                return localeName == "en"
-                                    ? "Please provide a valid phone number."
-                                    : "Bitte geben sie eine Telefonnummer ein.";
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          localeName == "en"
-                              ? "This will be shown to people interested in the ride."
-                              : "Diese wird Interessenten angezeigt.",
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: Colors.black,
+                          Form(
+                            key: globalKey,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                TextFormField(
+                                  controller: emailAddressController,
+                                  style: const TextStyle(color: Colors.black),
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    labelText:
+                                        localeName == "en"
+                                            ? "Add your email address"
+                                            : "Bitte geben Sie Ihre E-Mail-Adresse an:",
                                   ),
-                        ),
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator: (value) {
+                                    if (value?.isEmpty ?? true) {
+                                      return localeName == "en"
+                                          ? "Please provide a valid email address."
+                                          : "Bitte geben Sie eine gültige E-Mail-Adresse ein.";
+                                    }
+                                    final emailRegex = RegExp(
+                                      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+                                    );
+                                    if (!emailRegex.hasMatch(value!)) {
+                                      return localeName == "en"
+                                          ? "Please provide a valid email address."
+                                          : "Bitte geben Sie eine gültige E-Mail-Adresse ein.";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  localeName == "en"
+                                      ? "This will be not be shown to people interested in the ride."
+                                      : "Diese wird Interessenten NICHT angezeigt.",
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(color: Colors.black),
+                                ),
+                                const SizedBox(height: 20),
+                                TextFormField(
+                                  controller: phoneController,
+                                  style: const TextStyle(color: Colors.black),
+                                  keyboardType: TextInputType.phone,
+                                  decoration: InputDecoration(
+                                    labelText:
+                                        localeName == "en"
+                                            ? "Add your phone number"
+                                            : "Bitte fügen Sie Ihre Telefonnummer hinzu:",
+                                  ),
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  validator: (value) {
+                                    if (value?.isEmpty ?? true) {
+                                      return localeName == "en"
+                                          ? "Please provide a valid phone number."
+                                          : "Bitte geben sie eine Telefonnummer ein.";
+                                    }
+                                    return null;
+                                  },
+                                ),
+                                const SizedBox(height: 10),
+                                Text(
+                                  localeName == "en"
+                                      ? "This will be shown to people interested in the ride."
+                                      : "Diese wird Interessenten angezeigt.",
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(color: Colors.black),
+                                ),
+                              ],
+                            ),
+                          ),
                         const SizedBox(height: 20),
                         Row(
                           children: [
@@ -471,7 +515,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
   }
 
   Future<void> createOfferCarpool() async {
-    if (globalKey.currentState == null && !globalKey.currentState!.validate()) {
+    if (globalKey.currentState != null && !globalKey.currentState!.validate()) {
       return;
     }
     if (!mounted) return;
@@ -507,6 +551,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
         "lat": widget.planItineraryLeg.toPlace?.lat,
         "lon": widget.planItineraryLeg.toPlace?.lon,
       },
+      "email": emailAddressController.text,
       "phoneNumber": phoneController.text,
       "time": offerType == 0
           ? {
@@ -533,7 +578,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
     };
     final response = await http.post(
       Uri.parse(
-        "https://dev.stadtnavi.eu/carpool-offers",
+        ApiConfig().carpoolOffers,
       ),
       body: jsonEncode(body),
       headers: {'content-type': 'application/json'},

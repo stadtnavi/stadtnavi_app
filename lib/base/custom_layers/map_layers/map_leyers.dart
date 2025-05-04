@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
-import 'package:stadtnavi_core/base/custom_layers/map_layers/cancellable_network.dart';
 import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
