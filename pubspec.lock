@@ -661,14 +661,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  lodash_flutter:
-    dependency: "direct main"
-    description:
-      name: lodash_flutter
-      sha256: f9c09da0b04c085a09b3c7558110609867d55eac9df23167ed6294a3988398da
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.3"
   logger:
     dependency: transitive
     description:

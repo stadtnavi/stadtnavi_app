@@ -26,7 +26,6 @@ dependencies:
   firebase_app_installations: ^0.3.2+5
   back_button_interceptor: ^8.0.4
   flutter_map_marker_cluster: ^1.4.0
-  lodash_flutter: ^0.0.3
   vector_tile: ^2.0.0
   rive: ^0.13.20
   matomo_tracker: ^6.0.0
