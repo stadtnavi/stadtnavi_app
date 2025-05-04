@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
+import 'package:stadtnavi_core/consts.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -577,7 +578,7 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
     };
     final response = await http.post(
       Uri.parse(
-        "https://dev.stadtnavi.eu/carpool-offers",
+        ApiConfig().carpoolOffers,
       ),
       body: jsonEncode(body),
       headers: {'content-type': 'application/json'},
