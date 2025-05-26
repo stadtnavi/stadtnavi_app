@@ -31,7 +31,7 @@ class ParkingInformationServices {
     ];
     var map2 = <String, ParkingFeature>{};
     for (ParkingFeature parking in listAll) {
-      map2[parking.id!] = parking;
+      map2[parking.id] = parking;
     }
     return fetchParkingsByIds(map2.values.toList());
   }
@@ -94,7 +94,7 @@ class ParkingInformationServices {
     final WatchQueryOptions listPatterns = WatchQueryOptions(
       document: parseString(pattern_query.parkingByIds),
       variables: <String, dynamic>{
-        'parkIds': listParking.map((e) => e.id ?? '').toList(),
+        'parkIds': listParking.map((e) => e.id).toList(),
       },
       fetchResults: true,
       fetchPolicy: FetchPolicy.networkOnly,

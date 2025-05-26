@@ -49,6 +49,7 @@ class GraphQLPlanRepository {
     );
 
     final QueryOptions planAdvancedQuery = QueryOptions(
+      fetchPolicy: FetchPolicy.noCache,
       document: addFragments(parseString(plan_queries.planQuery), [
         plan_fragment.itineraryPageViewer,
         plan_fragment.itineraryPageServiceTimeRange,
@@ -151,6 +152,7 @@ class GraphQLPlanRepository {
       langugeEncode: locale,
     );
     final QueryOptions walkBikePlanQuery = QueryOptions(
+      fetchPolicy: FetchPolicy.noCache,
       document: addFragments(parseString(modes_plan_queries.walkAndBikeQuery), [
         plan_fragment.itineraryListContainerPlan,
         plan_fragment.itineraryDetailsPlan,

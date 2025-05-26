@@ -1,6 +1,6 @@
 {
-    "name": "internal",
-    "short_name": "internal",
+    "name": "herrenberg",
+    "short_name": "herrenberg",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

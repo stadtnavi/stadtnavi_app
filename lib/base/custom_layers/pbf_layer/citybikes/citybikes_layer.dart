@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:http/http.dart' as http;
-import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/city_bike_feature_tile.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
@@ -14,7 +12,6 @@ import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
@@ -24,7 +21,6 @@ import 'package:stadtnavi_core/consts.dart';
 import 'citybike_feature_model.dart';
 import 'citybike_marker_modal.dart';
 import 'citybikes_enum.dart';
-import 'citybikes_icon.dart';
 
 class CityBikesLayer extends CustomLayer {
   final MapLayerCategory mapCategory;
@@ -87,7 +83,7 @@ class CityBikesLayer extends CustomLayer {
                   Container(
                     height: markerSize,
                     width: markerSize,
-                    margin: EdgeInsets.only(top: markerSize! / 5),
+                    margin: EdgeInsets.only(top: markerSize / 5),
                     child: element.type?.imageStop,
                   ),
                   if (element.extraInfo?.bikesAvailable != null &&

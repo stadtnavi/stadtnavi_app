@@ -9,7 +9,6 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_park
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/car_sharing/carsharing_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/scooter/scooter_layer.dart';

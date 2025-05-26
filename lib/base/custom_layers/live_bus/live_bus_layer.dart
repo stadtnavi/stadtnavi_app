@@ -36,6 +36,7 @@ class LiveBusLayer extends CustomLayer {
   final Map<String, LiveBusFeature> _pbfMarkers = {};
   OnLiveBusStateChangeContainer? onLiveBusStateChangeContainer;
   LiveBusLayer(this.mapCategory, int weight) : super(mapCategory.code, weight) {
+    // ignore: body_might_complete_normally_catch_error
     connect().catchError((error) {
       print(error);
     });

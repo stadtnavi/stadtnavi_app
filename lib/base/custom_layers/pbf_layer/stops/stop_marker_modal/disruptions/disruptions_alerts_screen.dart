@@ -36,13 +36,13 @@ class _DisruptionAlertsScreenState extends State<DisruptionAlertsScreen>
     });
   }
 
-  Future<void> _fetchStopData({DateTime? date}) async {
+  Future<void> _fetchStopData() async {
     if (!mounted) return;
     setState(() {
       fetchError = null;
       loading = true;
     });
-    await LayersRepository.stopAlerts(idStop: widget.stopFeature.gtfsId ?? '')
+    await LayersRepository.stopAlerts(idStop: widget.stopFeature.gtfsId)
         .then((value) {
       if (mounted) {
         final validAlerts = value.alerts
