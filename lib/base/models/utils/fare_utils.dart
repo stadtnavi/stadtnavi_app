@@ -15,7 +15,7 @@ Future<List<Fare>> fetchFares(PlanItinerary itinerary, String faresUrl) async {
     'endTime': itinerary.endTime.millisecondsSinceEpoch,
     'walkDistance': itinerary.walkDistance,
     'duration': itinerary.duration.inSeconds,
-    'legs': itinerary.legs..map((e) => e.toJson()).toList()
+    'legs': itinerary.legs.map((e) => e.toJsonFares()).toList()
   };
   final response = await http.post(
     Uri.parse(
