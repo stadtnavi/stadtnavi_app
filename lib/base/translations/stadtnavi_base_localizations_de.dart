@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'stadtnavi_base_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -561,19 +563,55 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get taxiAvailability => 'Taxis verfügbar';
 
   @override
-  String get bicycleAvailability => 'Fahrräder verfügbar';
+  String bicycleAvailability(num amount) {
+    String _temp0 = intl.Intl.pluralLogic(
+      amount,
+      locale: localeName,
+      other: '# Fahrräder',
+      one: 'Ein Fahrrad',
+      zero: 'Keine Fahrräder',
+    );
+    return '$_temp0 verfügbar';
+  }
 
   @override
-  String get carAvailability => 'Carsharing-Fahrzeuge verfügbar';
+  String carAvailability(num amount) {
+    String _temp0 = intl.Intl.pluralLogic(
+      amount,
+      locale: localeName,
+      other: 'Bis zu $amount Car-Sharing-Fahrzeuge',
+      one: 'Üblicherweise ein Car-Sharing-Fahrzeug',
+      zero: 'Kein Car-Sharing-Fahrzeug',
+    );
+    return '$_temp0 verfügbar. Genaue Verfügbarkeit vorab prüfen.';
+  }
 
   @override
-  String get cargoBicycleAvailability => 'Lastenräder verfügbar';
+  String cargoBicycleAvailability(num amount) {
+    String _temp0 = intl.Intl.pluralLogic(
+      amount,
+      locale: localeName,
+      other: '# Lastenräder',
+      one: 'Ein Lastenrad',
+      zero: 'Keine Lastenräder',
+    );
+    return '$_temp0 verfügbar';
+  }
 
   @override
   String get parkAndRideAvailability => 'Plätze verfügbar';
 
   @override
-  String get scooterAvailability => 'E-Scooter ausleihbar';
+  String scooterAvailability(num amount) {
+    String _temp0 = intl.Intl.pluralLogic(
+      amount,
+      locale: localeName,
+      other: '# E-Scooter',
+      one: 'Ein E-Scooter',
+      zero: 'Keine E-Scooter',
+    );
+    return '$_temp0 verfügbar';
+  }
 
   @override
   String get scooterStationNoId => 'E-Scooter';

@@ -1,3 +1,5 @@
+// ignore: unused_import
+import 'package:intl/intl.dart' as intl;
 import 'stadtnavi_base_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -561,19 +563,27 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
   String get taxiAvailability => 'Taxis available at the station right now';
 
   @override
-  String get bicycleAvailability => 'Bikes available';
+  String bicycleAvailability(num amount) {
+    return '$amount Bikes available';
+  }
 
   @override
-  String get carAvailability => 'Shared cars available';
+  String carAvailability(num amount) {
+    return '$amount Shared cars available';
+  }
 
   @override
-  String get cargoBicycleAvailability => 'Cargo bikes available at the station right now';
+  String cargoBicycleAvailability(num amount) {
+    return '$amount Cargo bikes available at the station right now';
+  }
 
   @override
   String get parkAndRideAvailability => 'Spaces available';
 
   @override
-  String get scooterAvailability => 'Kick scooters available at the station right now';
+  String scooterAvailability(num amount) {
+    return '$amount Kick scooters available at the station right now';
+  }
 
   @override
   String get scooterStationNoId => 'e-scooter';
