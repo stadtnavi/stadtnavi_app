@@ -11,7 +11,7 @@
     "safetyFactor": 0.4,
     "slopeFactor": 0.3,
     "timeFactor": 0.3,
-    "walkReluctance": 3,
+    "walkReluctance": 3.0,
     "walkBoardCost": 150,
     "includeParkAndRideSuggestions": true,
     "showBikeAndParkItineraries": true
