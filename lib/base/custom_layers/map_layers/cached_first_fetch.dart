@@ -7,30 +7,37 @@ final Map<String, CancelToken> _activeRequests = {};
 
 int? _lastZ, _lastX, _lastY;
 
-Future<Uint8List> cachedFirstFetch(Uri uri, int z, int x, int y) async {
+Future<Uint8List> cachedFirstFetch(
+  Uri uri,
+  int z,
+  int x,
+  int y, {
+  bool useCached = true,
+}) async {
   final key = uri.toString();
+  CancelToken? cancelToken;
+  if (useCached) {
+    if (_lastZ != null) {
+      final zoomChanged = z != _lastZ;
+      final movedFar = (x - _lastX!).abs() > 2 || (y - _lastY!).abs() > 2;
 
-  if (_lastZ != null) {
-    final zoomChanged = z != _lastZ;
-    final movedFar = (x - _lastX!).abs() > 2 || (y - _lastY!).abs() > 2;
-
-    if (zoomChanged || movedFar) {
-      _cancelFarTiles(z, x, y);
+      if (zoomChanged || movedFar) {
+        _cancelFarTiles(z, x, y);
+      }
     }
+
+    _lastZ = z;
+    _lastX = x;
+    _lastY = y;
+
+    // if (_cache.containsKey(key)) {
+    //   throw Exception("already fetched");
+    // }
+
+    cancelToken = CancelToken();
+    _activeRequests[key] = cancelToken;
+    // _cache[key] = true;
   }
-
-  _lastZ = z;
-  _lastX = x;
-  _lastY = y;
-
-  // if (_cache.containsKey(key)) {
-  //   throw Exception("already fetched");
-  // }
-
-  final cancelToken = CancelToken();
-  _activeRequests[key] = cancelToken;
-  // _cache[key] = true;
-
   try {
     final response = await _dio.get<List<int>>(
       key,
