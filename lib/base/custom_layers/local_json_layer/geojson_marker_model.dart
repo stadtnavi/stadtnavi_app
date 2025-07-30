@@ -1,6 +1,5 @@
 import 'package:latlong2/latlong.dart';
 
-
 class GeojsonMarker {
   final String id;
   final LatLng position;
@@ -16,7 +15,7 @@ class GeojsonMarker {
   final String? email;
   final String? imageUrl;
 
-static final Map<String, String> cacheIcons = {};
+  static final Map<String, String> cacheIcons = {};
   GeojsonMarker({
     required this.id,
     required this.position,
@@ -33,9 +32,9 @@ static final Map<String, String> cacheIcons = {};
     required this.imageUrl,
   });
 
-  static  GeojsonMarker? fromJson(json) {
-    final id=json['id'];
-    if(id==null)return null;
+  static GeojsonMarker? fromJson(json) {
+    final id = json['id'] ?? json['properties']['id'];
+    if (id == null) return null;
     final properties = json['properties'] ?? {};
     final geometry = json['geometry'] ?? {};
     final coordinates = geometry['coordinates'] ?? [0.0, 0.0];
