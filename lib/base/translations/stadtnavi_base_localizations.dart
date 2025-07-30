@@ -1083,20 +1083,20 @@ abstract class StadtnaviBaseLocalization {
   /// No description provided for @bicycleAvailability.
   ///
   /// In en, this message translates to:
-  /// **'Bikes available'**
-  String get bicycleAvailability;
+  /// **'{amount} Bikes available'**
+  String bicycleAvailability(num amount);
 
   /// No description provided for @carAvailability.
   ///
   /// In en, this message translates to:
-  /// **'Shared cars available'**
-  String get carAvailability;
+  /// **'{amount} Shared cars available'**
+  String carAvailability(num amount);
 
   /// No description provided for @cargoBicycleAvailability.
   ///
   /// In en, this message translates to:
-  /// **'Cargo bikes available at the station right now'**
-  String get cargoBicycleAvailability;
+  /// **'{amount} Cargo bikes available at the station right now'**
+  String cargoBicycleAvailability(num amount);
 
   /// No description provided for @parkAndRideAvailability.
   ///
@@ -1107,8 +1107,8 @@ abstract class StadtnaviBaseLocalization {
   /// No description provided for @scooterAvailability.
   ///
   /// In en, this message translates to:
-  /// **'Kick scooters available at the station right now'**
-  String get scooterAvailability;
+  /// **'{amount} Kick scooters available at the station right now'**
+  String scooterAvailability(num amount);
 
   /// No description provided for @scooterStationNoId.
   ///

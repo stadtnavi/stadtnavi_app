@@ -1,21 +1,21 @@
 import 'stadtnavi_base_localizations.dart';
 
 extension StadtnaviLocalizationExtension on StadtnaviBaseLocalization {
-  String translate(String key) {
+  String translate(String key, {dynamic value}) {
     final Map<String, String Function()> translations = {
       "sharingOperatorsCarHeader": () => sharingOperatorsCarHeader,
-      "sharingOperatorsCargoBicycleHeader": () =>
-          sharingOperatorsCargoBicycleHeader,
+      "sharingOperatorsCargoBicycleHeader":
+          () => sharingOperatorsCargoBicycleHeader,
       "sharingOperatorsBicycleHeader": () => sharingOperatorsBicycleHeader,
       "sharingOperatorsScooterHeader": () => sharingOperatorsScooterHeader,
       "sharingOperatorsMopedHeader": () => sharingOperatorsMopedHeader,
       "taxi-availability": () => taxiAvailability,
-      "bicycle-availability": () => bicycleAvailability,
-      "car-availability": () => carAvailability,
-      "cargoBicycle-availability": () => cargoBicycleAvailability,
-      "cargo_bicycle-availability": () => cargoBicycleAvailability,
+      "bicycle-availability": () => bicycleAvailability(value),
+      "car-availability": () => carAvailability(value),
+      "cargoBicycle-availability": () => cargoBicycleAvailability(value),
+      "cargo_bicycle-availability": () => cargoBicycleAvailability(value),
       "parkAndRide-availability": () => parkAndRideAvailability,
-      "scooter-availability": () => scooterAvailability,
+      "scooter-availability": () => scooterAvailability(value),
       "scooter-station-no-id": () => scooterStationNoId,
       "bicycle-station-no-id": () => bicycleStationNoId,
       "cargo_bicycle-station-no-id": () => cargoBicycleStationNoId,
