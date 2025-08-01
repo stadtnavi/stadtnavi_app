@@ -55,6 +55,22 @@ class PlaceEntity extends Equatable {
     };
   }
 
+  Map<String, dynamic> toMapForFares() {
+    return {
+      _name: name,
+      _vertexType: vertexType.name,
+      _lat: lat,
+      _lon: lon,
+      _arrivalTime: arrivalTime?.millisecondsSinceEpoch,
+      _departureTime: departureTime?.millisecondsSinceEpoch,
+      _stopEntity: stopEntity?.toMapForFares(),
+      _bikeRentalStation: bikeRentalStation?.toMap(),
+      _bikeParkEntity: bikeParkEntity?.toMap(),
+      _carParkEntity: carParkEntity?.toMap(),
+      _vehicleParkingWithEntrance: vehicleParkingWithEntrance?.toMap(),
+    };
+  }
+
   factory PlaceEntity.fromMap(Map<String, dynamic> map) {
     return PlaceEntity(
       name: map[_name] as String,
@@ -63,28 +79,28 @@ class PlaceEntity extends Equatable {
       lon: map[_lon] as double,
       arrivalTime: map[_arrivalTime] != null
           ? DateTime.fromMillisecondsSinceEpoch((map[_arrivalTime] ?? 0) as int)
-          : null,
+              : null,
       departureTime: map[_departureTime] != null
-          ? DateTime.fromMillisecondsSinceEpoch(
+              ? DateTime.fromMillisecondsSinceEpoch(
               (map[_departureTime] ?? 0) as int)
-          : null,
+              : null,
       stopEntity: map[_stopEntity] != null
-          ? StopEntity.fromMap(map[_stopEntity] as Map<String, dynamic>)
-          : null,
+              ? StopEntity.fromMap(map[_stopEntity] as Map<String, dynamic>)
+              : null,
       bikeRentalStation: map[_bikeRentalStation] != null
-          ? BikeRentalStationEntity.fromMap(
+              ? BikeRentalStationEntity.fromMap(
               map[_bikeRentalStation] as Map<String, dynamic>)
-          : null,
+              : null,
       bikeParkEntity: map[_bikeParkEntity] != null
           ? BikeParkEntity.fromMap(map[_bikeParkEntity] as Map<String, dynamic>)
-          : null,
+              : null,
       carParkEntity: map[_carParkEntity] != null
           ? CarParkEntity.fromMap(map[_carParkEntity] as Map<String, dynamic>)
-          : null,
+              : null,
       vehicleParkingWithEntrance: map[_vehicleParkingWithEntrance] != null
-          ? VehicleParkingWithEntrance.fromMap(
+              ? VehicleParkingWithEntrance.fromMap(
               map[_vehicleParkingWithEntrance] as Map<String, dynamic>)
-          : null,
+              : null,
     );
   }
 
@@ -119,16 +135,16 @@ class PlaceEntity extends Equatable {
 
   @override
   List<Object?> get props => [
-        name,
-        vertexType,
-        lat,
-        lon,
-        arrivalTime,
-        departureTime,
-        stopEntity,
-        bikeRentalStation,
-        bikeParkEntity,
-        carParkEntity,
-        vehicleParkingWithEntrance,
-      ];
+    name,
+    vertexType,
+    lat,
+    lon,
+    arrivalTime,
+    departureTime,
+    stopEntity,
+    bikeRentalStation,
+    bikeParkEntity,
+    carParkEntity,
+    vehicleParkingWithEntrance,
+  ];
 }

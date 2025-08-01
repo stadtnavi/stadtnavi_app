@@ -172,6 +172,35 @@ class PlanItineraryLeg extends Equatable {
       _trip: trip?.toJson(),
     };
   }
+  Map<String, dynamic> toJsonFares() {
+    return {
+      _legGeometry: {_points: points},
+      _mode: mode,
+      _route: route?.toJson() ?? shortName,
+      _routeLongName: routeLongName,
+      _distance: distance,
+      _duration: duration.inSeconds,
+      _agency: agency?.toMap(),
+      _realtimeState: realtimeState?.name,
+      _toPlace: toPlace?.toMap(),
+      _fromPlace: fromPlace?.toMapForFares(),
+      _startTime: startTime.millisecondsSinceEpoch,
+      _endTime: endTime.millisecondsSinceEpoch,
+      _steps: steps != null
+          ? List<dynamic>.from(steps!.map((x) => x.toMap()))
+          : null,
+      _intermediatePlaces: intermediatePlaces != null
+          ? List<dynamic>.from(intermediatePlaces!.map((x) => x.toMap()))
+          : null,
+      _pickupBookingInfo: pickupBookingInfo?.toMap(),
+      _dropOffBookingInfo: dropOffBookingInfo?.toMap(),
+      _intermediatePlace: intermediatePlace,
+      _transitLeg: transitLeg,
+      _rentedBike: rentedBike,
+      _interlineWithPreviousLeg: interlineWithPreviousLeg,
+      _trip: trip?.toJson(),
+    };
+  }
 
   PlanItineraryLeg copyWith({
     String? points,

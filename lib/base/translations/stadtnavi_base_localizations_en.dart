@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart' as intl;
+
 import 'stadtnavi_base_localizations.dart';
 
 // ignore_for_file: type=lint
@@ -619,6 +621,30 @@ class StadtnaviBaseLocalizationEn extends StadtnaviBaseLocalization {
 
   @override
   String get carStartUsingInfo => 'More information at';
+
+  @override
+  String parkingSpacesInTotal(num total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$total parking spaces',
+      one: 'One parking space',
+      zero: 'No parking space',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String disabledParkingSpacesCapacity(num totalDisabled) {
+    String _temp0 = intl.Intl.pluralLogic(
+      totalDisabled,
+      locale: localeName,
+      other: '$totalDisabled wheelchair-accessible parking spaces',
+      one: 'One wheelchair-accessible parking space',
+      zero: 'No wheelchair-accessible parking space',
+    );
+    return '$_temp0';
+  }
 
   @override
   String get chooseOnMap => 'Choose on map';
