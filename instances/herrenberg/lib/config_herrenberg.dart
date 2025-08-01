@@ -270,46 +270,40 @@ final configHerrenberg = ConfigData(
         hideCode: true,
         enabled: true,
       ),
-      "de.stadtnavi.gbfs.alf": NetworkConfig(
+      "herrenberg_alf": NetworkConfig(
+        icon: "cargobike",
+        operator: "other",
+        name: {"de": "ALF - das Affstätter Lastenfahrrad", "en": "ALF - the Affstätter cargo bike"},
+        type: "cargo_bicycle",
+        enabled: true,
+        season: SeasonConfig.futureSeason(),
+      ),
+      "herrenberg_guelf": NetworkConfig(
         icon: "cargobike",
         operator: "other",
         name: {
-          "de": "Lastenrad Alf",
-          "en": "Cargobike Alf",
+          "de": "Gülf - das Gültsteiner Lastenrad",
+          "en": "Gülf - the Gültsteiner cargo bike",
         },
         type: "cargo_bicycle",
         enabled: true,
         season: SeasonConfig.futureSeason(),
       ),
-      "de.stadtnavi.gbfs.gueltstein": NetworkConfig(
+      "herrenberg_stadtrad": NetworkConfig(
         icon: "cargobike",
         operator: "other",
         name: {
-          "de": "Lastenrad Gültstein-Mobil",
-          "en": "Cargobike Gültstein-Mobil",
+          "de": "stadtRad - das stadtnavi Lastenrad",
+          "en": "stadtRad - the stadtnavi cargo bike",
         },
         type: "cargo_bicycle",
         enabled: true,
         season: SeasonConfig.futureSeason(),
       ),
-      "de.stadtnavi.gbfs.stadtrad": NetworkConfig(
+      "herrenberg_fare": NetworkConfig(
         icon: "cargobike",
         operator: "other",
-        name: {
-          "de": "stadtRad der Stadt Herrenberg",
-          "en": "City of Herrenberg's StadtRad",
-        },
-        type: "cargo_bicycle",
-        enabled: true,
-        season: SeasonConfig.futureSeason(),
-      ),
-      "de.stadtnavi.gbfs.bananologen": NetworkConfig(
-        icon: "cargobike",
-        operator: "other",
-        name: {
-          "de": "Lastenrad Bananologen",
-          "en": "Cargobike Bananologen",
-        },
+        name: {"de": "FaRe - das Bananologen Lastenrad", "en": "FaRe - the Bananologen cargo bike"},
         type: "cargo_bicycle",
         enabled: true,
         season: SeasonConfig.futureSeason(),
