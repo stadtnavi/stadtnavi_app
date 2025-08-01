@@ -5,6 +5,7 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_icon
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/widgets/opening_time_table.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -96,8 +97,7 @@ class _ParkingStateUpdaterState extends State<ParkingStateUpdater> {
       fetchError = null;
       loading = true;
     });
-    await LayersRepository.fetchPark(widget.parkingFeature.id)
-        .then((value) {
+    await LayersRepository.fetchPark(widget.parkingFeature.id).then((value) {
       setState(() {
         ParkingFeature tempData = widget.parkingFeature;
         if (tempData.carPlacesCapacity != null &&
@@ -138,11 +138,14 @@ class ParkingMarkerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localization = TrufiBaseLocalization.of(context);
+    final localizationST = StadtnaviBaseLocalization.of(context);
     final localeName = localization.localeName;
-    String? carCapacity = _getCarCapacity(parkingFeature,localeName);
-    String? closed = _getClosed(parkingFeature.state,localeName);
+    String? carCapacity =
+        _getCarCapacity(parkingFeature, localeName, localizationST);
+    String? closed = _getClosed(parkingFeature.state, localeName);
     String carStatus = "$carCapacity $closed".trim();
-    String? wheelchairCapacity = getWheelchairCapacity(parkingFeature,localeName);
+    String? wheelchairCapacity =
+        getWheelchairCapacity(parkingFeature, localeName, localizationST);
     final isOpenParking = parkingFeature.sOpeningHours?.isOpenNow() ?? false;
     return ListView(
       children: [
@@ -247,7 +250,11 @@ class ParkingMarkerModal extends StatelessWidget {
     );
   }
 
-  String? _getCarCapacity(ParkingFeature parkingFeature, String localeName) {
+  String? _getCarCapacity(
+    ParkingFeature parkingFeature,
+    String localeName,
+    StadtnaviBaseLocalization localization,
+  ) {
     final free = parkingFeature.availabilityCarPlacesCapacity;
     final total = parkingFeature.carPlacesCapacity;
 
@@ -255,10 +262,8 @@ class ParkingMarkerModal extends StatelessWidget {
       return localeName == 'en'
           ? "$free of $total parking spaces available"
           : "$free von $total Stellplätzen verfügbar";
-    } else if (total != null && total!=0) {
-      return localeName == 'en'
-          ? "$total parking spaces"
-          : "$total Stellplätze";
+    } else if (total != null && total != 0) {
+      return localization.parkingSpacesInTotal(total);
     }
     return '';
   }
@@ -273,6 +278,7 @@ class ParkingMarkerModal extends StatelessWidget {
   String? getWheelchairCapacity(
     ParkingFeature parkingFeature,
     String localeName,
+    StadtnaviBaseLocalization localization,
   ) {
     final free = parkingFeature.freeDisabled;
     final total = parkingFeature.totalDisabled;
@@ -281,10 +287,8 @@ class ParkingMarkerModal extends StatelessWidget {
       return localeName == 'en'
           ? "$free of $total wheelchair-accessible parking spaces available"
           : "$free von $total barrierefreien Stellplätzen verfügbar";
-    } else if (total != null && total!=0) {
-      return localeName == 'en'
-          ? "$total wheelchair-accessible parking spaces"
-          : "$total barrierefreie Stellplätze";
+    } else if (total != null && total != 0) {
+      return localization.disabledParkingSpacesCapacity(total);
     }
 
     return null;
