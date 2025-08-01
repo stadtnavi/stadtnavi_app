@@ -73,7 +73,11 @@ void main() async {
     },
   );
   await MatomoTracker.instance.initialize(siteId: '2', url: ApiConfig().matomo);
-  ConfigDefault.instance.configData = configHerrenbergMerged;
+  await ConfigDefault.loadFromRemote(
+    jsonUrlFile:
+        "https://raw.githubusercontent.com/stadtnavi/stadtnavi_app/refs/heads/main/instances/herrenberg/conf-herrenberg.json",
+    deafultConfigData: configHerrenbergMerged,
+  );
   runApp(
     CriticalLoader(
       loadData: () async {

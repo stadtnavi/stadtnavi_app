@@ -1,10 +1,6 @@
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 
-enum BicycleParkingFilter {
-  all,
-  freeOnly,
-  securePreferred,
-}
+enum BicycleParkingFilter { all, freeOnly, securePreferred }
 
 BicycleParkingFilter getBicycleParkingFilter(String key) {
   return BicycleParkingFilterExtension.names.keys.firstWhere(
@@ -55,7 +51,7 @@ class DefaultSettings {
     includeCarSuggestions: false,
     showBikeAndParkItineraries: false,
   );
-  
+
   String? optimize;
   double? safetyFactor;
   double? slopeFactor;
@@ -89,4 +85,27 @@ class DefaultSettings {
     this.includeCarSuggestions = false,
     this.showBikeAndParkItineraries = false,
   });
+
+  factory DefaultSettings.fromJson(Map<String, dynamic> json) {
+    return DefaultSettings(
+      optimize: json['optimize'],
+      safetyFactor: (json['safetyFactor']),
+      slopeFactor: (json['slopeFactor']),
+      timeFactor: (json['timeFactor']),
+      accessibilityOption: json['accessibilityOption'] ?? false,
+      bikeSpeed: (json['bikeSpeed']) ?? 5.55,
+      bicycleParkingFilter: getBicycleParkingFilter(
+        json['bicycleParkingFilter'] ?? 'all',
+      ),
+      ticketTypes: json['ticketTypes'] ?? 'none',
+      walkBoardCost: json['walkBoardCost'] ?? 600,
+      walkReluctance: (json['walkReluctance']) ?? 2.0,
+      walkSpeed: (json['walkSpeed']) ?? 1.2,
+      includeBikeSuggestions: json['includeBikeSuggestions'] ?? true,
+      includeParkAndRideSuggestions:
+          json['includeParkAndRideSuggestions'] ?? false,
+      includeCarSuggestions: json['includeCarSuggestions'] ?? false,
+      showBikeAndParkItineraries: json['showBikeAndParkItineraries'] ?? false,
+    );
+  }
 }
