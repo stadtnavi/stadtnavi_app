@@ -6,6 +6,8 @@ final configHerrenberg = ConfigData(
   defaultSettings: DefaultSettings(
     walkReluctance: 3,
     walkBoardCost: 150,
+    includeParkAndRideSuggestions: true,
+    showBikeAndParkItineraries: true,
   ),
   cityBike: CityBikeConfig(
     minZoomStopsNearYou: 10,
@@ -23,7 +25,7 @@ final configHerrenberg = ConfigData(
         enabled: true,
         url: {
           "de": "https://www.deer-carsharing.de/",
-          "en": "https://www.deer-carsharing.de/"
+          "en": "https://www.deer-carsharing.de/",
         },
       ),
       "stadtmobil_stuttgart": NetworkConfig(
@@ -36,7 +38,7 @@ final configHerrenberg = ConfigData(
         enabled: true,
         url: {
           "de": "https://stuttgart.stadtmobil.de/",
-          "en": "https://stuttgart.stadtmobil.de/"
+          "en": "https://stuttgart.stadtmobil.de/",
         },
       ),
       "stadtmobil_karlsruhe": NetworkConfig(
@@ -49,7 +51,7 @@ final configHerrenberg = ConfigData(
         enabled: true,
         url: {
           "de": "https://karlsruhe.stadtmobil.de/",
-          "en": "https://karlsruhe.stadtmobil.de/"
+          "en": "https://karlsruhe.stadtmobil.de/",
         },
       ),
       "flinkster_carsharing": NetworkConfig(
@@ -70,7 +72,7 @@ final configHerrenberg = ConfigData(
         operator: "stadtmobil",
         name: {
           "de": "Ökostadt Renningen e.V.",
-          "en": "Ökostadt Renningen e.V."
+          "en": "Ökostadt Renningen e.V.",
         },
         formFactors: ["car"],
         type: "car",
@@ -104,7 +106,7 @@ final configHerrenberg = ConfigData(
         enabled: true,
         url: {
           "de": "https://www.regioradstuttgart.de",
-          "en": "https://www.regioradstuttgart.de"
+          "en": "https://www.regioradstuttgart.de",
         },
       ),
       "bolt_stuttgart": NetworkConfig(
@@ -150,7 +152,7 @@ final configHerrenberg = ConfigData(
         enabled: true,
         url: {
           "de": "https://zeusscooters.com",
-          "en": "https://zeusscooters.com"
+          "en": "https://zeusscooters.com",
         },
       ),
       "zeus_pforzheim": NetworkConfig(
@@ -163,7 +165,7 @@ final configHerrenberg = ConfigData(
         enabled: true,
         url: {
           "de": "https://zeusscooters.com",
-          "en": "https://zeusscooters.com"
+          "en": "https://zeusscooters.com",
         },
       ),
       "zeus_tubingen": NetworkConfig(
@@ -176,7 +178,7 @@ final configHerrenberg = ConfigData(
         enabled: true,
         url: {
           "de": "https://zeusscooters.com",
-          "en": "https://zeusscooters.com"
+          "en": "https://zeusscooters.com",
         },
       ),
       "voi_de": NetworkConfig(
@@ -191,10 +193,7 @@ final configHerrenberg = ConfigData(
       "dott_boblingen": NetworkConfig(
         icon: "brand_dott",
         operator: "dott",
-        name: {
-          "de": "Dott Böblingen",
-          "en": "Dott Böblingen",
-        },
+        name: {"de": "Dott Böblingen", "en": "Dott Böblingen"},
         type: "scooter",
         url: {
           "de": "https://ridedott.com/de/fahr-mit-uns/",
@@ -207,10 +206,7 @@ final configHerrenberg = ConfigData(
       "dott_ludwigsburg": NetworkConfig(
         icon: "brand_dott",
         operator: "dott",
-        name: {
-          "de": "Dott Ludwigsburg",
-          "en": "Dott Ludwigsburg",
-        },
+        name: {"de": "Dott Ludwigsburg", "en": "Dott Ludwigsburg"},
         type: "scooter",
         url: {
           "de": "https://ridedott.com/de/fahr-mit-uns/",
@@ -223,10 +219,7 @@ final configHerrenberg = ConfigData(
       "dott_reutlingen": NetworkConfig(
         icon: "brand_dott",
         operator: "dott",
-        name: {
-          "de": "Dott Reutlingen",
-          "en": "Dott Reutlingen",
-        },
+        name: {"de": "Dott Reutlingen", "en": "Dott Reutlingen"},
         type: "scooter",
         formFactors: ["scooter", "bicycle"],
         url: {
@@ -240,10 +233,7 @@ final configHerrenberg = ConfigData(
       "dott_stuttgart": NetworkConfig(
         icon: "brand_dott",
         operator: "dott",
-        name: {
-          "de": "Dott Stuttgart",
-          "en": "Dott Stuttgart",
-        },
+        name: {"de": "Dott Stuttgart", "en": "Dott Stuttgart"},
         type: "scooter",
         url: {
           "de": "https://ridedott.com/de/fahr-mit-uns/",
@@ -256,10 +246,7 @@ final configHerrenberg = ConfigData(
       "dott_tubingen": NetworkConfig(
         icon: "brand_dott",
         operator: "dott",
-        name: {
-          "de": "Dott Tübingen",
-          "en": "Dott Tübingen",
-        },
+        name: {"de": "Dott Tübingen", "en": "Dott Tübingen"},
         type: "scooter",
         formFactors: ["scooter", "bicycle"],
         url: {
