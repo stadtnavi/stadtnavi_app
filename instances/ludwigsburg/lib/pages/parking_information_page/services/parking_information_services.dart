@@ -26,7 +26,7 @@ class ParkingInformationServices {
     ];
     var map2 = <String, ParkingFeature>{};
     for (ParkingFeature parking in listAll) {
-      map2[parking.id!] = parking;
+      map2[parking.id] = parking;
     }
     return fetchParkingsByIds(map2.values.toList());
   }
@@ -78,7 +78,7 @@ class ParkingInformationServices {
     final WatchQueryOptions listPatterns = WatchQueryOptions(
       document: parseString(pattern_query.parkingByIds),
       variables: <String, dynamic>{
-        'parkIds': listParking.map((e) => e.id ?? '').toList(),
+        'parkIds': listParking.map((e) => e.id).toList(),
       },
       fetchResults: true,
       fetchPolicy: FetchPolicy.networkOnly,
@@ -98,7 +98,7 @@ class ParkingInformationServices {
     };
     final newList = <ParkingFeature>[];
     for (final element in listParking) {
-      ParkingFeature? tempParking;
+      ParkingFeature tempParking = element;
       if (element.carPlacesCapacity != null &&
           element.availabilityCarPlacesCapacity != null) {
         tempParking = element.copyWith(
@@ -107,15 +107,13 @@ class ParkingInformationServices {
         );
       }
       if (element.totalDisabled != null && element.freeDisabled != null) {
-        tempParking = (tempParking ?? element).copyWith(
+        tempParking = (tempParking).copyWith(
           freeDisabled: dataMapParkings[element.id]
               ?.availability
               ?.wheelchairAccessibleCarSpaces,
         );
       }
-      if (tempParking != null) {
-        newList.add(tempParking);
-      }
+      newList.add(tempParking);
     }
 
     return newList;
