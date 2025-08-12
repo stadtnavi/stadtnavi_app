@@ -19,16 +19,21 @@ class ParkingInformationServices {
   Future<List<ParkingFeature>> fetchParkings() async {
     final dataHerrenberg = latLonToTileXY(48.5915, 8.8681, 14);
     final parkingsArea = await _fetchParkingsByArea(
-        z: 14, x: dataHerrenberg[0], y: dataHerrenberg[1]);
+      z: 14,
+      x: dataHerrenberg[0],
+      y: dataHerrenberg[1],
+    );
     final parkingsArea1 = await _fetchParkingsByArea(
-        z: 14, x: dataHerrenberg[0] + 1, y: dataHerrenberg[1]+1);
+      z: 14,
+      x: dataHerrenberg[0] + 1,
+      y: dataHerrenberg[1] + 1,
+    );
     final parkingsArea2 = await _fetchParkingsByArea(
-        z: 14, x: dataHerrenberg[0] - 1, y: dataHerrenberg[1]);
-    final listAll = [
-      ...parkingsArea,
-      ...parkingsArea1,
-      ...parkingsArea2,
-    ];
+      z: 14,
+      x: dataHerrenberg[0] - 1,
+      y: dataHerrenberg[1],
+    );
+    final listAll = [...parkingsArea, ...parkingsArea1, ...parkingsArea2];
     var map2 = <String, ParkingFeature>{};
     for (ParkingFeature parking in listAll) {
       map2[parking.id] = parking;
@@ -72,8 +77,9 @@ class ParkingInformationServices {
 
         if (feature.geometryType == GeometryType.Point) {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
-          final ParkingFeature? pointFeature =
-              ParkingFeature.fromGeoJsonPoint(geojson);
+          final ParkingFeature? pointFeature = ParkingFeature.fromGeoJsonPoint(
+            geojson,
+          );
           if (pointFeature != null) {
             listParkings.add(pointFeature);
           }
@@ -97,7 +103,7 @@ class ParkingInformationServices {
         'parkIds': listParking.map((e) => e.id).toList(),
       },
       fetchResults: true,
-      fetchPolicy: FetchPolicy.networkOnly,
+      fetchPolicy: FetchPolicy.noCache,
     );
     final dataListParkings = await client.query(listPatterns);
     if (dataListParkings.hasException && dataListParkings.data == null) {
@@ -105,16 +111,20 @@ class ParkingInformationServices {
           ? Exception("Bad request")
           : Exception("Error connection");
     }
-    final parkings = dataListParkings.data!['vehicleParkings']
-        ?.map<VehicleParking>((dynamic json) =>
-            VehicleParking.fromMap(json as Map<String, dynamic>))
-        ?.toList() as List<VehicleParking>;
+    final parkings =
+        dataListParkings.data!['vehicleParkings']
+                ?.map<VehicleParking>(
+                  (dynamic json) =>
+                      VehicleParking.fromMap(json as Map<String, dynamic>),
+                )
+                ?.toList()
+            as List<VehicleParking>;
     final dataMapParkings = {
-      for (VehicleParking e in parkings) e.vehicleParkingId ?? '': e
+      for (VehicleParking e in parkings) e.vehicleParkingId ?? '': e,
     };
     final newList = <ParkingFeature>[];
     for (final element in listParking) {
-      ParkingFeature? tempParking;
+      ParkingFeature tempParking = element;
       if (element.carPlacesCapacity != null &&
           element.availabilityCarPlacesCapacity != null) {
         tempParking = element.copyWith(
@@ -123,15 +133,14 @@ class ParkingInformationServices {
         );
       }
       if (element.totalDisabled != null && element.freeDisabled != null) {
-        tempParking = (tempParking ?? element).copyWith(
-          freeDisabled: dataMapParkings[element.id]
-              ?.availability
-              ?.wheelchairAccessibleCarSpaces,
+        tempParking = tempParking.copyWith(
+          freeDisabled:
+              dataMapParkings[element.id]
+                  ?.availability
+                  ?.wheelchairAccessibleCarSpaces,
         );
       }
-      if (tempParking != null) {
-        newList.add(tempParking);
-      }
+      newList.add(tempParking);
     }
 
     return newList;
