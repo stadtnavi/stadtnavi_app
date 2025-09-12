@@ -378,5 +378,7 @@
   "cargoBicycleStartUsingInfo": "More information at",
   "carStartUsing": "Book a shared car",
   "carStartUsingInfo": "More information at",
+  "parkingSpacesInTotal": "{total, plural, =0 {No parking space} one {One parking space} other {{total} parking spaces}}",
+  "disabledParkingSpacesCapacity": "{totalDisabled, plural, =0 {No wheelchair-accessible parking space} one {One wheelchair-accessible parking space} other {{totalDisabled} wheelchair-accessible parking spaces}}",
   "chooseOnMap" : "Choose on map"
 }

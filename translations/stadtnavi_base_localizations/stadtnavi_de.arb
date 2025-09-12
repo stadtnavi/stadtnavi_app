@@ -377,5 +377,7 @@
   "cargoBicycleStartUsingInfo": "Mehr Informationen bei",
   "carStartUsing": "Buchen Sie ein Carsharing-Fahrzeug",
   "carStartUsingInfo": "Mehr Informationen bei",
+  "parkingSpacesInTotal": "{total, plural, =0 {Kein Stellplatz} one {Ein Stellplatz} other {{total} Stellplätze}}",
+  "disabledParkingSpacesCapacity": "{totalDisabled, plural, =0 {Kein barrierefreier Stellplatz} one {Ein barrierefreier Stellplatz} other {{totalDisabled} barrierefreie Stellplätze}}",
   "chooseOnMap" : "Wähle auf der Karte"
 }
