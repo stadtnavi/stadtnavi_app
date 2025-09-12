@@ -47,9 +47,7 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
   void didUpdateWidget(covariant CarSharingMarkerModal oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.element != widget.element) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => loadData(),
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) => loadData());
     }
   }
 
@@ -61,14 +59,12 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
 
     final vehiclesAvailable = widget.element.vehiclesAvailable ?? 0;
     const greyColor = Color(0xFF747474);
-    const divider = Divider(
-      color: greyColor,
-      thickness: 0.5,
-    );
+    const divider = Divider(color: greyColor, thickness: 0.5);
     final networkName = widget.element.network?.name[languageCode];
-    String? cityBikeNetworkUrl = widget.element.network?.url != null
-        ? widget.element.network!.url![languageCode]
-        : '';
+    String? cityBikeNetworkUrl =
+        widget.element.network?.url != null
+            ? widget.element.network!.url![languageCode]
+            : '';
 
     if (cityBikeDataFetch?.rentalUris != null) {
       if (kIsWeb &&
@@ -87,8 +83,9 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
       children: [
         if (loading)
           LinearProgressIndicator(
-            valueColor:
-                AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+            valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).primaryColor,
+            ),
           )
         else if (cityBikeDataFetch != null)
           Container(
@@ -113,7 +110,8 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
                     Expanded(
                       child: Text(
                         localizationST.translate(
-                            "${widget.element.network?.type}-station-no-id"),
+                          "${widget.element.network?.type}-station-no-id",
+                        ),
                       ),
                     ),
                   ],
@@ -126,24 +124,16 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
                       width: 30,
                       margin: const EdgeInsets.only(right: 10),
                       child: SvgPicture.string(
-                          getNetworkIcon(widget.element.network?.icon)),
+                        getNetworkIcon(widget.element.network?.icon),
+                      ),
                     ),
                     Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          style: theme.textTheme.bodyMedium,
-                          children: [
-                            TextSpan(
-                              text: localizationST.translate(
-                                  "${widget.element.network?.type}-availability"),
-                            ),
-                            TextSpan(
-                              text: '($vehiclesAvailable)',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          ],
+                      child: Text(
+                        localizationST.translate(
+                          "${widget.element.network?.type}-availability",
+                          value: vehiclesAvailable,
                         ),
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ),
                   ],
@@ -152,14 +142,14 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
                   Container(
                     decoration: BoxDecoration(
                       color: const Color(0xffF4F4F5),
-                      border: Border.all(
-                        color: const Color(0xFFDDDDDD),
-                      ),
+                      border: Border.all(color: const Color(0xFFDDDDDD)),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     margin: const EdgeInsets.only(top: 16),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 6,
+                      horizontal: 10,
+                    ),
                     child: Column(
                       children: [
                         Row(
@@ -167,7 +157,8 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
                             Expanded(
                               child: Text(
                                 localizationST.translate(
-                                    "${widget.element.network?.type}-start-using"),
+                                  "${widget.element.network?.type}-start-using",
+                                ),
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -182,8 +173,9 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () async {
-                                  final Uri uri =
-                                      Uri.parse(cityBikeNetworkUrl!);
+                                  final Uri uri = Uri.parse(
+                                    cityBikeNetworkUrl!,
+                                  );
                                   if (await canLaunchUrl(uri)) {
                                     await launchUrl(uri);
                                   }
@@ -201,15 +193,12 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
                         ),
                       ],
                     ),
-                  )
+                  ),
               ],
             ),
           )
         else if (fetchError != null)
-          Text(
-            fetchError!,
-            style: const TextStyle(color: Colors.red),
-          ),
+          Text(fetchError!, style: const TextStyle(color: Colors.red)),
         CustomLocationSelector(
           onFetchPlan: widget.onFetchPlan,
           locationData: LocationDetail(
@@ -229,21 +218,23 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
       loading = true;
     });
     await LayersRepository.fetchCityBikesData(
-            widget.element.id.split(":").skip(1).join(":"))
+          widget.element.id.split(":").skip(1).join(":"),
+        )
         .then((value) {
-      if (mounted) {
-        setState(() {
-          cityBikeDataFetch = value;
-          loading = false;
+          if (mounted) {
+            setState(() {
+              cityBikeDataFetch = value;
+              loading = false;
+            });
+          }
+        })
+        .catchError((error) {
+          if (mounted) {
+            setState(() {
+              fetchError = "$error";
+              loading = false;
+            });
+          }
         });
-      }
-    }).catchError((error) {
-      if (mounted) {
-        setState(() {
-          fetchError = "$error";
-          loading = false;
-        });
-      }
-    });
   }
 }

@@ -47,9 +47,7 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
   void didUpdateWidget(covariant ScooterMarkerModal oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.element != widget.element) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => loadData(),
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) => loadData());
     }
   }
 
@@ -62,13 +60,11 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
     final networkName = widget.element.network?.name[languageCode];
     final vehiclesAvailable = cityBikeDataFetch?.bikesAvailable ?? 0;
     const greyColor = Color(0xFF747474);
-    const divider = Divider(
-      color: greyColor,
-      thickness: 0.5,
-    );
-    String? cityBikeNetworkUrl = widget.element.network?.url != null
-        ? widget.element.network!.url![languageCode]
-        : '';
+    const divider = Divider(color: greyColor, thickness: 0.5);
+    String? cityBikeNetworkUrl =
+        widget.element.network?.url != null
+            ? widget.element.network!.url![languageCode]
+            : '';
 
     if (cityBikeDataFetch?.rentalUris != null) {
       if (kIsWeb &&
@@ -87,8 +83,9 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
       children: [
         if (loading)
           LinearProgressIndicator(
-            valueColor:
-                AlwaysStoppedAnimation<Color>(Theme.of(context).primaryColor),
+            valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).primaryColor,
+            ),
           )
         else if (cityBikeDataFetch != null)
           Container(
@@ -113,7 +110,8 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
                     Expanded(
                       child: Text(
                         localizationST.translate(
-                            "${widget.element.network?.formFactors?.firstOrNull}-station-no-id"),
+                          "${widget.element.network?.formFactors?.firstOrNull}-station-no-id",
+                        ),
                       ),
                     ),
                   ],
@@ -126,24 +124,16 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
                       width: 30,
                       margin: const EdgeInsets.only(right: 10),
                       child: SvgPicture.string(
-                          getNetworkIcon(widget.element.network?.icon)),
+                        getNetworkIcon(widget.element.network?.icon),
+                      ),
                     ),
                     Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          style: theme.textTheme.bodyMedium,
-                          children: [
-                            TextSpan(
-                              text: localizationST.translate(
-                                  "${widget.element.network?.formFactors?.firstOrNull}-availability"),
-                            ),
-                            TextSpan(
-                              text: '($vehiclesAvailable)',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          ],
+                      child: Text(
+                        localizationST.translate(
+                          "${widget.element.network?.formFactors?.firstOrNull}-availability",
+                          value: vehiclesAvailable,
                         ),
+                        style: theme.textTheme.bodyMedium,
                       ),
                     ),
                   ],
@@ -152,14 +142,14 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
                   Container(
                     decoration: BoxDecoration(
                       color: const Color(0xffF4F4F5),
-                      border: Border.all(
-                        color: const Color(0xFFDDDDDD),
-                      ),
+                      border: Border.all(color: const Color(0xFFDDDDDD)),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     margin: const EdgeInsets.only(top: 16),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 6,
+                      horizontal: 10,
+                    ),
                     child: Column(
                       children: [
                         Row(
@@ -167,7 +157,8 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
                             Expanded(
                               child: Text(
                                 localizationST.translate(
-                                    "${widget.element.network?.formFactors?.firstOrNull}-start-using"),
+                                  "${widget.element.network?.formFactors?.firstOrNull}-start-using",
+                                ),
                                 style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
@@ -182,8 +173,9 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () async {
-                                  final Uri uri =
-                                      Uri.parse(cityBikeNetworkUrl!);
+                                  final Uri uri = Uri.parse(
+                                    cityBikeNetworkUrl!,
+                                  );
                                   if (await canLaunchUrl(uri)) {
                                     await launchUrl(uri);
                                   }
@@ -201,15 +193,12 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
                         ),
                       ],
                     ),
-                  )
+                  ),
               ],
             ),
           )
         else if (fetchError != null)
-          Text(
-            fetchError!,
-            style: const TextStyle(color: Colors.red),
-          ),
+          Text(fetchError!, style: const TextStyle(color: Colors.red)),
         CustomLocationSelector(
           onFetchPlan: widget.onFetchPlan,
           locationData: LocationDetail(
@@ -229,21 +218,23 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
       loading = true;
     });
     await LayersRepository.fetchCityBikesData(
-            widget.element.id.split(":").skip(1).join(":"))
+          widget.element.id.split(":").skip(1).join(":"),
+        )
         .then((value) {
-      if (mounted) {
-        setState(() {
-          cityBikeDataFetch = value;
-          loading = false;
+          if (mounted) {
+            setState(() {
+              cityBikeDataFetch = value;
+              loading = false;
+            });
+          }
+        })
+        .catchError((error) {
+          if (mounted) {
+            setState(() {
+              fetchError = "$error";
+              loading = false;
+            });
+          }
         });
-      }
-    }).catchError((error) {
-      if (mounted) {
-        setState(() {
-          fetchError = "$error";
-          loading = false;
-        });
-      }
-    });
   }
 }
