@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:stadtnavi_core/configuration/config_default/config_default/city_bike_config.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/default_options.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/default_settings.dart';
@@ -12,6 +14,24 @@ class ConfigDefault {
 
   static ConfigDefault get instance => _instance;
   static ConfigData get value => _instance.configData;
+
+  static Future<void> loadFromRemote({
+    required String jsonUrlFile,
+    required ConfigData deafultConfigData,
+  }) async {
+    try {
+      final response = await http.get(Uri.parse(jsonUrlFile));
+      if (response.statusCode == 200) {
+        final jsonMap = jsonDecode(response.body);
+        _instance.configData = ConfigData.fromJson(jsonMap);
+        print('✅ Configuración cargada desde GitHub');
+      } else {
+        _instance.configData = deafultConfigData;
+      }
+    } catch (e) {
+      _instance.configData = deafultConfigData;
+    }
+  }
 }
 
 class ConfigData {
@@ -66,7 +86,8 @@ class ConfigData {
     this.defaultSettings = defaultSettings ?? DefaultSettings();
     this.defaultOptions = defaultOptions ?? DefaultOptions();
     this.cityBike = cityBike ?? CityBikeConfig();
-    this.transportModes = transportModes ??
+    this.transportModes =
+        transportModes ??
         {
           "bus": TransportModeConfig(
             availableForSelection: true,
@@ -119,7 +140,8 @@ class ConfigData {
       if (modeToOTP != null) ...modeToOTP,
     };
 
-    this.formFactorsAndDefaultMessages = formFactorsAndDefaultMessages ??
+    this.formFactorsAndDefaultMessages =
+        formFactorsAndDefaultMessages ??
         <String, FormFactorAndDefaultMessage>{
           'bicycle': FormFactorAndDefaultMessage(
             translationKey: "sharingOperatorsBicycleHeader",
@@ -180,14 +202,88 @@ class ConfigData {
           ),
         };
   }
+  factory ConfigData.fromJson(Map<String, dynamic> json) {
+    return ConfigData(
+      showAlertHeader: json['showAlertHeader'] ?? true,
+      showBikeAndPublicItineraries:
+          json['showBikeAndPublicItineraries'] ?? false,
+      showBikeAndParkItineraries: json['showBikeAndParkItineraries'] ?? false,
+      defaultSettings:
+          json['defaultSettings'] != null
+              ? DefaultSettings.fromJson(json['defaultSettings'])
+              : null,
+      defaultOptions:
+          json['defaultOptions'] != null
+              ? DefaultOptions.fromJson(json['defaultOptions'])
+              : null,
+      walkBoardCost: json['walkBoardCost'] ?? 600,
+      walkBoardCostHigh: json['walkBoardCostHigh'] ?? 1200,
+      suggestCarMinDistance: json['suggestCarMinDistance'] ?? 2000,
+      suggestWalkMaxDistance: json['suggestWalkMaxDistance'] ?? 10000,
+      suggestBikeMaxDistance: json['suggestBikeMaxDistance'] ?? 30000,
+      suggestBikeAndPublicMinDistance:
+          json['suggestBikeAndPublicMinDistance'] ?? 3000,
+      suggestBikeAndParkMinDistance:
+          json['suggestBikeAndParkMinDistance'] ?? 3000,
+      itineraryFiltering: (json['itineraryFiltering'])?.toDouble() ?? 1.5,
+      minTransferTime: json['minTransferTime'] ?? 120,
+      transferPenalty: json['transferPenalty'] ?? 0,
+      optimize: json['optimize'] ?? 'GREENWAYS',
+      cityBike:
+          json['cityBike'] != null
+              ? CityBikeConfig.fromJson(json['cityBike'])
+              : null,
+      transportModes: (json['transportModes'] as Map<String, dynamic>?)?.map(
+        (key, value) => MapEntry(key, TransportModeConfig.fromJson(value)),
+      ),
+      modeToOTP: (json['modeToOTP'] as Map<String, dynamic>?)?.map(
+        (key, value) => MapEntry(key.toString(), value.toString()),
+      ),
+      modesWithNoBike:
+          (json['modesWithNoBike'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          ['BICYCLE_RENT', 'WALK'],
+      modePolygons:
+          (json['modePolygons'] as Map<String, dynamic>?)?.map((key, value) {
+            final parsed =
+                (value as List)
+                    .map(
+                      (outer) =>
+                          (outer as List)
+                              .map(
+                                (inner) =>
+                                    (inner as List)
+                                        .map(
+                                          (coord) => (coord as num).toDouble(),
+                                        )
+                                        .toList(),
+                              )
+                              .toList(),
+                    )
+                    .toList();
+            return MapEntry(key, parsed);
+          }) ??
+          {},
+      formFactorsAndDefaultMessages:
+          (json['formFactorsAndDefaultMessages'] as Map<String, dynamic>?)?.map(
+            (key, value) =>
+                MapEntry(key, FormFactorAndDefaultMessage.fromJson(value)),
+          ),
+    );
+  }
 }
 
 class FormFactorAndDefaultMessage {
   String translationKey;
   String? icon;
 
-  FormFactorAndDefaultMessage({
-    required this.translationKey,
-    this.icon,
-  });
+  FormFactorAndDefaultMessage({required this.translationKey, this.icon});
+
+  factory FormFactorAndDefaultMessage.fromJson(Map<String, dynamic> json) {
+    return FormFactorAndDefaultMessage(
+      translationKey: json['translationKey'] ?? '',
+      icon: json['icon'],
+    );
+  }
 }
