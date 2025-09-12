@@ -358,11 +358,11 @@
   "bicycleParkingFilterSecurePreferred": "Secure preferred",
   "disruptionInfoNoAlerts":"No known disruptions or diversions.",
   "taxiAvailability": "Taxis available at the station right now",
-  "bicycleAvailability": "Bikes available",
-  "carAvailability": "Shared cars available",
-  "cargoBicycleAvailability": "Cargo bikes available at the station right now",
+  "bicycleAvailability": "{amount} Bikes available",
+  "carAvailability": "{amount} Shared cars available",
+  "cargoBicycleAvailability": "{amount} Cargo bikes available at the station right now",
   "parkAndRideAvailability": "Spaces available",
-  "scooterAvailability": "Kick scooters available at the station right now",
+  "scooterAvailability": "{amount} Kick scooters available at the station right now",
   "scooterStationNoId": "e-scooter",
   "bicycleStationNoId": "Bike station",
   "cargoBicycleStationNoId": "Cargo bike rental station",
@@ -378,5 +378,7 @@
   "cargoBicycleStartUsingInfo": "More information at",
   "carStartUsing": "Book a shared car",
   "carStartUsingInfo": "More information at",
+  "parkingSpacesInTotal": "{total, plural, =0 {No parking space} one {One parking space} other {{total} parking spaces}}",
+  "disabledParkingSpacesCapacity": "{totalDisabled, plural, =0 {No wheelchair-accessible parking space} one {One wheelchair-accessible parking space} other {{totalDisabled} wheelchair-accessible parking spaces}}",
   "chooseOnMap" : "Choose on map"
 }

@@ -357,11 +357,11 @@
   "bicycleParkingFilterSecurePreferred": "Sichere bevorzugt",
   "disruptionInfoNoAlerts":"Keine Störungsmeldungen.",
   "taxiAvailability": "Taxis verfügbar",
-  "bicycleAvailability": "Fahrräder verfügbar",
-  "carAvailability": "Carsharing-Fahrzeuge verfügbar",
-  "cargoBicycleAvailability": "Lastenräder verfügbar",
+  "bicycleAvailability": "{amount, plural, =0 {Keine Fahrräder} one {Ein Fahrrad} other {# Fahrräder}} verfügbar",
+  "carAvailability": "{amount, plural, =0{Kein Car-Sharing-Fahrzeug} one{Üblicherweise ein Car-Sharing-Fahrzeug} other{Bis zu {amount} Car-Sharing-Fahrzeuge}} verfügbar. Genaue Verfügbarkeit vorab prüfen.",
+  "cargoBicycleAvailability": "{amount, plural, =0 {Keine Lastenräder} one {Ein Lastenrad} other {# Lastenräder}} verfügbar",
   "parkAndRideAvailability": "Plätze verfügbar",
-  "scooterAvailability": "E-Scooter ausleihbar",
+  "scooterAvailability": "{amount, plural, =0 {Keine E-Scooter} one {Ein E-Scooter} other {# E-Scooter}} verfügbar",
   "scooterStationNoId": "E-Scooter",
   "bicycleStationNoId": "Leihrad-Station",
   "cargoBicycleStationNoId": "Lastenrad-Station",
@@ -377,5 +377,7 @@
   "cargoBicycleStartUsingInfo": "Mehr Informationen bei",
   "carStartUsing": "Buchen Sie ein Carsharing-Fahrzeug",
   "carStartUsingInfo": "Mehr Informationen bei",
+  "parkingSpacesInTotal": "{total, plural, =0 {Kein Stellplatz} one {Ein Stellplatz} other {{total} Stellplätze}}",
+  "disabledParkingSpacesCapacity": "{totalDisabled, plural, =0 {Kein barrierefreier Stellplatz} one {Ein barrierefreier Stellplatz} other {{totalDisabled} barrierefreie Stellplätze}}",
   "chooseOnMap" : "Wähle auf der Karte"
 }

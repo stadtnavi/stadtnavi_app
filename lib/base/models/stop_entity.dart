@@ -41,6 +41,21 @@ class StopEntity extends Equatable {
           : null,
     };
   }
+  Map<String, dynamic> toMapForFares() {
+    return {
+      'gtfsId': gtfsId,
+      'lat': lat,
+      'lon': lon,
+      'code': code,
+      'vehicleMode': vehicleMode?.name,
+      'platformCode': platformCode,
+      'zoneId': zoneId,
+      'id': id,
+      'alerts': alerts != null
+          ? List<dynamic>.from(alerts!.map((x) => x.toJson()))
+          : null,
+    };
+  }
 
   factory StopEntity.fromMap(Map<String, dynamic> map) {
     return StopEntity(

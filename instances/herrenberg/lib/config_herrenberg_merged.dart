@@ -19,10 +19,10 @@ final configHerrenbergMerged = ConfigData(
     timeFactor: 0.3,
     walkReluctance: 3,
     walkBoardCost: 150,
+    includeParkAndRideSuggestions: true,
+    showBikeAndParkItineraries: true,
   ),
-  defaultOptions: DefaultOptions(
-    walkSpeed: [0.83, 1.38, 1.94],
-  ),
+  defaultOptions: DefaultOptions(walkSpeed: [0.83, 1.38, 1.94]),
   cityBike: CityBikeConfig(
     minZoomStopsNearYou: 10,
     showStationId: false,
@@ -39,7 +39,7 @@ final configHerrenbergMerged = ConfigData(
         enabled: true,
         url: {
           "de": "https://www.deer-carsharing.de/",
-          "en": "https://www.deer-carsharing.de/"
+          "en": "https://www.deer-carsharing.de/",
         },
       ),
       "stadtmobil_stuttgart": NetworkConfig(
@@ -52,7 +52,7 @@ final configHerrenbergMerged = ConfigData(
         enabled: true,
         url: {
           "de": "https://stuttgart.stadtmobil.de/",
-          "en": "https://stuttgart.stadtmobil.de/"
+          "en": "https://stuttgart.stadtmobil.de/",
         },
       ),
       "stadtmobil_karlsruhe": NetworkConfig(
@@ -65,7 +65,7 @@ final configHerrenbergMerged = ConfigData(
         enabled: true,
         url: {
           "de": "https://karlsruhe.stadtmobil.de/",
-          "en": "https://karlsruhe.stadtmobil.de/"
+          "en": "https://karlsruhe.stadtmobil.de/",
         },
       ),
       "flinkster_carsharing": NetworkConfig(
@@ -86,7 +86,7 @@ final configHerrenbergMerged = ConfigData(
         operator: "stadtmobil",
         name: {
           "de": "Ökostadt Renningen e.V.",
-          "en": "Ökostadt Renningen e.V."
+          "en": "Ökostadt Renningen e.V.",
         },
         formFactors: ["car"],
         type: "car",
@@ -120,7 +120,7 @@ final configHerrenbergMerged = ConfigData(
         enabled: true,
         url: {
           "de": "https://www.regioradstuttgart.de",
-          "en": "https://www.regioradstuttgart.de"
+          "en": "https://www.regioradstuttgart.de",
         },
       ),
       "bolt_stuttgart": NetworkConfig(
@@ -166,7 +166,7 @@ final configHerrenbergMerged = ConfigData(
         enabled: true,
         url: {
           "de": "https://zeusscooters.com",
-          "en": "https://zeusscooters.com"
+          "en": "https://zeusscooters.com",
         },
       ),
       "zeus_pforzheim": NetworkConfig(
@@ -179,7 +179,7 @@ final configHerrenbergMerged = ConfigData(
         enabled: true,
         url: {
           "de": "https://zeusscooters.com",
-          "en": "https://zeusscooters.com"
+          "en": "https://zeusscooters.com",
         },
       ),
       "zeus_tubingen": NetworkConfig(
@@ -192,7 +192,7 @@ final configHerrenbergMerged = ConfigData(
         enabled: true,
         url: {
           "de": "https://zeusscooters.com",
-          "en": "https://zeusscooters.com"
+          "en": "https://zeusscooters.com",
         },
       ),
       "voi_de": NetworkConfig(
@@ -207,10 +207,7 @@ final configHerrenbergMerged = ConfigData(
       "dott_boblingen": NetworkConfig(
         icon: "brand_dott",
         operator: "dott",
-        name: {
-          "de": "Dott Böblingen",
-          "en": "Dott Böblingen",
-        },
+        name: {"de": "Dott Böblingen", "en": "Dott Böblingen"},
         type: "scooter",
         url: {
           "de": "https://ridedott.com/de/fahr-mit-uns/",
@@ -223,10 +220,7 @@ final configHerrenbergMerged = ConfigData(
       "dott_ludwigsburg": NetworkConfig(
         icon: "brand_dott",
         operator: "dott",
-        name: {
-          "de": "Dott Ludwigsburg",
-          "en": "Dott Ludwigsburg",
-        },
+        name: {"de": "Dott Ludwigsburg", "en": "Dott Ludwigsburg"},
         type: "scooter",
         url: {
           "de": "https://ridedott.com/de/fahr-mit-uns/",
@@ -239,10 +233,7 @@ final configHerrenbergMerged = ConfigData(
       "dott_reutlingen": NetworkConfig(
         icon: "brand_dott",
         operator: "dott",
-        name: {
-          "de": "Dott Reutlingen",
-          "en": "Dott Reutlingen",
-        },
+        name: {"de": "Dott Reutlingen", "en": "Dott Reutlingen"},
         type: "scooter",
         formFactors: ["scooter", "bicycle"],
         url: {
@@ -256,10 +247,7 @@ final configHerrenbergMerged = ConfigData(
       "dott_stuttgart": NetworkConfig(
         icon: "brand_dott",
         operator: "dott",
-        name: {
-          "de": "Dott Stuttgart",
-          "en": "Dott Stuttgart",
-        },
+        name: {"de": "Dott Stuttgart", "en": "Dott Stuttgart"},
         type: "scooter",
         url: {
           "de": "https://ridedott.com/de/fahr-mit-uns/",
@@ -272,10 +260,7 @@ final configHerrenbergMerged = ConfigData(
       "dott_tubingen": NetworkConfig(
         icon: "brand_dott",
         operator: "dott",
-        name: {
-          "de": "Dott Tübingen",
-          "en": "Dott Tübingen",
-        },
+        name: {"de": "Dott Tübingen", "en": "Dott Tübingen"},
         type: "scooter",
         formFactors: ["scooter", "bicycle"],
         url: {
@@ -453,17 +438,12 @@ final configHerrenbergMerged = ConfigData(
 <g><path style="opacity:1" fill="#fef7f7" d="M 83.5,166.5 C 100.837,166.333 118.17,166.5 135.5,167C 136.991,169.022 136.658,170.688 134.5,172C 117.5,172.667 100.5,172.667 83.5,172C 82.2475,170.172 82.2475,168.339 83.5,166.5 Z"/></g>
 </svg>
 """,
-        name: {
-          "de": "Flinkster",
-          "en": "Flinkster",
-        },
+        name: {"de": "Flinkster", "en": "Flinkster"},
         url: {
           "de": "https://www.flinkster.de/de/start",
-          "en": "https://www.flinkster.de/en/home"
+          "en": "https://www.flinkster.de/en/home",
         },
-        colors: {
-          "background": "#D50F0F",
-        },
+        colors: {"background": "#D50F0F"},
       ),
       "deer": OperatorConfig(
         icon: "brand_deer",
@@ -781,9 +761,7 @@ z"/>
 </svg>
 """,
         name: {"de": "dott", "en": "dott"},
-        colors: {
-          "background": "#009DDB",
-        },
+        colors: {"background": "#009DDB"},
       ),
       "regiorad": OperatorConfig(
         icon: "brand_regiorad",
@@ -957,7 +935,5 @@ z"/>
       },
     ),
   },
-  modeToOTP: {
-    'carpool': 'CARPOOL',
-  },
+  modeToOTP: {'carpool': 'CARPOOL'},
 );
