@@ -102,120 +102,122 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
             ],
           ),
           drawer: widget.drawerBuilder(context),
-          body: Stack(
-            children: [
-              if (state.error != '')
-                Center(
-                  child: Text(state.error),
-                )
-              else
-                Scrollbar(
-                  thumbVisibility: true,
-                  interactive: true,
-                  thickness: 8,
-                  trackVisibility: true,
-                  child: ListView.builder(
-                    itemCount: listTransports.length,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 20),
-                    itemBuilder: (buildContext, index) {
-                      final parking = listTransports[index];
-                      final localeName =
-                          TrufiBaseLocalization.of(context).localeName;
-                      String? spaces;
-                      if (parking.carPlacesCapacity != null) {
-                        if (parking.availabilityCarPlacesCapacity != null &&
-                            parking.availabilityCarPlacesCapacity! <=
-                                parking.carPlacesCapacity!) {
-                          spaces = localeName == 'en'
-                              ? "${parking.availabilityCarPlacesCapacity} of ${parking.carPlacesCapacity} parking spaces available"
-                              : "${parking.availabilityCarPlacesCapacity} von ${parking.carPlacesCapacity} Stellplätzen verfügbar";
-                        } else {
-                          spaces =
-                              "${parking.carPlacesCapacity} ${localeName == 'en' ? 'parking spaces' : 'Stellplätze'}";
+          body: SafeArea(
+            child: Stack(
+              children: [
+                if (state.error != '')
+                  Center(
+                    child: Text(state.error),
+                  )
+                else
+                  Scrollbar(
+                    thumbVisibility: true,
+                    interactive: true,
+                    thickness: 8,
+                    trackVisibility: true,
+                    child: ListView.builder(
+                      itemCount: listTransports.length,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 20),
+                      itemBuilder: (buildContext, index) {
+                        final parking = listTransports[index];
+                        final localeName =
+                            TrufiBaseLocalization.of(context).localeName;
+                        String? spaces;
+                        if (parking.carPlacesCapacity != null) {
+                          if (parking.availabilityCarPlacesCapacity != null &&
+                              parking.availabilityCarPlacesCapacity! <=
+                                  parking.carPlacesCapacity!) {
+                            spaces = localeName == 'en'
+                                ? "${parking.availabilityCarPlacesCapacity} of ${parking.carPlacesCapacity} parking spaces available"
+                                : "${parking.availabilityCarPlacesCapacity} von ${parking.carPlacesCapacity} Stellplätzen verfügbar";
+                          } else {
+                            spaces =
+                                "${parking.carPlacesCapacity} ${localeName == 'en' ? 'parking spaces' : 'Stellplätze'}";
+                          }
+            
+                          if (parking.state == "CLOSED") {
+                            spaces +=
+                                " (${localeName == 'en' ? 'closed' : 'Geschlossen'})";
+                          }
                         }
-
-                        if (parking.state == "CLOSED") {
-                          spaces +=
-                              " (${localeName == 'en' ? 'closed' : 'Geschlossen'})";
+                        String? disabledSpaces;
+                        if (parking.totalDisabled != null &&
+                            parking.freeDisabled != null) {
+                          disabledSpaces = localeName == 'en'
+                              ? "${parking.freeDisabled} of ${parking.totalDisabled} wheelchair-accessible parking spaces available"
+                              : "${parking.freeDisabled} von ${parking.totalDisabled} rollstuhlgerechten Parkplätzen vorhanden";
                         }
-                      }
-                      String? disabledSpaces;
-                      if (parking.totalDisabled != null &&
-                          parking.freeDisabled != null) {
-                        disabledSpaces = localeName == 'en'
-                            ? "${parking.freeDisabled} of ${parking.totalDisabled} wheelchair-accessible parking spaces available"
-                            : "${parking.freeDisabled} von ${parking.totalDisabled} rollstuhlgerechten Parkplätzen vorhanden";
-                      }
-                      final availabilityParking = parking.markerState();
-                      return Column(
-                        children: [
-                          ListTile(
-                            onTap: () {
-                              panelCubit.setPanel(
-                                CustomMarkerPanel(
-                                  panel: (
-                                    context,
-                                    onFetchPlan, {
-                                    isOnlyDestination,
-                                  }) =>
-                                      ParkingStateUpdater(
-                                    parkingFeature: parking,
-                                    onFetchPlan: () {
-                                      _callFetchPlan();
-                                    },
-                                    isOnlyDestination:
-                                        isOnlyDestination ?? true,
+                        final availabilityParking = parking.markerState();
+                        return Column(
+                          children: [
+                            ListTile(
+                              onTap: () {
+                                panelCubit.setPanel(
+                                  CustomMarkerPanel(
+                                    panel: (
+                                      context,
+                                      onFetchPlan, {
+                                      isOnlyDestination,
+                                    }) =>
+                                        ParkingStateUpdater(
+                                      parkingFeature: parking,
+                                      onFetchPlan: () {
+                                        _callFetchPlan();
+                                      },
+                                      isOnlyDestination:
+                                          isOnlyDestination ?? true,
+                                    ),
+                                    position: parking.position,
+                                    minSize: 50,
                                   ),
-                                  position: parking.position,
-                                  minSize: 50,
+                                );
+                                showTrufiDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      ParkingOverviewMap(
+                                    parking: parking,
+                                  ),
+                                );
+                              },
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              minLeadingWidth: 0,
+                              leading: SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: SvgPicture.string(
+                                  parkingMarkerIcons[parking.type] ?? "",
                                 ),
-                              );
-                              showTrufiDialog(
-                                context: context,
-                                builder: (BuildContext context) =>
-                                    ParkingOverviewMap(
-                                  parking: parking,
-                                ),
-                              );
-                            },
-                            contentPadding:
-                                const EdgeInsets.symmetric(horizontal: 5),
-                            minLeadingWidth: 0,
-                            leading: SizedBox(
-                              width: 40,
-                              height: 40,
-                              child: SvgPicture.string(
-                                parkingMarkerIcons[parking.type] ?? "",
                               ),
+                              title: Text(parking.name.toString()),
+                              subtitle: spaces != null || disabledSpaces != null
+                                  ? Text(
+                                      "${spaces ?? ''}${spaces != null && disabledSpaces != null ? '\n' : ''}${disabledSpaces ?? ''}",
+                                    )
+                                  : null,
+                              trailing: (availabilityParking != null)
+                                  ? availabilityParking.getImage(size: 25)
+                                  : null,
                             ),
-                            title: Text(parking.name.toString()),
-                            subtitle: spaces != null || disabledSpaces != null
-                                ? Text(
-                                    "${spaces ?? ''}${spaces != null && disabledSpaces != null ? '\n' : ''}${disabledSpaces ?? ''}",
-                                  )
-                                : null,
-                            trailing: (availabilityParking != null)
-                                ? availabilityParking.getImage(size: 25)
-                                : null,
-                          ),
-                          const Divider(
-                            color: Colors.grey,
-                            height: 0,
-                          ),
-                        ],
-                      );
-                    },
+                            const Divider(
+                              color: Colors.grey,
+                              height: 0,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
-                ),
-              if (state.isLoading)
-                Container(
-                  color: Colors.black.withOpacity(0.5),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
+                if (state.isLoading)
+                  Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
         );
       },

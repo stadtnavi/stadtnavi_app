@@ -35,11 +35,11 @@ class HomePage extends StatefulWidget {
   final MapRouteBuilder mapBuilder;
   final AsyncExecutor asyncExecutor;
   const HomePage({
-    Key? key,
+    super.key,
     required this.drawerBuilder,
     required this.mapBuilder,
     required this.asyncExecutor,
-  }) : super(key: key);
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -70,6 +70,14 @@ class _HomePageState extends State<HomePage>
       (duration) => context
           .read<GlobalAlertsCubit>()
           .load(Localizations.localeOf(context).languageCode),
+    );
+  }
+  
+  @override
+  void didUpdateWidget(covariant HomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (duration) => processUniLink(),
     );
   }
 
