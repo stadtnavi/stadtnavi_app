@@ -144,8 +144,8 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
                         const SizedBox(height: 20),
                         Text(
                           localeName == "en"
-                              ? "Your offer will be deleted after the day of the ride. Regular ones will be removed after three months."
-                              : "Ihr Inserat wird nach Ablauf der Zeit jedoch spätestens nach drei Monaten (bei regelmäßigen Fahrten) gelöscht.",
+                              ? "Your offer will be automatically deleted after the scheduled time or, in the case of recurring rides, after a maximum of six months."
+                              : "Ihr Inserat wird nach Ablauf der Zeit, jedoch spätestens nach sechs Monaten (bei regelmäßigen Fahrten) automatisch gelöscht.",
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: Colors.black,
