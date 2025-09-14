@@ -535,11 +535,6 @@ class _OfferCarpoolScreenState extends State<OfferCarpoolScreen> {
       return;
     }
     if (!mounted) return;
-
-    setState(() {
-      done = true;
-    });
-    return;
     setState(() {
       fetchError = null;
       loading = true;
