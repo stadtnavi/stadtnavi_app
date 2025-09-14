@@ -45,67 +45,88 @@ class TransitLeg extends StatelessWidget {
     final panelCubit = context.read<PanelCubit>();
     final isTypeBikeRentalNetwork =
         leg.transportMode == TransportMode.bicycle &&
-            leg.fromPlace?.bikeRentalStation != null;
+        leg.fromPlace?.bikeRentalStation != null;
 
     final alerts = AlertUtils.getActiveLegAlerts(
-        leg, (leg.startTime.millisecondsSinceEpoch / 1000));
+      leg,
+      (leg.startTime.millisecondsSinceEpoch / 1000),
+    );
     alerts.sort(AlertUtils.alertSeverityCompare);
     final alert = alerts.firstOrNull;
     final alertSeverityLevel = AlertUtils.getMaximumAlertSeverityLevel(alerts);
+    final agencyName = leg.route?.agency?.name ?? '';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RouteNumber(
           transportMode: leg.transportMode,
           backgroundColor: leg.backgroundColor,
-          text: leg.route?.shortName ??
+          text:
+              leg.route?.shortName ??
               leg.transportMode.getTranslate(localizationBase),
           tripHeadSing: leg.headSign,
-          icon: (leg.route?.type ?? 0) == 715
-              ? onDemandTaxiSvg(color: 'FFFFFF')
-              : isTypeBikeRentalNetwork
+          icon:
+              (leg.route?.type ?? 0) == 715
+                  ? onDemandTaxiSvg(color: 'FFFFFF')
+                  : isTypeBikeRentalNetwork
                   ? getBikeRentalNetwork(
-                          leg.fromPlace!.bikeRentalStation?.networks?[0])
-                      .image
+                    leg.fromPlace!.bikeRentalStation?.networks?[0],
+                  ).image
                   : null,
           duration: leg.durationLeg(localizationBase),
           distance: leg.distanceString(localizationBase),
-          textContainer: isTypeBikeRentalNetwork
-              ? Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      leg.fromPlace?.name ?? '',
-                      style: const TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w600),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(2.0),
-                      child: Text(
-                        localization.bikeRentalBikeStation,
-                        style: TextStyle(color: Colors.grey[800]),
+          textContainer:
+              isTypeBikeRentalNetwork
+                  ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        leg.fromPlace?.name ?? '',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                  ],
-                )
-              : null,
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text(
+                          localization.bikeRentalBikeStation,
+                          style: TextStyle(color: Colors.grey[800]),
+                        ),
+                      ),
+                    ],
+                  )
+                  : null,
           alertSeverityLevel: alertSeverityLevel,
         ),
         if (TransportMode.carPool == leg.transportMode &&
             leg.route?.url != null)
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: GestureDetector(
-              onTap: () async {
-                await launch(leg.route!.url!);
-              },
-              child: Text(
-                localization.commonDetails,
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: theme.colorScheme.primary,
+            ),
+            onPressed: () async {
+              await launch(leg.route!.url!);
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  localization.localeName == "en"
+                      ? "Contact driver via $agencyName"
+                      : "Mitfahrt vereinbaren über $agencyName",
+                  style: TextStyle(
+                    color: theme.colorScheme.surface,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
+                Icon(
+                  Icons.call_made,
+                  color: theme.colorScheme.surface,
+                  size: 18,
+                ),
+              ],
             ),
           ),
         if (leg.dropOffBookingInfo != null)
@@ -116,27 +137,36 @@ class TransitLeg extends StatelessWidget {
                 child: InfoMessage(
                   message:
                       '${leg.dropOffBookingInfo?.message ?? ''} ${leg.dropOffBookingInfo?.dropOffMessage ?? ''}',
-                  widget: leg.dropOffBookingInfo?.contactInfo?.infoUrl != null
-                      ? RichText(
-                          text: TextSpan(
-                            style: theme.primaryTextTheme.bodyMedium?.copyWith(
-                              decoration: TextDecoration.underline,
-                              color: theme.primaryColor,
-                              fontWeight: FontWeight.w600,
+                  widget:
+                      leg.dropOffBookingInfo?.contactInfo?.infoUrl != null
+                          ? RichText(
+                            text: TextSpan(
+                              style: theme.primaryTextTheme.bodyMedium
+                                  ?.copyWith(
+                                    decoration: TextDecoration.underline,
+                                    color: theme.primaryColor,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                              text: localization.commonMoreInformartion,
+                              recognizer:
+                                  TapGestureRecognizer()
+                                    ..onTap = () {
+                                      if (leg
+                                              .dropOffBookingInfo
+                                              ?.contactInfo
+                                              ?.infoUrl !=
+                                          null) {
+                                        launch(
+                                          leg
+                                              .dropOffBookingInfo!
+                                              .contactInfo!
+                                              .infoUrl!,
+                                        );
+                                      }
+                                    },
                             ),
-                            text: localization.commonMoreInformartion,
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                if (leg.dropOffBookingInfo?.contactInfo
-                                        ?.infoUrl !=
-                                    null) {
-                                  launch(leg.dropOffBookingInfo!.contactInfo!
-                                      .infoUrl!);
-                                }
-                              },
-                          ),
-                        )
-                      : null,
+                          )
+                          : null,
                 ),
               ),
               if (leg.dropOffBookingInfo?.contactInfo?.phoneNumber != null)
@@ -148,8 +178,10 @@ class TransitLeg extends StatelessWidget {
                   },
                   child: Container(
                     margin: const EdgeInsets.only(top: 12),
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 8,
+                      horizontal: 8,
+                    ),
                     decoration: BoxDecoration(
                       color: theme.colorScheme.primary,
                       borderRadius: BorderRadius.circular(40),
@@ -157,7 +189,9 @@ class TransitLeg extends StatelessWidget {
                     child: Text(
                       '${localization.commonCall}  ${leg.dropOffBookingInfo!.contactInfo!.phoneNumber}',
                       style: const TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w600),
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      ),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -193,7 +227,9 @@ class TransitLeg extends StatelessWidget {
             child: Text(
               '${leg.durationLeg(localizationBase)} (${leg.distanceString(localizationBase)})',
               style: theme.primaryTextTheme.bodyLarge?.copyWith(
-                  fontSize: 13, color: detailsColor ?? Colors.grey[700]),
+                fontSize: 13,
+                color: detailsColor ?? Colors.grey[700],
+              ),
             ),
           ),
         if (alertSeverityLevel == AlertSeverityLevelType.warning ||
@@ -208,38 +244,39 @@ class TransitLeg extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => BaseTrufiPage(
-                        child: RoutesStopScreen(
-                          routeShortName: leg.route?.shortName ?? '',
-                          routeGtfsId: leg.route?.gtfsId ?? '',
-                          patternCode: leg.trip?.pattern?.code ?? '',
-                          transportMode: leg.transportMode,
-                        ),
-                      ),
+                      builder:
+                          (context) => BaseTrufiPage(
+                            child: RoutesStopScreen(
+                              routeShortName: leg.route?.shortName ?? '',
+                              routeGtfsId: leg.route?.gtfsId ?? '',
+                              patternCode: leg.trip?.pattern?.code ?? '',
+                              transportMode: leg.transportMode,
+                            ),
+                          ),
                     ),
                   );
                 } else if (sourceAlert == 'from-stop-alert') {
                   panelCubit.setPanel(
                     CustomMarkerPanel(
-                      panel: (
-                        context,
-                        _, {
-                        isOnlyDestination,
-                      }) =>
-                          StopMarkerModalBase(
-                        initialIndex: 2,
-                        stopFeature: StopFeature(
-                          code: leg.fromPlace?.stopEntity?.code,
-                          gtfsId: leg.fromPlace?.stopEntity?.gtfsId??"",
-                          name: leg.fromPlace?.stopEntity?.name,
-                          parentStation: null,
-                          patterns: null,
-                          platform: null,
-                          type:  leg.transportMode.name,
-                          position:
-                              LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon),
-                        ),
-                      ),
+                      panel:
+                          (context, _, {isOnlyDestination}) =>
+                              StopMarkerModalBase(
+                                initialIndex: 2,
+                                stopFeature: StopFeature(
+                                  code: leg.fromPlace?.stopEntity?.code,
+                                  gtfsId:
+                                      leg.fromPlace?.stopEntity?.gtfsId ?? "",
+                                  name: leg.fromPlace?.stopEntity?.name,
+                                  parentStation: null,
+                                  patterns: null,
+                                  platform: null,
+                                  type: leg.transportMode.name,
+                                  position: LatLng(
+                                    leg.fromPlace!.lat,
+                                    leg.fromPlace!.lon,
+                                  ),
+                                ),
+                              ),
                       position: LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon),
                       minSize: 130,
                     ),
@@ -247,24 +284,24 @@ class TransitLeg extends StatelessWidget {
                 } else if (sourceAlert == 'to-stop-alert') {
                   panelCubit.setPanel(
                     CustomMarkerPanel(
-                      panel: (
-                        context,
-                        _, {
-                        isOnlyDestination,
-                      }) =>
-                          StopMarkerModalBase(
-                        initialIndex: 2,
-                        stopFeature: StopFeature(
-                          code: leg.toPlace?.stopEntity?.code,
-                          gtfsId: leg.toPlace?.stopEntity?.gtfsId??'',
-                          name: leg.toPlace?.stopEntity?.name,
-                          parentStation: null,
-                          patterns: null,
-                          platform: null,
-                          type:  leg.transportMode.name,
-                          position: LatLng(leg.toPlace!.lat, leg.toPlace!.lon),
-                        ),
-                      ),
+                      panel:
+                          (context, _, {isOnlyDestination}) =>
+                              StopMarkerModalBase(
+                                initialIndex: 2,
+                                stopFeature: StopFeature(
+                                  code: leg.toPlace?.stopEntity?.code,
+                                  gtfsId: leg.toPlace?.stopEntity?.gtfsId ?? '',
+                                  name: leg.toPlace?.stopEntity?.name,
+                                  parentStation: null,
+                                  patterns: null,
+                                  platform: null,
+                                  type: leg.transportMode.name,
+                                  position: LatLng(
+                                    leg.toPlace!.lat,
+                                    leg.toPlace!.lon,
+                                  ),
+                                ),
+                              ),
                       position: LatLng(leg.toPlace!.lat, leg.toPlace!.lon),
                       minSize: 130,
                     ),
@@ -295,7 +332,7 @@ class TransitLeg extends StatelessWidget {
                     Icon(
                       Icons.arrow_forward_ios,
                       color: theme.colorScheme.primary,
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -308,11 +345,15 @@ class TransitLeg extends StatelessWidget {
             child: ExpansionTile(
               title: Text(
                 '${leg.intermediatePlaces!.length} ${localizationBase.localeName == 'en' ? (leg.intermediatePlaces!.length > 1 ? 'stops' : 'stop') : (leg.intermediatePlaces!.length > 1 ? 'Zwischenstopps' : 'Zwischenstopp')}',
-                style:
-                    const TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                ),
               ),
-              tilePadding:
-                  const EdgeInsets.symmetric(horizontal: 7, vertical: 0),
+              tilePadding: const EdgeInsets.symmetric(
+                horizontal: 7,
+                vertical: 0,
+              ),
               textColor: theme.primaryColor,
               collapsedTextColor: theme.primaryColor,
               iconColor: theme.primaryColor,
@@ -320,59 +361,60 @@ class TransitLeg extends StatelessWidget {
               childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
               children: [
                 ...leg.intermediatePlaces!
-                    .map((e) => Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: Material(
-                            child: InkWell(
-                              onTap: () {
-                                if (e.stopEntity?.lat != null &&
-                                    e.stopEntity?.lon != null) {
-                                  moveInMap(LatLng(
+                    .map(
+                      (e) => Padding(
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: Material(
+                          child: InkWell(
+                            onTap: () {
+                              if (e.stopEntity?.lat != null &&
+                                  e.stopEntity?.lon != null) {
+                                moveInMap(
+                                  LatLng(
                                     e.stopEntity!.lat!,
                                     e.stopEntity!.lon!,
-                                  ));
-                                }
-                              },
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          DateFormat('HH:mm').format(
-                                              e.arrivalTime ?? DateTime.now()),
-                                        ),
-                                        const SizedBox(width: 5),
-                                        Flexible(
-                                          child: Text(
-                                            e.stopEntity?.name ?? '',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                   ),
-                                  const SizedBox(width: 5),
-                                  SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: showOnMapSvg(
-                                      color: theme.colorScheme.primary,
-                                    ),
+                                );
+                              }
+                            },
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        DateFormat('HH:mm').format(
+                                          e.arrivalTime ?? DateTime.now(),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Flexible(
+                                        child: Text(e.stopEntity?.name ?? ''),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(width: 5),
+                                SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: showOnMapSvg(
+                                    color: theme.colorScheme.primary,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ))
+                        ),
+                      ),
+                    )
                     .toList(),
               ],
             ),
           ),
-        Semantics(
-          value: alertSeverityLevel?.translateValue(localization),
-        ),
+        Semantics(value: alertSeverityLevel?.translateValue(localization)),
       ],
     );
   }

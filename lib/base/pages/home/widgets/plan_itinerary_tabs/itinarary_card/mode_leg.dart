@@ -160,7 +160,7 @@ class RouteLeg extends StatelessWidget {
       child: IconTransport(
         bacgroundColor: leg.primaryColor,
         color: Colors.white,
-        icon: leg.transportMode.getImage(color: Colors.white),
+        icon: leg.transportMode.getImage(color: leg.transportMode==TransportMode.carPool ? Colors.transparent : Colors.white),
         secondaryIcon: (maxWidth * perc) >= 46 && isRedenderBike
             ? bikeSvg(color: 'FFFFFF')
             : null,
