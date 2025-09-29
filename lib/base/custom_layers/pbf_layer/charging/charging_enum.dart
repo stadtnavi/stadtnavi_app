@@ -1,5 +1,0 @@
-
-enum ChargingLayerIds {
-  covered,
-  notCovered
-}

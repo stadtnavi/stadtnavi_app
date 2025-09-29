@@ -1,5 +1,0 @@
-
-enum BikeParkLayerIds {
-  covered,
-  notCovered
-}

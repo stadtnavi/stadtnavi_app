@@ -1,6 +1,6 @@
 {
-    "name": "herrenberg",
-    "short_name": "herrenberg",
+    "name": "de_stadtnavi_herrenberg_internal",
+    "short_name": "de_stadtnavi_herrenberg_internal",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
