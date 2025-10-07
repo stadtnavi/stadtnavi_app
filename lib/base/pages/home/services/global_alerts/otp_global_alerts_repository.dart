@@ -40,9 +40,11 @@ class OtpGlobalAlertsRepository {
     );
     final planAdvancedData = await client.query(planAdvancedQuery);
     if (planAdvancedData.hasException && planAdvancedData.data == null) {
-      throw planAdvancedData.exception!.graphqlErrors.isNotEmpty
-          ? Exception("Bad request")
-          : Exception(planAdvancedData.exception!.graphqlErrors);
+      final errorMessage =
+          locale == 'en'
+              ? 'Service alerts are temporarily unavailable. Please try again later.'
+              : 'Servicehinweise sind vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut.';
+      throw Exception(errorMessage);
     }
     List<GlobalAlertEntity> planData =
         (planAdvancedData.data!['alerts'] as List)

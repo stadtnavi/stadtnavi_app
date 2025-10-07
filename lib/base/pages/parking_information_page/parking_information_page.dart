@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/models/enums.dart';
+import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'parking_information_cubit/parking_information_cubit.dart';
 import 'parking_overview_map.dart';
 import 'package:routemaster/routemaster.dart';
@@ -66,7 +67,8 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
   Future<void> loadData() async {
     final parkingInformationCubit = context.read<ParkingInformationCubit>();
     timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
-      await parkingInformationCubit.refresh();
+      await parkingInformationCubit.refresh(
+          locale: Localizations.localeOf(context).languageCode);
     });
   }
 
@@ -78,8 +80,10 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final localizationST = StadtnaviBaseLocalization.of(context);
     final panelCubit = context.read<PanelCubit>();
     final parkingInformationCubit = context.read<ParkingInformationCubit>();
+    final localeName = TrufiBaseLocalization.of(context).localeName;
     return BlocBuilder<ParkingInformationCubit, ParkingInformationState>(
       builder: (context, state) {
         final listTransports = state.parkings;
@@ -92,8 +96,12 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
               IconButton(
                 onPressed: () {
                   if (!state.isLoading) {
-                    parkingInformationCubit.loadData().catchError(
-                        (error) => onFetchError(context, error as Exception));
+                    parkingInformationCubit
+                        .loadData(
+                            locale:
+                                Localizations.localeOf(context).languageCode)
+                        .catchError((error) =>
+                            onFetchError(context, error as Exception));
                   }
                 },
                 icon: const Icon(Icons.refresh),
@@ -121,33 +129,17 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
                           horizontal: 15, vertical: 20),
                       itemBuilder: (buildContext, index) {
                         final parking = listTransports[index];
-                        final localeName =
-                            TrufiBaseLocalization.of(context).localeName;
-                        String? spaces;
-                        if (parking.carPlacesCapacity != null) {
-                          if (parking.availabilityCarPlacesCapacity != null &&
-                              parking.availabilityCarPlacesCapacity! <=
-                                  parking.carPlacesCapacity!) {
-                            spaces = localeName == 'en'
-                                ? "${parking.availabilityCarPlacesCapacity} of ${parking.carPlacesCapacity} parking spaces available"
-                                : "${parking.availabilityCarPlacesCapacity} von ${parking.carPlacesCapacity} Stellplätzen verfügbar";
-                          } else {
-                            spaces =
-                                "${parking.carPlacesCapacity} ${localeName == 'en' ? 'parking spaces' : 'Stellplätze'}";
-                          }
-            
-                          if (parking.state == "CLOSED") {
-                            spaces +=
-                                " (${localeName == 'en' ? 'closed' : 'Geschlossen'})";
-                          }
-                        }
-                        String? disabledSpaces;
-                        if (parking.totalDisabled != null &&
-                            parking.freeDisabled != null) {
-                          disabledSpaces = localeName == 'en'
-                              ? "${parking.freeDisabled} of ${parking.totalDisabled} wheelchair-accessible parking spaces available"
-                              : "${parking.freeDisabled} von ${parking.totalDisabled} rollstuhlgerechten Parkplätzen vorhanden";
-                        }
+                        String? carCapacity = ParkingMarkerModal.getCarCapacity(
+                            parking, localeName, localizationST);
+                        String? closed = ParkingMarkerModal.getClosed(
+                            parking.state, localeName);
+                        String carStatus = "$carCapacity $closed".trim();
+                        String? wheelchairCapacity =
+                            parking.wheelchairAccessibleCarSpaces != null &&
+                                    parking.wheelchairAccessibleCarSpaces! > 0
+                                ? localizationST.parkingSpacesInTotal(
+                                    parking.wheelchairAccessibleCarSpaces!)
+                                : null;
                         final availabilityParking = parking.markerState();
                         return Column(
                           children: [
@@ -191,11 +183,11 @@ class _ParkingInformationPageState extends State<ParkingInformationPage> {
                                 ),
                               ),
                               title: Text(parking.name.toString()),
-                              subtitle: spaces != null || disabledSpaces != null
-                                  ? Text(
-                                      "${spaces ?? ''}${spaces != null && disabledSpaces != null ? '\n' : ''}${disabledSpaces ?? ''}",
-                                    )
-                                  : null,
+                              subtitle: carStatus != ''
+                                  ? Text(carStatus)
+                                  : wheelchairCapacity != null
+                                      ? Text(wheelchairCapacity)
+                                      : null,
                               trailing: (availabilityParking != null)
                                   ? availabilityParking.getImage(size: 25)
                                   : null,

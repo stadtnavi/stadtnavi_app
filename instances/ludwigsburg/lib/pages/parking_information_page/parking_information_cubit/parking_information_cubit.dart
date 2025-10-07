@@ -11,15 +11,16 @@ class ParkingInformationCubit extends Cubit<ParkingInformationState> {
   final ParkingInformationServices routeTransportsRepository;
 
   ParkingInformationCubit(String otpEndpoint)
-      : routeTransportsRepository = ParkingInformationServices(otpEndpoint),
+      : routeTransportsRepository =
+            ParkingInformationServices(otpEndpoint: otpEndpoint),
         super(const ParkingInformationState()) {
     loadData().catchError((error) {});
   }
 
-  Future<void> loadData() async {
+  Future<void> loadData({String? locale}) async {
     emit(state.copyWith(isLoading: true));
     try {
-      final parkings = await routeTransportsRepository.fetchParkings();
+      final parkings = await routeTransportsRepository.fetchParkings(locale);
       parkings.sort((a, b) {
         int res = -1;
         final aShortName = int.tryParse(a.name ?? '');
@@ -40,14 +41,14 @@ class ParkingInformationCubit extends Cubit<ParkingInformationState> {
     }
   }
 
-  Future<void> refresh() async {
+  Future<void> refresh({String? locale}) async {
     try {
       if (state.parkings.isEmpty) {
         loadData();
         return;
       }
-      final parkings =
-          await routeTransportsRepository.fetchParkingsByIds(state.parkings);
+      final parkings = await routeTransportsRepository.fetchParkingsByIds(
+          state.parkings, locale);
       parkings.sort((a, b) {
         int res = -1;
         final aShortName = int.tryParse(a.name ?? '');

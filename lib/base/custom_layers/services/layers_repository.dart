@@ -218,7 +218,12 @@ class LayersRepository {
     return fetchedData;
   }
 
-  static Future<VehicleParkingDataFetch> fetchPark(String parkId) async {
+  static Future<VehicleParkingDataFetch> fetchPark(String parkId,{String? locale}) async {
+    client = updateClient(
+      graphQLClient: client,
+      endpoint: ApiConfig().openTripPlannerUrl,
+      languageEncode: locale,
+    );
     final WatchQueryOptions parkingQuery = WatchQueryOptions(
       document: parseString(park_queries.parking),
       variables: <String, dynamic>{

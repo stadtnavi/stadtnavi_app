@@ -9,6 +9,9 @@ const String parkingByIds = r'''
       carSpaces
       wheelchairAccessibleCarSpaces
     }
+    capacity {
+      wheelchairAccessibleCarSpaces
+    }
   }
 }
 ''';
