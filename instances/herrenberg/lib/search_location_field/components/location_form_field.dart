@@ -1,0 +1,135 @@
+import 'package:de_stadtnavi_herrenberg_internal/search_location_field/components/location_search_delegate.dart';
+import 'package:flutter/material.dart';
+import 'package:trufi_core/localization/app_localization.dart';
+import 'package:trufi_core/screens/route_navigation/maps/trufi_map_controller.dart';
+
+class LocationFormField extends StatefulWidget {
+  const LocationFormField({
+    super.key,
+    required this.hintText,
+    required this.textLeadingImage,
+    required this.onSaved,
+    required this.onClear,
+    required this.isOrigin,
+    this.value,
+    this.leading,
+    this.trailing,
+  });
+
+  final bool isOrigin;
+  final String hintText;
+  final Widget textLeadingImage;
+  final Function(TrufiLocation) onSaved;
+  final Function() onClear;
+  final TrufiLocation? value;
+  final Widget? leading;
+  final Widget? trailing;
+
+  @override
+  State<LocationFormField> createState() => _LocationFormFieldState();
+}
+
+class _LocationFormFieldState extends State<LocationFormField> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // final localization = TrufiBaseLocalization.of(context);
+    final localizationSP = AppLocalization.of(context);
+    final theme = Theme.of(context);
+    return Row(
+      children: [
+        if (widget.leading != null)
+          SizedBox(width: 40.0, child: widget.leading),
+        Expanded(
+          child: GestureDetector(
+            onTap: () async {
+              final defaultSearch = (widget.value != null)
+                  ? "${widget.value?.displayName(localizationSP)}${widget.value?.address?.isNotEmpty ?? false ? ", ${widget.value?.address}" : ""}"
+                  : null;
+
+              // Show search
+              final TrufiLocation? location = await Navigator.of(context)
+                  .push<TrufiLocation?>(
+                    MaterialPageRoute(
+                      builder: (_) => Theme(
+                        data: Theme.of(context),
+                        child: CustomLocationSearchPage(
+                          isOrigin: widget.isOrigin,
+                          hint: widget.isOrigin
+                              ? "localization.searchHintOrigin"
+                              : "localization.searchHintDestination",
+                          defaultSearch: defaultSearch,
+                        ),
+                      ),
+                    ),
+                  );
+              // Check result
+              if (location != null) {
+                widget.onSaved(location);
+                if (widget.value != location) {
+                  _scrollController.jumpTo(0);
+                }
+              }
+            },
+            child: Container(
+              height: 36,
+              margin: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.symmetric(horizontal: 4),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.white),
+                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+              ),
+              child: Row(
+                children: <Widget>[
+                  SizedBox(height: 24.0, child: widget.textLeadingImage),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
+                        padding: const EdgeInsets.all(4.0),
+                        child: widget.value != null
+                            ? Text(
+                                "${widget.value?.displayName(localizationSP)}${widget.value?.address?.isNotEmpty ?? false ? ", ${widget.value?.address}" : ""}",
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              )
+                            : Text(
+                                widget.hintText,
+                                style: const TextStyle(color: Colors.black54),
+                              ),
+                      ),
+                    ),
+                  ),
+                  if (widget.value != null)
+                    GestureDetector(
+                      child: Icon(Icons.close, color: theme.primaryColor),
+                      onTap: widget.onClear,
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        if (widget.trailing != null)
+          SizedBox(width: 40.0, child: widget.trailing),
+      ],
+    );
+  }
+}

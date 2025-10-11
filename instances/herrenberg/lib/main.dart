@@ -1,3 +1,4 @@
+import 'package:de_stadtnavi_herrenberg_internal/search_location_field/home_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:latlong2/latlong.dart';
@@ -10,6 +11,8 @@ import 'package:trufi_core/hive_init.dart';
 import 'package:trufi_core/pages/home/service/routing_service/otp_stadtnavi/graphql_plan_data_source.dart';
 import 'package:trufi_core/pages/home/widgets/routing_map/routing_map_controller.dart';
 import 'package:trufi_core/repositories/location/services/stadtnavi_photon_location_search_service.dart';
+import 'package:trufi_core/screens/route_navigation/map_layers/bike_parks/bike_parks_layer.dart';
+import 'package:trufi_core/screens/route_navigation/map_layers/weather_stations/weather_stations_layer.dart';
 import 'package:trufi_core/screens/route_navigation/route_navigation.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -61,6 +64,31 @@ class MyApp extends StatelessWidget {
               ),
             );
           },
+          mapLayerBuilder: (controller) => [
+            BikeParksLayer(controller),
+            WeatherStationsLayer(controller),
+          ],
+          routeSearchBuilder:
+              ({
+                required destination,
+                required onClearFrom,
+                required onClearTo,
+                required onFetchPlan,
+                required onReset,
+                required onSaveFrom,
+                required onSaveTo,
+                required onSwap,
+                required origin,
+              }) => HomeAppBar(
+                onSaveFrom: onSaveFrom,
+                onClearFrom: onClearFrom,
+                onSaveTo: onSaveTo,
+                onClearTo: onClearTo,
+                onBackButton: () {},
+                onFetchPlan: onFetchPlan,
+                onReset: onReset,
+                onSwap: onSwap,
+              ),
         ),
       ),
     );
