@@ -1,7 +1,6 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:de_stadtnavi_herrenberg_internal/widget/icons/icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trufi_core/localization/app_localization.dart';
 import 'package:trufi_core/repositories/services/gps_lcoation/gps_location.dart';
 import 'package:trufi_core/screens/route_navigation/maps/trufi_map_controller.dart';
