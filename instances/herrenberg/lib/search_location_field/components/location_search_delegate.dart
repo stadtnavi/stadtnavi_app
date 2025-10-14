@@ -1,6 +1,5 @@
 import 'package:de_stadtnavi_herrenberg_internal/search_location_field/components/suggestion.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trufi_core/screens/route_navigation/maps/trufi_map_controller.dart';
 
 class CustomLocationSearchPage extends StatefulWidget {
