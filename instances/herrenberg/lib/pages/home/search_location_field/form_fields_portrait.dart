@@ -1,5 +1,5 @@
-import 'package:de_stadtnavi_herrenberg_internal/search_location_field/components/buttons.dart';
-import 'package:de_stadtnavi_herrenberg_internal/search_location_field/components/location_form_field.dart';
+import 'package:de_stadtnavi_herrenberg_internal/pages/home/search_location_field/components/buttons.dart';
+import 'package:de_stadtnavi_herrenberg_internal/pages/home/search_location_field/components/location_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:trufi_core/localization/app_localization.dart';
 import 'package:trufi_core/pages/home/widgets/routing_map/routing_map_controller.dart';

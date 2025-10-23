@@ -1,5 +1,5 @@
-import 'package:de_stadtnavi_herrenberg_internal/search_location_field/form_fields_landscape.dart';
-import 'package:de_stadtnavi_herrenberg_internal/search_location_field/form_fields_portrait.dart';
+import 'package:de_stadtnavi_herrenberg_internal/pages/home/search_location_field/form_fields_landscape.dart';
+import 'package:de_stadtnavi_herrenberg_internal/pages/home/search_location_field/form_fields_portrait.dart';
 import 'package:flutter/material.dart';
 import 'package:trufi_core/localization/app_localization.dart';
 import 'package:trufi_core/screens/route_navigation/maps/trufi_map_controller.dart';

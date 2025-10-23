@@ -1,4 +1,4 @@
-import 'package:de_stadtnavi_herrenberg_internal/search_location_field/components/location_search_delegate.dart';
+import 'package:de_stadtnavi_herrenberg_internal/pages/home/search_location_field/components/location_search_delegate.dart';
 import 'package:flutter/material.dart';
 import 'package:trufi_core/localization/app_localization.dart';
 import 'package:trufi_core/screens/route_navigation/maps/trufi_map_controller.dart';
@@ -46,7 +46,7 @@ class _LocationFormFieldState extends State<LocationFormField> {
 
   @override
   Widget build(BuildContext context) {
-    // final localization = TrufiBaseLocalization.of(context);
+    // final localization = AppLocalization.of(context);
     final localizationSP = AppLocalization.of(context);
     final theme = Theme.of(context);
     return Row(

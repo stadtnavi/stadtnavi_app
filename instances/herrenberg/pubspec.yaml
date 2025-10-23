@@ -39,6 +39,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   intl: ^0.20.2
   back_button_interceptor: ^8.0.4
+  flutter_bloc: ^9.1.1
+  equatable: ^2.0.7
+  skeletonizer: ^2.1.0+1
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -1,4 +1,4 @@
-import 'package:de_stadtnavi_herrenberg_internal/search_location_field/components/suggestion.dart';
+import 'package:de_stadtnavi_herrenberg_internal/pages/home/search_location_field/components/suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:trufi_core/screens/route_navigation/maps/trufi_map_controller.dart';
 
