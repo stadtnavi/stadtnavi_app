@@ -321,7 +321,7 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
 
   Future<ChargingItem> _fetchData() async {
     final response = await http.get(Uri.parse(
-      "https://api.ocpdb.de/api/ocpi/2.2/location/${widget.element.id}",
+      "https://services.stadtnavi.eu/ocpi/2.2/location/${widget.element.id}",
     ));
     final body = jsonDecode(response.body);
     return ChargingItem.fromJson(body as Map);
