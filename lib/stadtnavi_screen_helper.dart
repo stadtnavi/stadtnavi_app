@@ -8,7 +8,7 @@ import 'package:trufi_core/base/widgets/screen/transition_page.dart';
 class StadtnaviNoAnimationPage<T> extends TransitionPage<T> {
   StadtnaviNoAnimationPage({
     required Widget child,
-    String? restorationId,
+    super.restorationId,
     AppLifecycleReactorHandler? appLifecycleReactorHandler,
   }) : super(
           child: Builder(builder: (context) {
@@ -23,7 +23,6 @@ class StadtnaviNoAnimationPage<T> extends TransitionPage<T> {
           popTransition: PageTransition.none,
           key: ObjectKey(restorationId),
           name: restorationId,
-          restorationId: restorationId,
         );
 }
 

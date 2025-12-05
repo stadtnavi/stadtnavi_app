@@ -156,7 +156,7 @@ class ChargingLayer extends CustomLayer {
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
-      host: ApiConfig().baseDomain,
+      host: "services.stadtnavi.eu",
       path: "/tiles/charging-stations/$z/$x/$y.mvt",
     );
 

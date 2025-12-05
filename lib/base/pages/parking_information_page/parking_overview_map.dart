@@ -43,10 +43,13 @@ class _ParkingOverviewMapState extends State<ParkingOverviewMap>
     final mapConfiguration = context.read<MapConfigurationCubit>().state;
     trufiMapController.onReady.then((value) {
       if (panelCubit.state.panel != null) {
-        trufiMapController.move(
-          center: panelCubit.state.panel!.position,
-          zoom: 17,
-          tickerProvider: this,
+        Future.delayed(
+          const Duration(milliseconds: 200),
+          () => trufiMapController.move(
+            center: panelCubit.state.panel!.position,
+            zoom: 17,
+            tickerProvider: this,
+          ),
         );
       }
     });
@@ -83,7 +86,7 @@ class _ParkingOverviewMapState extends State<ParkingOverviewMap>
                           return StadtnaviMap(
                             trufiMapController: trufiMapController,
                             showMapTypeButton: false,
-                            showLayerById: 'Parking',
+                            showLayerById: 'parkAndRide',
                             layerOptionsBuilder: (context) => [],
                             onTap: (_, point) {
                               trufiMapController.move(

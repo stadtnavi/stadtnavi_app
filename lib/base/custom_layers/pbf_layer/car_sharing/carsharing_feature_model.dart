@@ -34,6 +34,7 @@ class CarSharingFeature {
     if (id == null) return null;
     String? networkId = properties['network']?.dartStringValue;
     NetworkConfig? network = ConfigDefault.value.cityBike.networks?[networkId];
+    if (network == null) return null;
     String? name = properties['name']?.dartStringValue;
     String? formFactors = properties['formFactors']?.dartStringValue;
     int? vehiclesAvailable =

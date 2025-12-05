@@ -25,12 +25,12 @@ GraphQLClient getClient(
 GraphQLClient updateClient({
   required GraphQLClient graphQLClient,
   required String endpoint,
-  String? langugeEncode,
+  String? languageEncode,
 }) {
   final httpLink = HttpLink(
     endpoint,
     defaultHeaders: {
-      'accept-language': langugeEncode ?? 'en',
+      'accept-language': languageEncode ?? 'en',
       "otptimeout": "20000",
     },
   );

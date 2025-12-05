@@ -20,6 +20,7 @@ class ParkingFeature {
   final bool? anyCarPlaces;
   final bool? carPlaces;
   final bool? wheelchairAccessibleCarPlaces;
+  final int? wheelchairAccessibleCarSpaces;
   final bool? realTimeData;
   final String? capacity;
   final int? bicyclePlacesCapacity;
@@ -45,6 +46,7 @@ class ParkingFeature {
     required this.anyCarPlaces,
     required this.carPlaces,
     required this.wheelchairAccessibleCarPlaces,
+    required this.wheelchairAccessibleCarSpaces,
     required this.realTimeData,
     required this.capacity,
     required this.bicyclePlacesCapacity,
@@ -61,7 +63,7 @@ class ParkingFeature {
     if (geoJsonPoint?.properties == null) return null;
     final properties = geoJsonPoint?.properties ?? <String, VectorTileValue>{};
     String? id = properties['id']?.dartStringValue;
-    if(id==null)return null;
+    if (id == null) return null;
     String? name = properties['name']?.dartStringValue;
     String? note = properties['note']?.dartStringValue;
     String? url = properties['detailsUrl']?.dartStringValue;
@@ -110,6 +112,7 @@ class ParkingFeature {
       anyCarPlaces: anyCarPlaces,
       carPlaces: carPlaces,
       wheelchairAccessibleCarPlaces: wheelchairAccessibleCarPlaces,
+      wheelchairAccessibleCarSpaces: null,
       realTimeData: realTimeData,
       capacity: capacity,
       bicyclePlacesCapacity: bicyclePlacesCapacity,
@@ -184,7 +187,7 @@ class ParkingFeature {
 
   String getCurrentOpeningTime() {
     final weekday = DateTime.now().weekday;
-    return sOpeningHours!.openingHours.values.toList()[weekday-1].join(",");
+    return sOpeningHours!.openingHours.values.toList()[weekday - 1].join(",");
   }
 
   ParkingFeature copyWith({
@@ -201,6 +204,7 @@ class ParkingFeature {
     bool? anyCarPlaces,
     bool? carPlaces,
     bool? wheelchairAccessibleCarPlaces,
+    int? wheelchairAccessibleCarSpaces,
     bool? realTimeData,
     String? capacity,
     int? bicyclePlacesCapacity,
@@ -227,6 +231,8 @@ class ParkingFeature {
       carPlaces: carPlaces ?? this.carPlaces,
       wheelchairAccessibleCarPlaces:
           wheelchairAccessibleCarPlaces ?? this.wheelchairAccessibleCarPlaces,
+      wheelchairAccessibleCarSpaces:
+          wheelchairAccessibleCarSpaces ?? this.wheelchairAccessibleCarSpaces,
       realTimeData: realTimeData ?? this.realTimeData,
       capacity: capacity ?? this.capacity,
       bicyclePlacesCapacity:

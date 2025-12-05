@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/icons_transport_modes.dart';
 import 'package:stadtnavi_core/base/models/othermodel/enums/alert_severity_level_type.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 
@@ -53,17 +52,16 @@ class RouteNumber extends StatelessWidget {
                 child: Row(
                   children: [
                     if (icon != null)
-                      SizedBox(
-                        height: 20,
-                        width: 20,
-                        child: icon,
-                      )
+                      SizedBox(height: 20, width: 20, child: icon)
                     else
                       Container(
                         child: transportMode?.getImage(
-                          color: transportMode == TransportMode.bicycle
-                              ? Colors.black
-                              : Colors.white,
+                          color:
+                              transportMode == TransportMode.carPool
+                                  ? Colors.transparent
+                                  : transportMode == TransportMode.bicycle
+                                  ? Colors.black
+                                  : Colors.white,
                         ),
                       ),
                     if (transportMode != TransportMode.walk &&
@@ -90,25 +88,6 @@ class RouteNumber extends StatelessWidget {
                 ),
             ],
           ),
-          if (transportMode == TransportMode.carPool)
-            Padding(
-              padding: const EdgeInsets.only(left: 4.0),
-              child: Row(
-                children: [
-                  SizedBox(
-                    height: 15,
-                    width: 15,
-                    child: carpoolFgSvg,
-                  ),
-                  const SizedBox(width: 2),
-                  SizedBox(
-                    height: 15,
-                    width: 15,
-                    child: carpoolAdacSvg,
-                  )
-                ],
-              ),
-            ),
           if (transportMode != TransportMode.bicycle &&
               transportMode != TransportMode.car &&
               textContainer == null)
@@ -127,15 +106,9 @@ class RouteNumber extends StatelessWidget {
             Row(
               children: [
                 const SizedBox(width: 8),
-                Text(
-                  duration ?? '',
-                  style: theme.primaryTextTheme.bodyLarge,
-                ),
+                Text(duration ?? '', style: theme.primaryTextTheme.bodyLarge),
                 const SizedBox(width: 10),
-                Text(
-                  distance ?? '',
-                  style: theme.primaryTextTheme.bodyLarge,
-                ),
+                Text(distance ?? '', style: theme.primaryTextTheme.bodyLarge),
               ],
             )
           else

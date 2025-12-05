@@ -35,11 +35,11 @@ class HomePage extends StatefulWidget {
   final MapRouteBuilder mapBuilder;
   final AsyncExecutor asyncExecutor;
   const HomePage({
-    Key? key,
+    super.key,
     required this.drawerBuilder,
     required this.mapBuilder,
     required this.asyncExecutor,
-  }) : super(key: key);
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -51,7 +51,6 @@ class _HomePageState extends State<HomePage>
         WidgetsBindingObserver,
         TraceableClientMixin {
   final TrufiMapController trufiMapController = TrufiMapController();
-  StreamSubscription<LatLng?>? locationStreamSubscription;
 
   @override
   void initState() {
@@ -61,7 +60,6 @@ class _HomePageState extends State<HomePage>
       final mapRouteCubit = context.read<MapRouteCubit>();
       final mapRouteState = mapRouteCubit.state;
       repaintMap(mapRouteCubit, mapRouteState);
-      moveMyLocation(mapRouteState);
     });
     WidgetsBinding.instance.addPostFrameCallback(
       (duration) => processUniLink(),
@@ -72,21 +70,17 @@ class _HomePageState extends State<HomePage>
           .load(Localizations.localeOf(context).languageCode),
     );
   }
+  
+  @override
+  void didUpdateWidget(covariant HomePage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    WidgetsBinding.instance.addPostFrameCallback(
+      (duration) => processUniLink(),
+    );
+  }
 
   @override
   String get actionName => 'HomePage-(Mobile-App)';
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      final mapRouteState = context.read<MapRouteCubit>().state;
-      moveMyLocation(mapRouteState);
-    }
-    if (state == AppLifecycleState.inactive) {
-      locationStreamSubscription?.cancel();
-    }
-  }
 
   @override
   void dispose() {
@@ -260,25 +254,6 @@ class _HomePageState extends State<HomePage>
           });
     } else {
       trufiMapController.cleanMap();
-    }
-  }
-
-  void moveMyLocation(MapRouteState mapRouteState) async {
-    if (mapRouteState.plan == null) {
-      final mapConfiguration = context.read<MapConfigurationCubit>().state;
-      locationStreamSubscription = GPSLocationProvider().streamLocation.listen(
-        (currentLocation) {
-          if (currentLocation != null) {
-            trufiMapController.moveToYourLocation(
-              location: currentLocation,
-              context: context,
-              zoom: mapConfiguration.chooseLocationZoom,
-              tickerProvider: this,
-            );
-            locationStreamSubscription?.cancel();
-          }
-        },
-      );
     }
   }
 

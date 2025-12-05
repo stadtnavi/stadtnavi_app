@@ -11,11 +11,17 @@ import 'package:stadtnavi_core/consts.dart';
 import 'park_queries.dart' as pattern_query;
 
 class ParkingInformationServices {
-  final GraphQLClient client;
+  final String otpEndpoint;
+  GraphQLClient client;
 
-  ParkingInformationServices(String endpoint) : client = getClient(endpoint);
+  ParkingInformationServices({required this.otpEndpoint})
+      : client = getClient(
+          otpEndpoint,
+        );
 
-  Future<List<ParkingFeature>> fetchParkings() async {
+  Future<List<ParkingFeature>> fetchParkings(
+    String? locale,
+  ) async {
     final parkingsArea = await _fetchParkingsByArea(z: 14, x: 8609, y: 5633);
     final parkingsArea1 = await _fetchParkingsByArea(z: 14, x: 8610, y: 5633);
     final parkingsArea2 = await _fetchParkingsByArea(z: 14, x: 8608, y: 5633);
@@ -26,9 +32,9 @@ class ParkingInformationServices {
     ];
     var map2 = <String, ParkingFeature>{};
     for (ParkingFeature parking in listAll) {
-      map2[parking.id!] = parking;
+      map2[parking.id] = parking;
     }
-    return fetchParkingsByIds(map2.values.toList());
+    return fetchParkingsByIds(map2.values.toList(), locale);
   }
 
   Future<List<ParkingFeature>> _fetchParkingsByArea({
@@ -71,14 +77,20 @@ class ParkingInformationServices {
 
   Future<List<ParkingFeature>> fetchParkingsByIds(
     List<ParkingFeature> listParking,
+    String? locale,
   ) async {
     if (listParking.isEmpty) {
       return [];
     }
+    client = updateClient(
+      graphQLClient: client,
+      endpoint: otpEndpoint,
+      languageEncode: locale,
+    );
     final WatchQueryOptions listPatterns = WatchQueryOptions(
       document: parseString(pattern_query.parkingByIds),
       variables: <String, dynamic>{
-        'parkIds': listParking.map((e) => e.id ?? '').toList(),
+        'parkIds': listParking.map((e) => e.id).toList(),
       },
       fetchResults: true,
       fetchPolicy: FetchPolicy.networkOnly,
@@ -86,8 +98,10 @@ class ParkingInformationServices {
     final dataListParkings = await client.query(listPatterns);
     if (dataListParkings.hasException && dataListParkings.data == null) {
       throw dataListParkings.exception!.graphqlErrors.isNotEmpty
-          ? Exception("Bad request")
-          : Exception("Error connection");
+          ? Exception(
+              "Parking information is temporarily unavailable. Please try again later.")
+          : Exception(
+              "Parking information is temporarily unavailable. Please try again later.");
     }
     final parkings = dataListParkings.data!['vehicleParkings']
         ?.map<VehicleParking>((dynamic json) =>
@@ -98,7 +112,7 @@ class ParkingInformationServices {
     };
     final newList = <ParkingFeature>[];
     for (final element in listParking) {
-      ParkingFeature? tempParking;
+      ParkingFeature tempParking = element;
       if (element.carPlacesCapacity != null &&
           element.availabilityCarPlacesCapacity != null) {
         tempParking = element.copyWith(
@@ -107,15 +121,17 @@ class ParkingInformationServices {
         );
       }
       if (element.totalDisabled != null && element.freeDisabled != null) {
-        tempParking = (tempParking ?? element).copyWith(
+        tempParking = tempParking.copyWith(
           freeDisabled: dataMapParkings[element.id]
               ?.availability
               ?.wheelchairAccessibleCarSpaces,
         );
       }
-      if (tempParking != null) {
-        newList.add(tempParking);
-      }
+      newList.add(tempParking.copyWith(
+        wheelchairAccessibleCarSpaces: dataMapParkings[element.id]
+            ?.capacity
+            ?.wheelchairAccessibleCarSpaces,
+      ));
     }
 
     return newList;

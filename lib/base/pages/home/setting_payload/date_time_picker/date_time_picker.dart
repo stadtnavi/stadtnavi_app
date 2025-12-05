@@ -5,10 +5,7 @@ import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.da
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
 class DateTimePicker extends StatefulWidget {
-  const DateTimePicker({
-    Key? key,
-    required this.dateConf,
-  }) : super(key: key);
+  const DateTimePicker({Key? key, required this.dateConf}) : super(key: key);
 
   final DateTimeConf dateConf;
 
@@ -37,9 +34,14 @@ class _DateTimePickerState extends State<DateTimePicker>
         tempDateConf.date != null && tempDateConf.date!.isAfter(_nowDate)
             ? tempDateConf.date!.roundDown(delta: const Duration(minutes: 15))
             : DateTime.now().roundDown(delta: const Duration(minutes: 15));
+
+    tempDateConf = tempDateConf.copyWith(date: initialDateTime);
     super.initState();
     _controller = TabController(
-        length: 2, initialIndex: tempDateConf.isArriveBy ? 1 : 0, vsync: this);
+      length: 2,
+      initialIndex: tempDateConf.isArriveBy ? 1 : 0,
+      vsync: this,
+    );
     _controller.addListener(() {
       if (_controller.index == 0) {
         setState(() {
@@ -74,7 +76,8 @@ class _DateTimePickerState extends State<DateTimePicker>
     final localizationBase = TrufiBaseLocalization.of(context);
     final localization = StadtnaviBaseLocalization.of(context);
     return Container(
-      height: MediaQuery.of(context).size.height *
+      height:
+          MediaQuery.of(context).size.height *
           (MediaQuery.of(context).orientation == Orientation.portrait
               ? 0.35
               : 0.6),
@@ -87,8 +90,9 @@ class _DateTimePickerState extends State<DateTimePicker>
                 child: Container(
                   padding: const EdgeInsets.only(top: 18, bottom: 10),
                   child: InkWell(
-                    onTap: () =>
-                        Navigator.of(context).pop(const DateTimeConf(null)),
+                    onTap:
+                        () =>
+                            Navigator.of(context).pop(const DateTimeConf(null)),
                     child: Text(
                       localization.commonLeavingNow,
                       style: _styleOptions.copyWith(
@@ -111,24 +115,28 @@ class _DateTimePickerState extends State<DateTimePicker>
                     Text(
                       localization.commonDeparture,
                       style: _styleOptions.copyWith(
-                        color: tempDateConf.isArriveBy
-                            ? Colors.grey[700]
-                            : theme.primaryColor,
-                        fontWeight: tempDateConf.isArriveBy
-                            ? FontWeight.w400
-                            : FontWeight.w500,
+                        color:
+                            tempDateConf.isArriveBy
+                                ? Colors.grey[700]
+                                : theme.primaryColor,
+                        fontWeight:
+                            tempDateConf.isArriveBy
+                                ? FontWeight.w400
+                                : FontWeight.w500,
                       ),
                       textAlign: TextAlign.center,
                     ),
                     Text(
                       localization.commonArrival,
                       style: _styleOptions.copyWith(
-                        color: tempDateConf.isArriveBy
-                            ? theme.primaryColor
-                            : Colors.grey[700],
-                        fontWeight: !tempDateConf.isArriveBy
-                            ? FontWeight.w400
-                            : FontWeight.w500,
+                        color:
+                            tempDateConf.isArriveBy
+                                ? theme.primaryColor
+                                : Colors.grey[700],
+                        fontWeight:
+                            !tempDateConf.isArriveBy
+                                ? FontWeight.w400
+                                : FontWeight.w500,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -139,11 +147,12 @@ class _DateTimePickerState extends State<DateTimePicker>
           ),
           Expanded(
             child: CupertinoTheme(
-              data: CupertinoThemeData(
-                textTheme: CupertinoTextThemeData(
-                  dateTimePickerTextStyle: TextStyle(
-                    color: theme.colorScheme.onSurface,
-                  ),
+              data: CupertinoTheme.of(context).copyWith(
+                textTheme: CupertinoTheme.of(context).textTheme.copyWith(
+                  dateTimePickerTextStyle: CupertinoTheme.of(context)
+                      .textTheme
+                      .dateTimePickerTextStyle
+                      .copyWith(color: theme.colorScheme.onSurface),
                 ),
               ),
               child: CupertinoDatePicker(
@@ -177,16 +186,15 @@ class _DateTimePickerState extends State<DateTimePicker>
                     ),
                   ),
                 ),
-                const VerticalDivider(
-                  thickness: 1,
-                ),
+                const VerticalDivider(thickness: 1),
                 Expanded(
                   child: SafeArea(
                     child: CupertinoButton(
                       onPressed: () {
                         Navigator.of(context).pop(
                           tempDateConf.copyWith(
-                              date: tempDateConf.date ?? _nowDate),
+                            date: tempDateConf.date ?? _nowDate,
+                          ),
                         );
                       },
                       child: Text(
@@ -209,18 +217,12 @@ class _DateTimePickerState extends State<DateTimePicker>
 }
 
 class DateTimeConf {
-  const DateTimeConf(
-    this.date, {
-    this.isArriveBy = false,
-  });
+  const DateTimeConf(this.date, {this.isArriveBy = false});
 
   final DateTime? date;
   final bool isArriveBy;
 
-  DateTimeConf copyWith({
-    DateTime? date,
-    bool? isArriveBy,
-  }) {
+  DateTimeConf copyWith({DateTime? date, bool? isArriveBy}) {
     return DateTimeConf(
       date ?? this.date,
       isArriveBy: isArriveBy ?? this.isArriveBy,
@@ -231,6 +233,7 @@ class DateTimeConf {
 extension on DateTime {
   DateTime roundDown({Duration delta = const Duration(seconds: 15)}) {
     return DateTime.fromMillisecondsSinceEpoch(
-        millisecondsSinceEpoch - millisecondsSinceEpoch % delta.inMilliseconds);
+      millisecondsSinceEpoch - millisecondsSinceEpoch % delta.inMilliseconds,
+    );
   }
 }

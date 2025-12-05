@@ -29,9 +29,7 @@ class GraphQLPlanRepository {
   GraphQLClient client;
 
   GraphQLPlanRepository({required this.endpoint})
-      : client = getClient(
-          endpoint,
-        );
+    : client = getClient(endpoint);
   static const maxRetries = 5;
 
   Future<Plan> fetchPlanAdvanced({
@@ -45,7 +43,7 @@ class GraphQLPlanRepository {
     client = updateClient(
       graphQLClient: client,
       endpoint: endpoint,
-      langugeEncode: locale,
+      languageEncode: locale,
     );
 
     final QueryOptions planAdvancedQuery = QueryOptions(
@@ -127,16 +125,19 @@ class GraphQLPlanRepository {
       throw Exception("Failed to load intineraries");
     }
     if (planAdvancedData.hasException && planAdvancedData.data == null) {
-      throw planAdvancedData.exception!.graphqlErrors.isNotEmpty
-          ? Exception("Bad request")
-          : Exception("Error connection");
+      final errorMessage =
+          locale == 'en'
+              ? 'Trip information is temporarily unavailable. Please try again later.'
+              : 'Wir können deine Reisedaten im Moment nicht abrufen. Bitte versuche es später noch einmal.';
+      throw Exception(errorMessage);
     }
 
     if (planAdvancedData.source?.isEager ?? false) {
       await Future.delayed(const Duration(milliseconds: 200));
     }
     final planData = Plan.fromMap(
-        planAdvancedData.data!['viewer']['plan'] as Map<String, dynamic>);
+      planAdvancedData.data!['viewer']['plan'] as Map<String, dynamic>,
+    );
     return planData;
   }
 
@@ -149,7 +150,7 @@ class GraphQLPlanRepository {
     client = updateClient(
       graphQLClient: client,
       endpoint: endpoint,
-      langugeEncode: locale,
+      languageEncode: locale,
     );
     final QueryOptions walkBikePlanQuery = QueryOptions(
       fetchPolicy: FetchPolicy.noCache,
@@ -309,9 +310,11 @@ class GraphQLPlanRepository {
       throw Exception("Failed to load intinerary-modes");
     }
     if (walkBikePlanData.hasException && walkBikePlanData.data == null) {
-      throw walkBikePlanData.exception!.graphqlErrors.isNotEmpty
-          ? Exception("Bad request")
-          : Exception("Error connection");
+      final errorMessage =
+          locale == 'en'
+              ? 'Trip information is temporarily unavailable. Please try again later.'
+              : 'Wir können deine Reisedaten im Moment nicht abrufen. Bitte versuche es später noch einmal.';
+      throw Exception(errorMessage);
     }
     final modesTransportData = ModesTransport.fromJson(walkBikePlanData.data!);
 
@@ -327,38 +330,39 @@ class GraphQLPlanRepository {
     bool useDefaultModes = false,
   }) {
     final config = ConfigDefault.value;
-    final shouldMakeAllQuery = !advancedOptions.isFreeParkToCarPark &&
+    final shouldMakeAllQuery =
+        !advancedOptions.isFreeParkToCarPark &&
         !advancedOptions.isFreeParkToParkRide;
     final defaultSettings = ConfigDefault.value.defaultSettings;
     final settings = getSettings(advancedOptions: advancedOptions);
     final intermediatePlaces = <LatLng>[];
-    final modesOrDefault = useDefaultModes
-        ? ModeUtils.getDefaultModes(ConfigDefault.value)
-            .map((mode) => ModeUtils.getOTPMode(ConfigDefault.value, mode))
-            .whereType<String>()
-            .toList()
-        : ModeUtils.filterModes(
-            ConfigDefault.value,
-            ModeUtils.getModes(
-              config,
-              advancedOptions.transportModes.map((e) => e.name).toList(),
-              advancedOptions.allowedVehicleRentalNetworks,
-            ),
-            LatLng(fromLocation.latitude, fromLocation.longitude),
-            LatLng(fromLocation.latitude, fromLocation.longitude),
-            intermediatePlaces,
-          ).whereType<String>().toList();
+    final modesOrDefault =
+        useDefaultModes
+            ? ModeUtils.getDefaultModes(ConfigDefault.value)
+                .map((mode) => ModeUtils.getOTPMode(ConfigDefault.value, mode))
+                .whereType<String>()
+                .toList()
+            : ModeUtils.filterModes(
+              ConfigDefault.value,
+              ModeUtils.getModes(
+                config,
+                advancedOptions.transportModes.map((e) => e.name).toList(),
+                advancedOptions.allowedVehicleRentalNetworks,
+              ),
+              LatLng(fromLocation.latitude, fromLocation.longitude),
+              LatLng(fromLocation.latitude, fromLocation.longitude),
+              intermediatePlaces,
+            ).whereType<String>().toList();
 
     // const defaultSettings = { ...getDefaultSettings(config) };
-    final availableVehicleRentalNetworks =
-        CityBikeUtils.getDefaultNetworks(ConfigDefault.value);
+    final availableVehicleRentalNetworks = CityBikeUtils.getDefaultNetworks(
+      ConfigDefault.value,
+    );
 
     final allowedVehicleRentalNetworks =
         settings['allowedVehicleRentalNetworks'] as List<String>;
-    final lowerCasedAllowedVehicleRentalNetworks =
-        allowedVehicleRentalNetworks.map(
-      (network) => network.toLowerCase(),
-    );
+    final lowerCasedAllowedVehicleRentalNetworks = allowedVehicleRentalNetworks
+        .map((network) => network.toLowerCase());
 
     // legacy settings used to set network name in uppercase in localstorage
     // Note: Both `settings.allowedVehicleRentalNetworks` and `availableVehicleRentalNetworks` might contain arbitrarily cased network "IDs"; We prefer the "most exact" match.
@@ -374,35 +378,40 @@ class GraphQLPlanRepository {
                 )
                 .toList()
             : (config.transportModes['citybike']?.defaultValue ?? false)
-                ? CityBikeUtils.getDefaultNetworks(config)
-                : <String>[];
+            ? CityBikeUtils.getDefaultNetworks(config)
+            : <String>[];
 
-    final modesWithoutBikeRent = modesOrDefault
-        .where((mode) => mode != "BICYCLE_RENT")
-        .whereType<String>()
-        .toList();
+    final modesWithoutBikeRent =
+        modesOrDefault
+            .where((mode) => mode != "BICYCLE_RENT")
+            .whereType<String>()
+            .toList();
 
-    final linearDistance =
-        estimateDistance(fromLocation.latLng, toLocation.latLng);
+    final linearDistance = estimateDistance(
+      fromLocation.latLng,
+      toLocation.latLng,
+    );
 
     final includeBikeRentSuggestions =
         (settings['allowedVehicleRentalFormFactors'] as Set<String>).contains(
-      'bicycle',
-    );
+          'bicycle',
+        );
 
-    final walkReluctance = useDefaultModes
-        ? defaultSettings.walkReluctance
-        : settings['walkReluctance'] as double;
+    final walkReluctance =
+        useDefaultModes
+            ? defaultSettings.walkReluctance
+            : settings['walkReluctance'] as double;
 
-    final walkBoardCost = useDefaultModes
-        ? defaultSettings.walkBoardCost
-        : settings['walkBoardCost'] as int;
+    final walkBoardCost =
+        useDefaultModes
+            ? defaultSettings.walkBoardCost
+            : settings['walkBoardCost'] as int;
 
     final formattedModes = ModeUtils.modesAsOTPModes(modesWithoutBikeRent);
 
     final includeBikeSuggestions =
         (settings['includeBikeSuggestions'] as bool?) ??
-            defaultSettings.includeBikeSuggestions;
+        defaultSettings.includeBikeSuggestions;
     return <String, dynamic>{
       'fromPlace': parsePlace(fromLocation),
       'toPlace': parsePlace(toLocation),
@@ -428,9 +437,10 @@ class GraphQLPlanRepository {
       'arriveBy': advancedOptions.arriveBy,
       'transferPenalty': config.transferPenalty,
       'bikeSpeed': settings['bikeSpeed'],
-      'optimize': settings['includeBikeSuggestions']
-          ? config.defaultSettings.optimize
-          : config.optimize,
+      'optimize':
+          settings['includeBikeSuggestions']
+              ? config.defaultSettings.optimize
+              : config.optimize,
       'triangle': {
         'safetyFactor': config.defaultSettings.safetyFactor,
         'slopeFactor': config.defaultSettings.slopeFactor,
@@ -444,12 +454,15 @@ class GraphQLPlanRepository {
       'locale': locale ?? 'en',
       'modeWeight': null,
       // Extra params for modes
-      'shouldMakeWalkQuery': !advancedOptions.wheelchair &&
+      'shouldMakeWalkQuery':
+          !advancedOptions.wheelchair &&
           linearDistance < config.suggestWalkMaxDistance,
-      'shouldMakeBikeQuery': !advancedOptions.wheelchair &&
+      'shouldMakeBikeQuery':
+          !advancedOptions.wheelchair &&
           linearDistance < config.suggestBikeMaxDistance &&
           includeBikeSuggestions,
-      'shouldMakeScooterQuery': !advancedOptions.wheelchair &&
+      'shouldMakeScooterQuery':
+          !advancedOptions.wheelchair &&
           ((settings['allowedVehicleRentalFormFactors'] as Set<String>)
               .contains('scooter')),
       'shouldMakeCarQuery': getShouldMakeCarQuery(
@@ -475,15 +488,18 @@ class GraphQLPlanRepository {
       // TODO shouldMakeXYZQuery and showXYZItineraries have same intend, harmonize
       // In bbnavi, we include Flex routing in the "default" public routing mode.
       'shouldMakeOnDemandTaxiQuery': false,
-      'showBikeAndPublicItineraries': !advancedOptions.wheelchair &&
+      'showBikeAndPublicItineraries':
+          !advancedOptions.wheelchair &&
           linearDistance >= config.suggestBikeAndPublicMinDistance &&
           modesOrDefault.length > 1 &&
           includeBikeSuggestions,
-      'showBikeRentAndPublicItineraries': !advancedOptions.wheelchair &&
+      'showBikeRentAndPublicItineraries':
+          !advancedOptions.wheelchair &&
           linearDistance >= config.suggestBikeAndParkMinDistance &&
           modesOrDefault.length > 1 &&
           includeBikeRentSuggestions,
-      'showBikeAndParkItineraries': !advancedOptions.wheelchair &&
+      'showBikeAndParkItineraries':
+          !advancedOptions.wheelchair &&
           config.showBikeAndParkItineraries &&
           linearDistance >= config.suggestBikeAndParkMinDistance &&
           modesOrDefault.length > 1 &&
@@ -533,16 +549,17 @@ class GraphQLPlanRepository {
       ],
       'bikeParkModes': [
         {'mode': 'BICYCLE', 'qualifier': 'PARK'},
-        ...formattedModes
+        ...formattedModes,
       ],
       'scooterRentAndPublicModes': [
         {'mode': 'SCOOTER', 'qualifier': 'RENT'},
         ...ModeUtils.modesAsOTPModes(
-            ModeUtils.getBicycleCompatibleModes(config, modesOrDefault)),
+          ModeUtils.getBicycleCompatibleModes(config, modesOrDefault),
+        ),
       ],
       'carParkModes': [parseCarMode(toLocation.latLng)],
       'carRentalModes': [
-        {'mode': 'CAR', 'qualifier': 'RENT'}
+        {'mode': 'CAR', 'qualifier': 'RENT'},
       ],
       'parkRideModes': [
         {'mode': 'CAR', 'qualifier': 'PARK'},
@@ -569,12 +586,14 @@ class GraphQLPlanRepository {
         advancedOptions.walkSpeed.value,
         defaultOptions.walkSpeed,
       ),
-      'walkReluctance': advancedOptions.avoidWalking
-          ? defaultOptions.walkReluctance.least
-          : defaultSettings.walkReluctance,
-      'walkBoardCost': advancedOptions.avoidTransfers
-          ? ConfigDefault.value.walkBoardCostHigh
-          : defaultSettings.walkBoardCost,
+      'walkReluctance':
+          advancedOptions.avoidWalking
+              ? defaultOptions.walkReluctance.least
+              : defaultSettings.walkReluctance,
+      'walkBoardCost':
+          advancedOptions.avoidTransfers
+              ? ConfigDefault.value.walkBoardCostHigh
+              : defaultSettings.walkBoardCost,
       'modes': null,
       'accessibilityOption': advancedOptions.wheelchair,
       // TODO: Not configured in the web version. This is a new feature for mobile, currently set to null for all versions.
@@ -620,8 +639,9 @@ class GraphQLPlanRepository {
     Map<String, dynamic> settings,
   ) {
     return (linearDistance > config.suggestCarMinDistance &&
-        (settings['allowedVehicleRentalFormFactors'] as Set<String>)
-            .contains('car'));
+        (settings['allowedVehicleRentalFormFactors'] as Set<String>).contains(
+          'car',
+        ));
   }
 
   bool getShouldMakeParkRideQuery(
@@ -640,6 +660,7 @@ class GraphQLPlanRepository {
     required List<String> allowedKeys,
   }) {
     return Map.fromEntries(
-        originalMap.entries.where((entry) => allowedKeys.contains(entry.key)));
+      originalMap.entries.where((entry) => allowedKeys.contains(entry.key)),
+    );
   }
 }
