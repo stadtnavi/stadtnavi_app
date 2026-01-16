@@ -27,16 +27,18 @@ class ScooterLayer extends CustomLayer {
   Marker buildMarker({
     required ScooterFeature element,
     required double markerSize,
+    bool isSelected = false,
   }) {
     final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
       mapCategory,
       mapCategory.code,
     );
     final svgIcon = targetMapLayerCategory?.properties?.iconSvg;
+    final lastMarkerSize = markerSize + 5 + (isSelected ? 6 : 0);
     return Marker(
       key: Key("$id:${element.id}"),
-      height: markerSize + 5,
-      width: markerSize + 5,
+      height: lastMarkerSize,
+      width: lastMarkerSize,
       point: element.position,
       alignment: Alignment.center,
       child: Builder(builder: (context) {
@@ -54,6 +56,11 @@ class ScooterLayer extends CustomLayer {
           child: GestureDetector(
             onTap: () {
               final panelCubit = context.read<PanelCubit>();
+              final selectedMarker = buildMarker(
+                element: element,
+                markerSize: markerSize,
+                isSelected: true,
+              );
               panelCubit.setPanel(
                 CustomMarkerPanel(
                   panel: (
@@ -69,6 +76,7 @@ class ScooterLayer extends CustomLayer {
                   position: element.position,
                   minSize: 50,
                 ),
+                selectedMarker: selectedMarker,
               );
             },
             child: Stack(
@@ -78,6 +86,17 @@ class ScooterLayer extends CustomLayer {
                     left: markerSize / 5,
                     top: markerSize / 5,
                   ),
+                  padding: isSelected ? const EdgeInsets.all(1) : null,
+                  decoration: isSelected
+                      ? BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Theme.of(context).colorScheme.primary,
+                            width: 2,
+                          ),
+                        )
+                      : null,
                   child: svgIcon != null
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(50),

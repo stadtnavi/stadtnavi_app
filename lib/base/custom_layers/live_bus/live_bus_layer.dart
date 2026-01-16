@@ -107,6 +107,7 @@ class LiveBusLayer extends CustomLayer {
     required LiveBusFeature element,
     required double markerSize,
     required int zoom,
+    bool isSelected = false,
   }) {
     final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
       mapCategory,
@@ -119,9 +120,10 @@ class LiveBusLayer extends CustomLayer {
         color: fromStringToColor(element.color),
       );
     }
+    final lastMarkerSize = markerSize + (isSelected ? 6 : 0);
     return Marker(
-      height: markerSize,
-      width: markerSize,
+      height: lastMarkerSize,
+      width: lastMarkerSize,
       point: element.position,
       alignment: Alignment.center,
       child: Builder(builder: (context) {
@@ -134,6 +136,12 @@ class LiveBusLayer extends CustomLayer {
                 },
               );
               final panelCubit = context.read<PanelCubit>();
+              final selectedMarker = buildMarker(
+                element: element,
+                markerSize: markerSize,
+                zoom: zoom,
+                isSelected: true,
+              );
               panelCubit.setPanel(
                 CustomMarkerPanel(
                   panel: (
@@ -149,6 +157,7 @@ class LiveBusLayer extends CustomLayer {
                   position: element.position,
                   minSize: 50,
                 ),
+                selectedMarker: selectedMarker,
               );
             },
             child: Stack(
@@ -164,11 +173,16 @@ class LiveBusLayer extends CustomLayer {
                   ),
                 Container(
                   // margin: EdgeInsets.all(markerSize / 10),
+                  padding: isSelected ? const EdgeInsets.all(1) : null,
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(markerSize),
-                      border:
-                          Border.all(color: fromStringToColor(element.color))),
+                      border: isSelected
+                          ? Border.all(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2,
+                            )
+                          : Border.all(color: fromStringToColor(element.color))),
                   child: Center(
                     child: Text(
                       element.name,

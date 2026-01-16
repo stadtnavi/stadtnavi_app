@@ -124,7 +124,7 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
                       width: 30,
                       margin: const EdgeInsets.only(right: 10),
                       child: SvgPicture.string(
-                        getNetworkIcon(widget.element.network?.icon),
+                        getNetworkIcon(widget.element.network?.icon)??'',
                       ),
                     ),
                     Expanded(

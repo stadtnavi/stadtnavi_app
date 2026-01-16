@@ -5,6 +5,7 @@ import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
+import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/map_legend.dart';
@@ -55,6 +56,7 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
     final customLayersCubit = context.watch<CustomLayersCubit>();
     final currentMapType = context.watch<MapTileProviderCubit>().state;
+    final panelCubit = context.watch<PanelCubit>();
     final localizationST = StadtnaviBaseLocalization.of(context);
     return Stack(
       children: [
@@ -224,6 +226,11 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
                   if (widget.enableCurrentLocation)
                     mapConfiguratiom.markersConfiguration
                         .buildYourLocationMarkerLayerOptions(currentLocation),
+                  // Selected marker overlay - pintado encima de todo
+                  if (panelCubit.state.selectedMarker != null)
+                    MarkerLayer(
+                      markers: [panelCubit.state.selectedMarker!],
+                    ),
                 ],
               );
             }),
