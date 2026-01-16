@@ -36,7 +36,9 @@ class ScooterFeature {
     NetworkConfig? network = ConfigDefault.value.cityBike.networks?[networkId];
     if (network == null) return null;
     String? name = properties['name']?.dartStringValue;
-    String? formFactors = properties['formFactors']?.dartStringValue;
+    String? formFactors =
+        properties['formFactors']?.dartStringValue ??
+        properties['formFactor']?.dartStringValue;
     int? vehiclesAvailable =
         properties['vehiclesAvailable']?.dartIntValue?.toInt();
     int? spacesAvailable = properties['spacesAvailable']?.dartIntValue?.toInt();
