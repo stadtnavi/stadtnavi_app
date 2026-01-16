@@ -19,6 +19,9 @@
   "defaultOptions": {
     "walkSpeed": [0.83, 1.38, 1.94]
   },
+  "itineraryOptions": {
+    "delayThreshold": 60
+  },
   "cityBike": {
     "minZoomStopsNearYou": 10,
     "showStationId": false,

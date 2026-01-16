@@ -194,6 +194,8 @@ class Leg {
       route: route?.toRouteEntity(),
       startTime: DateTime.fromMillisecondsSinceEpoch(startTime ?? 0),
       endTime: DateTime.fromMillisecondsSinceEpoch(endTime ?? 0),
+      departureDelay: departureDelay ?? 0,
+      arrivalDelay: arrivalDelay ?? 0,
       distance: distance ?? 0,
       duration: Duration(seconds: (duration ?? 0).toInt()),
       routeLongName: route?.longName ?? '',

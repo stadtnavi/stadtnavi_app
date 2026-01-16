@@ -44,13 +44,17 @@ class PlanItinerary extends Equatable {
     print("PlanItinerary");
     print(json['emissionsPerPerson']);
     return PlanItinerary(
-      legs: json[_legs].map<PlanItineraryLeg>((dynamic json) {
-        return PlanItineraryLeg.fromJson(json as Map<String, dynamic>);
-      }).toList() as List<PlanItineraryLeg>,
+      legs:
+          json[_legs].map<PlanItineraryLeg>((dynamic json) {
+                return PlanItineraryLeg.fromJson(json as Map<String, dynamic>);
+              }).toList()
+              as List<PlanItineraryLeg>,
       startTime: DateTime.fromMillisecondsSinceEpoch(
-          int.tryParse(json[_startTime].toString()) ?? 0),
+        int.tryParse(json[_startTime].toString()) ?? 0,
+      ),
       endTime: DateTime.fromMillisecondsSinceEpoch(
-          int.tryParse(json[_endTime].toString()) ?? 0),
+        int.tryParse(json[_endTime].toString()) ?? 0,
+      ),
       walkTime: Duration(seconds: (json[_walkTime] ?? 0) as int),
       duration: Duration(seconds: (json[_durationTrip] ?? 0) as int),
       walkDistance: double.tryParse(json[_walkDistance].toString()) ?? 0,
@@ -70,9 +74,7 @@ class PlanItinerary extends Equatable {
       _walkDistance: walkDistance,
       _arrivedAtDestinationWithRentedBicycle:
           arrivedAtDestinationWithRentedBicycle,
-      _emissionsPerPerson: {
-        "co2": emissionsPerPerson,
-      }
+      _emissionsPerPerson: {"co2": emissionsPerPerson},
     };
   }
 
@@ -97,7 +99,7 @@ class PlanItinerary extends Equatable {
       walkDistance: walkDistance ?? this.walkDistance,
       arrivedAtDestinationWithRentedBicycle:
           arrivedAtDestinationWithRentedBicycle ??
-              this.arrivedAtDestinationWithRentedBicycle,
+          this.arrivedAtDestinationWithRentedBicycle,
       isOnlyShowItinerary: isOnlyShowItinerary ?? this.isOnlyShowItinerary,
       emissionsPerPerson: emissionsPerPerson ?? this.emissionsPerPerson,
       isMinorEmissionsPerPerson:
@@ -125,7 +127,8 @@ class PlanItinerary extends Equatable {
       }
 
       if (usingOwnBicycle && continueWithBicycle(compressedLeg, currentLeg)) {
-        final newBikePark = compressedLeg.toPlace?.bikeParkEntity ??
+        final newBikePark =
+            compressedLeg.toPlace?.bikeParkEntity ??
             currentLeg.toPlace?.bikeParkEntity;
         compressedLeg = compressedLeg.copyWith(
           duration: compressedLeg.duration + currentLeg.duration,
@@ -152,7 +155,7 @@ class PlanItinerary extends Equatable {
           mode: LegMode.bicycle.name,
           accumulatedPoints: [
             ...compressedLeg.accumulatedPoints,
-            ...currentLeg.accumulatedPoints
+            ...currentLeg.accumulatedPoints,
           ],
         );
         continue;
@@ -160,18 +163,14 @@ class PlanItinerary extends Equatable {
 
       if (usingOwnBicycle &&
           getLegModeByKey(compressedLeg.mode) == LegMode.walk) {
-        compressedLeg = compressedLeg.copyWith(
-          mode: LegMode.bicycleWalk.name,
-        );
+        compressedLeg = compressedLeg.copyWith(mode: LegMode.bicycleWalk.name);
       }
 
       compressedLegs.add(compressedLeg);
       compressedLeg = currentLeg.copyWith();
 
       if (usingOwnBicycle && getLegModeByKey(currentLeg.mode) == LegMode.walk) {
-        compressedLeg = compressedLeg.copyWith(
-          mode: LegMode.bicycleWalk.name,
-        );
+        compressedLeg = compressedLeg.copyWith(mode: LegMode.bicycleWalk.name);
       }
     }
     if (compressedLeg != null) {
@@ -263,29 +262,39 @@ class PlanItinerary extends Equatable {
     return legStartTime;
   }
 
+  PlanItineraryLeg? get firstTransit {
+    final firstDeparture = compressLegs.firstWhereOrNull(
+      (element) => element.transitLeg,
+    );
+    return firstDeparture;
+  }
+
   int get totalDurationItinerary {
     return endTime.difference(startTime).inSeconds;
   }
 
-  bool get usingOwnBicycle => legs.any((leg) =>
-      leg.transportMode == TransportMode.bicycle && (leg.rentedBike ?? false));
+  bool get usingOwnBicycle => legs.any(
+    (leg) =>
+        leg.transportMode == TransportMode.bicycle && (leg.rentedBike ?? false),
+  );
 
   int getNumberIcons(double renderBarThreshold) {
-    final routeShorts = compressLegs.where((leg) {
-      final legLength = (leg.durationIntLeg / totalDurationItinerary) * 10;
-      if (!(legLength < renderBarThreshold && leg.isLegOnFoot) &&
-          leg.toPlace?.bikeParkEntity != null) {
-        return true;
-      } else if (leg.transportMode == TransportMode.car &&
-          leg.toPlace?.carParkEntity != null) {
-        return true;
-      } else if (leg.transportMode == TransportMode.bicycle &&
-          leg.toPlace?.bikeParkEntity != null &&
-          !(legLength < renderBarThreshold && leg.isLegOnFoot)) {
-        return true;
-      }
-      return false;
-    }).toList();
+    final routeShorts =
+        compressLegs.where((leg) {
+          final legLength = (leg.durationIntLeg / totalDurationItinerary) * 10;
+          if (!(legLength < renderBarThreshold && leg.isLegOnFoot) &&
+              leg.toPlace?.bikeParkEntity != null) {
+            return true;
+          } else if (leg.transportMode == TransportMode.car &&
+              leg.toPlace?.carParkEntity != null) {
+            return true;
+          } else if (leg.transportMode == TransportMode.bicycle &&
+              leg.toPlace?.bikeParkEntity != null &&
+              !(legLength < renderBarThreshold && leg.isLegOnFoot)) {
+            return true;
+          }
+          return false;
+        }).toList();
     return routeShorts.length;
   }
 
@@ -318,12 +327,12 @@ class PlanItinerary extends Equatable {
 
   @override
   List<Object?> get props => [
-        legs,
-        startTime,
-        endTime,
-        walkTime,
-        duration,
-        walkDistance,
-        arrivedAtDestinationWithRentedBicycle,
-      ];
+    legs,
+    startTime,
+    endTime,
+    walkTime,
+    duration,
+    walkDistance,
+    arrivedAtDestinationWithRentedBicycle,
+  ];
 }

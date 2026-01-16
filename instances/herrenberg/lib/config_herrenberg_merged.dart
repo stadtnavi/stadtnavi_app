@@ -2,6 +2,7 @@ import 'package:stadtnavi_core/configuration/config_default/config_default.dart'
 import 'package:stadtnavi_core/configuration/config_default/config_default/city_bike_config.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/default_options.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/default_settings.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default/itinerary_options.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/transport_mode_config.dart';
 
 final configHerrenbergMerged = ConfigData(
@@ -23,6 +24,7 @@ final configHerrenbergMerged = ConfigData(
     showBikeAndParkItineraries: true,
   ),
   defaultOptions: DefaultOptions(walkSpeed: [0.83, 1.38, 1.94]),
+  itineraryOptions: ItineraryOptions(delayThreshold: 60.0),
   cityBike: CityBikeConfig(
     minZoomStopsNearYou: 10,
     showStationId: false,
@@ -274,7 +276,10 @@ final configHerrenbergMerged = ConfigData(
       "herrenberg_alf": NetworkConfig(
         icon: "cargobike",
         operator: "other",
-        name: {"de": "ALF - das Affstätter Lastenfahrrad", "en": "ALF - the Affstätter cargo bike"},
+        name: {
+          "de": "ALF - das Affstätter Lastenfahrrad",
+          "en": "ALF - the Affstätter cargo bike",
+        },
         type: "cargo_bicycle",
         enabled: true,
         season: SeasonConfig.futureSeason(),
@@ -304,7 +309,10 @@ final configHerrenbergMerged = ConfigData(
       "herrenberg_fare": NetworkConfig(
         icon: "cargobike",
         operator: "other",
-        name: {"de": "FaRe - das Bananologen Lastenrad", "en": "FaRe - the Bananologen cargo bike"},
+        name: {
+          "de": "FaRe - das Bananologen Lastenrad",
+          "en": "FaRe - the Bananologen cargo bike",
+        },
         type: "cargo_bicycle",
         enabled: true,
         season: SeasonConfig.futureSeason(),

@@ -1,6 +1,7 @@
 import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/city_bike_config.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/default_settings.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default/itinerary_options.dart';
 
 final configHerrenberg = ConfigData(
   defaultSettings: DefaultSettings(
@@ -9,6 +10,7 @@ final configHerrenberg = ConfigData(
     includeParkAndRideSuggestions: true,
     showBikeAndParkItineraries: true,
   ),
+  itineraryOptions: ItineraryOptions(delayThreshold: 60.0),
   cityBike: CityBikeConfig(
     minZoomStopsNearYou: 10,
     showStationId: false,
