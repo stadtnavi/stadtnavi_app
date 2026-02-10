@@ -1,20 +1,15 @@
-
 import 'package:flutter/material.dart';
 
 import 'package:flutter_map/flutter_map.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cache_map_tiles.dart';
+import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-enum MapLayerIds {
-  streets,
-  satellite,
-  bike,
-  terrain,
-}
+enum MapLayerIds { streets, satellite, bike, terrain }
 
 extension LayerIdsToString on MapLayerIds {
   String enumToString() {
@@ -62,10 +57,7 @@ class MapLayer extends MapTileProvider {
   final MapLayerIds mapLayerId;
   final String? mapKey;
 
-  MapLayer(
-    this.mapLayerId, {
-    this.mapKey,
-  }) : super();
+  MapLayer(this.mapLayerId, {this.mapKey}) : super();
 
   @override
   List<Widget> buildTileLayerOptions(BuildContext context) {
@@ -76,10 +68,8 @@ class MapLayer extends MapTileProvider {
   String get id => mapLayerId.enumToString();
 
   @override
-  WidgetBuilder get imageBuilder => (context) => Image.asset(
-        layerImage[mapLayerId]!,
-        fit: BoxFit.cover,
-      );
+  WidgetBuilder get imageBuilder =>
+      (context) => Image.asset(layerImage[mapLayerId]!, fit: BoxFit.cover);
 
   @override
   String name(BuildContext context) {
@@ -91,23 +81,27 @@ class MapLayer extends MapTileProvider {
 
   List<Widget> mapLayerOptions(MapLayerIds id, BuildContext context) {
     final codes = context.read<CustomLayersCubit>().getActiveLayersCode();
+    final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
 
     return [
       if (id == MapLayerIds.streets)
         TileLayer(
           tileProvider: CachedTileProvider(context: context),
           urlTemplate: "https://tiles.stadtnavi.eu/streets/{z}/{x}/{y}@2x.png",
+          maxNativeZoom: mapConfiguratiom.onlineMaxZoom.toInt(),
         ),
       if (id == MapLayerIds.satellite) ...[
         TileLayer(
           tileProvider: CachedTileProvider(context: context),
           urlTemplate: "https://tiles.stadtnavi.eu/orthophoto/{z}/{x}/{y}.jpg",
+          maxNativeZoom: mapConfiguratiom.onlineMaxZoom.toInt(),
         ),
         TileLayer(
           tileProvider: CachedTileProvider(context: context),
           // backgroundColor: Colors.transparent,
           urlTemplate:
               "https://tiles.stadtnavi.eu/satellite-overlay/{z}/{x}/{y}@2x.png",
+          maxNativeZoom: mapConfiguratiom.onlineMaxZoom.toInt(),
         ),
       ],
       if (id == MapLayerIds.bike)
@@ -115,6 +109,7 @@ class MapLayer extends MapTileProvider {
           tileProvider: CachedTileProvider(context: context),
           urlTemplate: "https://tiles.stadtnavi.eu/bicycle/{z}/{x}/{y}@2x.png",
           subdomains: const ["a", "b", "c"],
+          maxNativeZoom: mapConfiguratiom.onlineMaxZoom.toInt(),
         ),
       if (id == MapLayerIds.terrain)
         TileLayer(
@@ -122,6 +117,7 @@ class MapLayer extends MapTileProvider {
           urlTemplate:
               "https://{s}.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png",
           subdomains: const ["a", "b", "c"],
+          maxNativeZoom: mapConfiguratiom.onlineMaxZoom.toInt(),
         ),
       if (codes.contains("cycle_network"))
         TileLayer(
@@ -133,6 +129,7 @@ class MapLayer extends MapTileProvider {
             version: "1.1.1",
           ),
           tileProvider: CachedTileProvider(context: context),
+          maxNativeZoom: mapConfiguratiom.onlineMaxZoom.toInt(),
         ),
     ];
   }
