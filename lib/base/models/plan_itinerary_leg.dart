@@ -16,6 +16,8 @@ class PlanItineraryLeg extends Equatable {
     this.fromPlace,
     required this.startTime,
     required this.endTime,
+    this.departureDelay = 0,
+    this.arrivalDelay = 0,
     this.steps,
     this.intermediatePlaces,
     this.intermediatePlace,
@@ -44,6 +46,8 @@ class PlanItineraryLeg extends Equatable {
   static const _fromPlace = "from";
   static const _startTime = "startTime";
   static const _endTime = "endTime";
+  static const _departureDelay = "departureDelay";
+  static const _arrivalDelay = "arrivalDelay";
   static const _steps = "steps";
   static const _intermediatePlaces = "intermediatePlaces";
   static const _intermediatePlace = "intermediatePlace";
@@ -67,6 +71,8 @@ class PlanItineraryLeg extends Equatable {
   final PlaceEntity? fromPlace;
   final DateTime startTime;
   final DateTime endTime;
+  final int departureDelay;
+  final int arrivalDelay;
   final bool transitLeg;
   final bool? intermediatePlace;
   final bool? rentedBike;
@@ -112,6 +118,8 @@ class PlanItineraryLeg extends Equatable {
           int.tryParse(json[_startTime].toString()) ?? 0),
       endTime: DateTime.fromMillisecondsSinceEpoch(
           int.tryParse(json[_endTime].toString()) ?? 0),
+      departureDelay: json[_departureDelay] ?? 0,
+      arrivalDelay: json[_arrivalDelay] ?? 0 ,
       steps: json[_steps] != null
           ? List<StepEntity>.from((json[_steps] as List<dynamic>).map(
               (x) => StepEntity.fromJson(x as Map<String, dynamic>),
@@ -157,6 +165,8 @@ class PlanItineraryLeg extends Equatable {
       _fromPlace: fromPlace?.toMap(),
       _startTime: startTime.millisecondsSinceEpoch,
       _endTime: endTime.millisecondsSinceEpoch,
+      _departureDelay: departureDelay,
+      _arrivalDelay: arrivalDelay,
       _steps: steps != null
           ? List<dynamic>.from(steps!.map((x) => x.toMap()))
           : null,
@@ -215,6 +225,8 @@ class PlanItineraryLeg extends Equatable {
     PlaceEntity? fromPlace,
     DateTime? startTime,
     DateTime? endTime,
+    int? departureDelay,
+    int? arrivalDelay,
     bool? rentedBike,
     bool? intermediatePlace,
     bool? transitLeg,
@@ -239,6 +251,8 @@ class PlanItineraryLeg extends Equatable {
       fromPlace: fromPlace ?? this.fromPlace,
       startTime: startTime ?? this.startTime,
       endTime: endTime ?? this.endTime,
+      departureDelay: departureDelay ?? this.departureDelay,
+      arrivalDelay: arrivalDelay ?? this.arrivalDelay,
       rentedBike: rentedBike ?? this.rentedBike,
       intermediatePlace: intermediatePlace ?? this.intermediatePlace,
       transitLeg: transitLeg ?? this.transitLeg,
@@ -322,6 +336,8 @@ class PlanItineraryLeg extends Equatable {
         fromPlace,
         startTime,
         endTime,
+        departureDelay,
+        arrivalDelay,
         transitLeg,
         intermediatePlace,
         rentedBike,

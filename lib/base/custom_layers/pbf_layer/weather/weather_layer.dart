@@ -26,16 +26,18 @@ class WeatherLayer extends CustomLayer {
   Marker buildMarker({
     required WeatherFeature element,
     required double markerSize,
+    bool isSelected = false,
   }) {
     final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
       mapCategory,
       mapCategory.code,
     );
     final svgIcon = targetMapLayerCategory?.properties?.iconSvg;
+    final lastMarkerSize = markerSize + (isSelected ? 6 : 0);
     return Marker(
       key: Key("$id:${element.address}"),
-      height: markerSize,
-      width: markerSize,
+      height: lastMarkerSize,
+      width: lastMarkerSize,
       point: element.position,
       alignment: Alignment.center,
       child: Builder(builder: (context) {
@@ -51,6 +53,11 @@ class WeatherLayer extends CustomLayer {
           child: GestureDetector(
             onTap: () {
               final panelCubit = context.read<PanelCubit>();
+              final selectedMarker = buildMarker(
+                element: element,
+                markerSize: markerSize,
+                isSelected: true,
+              );
               panelCubit.setPanel(
                 CustomMarkerPanel(
                   panel: (
@@ -70,9 +77,23 @@ class WeatherLayer extends CustomLayer {
                   position: element.position,
                   minSize: 50,
                 ),
+                selectedMarker: selectedMarker,
               );
             },
-            child: SvgPicture.string(svgIcon ?? ''),
+            child: Container(
+              padding: isSelected ? const EdgeInsets.all(1) : null,
+              decoration: isSelected
+                  ? BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 2,
+                      ),
+                    )
+                  : null,
+              child: SvgPicture.string(svgIcon ?? ''),
+            ),
           ),
         );
       }),

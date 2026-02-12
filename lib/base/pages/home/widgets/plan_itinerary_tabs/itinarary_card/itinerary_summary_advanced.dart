@@ -6,6 +6,7 @@ import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/icons_transpor
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinarary_card/mode_leg.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
 
 import 'package:trufi_core/base/const/consts.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
@@ -86,86 +87,111 @@ class ItinerarySummaryAdvanced extends StatelessWidget {
       }
 
       if (leg.isLegOnFoot && renderBar) {
-        legs.add(ModeLeg(
-          maxWidth: newMaxWidth,
-          leg: leg,
-          legLength: legLength,
-        ));
+        legs.add(
+          ModeLeg(maxWidth: newMaxWidth, leg: leg, legLength: legLength),
+        );
         if (leg.toPlace?.bikeParkEntity != null) {
-          legs.add(SizedBox(
-            height: 22,
-            width: 22,
-            child: bikeParkingSvg,
-          ));
+          legs.add(SizedBox(height: 22, width: 22, child: bikeParkingSvg));
         }
       } else if (leg.transportMode == TransportMode.car) {
-        legs.add(RouteLeg(
-          maxWidth: newMaxWidth,
-          leg: leg,
-          legLength: legLength,
-          // duration: leg.duration.inSeconds ~/ 60,
-        ));
+        legs.add(
+          RouteLeg(
+            maxWidth: newMaxWidth,
+            leg: leg,
+            legLength: legLength,
+            // duration: leg.duration.inSeconds ~/ 60,
+          ),
+        );
         if (leg.toPlace?.carParkEntity != null) {
-          legs.add(SizedBox(
-            height: 22,
-            width: 22,
-            child: carParkWithoutBoxSvg,
-          ));
+          legs.add(
+            SizedBox(height: 22, width: 22, child: carParkWithoutBoxSvg),
+          );
         }
       } else if (leg.transportMode == TransportMode.bicycle && renderBar) {
-        legs.add(ModeLeg(
-          maxWidth: newMaxWidth,
-          leg: leg,
-          legLength: legLength,
-        ));
+        legs.add(
+          ModeLeg(maxWidth: newMaxWidth, leg: leg, legLength: legLength),
+        );
         if (leg.toPlace?.bikeParkEntity != null) {
-          legs.add(SizedBox(
-            height: 22,
-            width: 22,
-            child: bikeParkingSvg,
-          ));
+          legs.add(SizedBox(height: 22, width: 22, child: bikeParkingSvg));
         }
       }
       if ((leg.route != null || leg.shortName != null) &&
           !(leg.interlineWithPreviousLeg ?? false)) {
-        legs.add(RouteLeg(
-          maxWidth: newMaxWidth,
-          beforeLeg: index - 1 >= 0 ? compressLegs[index - 1] : null,
-          leg: leg,
-          legLength: min(legLength,10) ,
-        ));
+        legs.add(
+          RouteLeg(
+            maxWidth: newMaxWidth,
+            beforeLeg: index - 1 >= 0 ? compressLegs[index - 1] : null,
+            leg: leg,
+            legLength: min(legLength, 10),
+          ),
+        );
       }
       if (waiting) {
-        legs.add(WaitLeg(
-          maxWidth: newMaxWidth,
-          legLength: waitLength!,
-          duration: waitTime! ~/ 60,
-        ));
+        legs.add(
+          WaitLeg(
+            maxWidth: newMaxWidth,
+            legLength: waitLength!,
+            duration: waitTime! ~/ 60,
+          ),
+        );
       }
     });
+    final text = itinerary.firstLegStartTime(localizationBase, localization);
+    final regex = RegExp(r'(\b\d{2}:\d{2}\b)');
+    final match = regex.firstMatch(text);
+    final before = text.substring(0, match?.start ?? 0);
+    final time = match?.group(0)! ?? '';
+    final after = text.substring(match?.end ?? 0);
+
+    final firstTransit = itinerary.firstTransit;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
-          children: legs.length > 1
-              ? <Widget>[
-                  ...legs.getRange(0, legs.length - 1),
-                  Expanded(child: legs.last)
-                ]
-              : [...legs],
+          children:
+              legs.length > 1
+                  ? <Widget>[
+                    ...legs.getRange(0, legs.length - 1),
+                    Expanded(child: legs.last),
+                  ]
+                  : [...legs],
         ),
         Container(
           padding: const EdgeInsets.only(top: 3),
-          child: Text(
-            itinerary.firstLegStartTime(
-              localizationBase,
-              localization,
-            ),
-            style: TextStyle(
-              fontSize: 14,
-              color: hintTextColor(theme),
-            ),
-            textAlign: TextAlign.left,
+          child: Row(
+            children: [
+              Text(
+                before,
+                style: TextStyle(fontSize: 14, color: hintTextColor(theme)),
+                textAlign: TextAlign.left,
+              ),
+              Text(
+                time,
+                style: TextStyle(
+                  fontSize: 14,
+                  color:
+                      firstTransit != null
+                          ? firstTransit.departureDelay > 0 &&
+                                  firstTransit.departureDelay >=
+                                      ConfigDefault
+                                          .value
+                                          .itineraryOptions
+                                          .delayThreshold
+                              ? Colors.red
+                              : firstTransit.departureDelay <= 0
+                              ? Color(0xFF3a7f00)
+                              : hintTextColor(theme)
+                          : hintTextColor(theme),
+                ),
+                textAlign: TextAlign.left,
+              ),
+              Text(
+                after,
+                style: TextStyle(fontSize: 14, color: hintTextColor(theme)),
+                textAlign: TextAlign.left,
+              ),
+            ],
           ),
         ),
       ],

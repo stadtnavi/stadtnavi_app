@@ -98,16 +98,18 @@ class GeojsonLayer extends CustomLayer {
   Marker buildMarker({
     required GeojsonMarker element,
     required double markerSize,
+    bool isSelected = false,
   }) {
     final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
       mapCategory,
       mapCategory.code,
     );
     final svgIcon =element.svgIcon?? targetMapLayerCategory?.properties?.iconSvg;
+    final lastMarkerSize = markerSize + (isSelected ? 6 : 0);
     return Marker(
       key: Key("$id:${element.id}:${element.name}:${element.address}"),
-      height: markerSize,
-      width: markerSize,
+      height: lastMarkerSize,
+      width: lastMarkerSize,
       point: element.position,
       alignment: Alignment.center,
       child: Builder(builder: (context) {
@@ -132,6 +134,11 @@ class GeojsonLayer extends CustomLayer {
           child: GestureDetector(
             onTap: () {
               final panelCubit = context.read<PanelCubit>();
+              final selectedMarker = buildMarker(
+                element: element,
+                markerSize: markerSize,
+                isSelected: true,
+              );
               panelCubit.setPanel(
                 CustomMarkerPanel(
                   panel: (
@@ -151,11 +158,25 @@ class GeojsonLayer extends CustomLayer {
                   position: element.position,
                   minSize: 50,
                 ),
+                selectedMarker: selectedMarker,
               );
             },
-            child: svgIcon != null
-                ? SvgPicture.string(svgIcon)
-                : const Icon(Icons.error),
+            child: Container(
+              padding: isSelected ? const EdgeInsets.all(1) : null,
+              decoration: isSelected
+                  ? BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 2,
+                      ),
+                    )
+                  : null,
+              child: svgIcon != null
+                  ? SvgPicture.string(svgIcon)
+                  : const Icon(Icons.error),
+            ),
           ),
         );
       }),

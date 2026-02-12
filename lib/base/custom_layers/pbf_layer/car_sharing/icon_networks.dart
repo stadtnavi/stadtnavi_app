@@ -579,4 +579,4 @@ const Map<String, String> networkIcons = {
   'brand_dott': brandDott,
 };
 
-String getNetworkIcon(String? key) => networkIcons[key] ?? citybike;
+String? getNetworkIcon(String? key) => networkIcons[key];

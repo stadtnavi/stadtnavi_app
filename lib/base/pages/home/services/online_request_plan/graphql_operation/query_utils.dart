@@ -10,30 +10,30 @@ String parsePlace(TrufiLocation location) {
 }
 
 List<Map<String, String>> parseBikeAndPublicModes(List<TransportMode> list) {
-  final dataParse = list
-      .map((e) => <String, String>{
-            'mode': e.name,
-          })
-      .where((e) => e['mode'] != TransportMode.bicycle.name)
-      .toList();
+  final dataParse =
+      list
+          .map((e) => <String, String>{'mode': e.name})
+          .where((e) => e['mode'] != TransportMode.bicycle.name)
+          .toList();
   dataParse.add({"mode": TransportMode.bicycle.name});
   return dataParse;
 }
 
 List<Map<String, String>> parsebikeParkModes(List<TransportMode> list) {
-  final dataParse = list
-      .map((e) => <String, String>{
-            'mode': e.name,
-          })
-      .where((e) => e['mode'] != TransportMode.bicycle.name)
-      .toList();
+  final dataParse =
+      list
+          .map((e) => <String, String>{'mode': e.name})
+          .where((e) => e['mode'] != TransportMode.bicycle.name)
+          .toList();
   dataParse.add({"mode": TransportMode.bicycle.name, 'qualifier': 'PARK'});
   return dataParse;
 }
 
 Map<String, String?> parseCarMode(LatLng destiny) {
-  final bool isInHerrenbergOldTown =
-      insidePointInPolygon(destiny, herrenbergOldTown);
+  final bool isInHerrenbergOldTown = insidePointInPolygon(
+    destiny,
+    herrenbergOldTown,
+  );
 
   return {
     "mode": TransportMode.car.name,
@@ -42,12 +42,12 @@ Map<String, String?> parseCarMode(LatLng destiny) {
 }
 
 List<Map<String, String?>> parseTransportModes(List<TransportMode> list) {
-  final dataParse = list
-      .map((e) => <String, String?>{
-            'mode': e.name,
-            'qualifier': e.qualifier,
-          })
-      .toList();
+  final dataParse =
+      list
+          .map(
+            (e) => <String, String?>{'mode': e.name, 'qualifier': e.qualifier},
+          )
+          .toList();
   return dataParse;
 }
 

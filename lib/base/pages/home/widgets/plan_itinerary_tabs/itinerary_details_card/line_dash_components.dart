@@ -26,6 +26,7 @@ import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.da
 import 'package:stadtnavi_core/configuration/custom_async_executor.dart';
 
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
+import 'package:trufi_core/base/models/journey_plan/utils/duration_utils.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 
@@ -54,26 +55,29 @@ class BicycleDash extends StatelessWidget {
     final localization = StadtnaviBaseLocalization.of(context);
     final isTypeBikeRentalNetwork =
         leg.transportMode == TransportMode.bicycle &&
-            leg.fromPlace?.bikeRentalStation != null;
+        leg.fromPlace?.bikeRentalStation != null;
     final distance = leg.distanceString(localizationBase);
     final duration = leg.durationLeg(localizationBase);
-    final bikerentalNetwork =
-        getBikeRentalNetwork(leg.fromPlace?.bikeRentalStation?.networks?[0]);
-    final isScooter = isTypeBikeRentalNetwork
-        ? bikerentalNetwork == BikeRentalNetwork.scooter
-        : false;
+    final bikerentalNetwork = getBikeRentalNetwork(
+      leg.fromPlace?.bikeRentalStation?.networks?[0],
+    );
+    final isScooter =
+        isTypeBikeRentalNetwork
+            ? bikerentalNetwork == BikeRentalNetwork.scooter
+            : false;
 
     final isSimpleBicycle =
         (leg.mode != 'BICYCLE_WALK') && isTypeBikeRentalNetwork;
-    final stopsDescription = localization.localeName == 'en'
-        ? leg.mode == 'BICYCLE_WALK'
-            ? (isScooter
-                ? 'Walk your kick scooter $duration ($distance)'
-                : 'Walk your bike $duration ($distance)')
-            : (isScooter
-                ? 'Ride your kick scooter $duration ($distance)'
-                : 'Cycle $duration ($distance)')
-        : leg.mode == 'BICYCLE_WALK'
+    final stopsDescription =
+        localization.localeName == 'en'
+            ? leg.mode == 'BICYCLE_WALK'
+                ? (isScooter
+                    ? 'Walk your kick scooter $duration ($distance)'
+                    : 'Walk your bike $duration ($distance)')
+                : (isScooter
+                    ? 'Ride your kick scooter $duration ($distance)'
+                    : 'Cycle $duration ($distance)')
+            : leg.mode == 'BICYCLE_WALK'
             ? (isScooter
                 ? 'Scooter $distance schieben ($duration)'
                 : 'Fahrrad schieben: $duration ($distance)')
@@ -113,17 +117,15 @@ class BicycleDash extends StatelessWidget {
             ),
           ),
         SeparatorPlace(
-          color: isSimpleBicycle
-              ? BikeRentalNetwork.cargoBike.color
-              : Colors.grey[400],
+          color:
+              isSimpleBicycle
+                  ? BikeRentalNetwork.cargoBike.color
+                  : Colors.grey[400],
           separator: null,
           child: GestureDetector(
             onTap: () {
               if (leg.fromPlace != null) {
-                moveInMap(LatLng(
-                  leg.fromPlace!.lat,
-                  leg.fromPlace!.lon,
-                ));
+                moveInMap(LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon));
               }
             },
             child: Column(
@@ -138,10 +140,11 @@ class BicycleDash extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Row(
-                      crossAxisAlignment: leg.fromPlace?.name != null &&
-                              leg.fromPlace!.name.isNotEmpty
-                          ? CrossAxisAlignment.start
-                          : CrossAxisAlignment.center,
+                      crossAxisAlignment:
+                          leg.fromPlace?.name != null &&
+                                  leg.fromPlace!.name.isNotEmpty
+                              ? CrossAxisAlignment.start
+                              : CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Stack(
@@ -150,9 +153,10 @@ class BicycleDash extends StatelessWidget {
                             SizedBox(
                               height: 20,
                               width: 20,
-                              child: isTypeBikeRentalNetwork
-                                  ? bikerentalNetwork.image
-                                  : null,
+                              child:
+                                  isTypeBikeRentalNetwork
+                                      ? bikerentalNetwork.image
+                                      : null,
                             ),
                             Positioned(
                               top: -5,
@@ -161,11 +165,12 @@ class BicycleDash extends StatelessWidget {
                                 width: 15,
                                 height: 15,
                                 decoration: BoxDecoration(
-                                  color: isAvailibleBikes == 0
-                                      ? const Color(0xffDC0451)
-                                      : (isAvailibleBikes > 3
-                                          ? const Color(0xff3B7F00)
-                                          : const Color(0xffFCBC19)),
+                                  color:
+                                      isAvailibleBikes == 0
+                                          ? const Color(0xffDC0451)
+                                          : (isAvailibleBikes > 3
+                                              ? const Color(0xff3B7F00)
+                                              : const Color(0xffFCBC19)),
                                   shape: BoxShape.circle,
                                   border: Border.all(color: Colors.white),
                                 ),
@@ -176,46 +181,51 @@ class BicycleDash extends StatelessWidget {
                                       child: Text(
                                         isAvailibleBikes.toString(),
                                         style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            )
+                            ),
                           ],
                         ),
                         Expanded(
                           child: Container(
                             padding: const EdgeInsets.only(left: 5),
-                            child: isTypeBikeRentalNetwork
-                                ? Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        leg.fromPlace?.name != null &&
-                                                leg.fromPlace!.name.isNotEmpty
-                                            ? leg.fromPlace!.name
-                                            : bikerentalNetwork
-                                                .getTranslate(localizationBase),
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      if (leg.fromPlace?.name != null &&
-                                          leg.fromPlace!.name.isNotEmpty)
+                            child:
+                                isTypeBikeRentalNetwork
+                                    ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
                                         Text(
-                                          localization.bikeRentalBikeStation,
-                                          style: TextStyle(
-                                              color: Colors.grey[800]),
+                                          leg.fromPlace?.name != null &&
+                                                  leg.fromPlace!.name.isNotEmpty
+                                              ? leg.fromPlace!.name
+                                              : bikerentalNetwork.getTranslate(
+                                                localizationBase,
+                                              ),
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
-                                    ],
-                                  )
-                                : null,
+                                        if (leg.fromPlace?.name != null &&
+                                            leg.fromPlace!.name.isNotEmpty)
+                                          Text(
+                                            localization.bikeRentalBikeStation,
+                                            style: TextStyle(
+                                              color: Colors.grey[800],
+                                            ),
+                                          ),
+                                      ],
+                                    )
+                                    : null,
                           ),
                         ),
                       ],
@@ -226,7 +236,8 @@ class BicycleDash extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: InfoMessage(
-                        message: localization.bikeRentalNetworkFreeFloating),
+                      message: localization.bikeRentalNetworkFreeFloating,
+                    ),
                   ),
                 BicycleWalkLegDash(
                   bicycleWalkLeg: bicycleWalkLeg,
@@ -248,32 +259,34 @@ class BicycleDash extends StatelessWidget {
                           collapsedTextColor: theme.colorScheme.onSurface,
                           iconColor: theme.primaryColor,
                           collapsedIconColor: theme.primaryColor,
-                          childrenPadding:
-                              const EdgeInsets.symmetric(horizontal: 10),
-                          children: leg.steps!.asMap().entries.map((entry) {
-                            final index = entry.key;
-                            final step = entry.value;
+                          childrenPadding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
+                          children:
+                              leg.steps!.asMap().entries.map((entry) {
+                                final index = entry.key;
+                                final step = entry.value;
 
-                            return InkWell(
-                              onTap: () {
-                                if (step.lat != null && step.lon != null) {
-                                  moveInMap(LatLng(step.lat!, step.lon!),
-                                      zoom: 18);
-                                }
-                              },
-                              child: StepNavigationDetails(
-                                step: step,
-                                isFirst: index == 0,
-                              ),
-                            );
-                          }).toList(),
+                                return InkWell(
+                                  onTap: () {
+                                    if (step.lat != null && step.lon != null) {
+                                      moveInMap(
+                                        LatLng(step.lat!, step.lon!),
+                                        zoom: 18,
+                                      );
+                                    }
+                                  },
+                                  child: StepNavigationDetails(
+                                    step: step,
+                                    isFirst: index == 0,
+                                  ),
+                                );
+                              }).toList(),
                         )
                       else
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 7),
-                          child: Text(
-                            stopsDescription,
-                          ),
+                          child: Text(stopsDescription),
                         ),
                       Positioned(
                         left: -24,
@@ -326,15 +339,15 @@ class BicycleWalkLegDash extends StatelessWidget {
           Text(
             showAfterBicycleWalkLeg
                 ? localizationST.bicycleWalkFromTransitNoDuration(
-                    bicycleWalkLeg?.fromPlace?.stopEntity?.vehicleMode
-                            ?.getSecondaryTranslate(localizationST) ??
-                        "",
-                  )
+                  bicycleWalkLeg?.fromPlace?.stopEntity?.vehicleMode
+                          ?.getSecondaryTranslate(localizationST) ??
+                      "",
+                )
                 : localizationST.bicycleWalkToTransitNoDuration(
-                    bicycleWalkLeg?.toPlace?.stopEntity?.vehicleMode
-                            ?.getSecondaryTranslate(localizationST) ??
-                        "",
-                  ),
+                  bicycleWalkLeg?.toPlace?.stopEntity?.vehicleMode
+                          ?.getSecondaryTranslate(localizationST) ??
+                      "",
+                ),
           ),
           Positioned(
             left: -24,
@@ -365,7 +378,9 @@ class BicycleWalkLegDash extends StatelessWidget {
 
 extension TransportModeExtension on TransportMode {
   static String? _secondaryTranslate(
-      TransportMode mode, StadtnaviBaseLocalization localization) {
+    TransportMode mode,
+    StadtnaviBaseLocalization localization,
+  ) {
     return {
       TransportMode.airplane: null,
       TransportMode.bicycle: null,
@@ -431,10 +446,7 @@ class CarDash extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               if (leg.fromPlace != null) {
-                moveInMap(LatLng(
-                  leg.fromPlace!.lat,
-                  leg.fromPlace!.lon,
-                ));
+                moveInMap(LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon));
               }
             },
             child: Column(
@@ -457,29 +469,31 @@ class CarDash extends StatelessWidget {
                     iconColor: theme.primaryColor,
                     collapsedIconColor: theme.primaryColor,
                     childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
-                    children: leg.steps!.asMap().entries.map((entry) {
-                      final index = entry.key;
-                      final step = entry.value;
+                    children:
+                        leg.steps!.asMap().entries.map((entry) {
+                          final index = entry.key;
+                          final step = entry.value;
 
-                      return InkWell(
-                        onTap: () {
-                          if (step.lat != null && step.lon != null) {
-                            moveInMap(LatLng(step.lat!, step.lon!), zoom: 18);
-                          }
-                        },
-                        child: StepNavigationDetails(
-                          step: step,
-                          isFirst: index == 0,
-                        ),
-                      );
-                    }).toList(),
+                          return InkWell(
+                            onTap: () {
+                              if (step.lat != null && step.lon != null) {
+                                moveInMap(
+                                  LatLng(step.lat!, step.lon!),
+                                  zoom: 18,
+                                );
+                              }
+                            },
+                            child: StepNavigationDetails(
+                              step: step,
+                              isFirst: index == 0,
+                            ),
+                          );
+                        }).toList(),
                   )
                 else
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 7),
-                    child: Text(
-                      textCarInstruction,
-                    ),
+                    child: Text(textCarInstruction),
                   ),
                 Center(
                   child: ElevatedButton(
@@ -490,8 +504,12 @@ class CarDash extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => BaseTrufiPage(
-                              child: OfferCarpoolScreen(planItineraryLeg: leg)),
+                          builder:
+                              (context) => BaseTrufiPage(
+                                child: OfferCarpoolScreen(
+                                  planItineraryLeg: leg,
+                                ),
+                              ),
                         ),
                       );
                     },
@@ -503,10 +521,16 @@ class CarDash extends StatelessWidget {
                     ),
                   ),
                 ),
-                if ((leg.toPlace?.vehicleParkingWithEntrance?.vehicleParking
+                if ((leg
+                            .toPlace
+                            ?.vehicleParkingWithEntrance
+                            ?.vehicleParking
                             ?.tags !=
                         null) &&
-                    (leg.toPlace!.vehicleParkingWithEntrance!.vehicleParking!
+                    (leg
+                        .toPlace!
+                        .vehicleParkingWithEntrance!
+                        .vehicleParking!
                         .tags!
                         .contains('state:few')))
                   Column(
@@ -514,7 +538,8 @@ class CarDash extends StatelessWidget {
                     children: [
                       const SizedBox(height: 10),
                       InfoMessage(
-                          message: localization.carParkCloseCapacityMessage),
+                        message: localization.carParkCloseCapacityMessage,
+                      ),
                       CustomTextButton(
                         text: localization.carParkExcludeFull,
                         onPressed: () async {
@@ -525,14 +550,17 @@ class CarDash extends StatelessWidget {
                               context.read<SettingFetchCubit>().state;
                           customAsyncExecutor.run<MapModesState>(
                             context: context,
-                            onExecute: () async =>
-                                await mapModesCubit.fetchPlanModeRidePark(
-                              from: mapRouteState.fromPlace!,
-                              to: mapRouteState.toPlace!,
-                              advancedOptions: settingFetchState,
-                              localeName:
-                                  Localizations.localeOf(context).languageCode,
-                            ),
+                            onExecute:
+                                () async =>
+                                    await mapModesCubit.fetchPlanModeRidePark(
+                                      from: mapRouteState.fromPlace!,
+                                      to: mapRouteState.toPlace!,
+                                      advancedOptions: settingFetchState,
+                                      localeName:
+                                          Localizations.localeOf(
+                                            context,
+                                          ).languageCode,
+                                    ),
                             onFinish: (mapModesState) {
                               final modesTransport =
                                   mapModesState.modesTransport;
@@ -540,16 +568,20 @@ class CarDash extends StatelessWidget {
                                 mapModesCubit.setValuesMap(
                                   plan: modesTransport!.parkRidePlan!,
                                 );
-                                Navigator.of(context)
-                                    .pushReplacement(MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ModeTransportScreen(
-                                    title: localization
-                                        .settingPanelMyModesTransportParkRide,
-                                    typeTransport:
-                                        ModesTransportType.parkRidePlan,
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder:
+                                        (
+                                          BuildContext context,
+                                        ) => ModeTransportScreen(
+                                          title:
+                                              localization
+                                                  .settingPanelMyModesTransportParkRide,
+                                          typeTransport:
+                                              ModesTransportType.parkRidePlan,
+                                        ),
                                   ),
-                                ));
+                                );
                               }
                             },
                           );
@@ -593,33 +625,46 @@ class TransportDash extends StatelessWidget {
         if (showBeforeLine)
           DashLinePlace(
             date: leg.startTimeString,
+            delayedDate:
+                leg.departureDelay > 0
+                    ? durationToHHmm(
+                      leg.startTime.subtract(
+                        Duration(seconds: leg.departureDelay),
+                      ),
+                    )
+                    : null,
             location: leg.fromPlace?.name ?? '',
             color: leg.primaryColor,
+            isDelayed:
+                leg.departureDelay > 0
+                    ? true
+                    : leg.arrivalDelay >= 0
+                    ? false
+                    : null,
             alertSeverityIcon: AlertActionIcon.getActiveAlertSeverityLevel(
               alerts: leg.fromPlace?.stopEntity?.alerts,
               referenceUnixTime: leg.startTime.millisecondsSinceEpoch / 1000,
               ontap: () {
                 panelCubit.setPanel(
                   CustomMarkerPanel(
-                    panel: (
-                      context,
-                      _, {
-                      isOnlyDestination,
-                    }) =>
-                        StopMarkerModalBase(
-                      initialIndex: 2,
-                      stopFeature: StopFeature(
-                        code: leg.fromPlace?.stopEntity?.code,
-                        gtfsId: leg.fromPlace?.stopEntity?.gtfsId??"",
-                        name: leg.fromPlace?.stopEntity?.name,
-                        parentStation: null,
-                        patterns: null,
-                        platform: null,
-                        type:leg.transportMode.name,
-                        position:
-                            LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon),
-                      ),
-                    ),
+                    panel:
+                        (context, _, {isOnlyDestination}) =>
+                            StopMarkerModalBase(
+                              initialIndex: 2,
+                              stopFeature: StopFeature(
+                                code: leg.fromPlace?.stopEntity?.code,
+                                gtfsId: leg.fromPlace?.stopEntity?.gtfsId ?? "",
+                                name: leg.fromPlace?.stopEntity?.name,
+                                parentStation: null,
+                                patterns: null,
+                                platform: null,
+                                type: leg.transportMode.name,
+                                position: LatLng(
+                                  leg.fromPlace!.lat,
+                                  leg.fromPlace!.lon,
+                                ),
+                              ),
+                            ),
                     position: LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon),
                     minSize: 130,
                   ),
@@ -632,10 +677,7 @@ class TransportDash extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               if (leg.fromPlace != null) {
-                moveInMap(LatLng(
-                  leg.fromPlace!.lat,
-                  leg.fromPlace!.lon,
-                ));
+                moveInMap(LatLng(leg.fromPlace!.lat, leg.fromPlace!.lon));
               }
             },
             child: TransitLeg(
@@ -648,7 +690,21 @@ class TransportDash extends StatelessWidget {
         if (showAfterLine)
           DashLinePlace(
             date: leg.endTimeString.toString(),
+            delayedDate:
+                leg.arrivalDelay > 0
+                    ? durationToHHmm(
+                      leg.endTime.subtract(
+                        Duration(seconds: leg.arrivalDelay),
+                      ),
+                    )
+                    : null,
             location: showAfterText ? (leg.toPlace?.name ?? '') : '',
+            isDelayed:
+                leg.departureDelay <= 0
+                    ? false
+                    : leg.arrivalDelay > 0
+                    ? true
+                    : null,
             color: leg.primaryColor,
             alertSeverityIcon: AlertActionIcon.getActiveAlertSeverityLevel(
               alerts: leg.toPlace?.stopEntity?.alerts,
@@ -656,24 +712,24 @@ class TransportDash extends StatelessWidget {
               ontap: () {
                 panelCubit.setPanel(
                   CustomMarkerPanel(
-                    panel: (
-                      context,
-                      _, {
-                      isOnlyDestination,
-                    }) =>
-                        StopMarkerModalBase(
-                      initialIndex: 2,
-                      stopFeature: StopFeature(
-                        code: leg.toPlace?.stopEntity?.code,
-                        gtfsId: leg.toPlace?.stopEntity?.gtfsId??"",
-                        name: leg.toPlace?.stopEntity?.name,
-                        parentStation: null,
-                        patterns: null,
-                        platform: null,
-                        type:leg.transportMode.name,
-                        position: LatLng(leg.toPlace!.lat, leg.toPlace!.lon),
-                      ),
-                    ),
+                    panel:
+                        (context, _, {isOnlyDestination}) =>
+                            StopMarkerModalBase(
+                              initialIndex: 2,
+                              stopFeature: StopFeature(
+                                code: leg.toPlace?.stopEntity?.code,
+                                gtfsId: leg.toPlace?.stopEntity?.gtfsId ?? "",
+                                name: leg.toPlace?.stopEntity?.name,
+                                parentStation: null,
+                                patterns: null,
+                                platform: null,
+                                type: leg.transportMode.name,
+                                position: LatLng(
+                                  leg.toPlace!.lat,
+                                  leg.toPlace!.lon,
+                                ),
+                              ),
+                            ),
                     position: LatLng(leg.toPlace!.lat, leg.toPlace!.lon),
                     minSize: 130,
                   ),
@@ -698,9 +754,9 @@ class AlertActionIcon extends StatelessWidget {
     );
     return activeAlertSeverityLevel != null
         ? AlertActionIcon(
-            alertSeverityLevelType: activeAlertSeverityLevel,
-            ontap: ontap,
-          )
+          alertSeverityLevelType: activeAlertSeverityLevel,
+          ontap: ontap,
+        )
         : null;
   }
 
@@ -724,38 +780,30 @@ class AlertActionIcon extends StatelessWidget {
 class BikeParkDash extends StatelessWidget {
   final PlanItineraryLeg leg;
   final BikeParkEntity? bikePark;
-  const BikeParkDash({
-    Key? key,
-    required this.leg,
-    this.bikePark,
-  }) : super(key: key);
+  const BikeParkDash({Key? key, required this.leg, this.bikePark})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final localizationBase = TrufiBaseLocalization.of(context);
     final localization = StadtnaviBaseLocalization.of(context);
-    final bikerentalNetwork =
-        getBikeRentalNetwork(leg.fromPlace?.bikeRentalStation?.networks?[0]);
+    final bikerentalNetwork = getBikeRentalNetwork(
+      leg.fromPlace?.bikeRentalStation?.networks?[0],
+    );
     return Column(
       children: [
         DashLinePlace(
           date: leg.endTimeString.toString(),
-          location: bikePark != null
-              ? localization.bikePark
-              : bikerentalNetwork.getTranslateTitle(localizationBase),
+          location:
+              bikePark != null
+                  ? localization.bikePark
+                  : bikerentalNetwork.getTranslateTitle(localizationBase),
           subtitle: bikePark?.name ?? leg.toPlace?.name ?? '',
           color: leg.primaryColor,
           child: Column(
             children: [
-              SizedBox(
-                height: 18,
-                width: 24,
-                child: bikeParkingSvg,
-              ),
-              Container(
-                width: 5,
-                color: Colors.red,
-              )
+              SizedBox(height: 18, width: 24, child: bikeParkingSvg),
+              Container(width: 5, color: Colors.red),
             ],
           ),
         ),
@@ -783,11 +831,8 @@ class BikeParkDash extends StatelessWidget {
 class WalkDash extends StatelessWidget {
   final PlanItineraryLeg leg;
   final MoveInMap moveInMap;
-  const WalkDash({
-    Key? key,
-    required this.leg,
-    required this.moveInMap,
-  }) : super(key: key);
+  const WalkDash({Key? key, required this.leg, required this.moveInMap})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -823,22 +868,23 @@ class WalkDash extends StatelessWidget {
                   iconColor: theme.primaryColor,
                   collapsedIconColor: theme.primaryColor,
                   childrenPadding: const EdgeInsets.symmetric(horizontal: 10),
-                  children: leg.steps!.asMap().entries.map((entry) {
-                    final index = entry.key;
-                    final step = entry.value;
+                  children:
+                      leg.steps!.asMap().entries.map((entry) {
+                        final index = entry.key;
+                        final step = entry.value;
 
-                    return InkWell(
-                      onTap: () {
-                        if (step.lat != null && step.lon != null) {
-                          moveInMap(LatLng(step.lat!, step.lon!), zoom: 18);
-                        }
-                      },
-                      child: StepNavigationDetails(
-                        step: step,
-                        isFirst: index == 0,
-                      ),
-                    );
-                  }).toList(),
+                        return InkWell(
+                          onTap: () {
+                            if (step.lat != null && step.lon != null) {
+                              moveInMap(LatLng(step.lat!, step.lon!), zoom: 18);
+                            }
+                          },
+                          child: StepNavigationDetails(
+                            step: step,
+                            isFirst: index == 0,
+                          ),
+                        );
+                      }).toList(),
                 )
               else
                 Text(
@@ -855,11 +901,8 @@ class WalkDash extends StatelessWidget {
 class WaitDash extends StatelessWidget {
   final PlanItineraryLeg legBefore;
   final PlanItineraryLeg legAfter;
-  const WaitDash({
-    Key? key,
-    required this.legBefore,
-    required this.legAfter,
-  }) : super(key: key);
+  const WaitDash({Key? key, required this.legBefore, required this.legAfter})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -908,7 +951,8 @@ class WaitDash extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 7),
             child: Text(
-                "${localization.commonWait} (${localization.instructionDurationMinutes(legAfter.startTime.difference(legBefore.endTime).inMinutes)})"),
+              "${localization.commonWait} (${localization.instructionDurationMinutes(legAfter.startTime.difference(legBefore.endTime).inMinutes)})",
+            ),
           ),
         ),
       ],
@@ -945,20 +989,11 @@ class SeparatorPlace extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Expanded(
-                    child: Container(
-                      width: 4,
-                      color: color ?? Colors.black,
-                    ),
+                    child: Container(width: 4, color: color ?? Colors.black),
                   ),
-                  SizedBox(
-                    width: 20,
-                    child: separator,
-                  ),
+                  SizedBox(width: 20, child: separator),
                   Expanded(
-                    child: Container(
-                      width: 4,
-                      color: color ?? Colors.black,
-                    ),
+                    child: Container(width: 4, color: color ?? Colors.black),
                   ),
                 ],
               ),
@@ -984,6 +1019,8 @@ class SeparatorPlace extends StatelessWidget {
 
 class DashLinePlace extends StatelessWidget {
   final String date;
+  final String? delayedDate;
+  final bool? isDelayed;
   final String location;
   final String? subtitle;
   final Widget? child;
@@ -993,6 +1030,8 @@ class DashLinePlace extends StatelessWidget {
   const DashLinePlace({
     Key? key,
     required this.date,
+    this.delayedDate,
+    this.isDelayed,
     required this.location,
     this.subtitle,
     this.child,
@@ -1010,23 +1049,43 @@ class DashLinePlace extends StatelessWidget {
         children: [
           SizedBox(
             width: 45 * textScaleFactor,
-            child: Text(
-              date,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-              ),
-              maxLines: 1,
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Text(
+                  date,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color:
+                        isDelayed == null
+                            ? Colors.black
+                            : isDelayed!
+                            ? Colors.red
+                            : Color(0xFF3a7f00),
+                  ),
+                  maxLines: 1,
+                ),
+                if (delayedDate != null)
+                  Positioned(
+                    top: 18,
+                    child: Text(
+                      delayedDate!,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                      maxLines: 1,
+                    ),
+                  ),
+              ],
             ),
           ),
           if (child == null)
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 3),
-              child: Icon(
-                Icons.circle,
-                size: 18,
-                color: color,
-              ),
+              child: Icon(Icons.circle, size: 18, color: color),
             )
           else
             Column(
@@ -1034,10 +1093,7 @@ class DashLinePlace extends StatelessWidget {
               children: [
                 child!,
                 Expanded(
-                  child: Container(
-                    width: 4,
-                    color: color ?? Colors.black,
-                  ),
+                  child: Container(width: 4, color: color ?? Colors.black),
                 ),
               ],
             ),
@@ -1066,12 +1122,7 @@ class DashLinePlace extends StatelessWidget {
                   ],
                 ),
                 if (subtitle != null)
-                  Text(
-                    subtitle!,
-                    style: const TextStyle(
-                      fontSize: 13,
-                    ),
-                  ),
+                  Text(subtitle!, style: const TextStyle(fontSize: 13)),
               ],
             ),
           ),

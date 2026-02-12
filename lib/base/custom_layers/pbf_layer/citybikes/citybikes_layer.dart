@@ -39,11 +39,13 @@ class CityBikesLayer extends CustomLayer {
   Marker buildMarker({
     required CityBikeFeature element,
     required double markerSize,
+    bool isSelected = false,
   }) {
+    final lastMarkerSize = markerSize + 5 + (isSelected ? 6 : 0);
     return Marker(
       key: Key("$id:${element.id}"),
-      height: markerSize + 5,
-      width: markerSize + 5,
+      height: lastMarkerSize,
+      width: lastMarkerSize,
       point: element.position,
       alignment: Alignment.topCenter,
       child: Builder(builder: (context) {
@@ -54,6 +56,11 @@ class CityBikesLayer extends CustomLayer {
           child: GestureDetector(
             onTap: () {
               final panelCubit = context.read<PanelCubit>();
+              final selectedMarker = buildMarker(
+                element: element,
+                markerSize: markerSize,
+                isSelected: true,
+              );
               panelCubit.setPanel(
                 CustomMarkerPanel(
                   panel: (
@@ -73,6 +80,7 @@ class CityBikesLayer extends CustomLayer {
                   position: element.position,
                   minSize: 50,
                 ),
+                selectedMarker: selectedMarker,
               );
             },
             child: SharingMarkerUpdater(
@@ -84,6 +92,17 @@ class CityBikesLayer extends CustomLayer {
                     height: markerSize,
                     width: markerSize,
                     margin: EdgeInsets.only(top: markerSize / 5),
+                    padding: isSelected ? const EdgeInsets.all(1) : null,
+                    decoration: isSelected
+                        ? BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2,
+                            ),
+                          )
+                        : null,
                     child: element.type?.imageStop,
                   ),
                   if (element.extraInfo?.bikesAvailable != null &&

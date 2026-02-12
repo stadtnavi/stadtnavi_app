@@ -111,7 +111,7 @@ class StadtnaviBaseLocalizationDe extends StadtnaviBaseLocalization {
   String get infoMessageNoRouteOriginSameAsDestination => 'Die Entfernung zwischen Start und Ziel ist sehr gering. Bitte ändern Sie einen dieser Orte.';
 
   @override
-  String get infoMessageNoRouteShowingAlternativeOptions => 'Keine Routenvorschläge mit Ihren Einstelllungen gefunden. Stattdessen haben wird die folgenden Reiseoptionen gefunden:';
+  String get infoMessageNoRouteShowingAlternativeOptions => 'Keine Routenvorschläge mit Ihren Einstellungen gefunden. Stattdessen haben wird die folgenden Reiseoptionen gefunden:';
 
   @override
   String get infoMessageOnlyCyclingRoutes => 'Ihre Suche ergab nur Fahrrad-Routen.';

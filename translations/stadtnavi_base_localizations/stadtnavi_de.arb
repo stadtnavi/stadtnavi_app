@@ -135,7 +135,7 @@
   "@infoMessageNoRouteOriginSameAsDestination": {
     "description": "Text info message No Route Origin Same As Destination for plan Fetch"
   },
-  "infoMessageNoRouteShowingAlternativeOptions": "Keine Routenvorschläge mit Ihren Einstelllungen gefunden. Stattdessen haben wird die folgenden Reiseoptionen gefunden:",
+  "infoMessageNoRouteShowingAlternativeOptions": "Keine Routenvorschläge mit Ihren Einstellungen gefunden. Stattdessen haben wird die folgenden Reiseoptionen gefunden:",
   "@infoMessageNoRouteShowingAlternativeOptions": {
     "description": "Text info message No Route Showing Alternative Options for plan Fetch"
   },

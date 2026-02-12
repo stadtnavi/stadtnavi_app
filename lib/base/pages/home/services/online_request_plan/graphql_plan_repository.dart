@@ -32,6 +32,30 @@ class GraphQLPlanRepository {
     : client = getClient(endpoint);
   static const maxRetries = 5;
 
+  static const _strictAllowedKeys = [
+    'fromPlace',
+    'toPlace',
+    'intermediatePlaces',
+    'numItineraries',
+    'modes',
+    'date',
+    'time',
+    'walkReluctance',
+    'walkBoardCost',
+    'minTransferTime',
+    'walkSpeed',
+    'wheelchair',
+    'ticketTypes',
+    'arriveBy',
+    'transferPenalty',
+    'bikeSpeed',
+    'optimize',
+    'itineraryFiltering',
+    'unpreferred',
+    'locale',
+    'searchWindow',
+  ];
+
   Future<Plan> fetchPlanAdvanced({
     required TrufiLocation fromLocation,
     required TrufiLocation toLocation,
@@ -39,6 +63,7 @@ class GraphQLPlanRepository {
     int numItineraries = 5,
     String? locale,
     bool useDefaultModes = false,
+    bool useStrictParams = false,
   }) async {
     client = updateClient(
       graphQLClient: client,
@@ -75,30 +100,33 @@ class GraphQLPlanRepository {
           locale: locale,
           useDefaultModes: useDefaultModes,
         ),
-        allowedKeys: [
-          'fromPlace',
-          'toPlace',
-          'intermediatePlaces',
-          'numItineraries',
-          'modes',
-          'date',
-          'time',
-          'walkReluctance',
-          'walkBoardCost',
-          'minTransferTime',
-          'walkSpeed',
-          'wheelchair',
-          'ticketTypes',
-          'arriveBy',
-          'transferPenalty',
-          'bikeSpeed',
-          'optimize',
-          'itineraryFiltering',
-          'unpreferred',
-          'allowedVehicleRentalNetworks',
-          'locale',
-          'modeWeight',
-        ],
+        allowedKeys:
+            useStrictParams
+                ? _strictAllowedKeys
+                : [
+                  'fromPlace',
+                  'toPlace',
+                  'intermediatePlaces',
+                  'numItineraries',
+                  'modes',
+                  'date',
+                  'time',
+                  'walkReluctance',
+                  'walkBoardCost',
+                  'minTransferTime',
+                  'walkSpeed',
+                  'wheelchair',
+                  'ticketTypes',
+                  'arriveBy',
+                  'transferPenalty',
+                  'bikeSpeed',
+                  'optimize',
+                  'itineraryFiltering',
+                  'unpreferred',
+                  'allowedVehicleRentalNetworks',
+                  'locale',
+                  'modeWeight',
+                ],
       ),
     );
 
@@ -328,6 +356,7 @@ class GraphQLPlanRepository {
     int numItineraries = 5,
     String? locale,
     bool useDefaultModes = false,
+    bool useStrictParams = false,
   }) {
     final config = ConfigDefault.value;
     final shouldMakeAllQuery =
@@ -453,6 +482,7 @@ class GraphQLPlanRepository {
       'allowedVehicleRentalNetworks': allowedVehicleRentalNetworksMapped,
       'locale': locale ?? 'en',
       'modeWeight': null,
+      'searchWindow': 21600,  //TODO this is only for more itineraries
       // Extra params for modes
       'shouldMakeWalkQuery':
           !advancedOptions.wheelchair &&

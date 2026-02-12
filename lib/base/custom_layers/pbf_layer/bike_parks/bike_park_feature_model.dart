@@ -1,4 +1,5 @@
 import 'package:latlong2/latlong.dart';
+import 'package:stadtnavi_core/base/custom_layers/models/enums.dart';
 import 'package:vector_tile/vector_tile.dart';
 
 import 'bike_parks_enum.dart';
@@ -64,11 +65,12 @@ class BikeParkFeature {
     bicyclePlacesCapacity =
         properties?['capacity.bicyclePlaces']?.dartIntValue?.toInt();
     tags = properties?['tags']?.dartStringValue;
-    type = tags != null
-        ? tags.contains("osm:covered")
-            ? BikeParkLayerIds.covered
-            : BikeParkLayerIds.notCovered
-        : null;
+    type =
+        tags != null
+            ? tags.contains("osm:covered")
+                ? BikeParkLayerIds.covered
+                : BikeParkLayerIds.notCovered
+            : null;
     if (type == null || bicyclePlaces == null || !bicyclePlaces) return null;
     return BikeParkFeature(
       geoJsonPoint: geoJsonPoint,
@@ -89,5 +91,12 @@ class BikeParkFeature {
         geoJsonPoint?.geometry?.coordinates[0] ?? 0,
       ),
     );
+  }
+
+  AvailabilityState? getAvailabilityState() {
+    if (state == 'CLOSED' || bicyclePlacesCapacity == 0) {
+      return AvailabilityState.unavailability;
+    }
+    return AvailabilityState.availability;
   }
 }

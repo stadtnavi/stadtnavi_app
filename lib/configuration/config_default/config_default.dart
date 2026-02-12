@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:stadtnavi_core/configuration/config_default/config_default/city_bike_config.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/default_options.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/default_settings.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default/itinerary_options.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default/transport_mode_config.dart';
 
 class ConfigDefault {
@@ -48,6 +49,7 @@ class ConfigData {
   int suggestBikeAndPublicMinDistance;
   int suggestBikeAndParkMinDistance;
   double itineraryFiltering;
+  late ItineraryOptions itineraryOptions;
   int minTransferTime;
   int transferPenalty;
   String optimize;
@@ -65,6 +67,7 @@ class ConfigData {
     this.showBikeAndParkItineraries = false,
     DefaultSettings? defaultSettings,
     DefaultOptions? defaultOptions,
+    ItineraryOptions? itineraryOptions,
     this.walkBoardCost = 600,
     this.walkBoardCostHigh = 1200,
     this.suggestCarMinDistance = 2000,
@@ -85,6 +88,7 @@ class ConfigData {
   }) {
     this.defaultSettings = defaultSettings ?? DefaultSettings();
     this.defaultOptions = defaultOptions ?? DefaultOptions();
+    this.itineraryOptions = itineraryOptions ?? ItineraryOptions();
     this.cityBike = cityBike ?? CityBikeConfig();
     this.transportModes =
         transportModes ??
@@ -216,6 +220,9 @@ class ConfigData {
           json['defaultOptions'] != null
               ? DefaultOptions.fromJson(json['defaultOptions'])
               : null,
+      itineraryOptions: json['itineraryOptions'] != null
+          ? ItineraryOptions.fromJson(json['itineraryOptions'])
+          : null,
       walkBoardCost: json['walkBoardCost'] ?? 600,
       walkBoardCostHigh: json['walkBoardCostHigh'] ?? 1200,
       suggestCarMinDistance: json['suggestCarMinDistance'] ?? 2000,

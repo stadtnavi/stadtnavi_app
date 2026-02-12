@@ -10,6 +10,9 @@ import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dar
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:stadtnavi_core/base/translations/string_translation.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
+import 'package:stadtnavi_core/configuration/config_default/config_default/city_bike_utils.dart';
+import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -65,6 +68,9 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
         widget.element.network?.url != null
             ? widget.element.network!.url![languageCode]
             : '';
+    final network = ConfigDefault.value.cityBike.networks?[widget.element.networkId];
+    final operator =
+        ConfigDefault.value.cityBike.operators?[network?.operator ?? ''];
 
     if (cityBikeDataFetch?.rentalUris != null) {
       if (kIsWeb &&
@@ -124,7 +130,9 @@ class _ScooterMarkerModalState extends State<ScooterMarkerModal> {
                       width: 30,
                       margin: const EdgeInsets.only(right: 10),
                       child: SvgPicture.string(
-                        getNetworkIcon(widget.element.network?.icon),
+                        operator?.iconCode ??
+                            getNetworkIcon(widget.element.network?.icon) ??
+                            '',
                       ),
                     ),
                     Expanded(

@@ -26,16 +26,18 @@ class StopsLayer extends CustomLayer {
   Marker buildMarker({
     required StopFeature element,
     required double markerSize,
+    bool isSelected = false,
   }) {
     final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
       mapCategory,
       element.type.toLowerCase(),
     );
     final svgIcon = targetMapLayerCategory?.properties?.iconSvgMenu;
+    final lastMarkerSize = markerSize + (isSelected ? 6 : 0);
     return Marker(
       key: Key("$id:${element.gtfsId}"),
-      height: markerSize,
-      width: markerSize,
+      height: lastMarkerSize,
+      width: lastMarkerSize,
       point: element.position,
       alignment: Alignment.topCenter,
       child: Builder(builder: (context) {
@@ -51,6 +53,11 @@ class StopsLayer extends CustomLayer {
           child: GestureDetector(
             onTap: () {
               final panelCubit = context.read<PanelCubit>();
+              final selectedMarker = buildMarker(
+                element: element,
+                markerSize: markerSize,
+                isSelected: true,
+              );
               panelCubit.setPanel(
                 CustomMarkerPanel(
                   panel: (
@@ -65,9 +72,23 @@ class StopsLayer extends CustomLayer {
                   position: element.position,
                   minSize: 130,
                 ),
+                selectedMarker: selectedMarker,
               );
             },
-            child: SvgPicture.string(svgIcon ?? ''),
+            child: Container(
+              padding: isSelected ? const EdgeInsets.all(1) : null,
+              decoration: isSelected
+                  ? BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 2,
+                      ),
+                    )
+                  : null,
+              child: SvgPicture.string(svgIcon ?? ''),
+            ),
           ),
         );
       }),

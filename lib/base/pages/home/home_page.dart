@@ -107,7 +107,7 @@ class _HomePageState extends State<HomePage>
       if (panelCubit.state.panel != null) {
         trufiMapController.move(
           center: panelCubit.state.panel!.position,
-          zoom: 16,
+          zoom: trufiMapController.mapController.camera.zoom,
           tickerProvider: this,
         );
       }
