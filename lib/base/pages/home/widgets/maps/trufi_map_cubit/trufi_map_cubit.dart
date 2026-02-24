@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart' as tcm;
 
 import 'package:stadtnavi_core/base/models/enums/enums_plan/enums_plan.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
@@ -16,10 +17,32 @@ import 'package:trufi_core/base/utils/map_utils/trufi_map_utils.dart';
 
 part 'trufi_map_state.dart';
 
-class TrufiMapController extends Cubit<TrufiMapState> {
-  final MapController mapController = MapController();
+/// Concrete TrufiLayer for rendering route results on the MapLibre map.
+class _RouteLayer extends tcm.TrufiLayer {
+  _RouteLayer(tcm.TrufiMapController controller)
+      : super(controller, id: 'stadtnavi_route', layerLevel: 10);
+}
 
-  TrufiMapController() : super(const TrufiMapState());
+class TrufiMapController extends Cubit<TrufiMapState> {
+  late final tcm.TrufiMapController mapLibreController;
+  _RouteLayer? _routeLayer;
+
+  TrufiMapController({
+    required LatLng initialCenter,
+    double initialZoom = 13.0,
+  }) : super(const TrufiMapState()) {
+    mapLibreController = tcm.TrufiMapController(
+      initialCameraPosition: tcm.TrufiCameraPosition(
+        target: initialCenter,
+        zoom: initialZoom,
+      ),
+    );
+  }
+
+  _RouteLayer _getRouteLayer() {
+    _routeLayer ??= _RouteLayer(mapLibreController);
+    return _routeLayer!;
+  }
 
   Map<PlanItinerary, List<PolylineWithMarkers>> itineraries = {};
   LatLngBounds? get selectedBounds => _selectedBounds;
@@ -27,6 +50,11 @@ class TrufiMapController extends Cubit<TrufiMapState> {
 
   void cleanMap() {
     _selectedBounds = null;
+    final layer = _routeLayer;
+    if (layer != null) {
+      layer.clearLines();
+      layer.clearMarkers();
+    }
     emit(const TrufiMapState());
   }
 
@@ -78,74 +106,26 @@ class TrufiMapController extends Cubit<TrufiMapState> {
     bool showAllItineraries = true,
   }) {
     _selectedBounds = LatLngBounds(from.latLng, to.latLng);
-    // _selectedBounds.extend(from.latLng);
-    // _selectedBounds.extend(to.latLng);
-    final itineraries = _buildItineraries(
-      plan: plan,
-      selectedItinerary: selectedItinerary,
-      onTap: onTap,
-    );
-    final _unselectedMarkers = <Marker>[];
-    final _unselectedPolylines = <Polyline>[];
-    final _selectedMarkers = <Marker>[];
-    final _selectedPolylines = <Polyline>[];
-    final _allPolylines = <Polyline>[];
-    itineraries.forEach((itinerary, polylinesWithMarker) {
-      final bool isSelected = itinerary == selectedItinerary;
-      if (isSelected || showAllItineraries) {
-        for (final polylineWithMarker in polylinesWithMarker) {
-          for (final marker in polylineWithMarker.markers) {
-            if (isSelected) {
-              _selectedMarkers.add(marker);
-              _selectedBounds!.extend(marker.point);
-            } else {
-              _unselectedMarkers.add(marker);
-            }
-          }
-          if (isSelected) {
-            _selectedPolylines.add(polylineWithMarker.polyline);
-            for (final point in polylineWithMarker.polyline.points) {
-              _selectedBounds!.extend(point);
-            }
-          } else {
-            _unselectedPolylines.add(polylineWithMarker.polyline);
-          }
-          _allPolylines.add(polylineWithMarker.polyline);
-        }
-      }
-    });
-    emit(
-      state.copyWith(
-        unselectedMarkersLayer: MarkerLayer(markers: _unselectedMarkers),
-        unselectedPolylinesLayer:
-            PolylineLayer(polylines: _unselectedPolylines),
-        selectedMarkersLayer: MarkerLayer(markers: _selectedMarkers),
-        selectedPolylinesLayer: PolylineLayer(polylines: _selectedPolylines),
-      ),
-    );
-    moveCurrentBounds(tickerProvider: tickerProvider);
-  }
 
-  Map<PlanItinerary, List<PolylineWithMarkers>> _buildItineraries({
-    required PlanEntity plan,
-    required PlanItinerary selectedItinerary,
-    required Function(PlanItinerary p1) onTap,
-  }) {
-    itineraries = {};
+    final layer = _getRouteLayer();
+    final List<tcm.TrufiLine> lines = [];
+    final List<tcm.TrufiMarker> markers = [];
+    int lineIndex = 0;
+
     if (plan.itineraries != null) {
       for (final itinerary in plan.itineraries!) {
-        final List<Marker> markers = [];
-        final List<PolylineWithMarkers> polylinesWithMarkers = [];
         final bool isSelected = itinerary == selectedItinerary;
         final bool showOnlySelected = selectedItinerary.isOnlyShowItinerary;
         if (!showOnlySelected || isSelected) {
+          if (!isSelected && !showAllItineraries) continue;
           final List<PlanItineraryLeg> compressedLegs = itinerary.compressLegs;
           for (int i = 0; i < compressedLegs.length; i++) {
             final PlanItineraryLeg leg = compressedLegs[i];
-            // Polyline
             final List<LatLng> points = leg.accumulatedPoints.isNotEmpty
                 ? leg.accumulatedPoints
                 : decodePolyline(leg.points);
+            if (points.isEmpty) continue;
+
             final Color color = isSelected
                 ? leg.transportMode == TransportMode.bicycle &&
                         leg.fromPlace?.bikeRentalStation != null
@@ -155,32 +135,77 @@ class TrufiMapController extends Cubit<TrufiMapState> {
                     : leg.primaryColor
                 : Colors.grey;
 
-            final Polyline polyline = Polyline(
-              points: points,
+            lines.add(tcm.TrufiLine(
+              id: 'route_${lineIndex++}',
+              position: points,
               color: color,
-              strokeWidth: isSelected ? 6.0 : 3.0,
-              pattern: leg.transportMode == TransportMode.walk
-                  ? StrokePattern.dotted()
-                  : StrokePattern.solid(),
-            );
+              lineWidth: isSelected ? 6.0 : 3.0,
+              activeDots: leg.transportMode == TransportMode.walk,
+              layerLevel: isSelected ? 2 : 1,
+            ));
 
-            // Transfer marker
+            if (isSelected) {
+              for (final point in points) {
+                _selectedBounds!.extend(point);
+              }
+            }
+
+            // Transfer marker between legs
             if (isSelected &&
                 i < compressedLegs.length - 1 &&
-                polyline.points.isNotEmpty) {
-              markers.add(
-                buildTransferMarker(
-                  polyline.points[polyline.points.length - 1],
+                points.isNotEmpty) {
+              final transferPoint = points.last;
+              _selectedBounds!.extend(transferPoint);
+              markers.add(tcm.TrufiMarker(
+                id: 'transfer_$lineIndex',
+                position: transferPoint,
+                size: const Size(18, 18),
+                allowOverlap: true,
+                imageCacheKey: 'transfer_marker',
+                widget: Container(
+                  width: 18,
+                  height: 18,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey, width: 3),
+                  ),
                 ),
-              );
+              ));
             }
-            polylinesWithMarkers.add(PolylineWithMarkers(polyline, markers));
           }
         }
-        itineraries.addAll({itinerary: polylinesWithMarkers});
       }
     }
-    return itineraries;
+
+    // From marker
+    markers.add(tcm.TrufiMarker(
+      id: 'from_marker',
+      position: from.latLng,
+      size: const Size(24, 24),
+      allowOverlap: true,
+      layerLevel: 10,
+      imageCacheKey: 'from_marker',
+      widget: const tcm.FromMarker(height: 24),
+    ));
+
+    // To marker
+    markers.add(tcm.TrufiMarker(
+      id: 'to_marker',
+      position: to.latLng,
+      size: const Size(30, 40),
+      alignment: Alignment.topCenter,
+      allowOverlap: true,
+      layerLevel: 10,
+      imageCacheKey: 'to_marker',
+      widget: const tcm.ToMarker(height: 40),
+    ));
+
+    layer.setLines(lines);
+    layer.setMarkers(markers);
+
+    emit(const TrufiMapState());
+    moveCurrentBounds(tickerProvider: tickerProvider);
   }
 
   void move({
@@ -188,7 +213,7 @@ class TrufiMapController extends Cubit<TrufiMapState> {
     required double zoom,
     TickerProvider? tickerProvider,
   }) {
-    mapController.move(center, zoom);
+    mapLibreController.updateCamera(target: center, zoom: zoom);
   }
 
   void _fitBounds({
@@ -196,9 +221,19 @@ class TrufiMapController extends Cubit<TrufiMapState> {
     TickerProvider? tickerProvider,
   }) {
     if (bounds == null) return;
-    mapController.fitCamera(CameraFit.bounds(
-      bounds: bounds,
-      padding: EdgeInsets.all(50),
-    ));
+    final currentCam = mapLibreController.cameraPositionNotifier.value;
+    final newCam = tcm.TrufiCameraFit.fitBoundsOnCamera(
+      camera: currentCam,
+      bounds: tcm.LatLngBounds(bounds.southWest, bounds.northEast),
+      padding: const EdgeInsets.all(50),
+    );
+    mapLibreController.setCameraPosition(newCam);
+  }
+
+  @override
+  Future<void> close() {
+    _routeLayer?.dispose();
+    mapLibreController.dispose();
+    return super.close();
   }
 }

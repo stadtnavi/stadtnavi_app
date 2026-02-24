@@ -6,7 +6,7 @@ version: 3.29.3
 publish_to: "none"
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.10.0
   flutter: ">=1.17.0"
 
 dependencies:
@@ -27,6 +27,12 @@ dependencies:
   back_button_interceptor: ^8.0.4
   flutter_map_marker_cluster: ^1.4.0
   vector_tile: ^2.0.0
+  trufi_core_maps:
+    path: ../trufi-core/packages/trufi_core_maps
+  trufi_core_interfaces:
+    path: ../trufi-core/packages/trufi_core_interfaces
+  trufi_core_utils:
+    path: ../trufi-core/packages/trufi_core_utils
   rive: ^0.13.20
   matomo_tracker: ^6.0.0
   flutter_compass: ^0.8.1
@@ -43,6 +49,16 @@ dependencies:
 
 dependency_overrides:
   intl: 0.20.2
+  trufi_core_maps:
+    path: ../trufi-core/packages/trufi_core_maps
+  trufi_core_interfaces:
+    path: ../trufi-core/packages/trufi_core_interfaces
+  trufi_core_utils:
+    path: ../trufi-core/packages/trufi_core_utils
+  device_info_plus: ^11.3.3
+  package_info_plus: ^8.3.0
+  geolocator: ^14.0.0
+  vector_tile: ^2.0.0
 
 dev_dependencies:
   flutter_test:

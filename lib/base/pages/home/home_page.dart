@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:async_executor/async_executor.dart';
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:matomo_tracker/matomo_tracker.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +16,6 @@ import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/truf
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/custom_itinerary.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
-import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/widgets/custom_scrollable_container.dart';
@@ -50,11 +48,16 @@ class _HomePageState extends State<HomePage>
         TickerProviderStateMixin,
         WidgetsBindingObserver,
         TraceableClientMixin {
-  final TrufiMapController trufiMapController = TrufiMapController();
+  late final TrufiMapController trufiMapController;
 
   @override
   void initState() {
     super.initState();
+    final mapConfig = context.read<MapConfigurationCubit>().state;
+    trufiMapController = TrufiMapController(
+      initialCenter: mapConfig.center,
+      initialZoom: mapConfig.onlineZoom,
+    );
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((duration) {
       final mapRouteCubit = context.read<MapRouteCubit>();
@@ -107,7 +110,7 @@ class _HomePageState extends State<HomePage>
       if (panelCubit.state.panel != null) {
         trufiMapController.move(
           center: panelCubit.state.panel!.position,
-          zoom: trufiMapController.mapController.camera.zoom,
+          zoom: trufiMapController.mapLibreController.cameraPositionNotifier.value.zoom,
           tickerProvider: this,
         );
       }

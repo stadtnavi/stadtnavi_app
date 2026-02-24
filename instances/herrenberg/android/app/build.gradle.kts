@@ -20,7 +20,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     namespace = "de.stadtnavi.herrenberg.internal"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = "28.0.12433566"
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

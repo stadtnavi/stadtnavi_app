@@ -7,6 +7,7 @@ import 'package:stadtnavi_core/base/pages/home/transport_selector/bottom_sheet_i
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/trufi_map_mode.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
+import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/widgets/custom_scrollable_container.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 
@@ -25,11 +26,16 @@ class ModeTransportScreen extends StatefulWidget {
 
 class _ModeTransportScreen extends State<ModeTransportScreen>
     with TickerProviderStateMixin {
-  final TrufiMapController trufiMapController = TrufiMapController();
+  late final TrufiMapController trufiMapController;
 
   @override
   void initState() {
     super.initState();
+    final mapConfig = context.read<MapConfigurationCubit>().state;
+    trufiMapController = TrufiMapController(
+      initialCenter: mapConfig.center,
+      initialZoom: mapConfig.onlineZoom,
+    );
     WidgetsBinding.instance.addPostFrameCallback((duration) {
       final mapRouteState = context.read<MapRouteCubit>().state;
       final mapModesCubit = context.read<MapModesCubit>();

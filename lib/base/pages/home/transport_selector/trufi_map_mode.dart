@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
-import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
@@ -26,12 +24,9 @@ class TrufiMapMode extends StatefulWidget {
 class _TrufiMapModeState extends State<TrufiMapMode>
     with TickerProviderStateMixin {
   final _cropButtonKey = GlobalKey<CropButtonState>();
-  Marker? tempMarker;
 
   @override
   Widget build(BuildContext context) {
-    final mapRouteState = context.read<MapRouteCubit>().state;
-    final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
     return Stack(
       children: [
         BlocBuilder<TrufiMapController, TrufiMapState>(
@@ -39,26 +34,8 @@ class _TrufiMapModeState extends State<TrufiMapMode>
           builder: (context1, state) {
             return StadtnaviMap(
               trufiMapController: widget.trufiMapController,
-              layerOptionsBuilder: (context) => [
-                if (state.unselectedPolylinesLayer != null)
-                  state.unselectedPolylinesLayer!,
-                if (state.unselectedMarkersLayer != null)
-                  state.unselectedMarkersLayer!,
-                if (state.selectedPolylinesLayer != null)
-                  state.selectedPolylinesLayer!,
-                if (state.selectedMarkersLayer != null)
-                  state.selectedMarkersLayer!,
-                MarkerLayer(markers: [
-                  if (mapRouteState.fromPlace != null)
-                    mapConfiguratiom.markersConfiguration
-                        .buildFromMarker(mapRouteState.fromPlace!.latLng),
-                  if (mapRouteState.toPlace != null)
-                    mapConfiguratiom.markersConfiguration
-                        .buildToMarker(mapRouteState.toPlace!.latLng),
-                  if (tempMarker != null) tempMarker!,
-                ]),
-              ],
-              onTap: (_, point) {
+              layerOptionsBuilder: (context) => [],
+              onTap: (point) {
                 if (widget.trufiMapController.state.unselectedPolylinesLayer !=
                     null) {
                   _handleOnMapTap(context, point);
@@ -66,7 +43,7 @@ class _TrufiMapModeState extends State<TrufiMapMode>
                   onMapPress(context, point);
                 }
               },
-              onLongPress: (_, point) => onMapPress(context, point),
+              onLongPress: (point) => onMapPress(context, point),
               onPositionChanged: _handleOnMapPositionChanged,
               floatingActionButtons: Column(
                 children: [
@@ -85,22 +62,27 @@ class _TrufiMapModeState extends State<TrufiMapMode>
     widget.trufiMapController.moveCurrentBounds(tickerProvider: this);
   }
 
-  void _handleOnMapPositionChanged(
-    MapCamera mapCamera,
-    bool hasGesture,
-  ) {
+  void _handleOnMapPositionChanged() {
     if (widget.trufiMapController.selectedBounds != null) {
-      _cropButtonKey.currentState?.setVisible(
-        visible: !mapCamera.visibleBounds
-            .containsBounds(widget.trufiMapController.selectedBounds!),
-      );
+      final cam = widget
+          .trufiMapController.mapLibreController.cameraPositionNotifier.value;
+      if (cam.visibleRegion != null) {
+        final vr = cam.visibleRegion!;
+        final sb = widget.trufiMapController.selectedBounds!;
+        final contains = vr.southWest.latitude <= sb.southWest.latitude &&
+            vr.southWest.longitude <= sb.southWest.longitude &&
+            vr.northEast.latitude >= sb.northEast.latitude &&
+            vr.northEast.longitude >= sb.northEast.longitude;
+        _cropButtonKey.currentState?.setVisible(visible: !contains);
+      }
     }
   }
 
   void _handleOnMapTap(BuildContext context, LatLng point) {
     final PlanItinerary? tappedItinerary = itineraryForPoint(
         widget.trufiMapController.itineraries,
-        widget.trufiMapController.state.unselectedPolylinesLayer!.polylines,
+        widget.trufiMapController.state.unselectedPolylinesLayer?.polylines ??
+            [],
         point);
     if (tappedItinerary != null) {
       context.read<MapModesCubit>().selectItinerary(tappedItinerary);
@@ -109,10 +91,6 @@ class _TrufiMapModeState extends State<TrufiMapMode>
 
   void onMapPress(BuildContext context, LatLng location) {
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
-    setState(() {
-      tempMarker =
-          mapConfiguratiom.markersConfiguration.buildToMarker(location);
-    });
     widget.trufiMapController.move(
       center: location,
       zoom: mapConfiguratiom.chooseLocationZoom,

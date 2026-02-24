@@ -38,7 +38,7 @@ class RoutesStopScreen extends StatefulWidget {
 
 class _RoutesStopScreenState extends State<RoutesStopScreen>
     with TickerProviderStateMixin {
-  final TrufiMapController _trufiMapController = TrufiMapController();
+  late final TrufiMapController _trufiMapController;
   final _cropButtonKey = GlobalKey<CropButtonState>();
   PatternOtp? patternOtp;
   List<LatLng> stopsLocations = [];
@@ -53,6 +53,11 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   @override
   void initState() {
     super.initState();
+    final mapConfig = context.read<MapConfigurationCubit>().state;
+    _trufiMapController = TrufiMapController(
+      initialCenter: mapConfig.center,
+      initialZoom: mapConfig.onlineZoom,
+    );
     WidgetsBinding.instance.addPostFrameCallback((duration) {
       _fetchStopData().then(
         (value) => _trufiMapController.onReady.then(
@@ -231,15 +236,19 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
     _trufiMapController.moveCurrentBounds(tickerProvider: this);
   }
 
-  void _handleOnMapPositionChanged(
-    MapCamera mapCamera,
-    bool hasGesture,
-  ) {
+  void _handleOnMapPositionChanged() {
     if (_trufiMapController.selectedBounds != null) {
-      _cropButtonKey.currentState?.setVisible(
-        visible: !mapCamera.visibleBounds
-            .containsBounds(_trufiMapController.selectedBounds!),
-      );
+      final cam = _trufiMapController
+          .mapLibreController.cameraPositionNotifier.value;
+      if (cam.visibleRegion != null) {
+        final vr = cam.visibleRegion!;
+        final sb = _trufiMapController.selectedBounds!;
+        final contains = vr.southWest.latitude <= sb.southWest.latitude &&
+            vr.southWest.longitude <= sb.southWest.longitude &&
+            vr.northEast.latitude >= sb.northEast.latitude &&
+            vr.northEast.longitude >= sb.northEast.longitude;
+        _cropButtonKey.currentState?.setVisible(visible: !contains);
+      }
     }
   }
 }

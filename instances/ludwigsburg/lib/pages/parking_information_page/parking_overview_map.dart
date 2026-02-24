@@ -30,10 +30,15 @@ class ParkingOverviewMap extends StatefulWidget {
 
 class _ParkingOverviewMapState extends State<ParkingOverviewMap>
     with TickerProviderStateMixin {
-  final TrufiMapController trufiMapController = TrufiMapController();
+  late final TrufiMapController trufiMapController;
   @override
   void initState() {
     super.initState();
+    final mapConfig = context.read<MapConfigurationCubit>().state;
+    trufiMapController = TrufiMapController(
+      initialCenter: mapConfig.center,
+      initialZoom: mapConfig.onlineZoom,
+    );
   }
 
   @override
@@ -88,7 +93,7 @@ class _ParkingOverviewMapState extends State<ParkingOverviewMap>
                             showMapTypeButton: false,
                             showLayerById: 'parkAndRide',
                             layerOptionsBuilder: (context) => [],
-                            onTap: (_, point) {
+                            onTap: (point) {
                               trufiMapController.move(
                                 center: point,
                                 zoom: mapConfiguration.chooseLocationZoom,
