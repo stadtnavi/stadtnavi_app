@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/stoptime.dart';
+import 'package:stadtnavi_core/base/otp/models/stoptime.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 
 import '../../stop_feature_model.dart';

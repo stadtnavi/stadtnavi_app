@@ -1,7 +1,7 @@
 import 'package:latlong2/latlong.dart';
 import 'package:vector_tile/vector_tile.dart';
 
-import 'bike_parks_enum.dart';
+import 'cifs_enum.dart';
 
 class RoadworksFeature {
   final GeoJsonLineString? geoJsonPoint;

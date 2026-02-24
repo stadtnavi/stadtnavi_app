@@ -7,7 +7,8 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_sc
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_screen/route_disruptions_alerts_screen.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_icon.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/pattern.dart';
+import 'package:stadtnavi_core/base/otp/models/enums/mode.dart';
+import 'package:stadtnavi_core/base/otp/models/pattern.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/crop_button.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';

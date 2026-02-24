@@ -1,21 +1,3 @@
-enum CifsTypeIds {
-  roadClosed,
-  construction,
-}
-enum CifsSubTypeIds {
-  roadClosedConstruction,
-}
-CifsTypeIds cifsTypeIdsStringToEnum(String id) {
-  final Map<String, CifsTypeIds> enumStrings = {
-    "ROAD_CLOSED": CifsTypeIds.roadClosed,
-    "CONSTRUCTION": CifsTypeIds.construction,
-  };
-  return enumStrings[id] ?? CifsTypeIds.construction;
-}
-
-CifsSubTypeIds cifsSubTypeIdsStringToEnum(String id) {
-  final Map<String, CifsSubTypeIds> enumStrings = {
-    "ROAD_CLOSED_CONSTRUCTION": CifsSubTypeIds.roadClosedConstruction,
-  };
-  return enumStrings[id] ?? CifsSubTypeIds.roadClosedConstruction;
-}
+// Re-export for backwards compatibility (corrected filename).
+// Prefer importing from cifs_enum.dart instead.
+export 'cifs_enum.dart';

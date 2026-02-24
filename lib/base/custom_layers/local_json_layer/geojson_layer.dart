@@ -9,7 +9,7 @@ import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart'
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
-import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/sorted_list.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'geojson_marker_modal.dart';
 import 'geojson_marker_model.dart';

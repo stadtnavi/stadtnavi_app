@@ -11,8 +11,6 @@ import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_lo
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:stadtnavi_core/base/translations/string_translation.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
-import 'package:stadtnavi_core/configuration/config_default/config_default/city_bike_utils.dart';
-import 'package:stadtnavi_core/stadtnavi_core.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:url_launcher/url_launcher.dart';
 

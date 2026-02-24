@@ -1,5 +1,5 @@
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/bike_rental_station.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/bike_rental_station_uris.dart';
+import 'package:stadtnavi_core/base/otp/models/bike_rental_station.dart';
+import 'package:stadtnavi_core/base/otp/models/bike_rental_station_uris.dart';
 
 import 'citybikes_enum.dart';
 

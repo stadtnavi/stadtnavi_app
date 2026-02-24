@@ -9,6 +9,7 @@ import 'package:herrenberg/config_herrenberg_merged.dart';
 import 'package:herrenberg/firebase_options.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:matomo_tracker/matomo_tracker.dart';
+import 'package:stadtnavi_core/base/custom_layers/config/register_pbf_layers.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
 import 'package:stadtnavi_core/notifications/lifecycle_reactor_handler_notifications.dart';
@@ -80,6 +81,7 @@ void main() async {
   runApp(
     CriticalLoader(
       loadData: () async {
+        registerPbfLayers();
         await HBLayerData.loadHbLayers();
       },
       builder:

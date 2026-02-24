@@ -92,14 +92,14 @@ class AppLifecycleReactorHandlerNotifications
       BuildContext context, String? id, String title, String body) {
     showTrufiDialog(
       context: context,
-      builder: (_) {
+      builder: (dialogContext) {
         return AlertDialog(
           title: Text(title),
           content: Text(body),
           actions: [
             NotShowAgain(
               onPressed: () {
-                Navigator.pop(_);
+                Navigator.pop(dialogContext);
                 if (id != null) makeDoNotShowAgain(id).catchError((error) {});
               },
             ),

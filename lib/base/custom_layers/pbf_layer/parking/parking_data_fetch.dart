@@ -1,5 +1,5 @@
-import 'package:stadtnavi_core/base/models/othermodel/vehicle_parking.dart';
-import 'package:stadtnavi_core/base/models/othermodel/vehicle_places.dart';
+import 'package:stadtnavi_core/base/otp/models/vehicle_parking.dart';
+import 'package:stadtnavi_core/base/otp/models/vehicle_places.dart';
 
 class VehicleParkingDataFetch {
   final String? name;

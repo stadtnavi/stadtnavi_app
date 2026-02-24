@@ -7,8 +7,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:stadtnavi_core/base/models/enums/plan_info_box.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
-import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
-import 'package:stadtnavi_core/base/pages/home/services/online_request_plan/online_graphql_repository.dart';
+import 'package:stadtnavi_core/base/otp/providers/stadtnavi_routing_provider.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 
 part 'map_modes_state.dart';
@@ -17,13 +16,13 @@ class MapModesCubit extends Cubit<MapModesState> {
   static const String path = "map_modes_state";
   late Box _box;
 
-  final OnlineGraphQLRepository _requestManager;
+  final IStadtnaviRoutingProvider _provider;
 
   CancelableOperation<PlanEntity?>? currentFetchPlanOperation;
   CancelableOperation<ModesTransportEntity>? currentFetchPlanModesOperation;
 
-  MapModesCubit(String otpEndpoint)
-      : _requestManager = OnlineGraphQLRepository(graphQLEndPoint: otpEndpoint),
+  MapModesCubit(IStadtnaviRoutingProvider provider)
+      : _provider = provider,
         super(const MapModesState()) {
     _load();
   }
@@ -50,8 +49,9 @@ class MapModesCubit extends Cubit<MapModesState> {
   Future<void> fetchModesPlans({
     required TrufiLocation from,
     required TrufiLocation to,
-    required SettingFetchState advancedOptions,
     required String localeName,
+    DateTime? dateTime,
+    bool arriveBy = false,
   }) async {
     emit(state.copyWithNullable(
       isFetchingModes: false,
@@ -60,8 +60,9 @@ class MapModesCubit extends Cubit<MapModesState> {
     final modesTransportEntity = await _fetchPlanModesState(
       from: from,
       to: to,
-      advancedOptions: advancedOptions,
       localeName: localeName,
+      dateTime: dateTime,
+      arriveBy: arriveBy,
     ).catchError((error) {
       emit(state.copyWith(isFetchingModes: false));
       throw error;
@@ -80,11 +81,7 @@ class MapModesCubit extends Cubit<MapModesState> {
         auxPlanInfoBox = PlanInfoBox.onlyWalkingCyclingRoutes;
       }
     } else {
-      if (initPayloadDataPlanState == advancedOptions) {
-        auxPlanInfoBox = PlanInfoBox.noRouteMsgWithChanges;
-      } else {
-        auxPlanInfoBox = PlanInfoBox.noRouteMsg;
-      }
+      auxPlanInfoBox = PlanInfoBox.noRouteMsg;
     }
 
     await updateMapRouteState(
@@ -107,16 +104,18 @@ class MapModesCubit extends Cubit<MapModesState> {
   Future<MapModesState> fetchPlanModeRidePark({
     required TrufiLocation from,
     required TrufiLocation to,
-    required SettingFetchState advancedOptions,
     required String localeName,
+    DateTime? dateTime,
+    bool arriveBy = false,
   }) async {
-    final tempAdvencedOptions = advancedOptions.copyWith(
-        isFreeParkToParkRide: true, isFreeParkToCarPark: true);
     final modesTransportEntity = await _fetchPlanModesState(
       from: from,
       to: to,
-      advancedOptions: tempAdvencedOptions,
       localeName: localeName,
+      dateTime: dateTime,
+      arriveBy: arriveBy,
+      isFreeParkToParkRide: true,
+      isFreeParkToCarPark: true,
     ).catchError((error) async {
       throw error;
     });
@@ -141,17 +140,23 @@ class MapModesCubit extends Cubit<MapModesState> {
   Future<ModesTransportEntity?> _fetchPlanModesState({
     required TrufiLocation from,
     required TrufiLocation to,
-    required SettingFetchState advancedOptions,
     required String localeName,
+    DateTime? dateTime,
+    bool arriveBy = false,
+    bool isFreeParkToParkRide = false,
+    bool isFreeParkToCarPark = false,
   }) async {
     await currentFetchPlanModesOperation?.cancel();
     currentFetchPlanModesOperation = CancelableOperation.fromFuture(
       () {
-        return _requestManager.fetchTransportModePlan(
+        return _provider.fetchTransportModePlan(
           from: from,
           to: to,
-          advancedOptions: advancedOptions,
-          localeName: localeName,
+          locale: localeName,
+          dateTime: dateTime ?? DateTime.now(),
+          arriveBy: arriveBy,
+          isFreeParkToParkRide: isFreeParkToParkRide,
+          isFreeParkToCarPark: isFreeParkToCarPark,
         );
       }(),
     );

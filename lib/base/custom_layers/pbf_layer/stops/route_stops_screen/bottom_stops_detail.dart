@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/route.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/stop.dart';
+import 'package:stadtnavi_core/base/otp/models/enums/mode.dart';
+import 'package:stadtnavi_core/base/otp/models/route.dart';
+import 'package:stadtnavi_core/base/otp/models/stop.dart';
 
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';

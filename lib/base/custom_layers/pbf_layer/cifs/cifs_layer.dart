@@ -14,8 +14,8 @@ import 'package:vector_tile/vector_tile.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/bike_parks_enum.dart';
-import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_enum.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/markers_repository.dart';
 
 import 'cifs_feature_model.dart';
 import 'cifs_icons.dart';

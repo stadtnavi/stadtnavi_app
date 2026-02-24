@@ -11,7 +11,7 @@ import 'package:stadtnavi_core/base/models/enums/plan_info_box.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
-import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinarary_card/itinerary_card.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_card/itinerary_card.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/itinerary_details_card.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/plan_itinerary_tabs/itinerary_details_card/widgets/info_message.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
@@ -237,7 +237,6 @@ class _CustomItineraryState extends State<CustomItinerary>
       if (payloadDataPlanCubit.state.arriveBy) {
         await mapRouteCubit
             .fetchMoreArrivalPlan(
-              advancedOptions: payloadDataPlanCubit.state,
               isFetchEarlier: isFetchEarlier,
               itineraries: mapRouteState.plan?.itineraries ?? [],
               localeName: languageCode,
@@ -246,7 +245,6 @@ class _CustomItineraryState extends State<CustomItinerary>
       } else {
         await mapRouteCubit
             .fetchMoreDeparturePlan(
-              advancedOptions: payloadDataPlanCubit.state,
               isFetchEarlier: isFetchEarlier,
               itineraries: mapRouteState.plan?.itineraries ?? [],
               localeName: languageCode,

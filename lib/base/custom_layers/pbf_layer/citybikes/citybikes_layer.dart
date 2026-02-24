@@ -4,41 +4,40 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/city_bike_feature_tile.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
-import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
-import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
-import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
-import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/markers_repository.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/sorted_list.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pbf_point_layer.dart';
 import 'package:stadtnavi_core/consts.dart';
 
 import 'citybike_feature_model.dart';
 import 'citybike_marker_modal.dart';
 import 'citybikes_enum.dart';
 
-class CityBikesLayer extends CustomLayer {
-  final MapLayerCategory mapCategory;
-  // final Map<String, CityBikeFeature> _pbfMarkers = {};
+class CityBikesLayer extends PbfPointLayer<CityBikeFeature> {
+  CityBikesLayer(super.mapCategory, super.weight);
 
-  // Map<String, CityBikeFeature> get data => _pbfMarkers;
+  @override
+  SortedList<CityBikeFeature> get repository =>
+      MapMarkersRepositoryContainer.cityBikeFeature;
 
-  CityBikesLayer(this.mapCategory, int weight)
-      : super(mapCategory.code, weight);
-  // void addMarker(CityBikeFeature pointFeature) {
-  //   if (_pbfMarkers[pointFeature.id] == null) {
-  //     _pbfMarkers[pointFeature.id] = pointFeature;
-  //     refresh();
-  //   }
-  // }
-  Marker buildMarker({
-    required CityBikeFeature element,
-    required double markerSize,
+  @override
+  String get pbfPath => "/routing/v1/router/vectorTiles/citybikes";
+
+  @override
+  CityBikeFeature? parseFeature(GeoJsonPoint? geoJson) =>
+      CityBikeFeature.fromGeoJsonPoint(geoJson);
+
+  @override
+  Marker buildFeatureMarker(
+    CityBikeFeature element,
+    double markerSize, {
     bool isSelected = false,
   }) {
     final lastMarkerSize = markerSize + 5 + (isSelected ? 6 : 0);
@@ -56,9 +55,9 @@ class CityBikesLayer extends CustomLayer {
           child: GestureDetector(
             onTap: () {
               final panelCubit = context.read<PanelCubit>();
-              final selectedMarker = buildMarker(
-                element: element,
-                markerSize: markerSize,
+              final selectedMarker = buildFeatureMarker(
+                element,
+                markerSize,
                 isSelected: true,
               );
               panelCubit.setPanel(
@@ -153,53 +152,6 @@ class CityBikesLayer extends CustomLayer {
     refresh();
   }
 
-  List<CityBikeFeature> _cachedCityBikeMarkers = [];
-  int _lastCityBikeZoom = -1;
-  int _lastCityBikeItemsLength = -1;
-
-  List<CityBikeFeature> _getMarkers(int zoom) {
-    final itemsLength =
-        MapMarkersRepositoryContainer.cityBikeFeature.items.length;
-
-    if (zoom == _lastCityBikeZoom && itemsLength == _lastCityBikeItemsLength) {
-      return _cachedCityBikeMarkers;
-    }
-
-    _lastCityBikeZoom = zoom;
-    _lastCityBikeItemsLength = itemsLength;
-
-    _cachedCityBikeMarkers =
-        MapMarkersRepositoryContainer.cityBikeFeature.items.where((element) {
-      final targetMapLayerCategory =
-          MapLayerCategory.findCategoryWithProperties(
-        mapCategory,
-        mapCategory.code,
-      );
-      final layerMinZoom =
-          targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
-      return layerMinZoom < zoom;
-    }).toList();
-    return _cachedCityBikeMarkers;
-  }
-
-  @override
-  List<Marker>? buildClusterMarkers(int zoom) {
-    return _getMarkers(zoom)
-        .map((element) => buildMarker(
-            element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-        .toList();
-  }
-
-  @override
-  Widget buildMarkerLayer(int zoom) {
-    return MarkerLayer(
-      markers: _getMarkers(zoom)
-          .map((element) => buildMarker(
-              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-          .toList(),
-    );
-  }
-
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
@@ -226,27 +178,6 @@ class CityBikesLayer extends CustomLayer {
       }
     }
   }
-
-  @override
-  String name(BuildContext context) {
-    final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? mapCategory.en : mapCategory.de;
-  }
-
-  @override
-  Widget icon(BuildContext context) {
-    final icon = mapCategory.properties?.iconSvgMenu ??
-        mapCategory.categories.first.properties?.iconSvgMenu;
-
-    if (icon != null) return SvgPicture.string(icon);
-    return const Icon(
-      Icons.error,
-      color: Colors.green,
-    );
-  }
-
-  @override
-  bool isDefaultOn() => mapCategory.isDefaultOn();
 }
 
 class SharingMarkerUpdater extends StatefulWidget {

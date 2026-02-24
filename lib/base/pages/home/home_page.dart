@@ -274,8 +274,9 @@ class _HomePageState extends State<HomePage>
             .fetchModesPlans(
           from: mapRouteState.fromPlace!,
           to: mapRouteState.toPlace!,
-          advancedOptions: settingFetchState,
           localeName: languageCode,
+          dateTime: settingFetchState.date,
+          arriveBy: settingFetchState.arriveBy,
         )
             .then(
           (voids) {
@@ -285,8 +286,9 @@ class _HomePageState extends State<HomePage>
           },
         );
         await mapRouteCubit.fetchPlan(
-          advancedOptions: settingFetchState,
           localeName: languageCode,
+          dateTime: settingFetchState.date,
+          arriveBy: settingFetchState.arriveBy,
         );
       },
       onFinish: (_) {

@@ -1,31 +1,40 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/markers_repository.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/sorted_list.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
-import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
-import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+import 'package:stadtnavi_core/base/custom_layers/models/map_layer_category.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pbf_point_layer.dart';
+import 'package:stadtnavi_core/consts.dart';
 import 'package:vector_tile/vector_tile.dart';
 
-import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
-import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_feature_model.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_marker_modal.dart';
-import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
-import 'package:stadtnavi_core/consts.dart';
+import 'weather_feature_model.dart';
+import 'weather_marker_modal.dart';
 
-class WeatherLayer extends CustomLayer {
-  final MapLayerCategory mapCategory;
+class WeatherLayer extends PbfPointLayer<WeatherFeature> {
+  WeatherLayer(super.mapCategory, super.weight);
 
-  WeatherLayer(this.mapCategory, int weight) : super(mapCategory.code, weight);
+  @override
+  SortedList<WeatherFeature> get repository =>
+      MapMarkersRepositoryContainer.weatherFeature;
 
-  Marker buildMarker({
-    required WeatherFeature element,
-    required double markerSize,
+  @override
+  String get pbfPath => "/map/v1/weather-stations";
+
+  @override
+  WeatherFeature? parseFeature(GeoJsonPoint? geoJson) =>
+      WeatherFeature.fromGeoJsonPoint(geoJson);
+
+  @override
+  Marker buildFeatureMarker(
+    WeatherFeature element,
+    double markerSize, {
     bool isSelected = false,
   }) {
     final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
@@ -45,33 +54,25 @@ class WeatherLayer extends CustomLayer {
           menuBuilder: (_) => MarkerTileListItem(
             name: element.address,
             icon: svgIcon != null
-                ? SvgPicture.string(
-                    svgIcon,
-                  )
+                ? SvgPicture.string(svgIcon)
                 : const Icon(Icons.error),
           ),
           child: GestureDetector(
             onTap: () {
               final panelCubit = context.read<PanelCubit>();
-              final selectedMarker = buildMarker(
-                element: element,
-                markerSize: markerSize,
+              final selectedMarker = buildFeatureMarker(
+                element,
+                markerSize,
                 isSelected: true,
               );
               panelCubit.setPanel(
                 CustomMarkerPanel(
-                  panel: (
-                    context,
-                    onFetchPlan, {
-                    isOnlyDestination,
-                  }) =>
+                  panel: (context, onFetchPlan, {isOnlyDestination}) =>
                       ParkingMarkerModal(
                     parkingFeature: element,
                     onFetchPlan: onFetchPlan,
                     icon: svgIcon != null
-                        ? SvgPicture.string(
-                            svgIcon,
-                          )
+                        ? SvgPicture.string(svgIcon)
                         : const Icon(Icons.error),
                   ),
                   position: element.position,
@@ -100,54 +101,8 @@ class WeatherLayer extends CustomLayer {
     );
   }
 
-  List<WeatherFeature> _cachedWeatherMarkers = [];
-  int _lastWeatherZoom = -1;
-  int _lastWeatherItemsLength = -1;
-
-  List<WeatherFeature> _getMarkers(int zoom) {
-    final itemsLength =
-        MapMarkersRepositoryContainer.weatherFeature.items.length;
-
-    if (zoom == _lastWeatherZoom && itemsLength == _lastWeatherItemsLength) {
-      return _cachedWeatherMarkers;
-    }
-
-    _lastWeatherZoom = zoom;
-    _lastWeatherItemsLength = itemsLength;
-
-    _cachedWeatherMarkers =
-        MapMarkersRepositoryContainer.weatherFeature.items.where((element) {
-      final targetMapLayerCategory =
-          MapLayerCategory.findCategoryWithProperties(
-        mapCategory,
-        mapCategory.code,
-      );
-      final layerMinZoom =
-          targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
-      return layerMinZoom < zoom;
-    }).toList();
-
-    return _cachedWeatherMarkers;
-  }
-
-  @override
-  List<Marker>? buildClusterMarkers(int zoom) {
-    return _getMarkers(zoom)
-        .map((element) => buildMarker(
-            element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-        .toList();
-  }
-
-  @override
-  Widget buildMarkerLayer(int zoom) {
-    return MarkerLayer(
-      markers: _getMarkers(zoom)
-          .map((element) => buildMarker(
-              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-          .toList(),
-    );
-  }
-
+  // Static fetchPBF kept for cancellable_network.dart compatibility.
+  // Will be replaced by PbfLayerRegistry in Phase 3.
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
@@ -161,7 +116,6 @@ class WeatherLayer extends CustomLayer {
     for (final VectorTileLayer layer in tile.layers) {
       for (final VectorTileFeature feature in layer.features) {
         feature.decodeGeometry();
-
         if (feature.geometryType == GeometryType.Point) {
           final geojson = feature.toGeoJson<GeoJsonPoint>(x: x, y: y, z: z);
           final WeatherFeature? pointFeature =
@@ -169,30 +123,8 @@ class WeatherLayer extends CustomLayer {
           if (pointFeature != null) {
             MapMarkersRepositoryContainer.weatherFeature.add(pointFeature);
           }
-        } else {
-          throw Exception("Should never happened, Feature is not a point");
         }
       }
     }
   }
-
-  @override
-  String name(BuildContext context) {
-    final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? mapCategory.en : mapCategory.de;
-  }
-
-  @override
-  Widget icon(BuildContext context) {
-    final icon = mapCategory.properties?.iconSvgMenu ??
-        mapCategory.categories.first.properties?.iconSvgMenu;
-    if (icon != null) return SvgPicture.string(icon);
-    return const Icon(
-      Icons.error,
-      color: Colors.blue,
-    );
-  }
-
-  @override
-  bool isDefaultOn() => mapCategory.isDefaultOn();
 }

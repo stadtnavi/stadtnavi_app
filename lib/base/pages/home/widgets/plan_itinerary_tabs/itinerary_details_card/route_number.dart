@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stadtnavi_core/base/models/othermodel/enums/alert_severity_level_type.dart';
+import 'package:stadtnavi_core/base/otp/models/enums/alert_severity_level_type.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 
 class RouteNumber extends StatelessWidget {

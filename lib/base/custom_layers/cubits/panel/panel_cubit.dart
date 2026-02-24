@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:stadtnavi_core/base/custom_layers/models/custom_marker_panel.dart';
+export 'package:stadtnavi_core/base/custom_layers/models/custom_marker_panel.dart';
 part 'panel_state.dart';
 
 class PanelCubit extends Cubit<PanelState> {

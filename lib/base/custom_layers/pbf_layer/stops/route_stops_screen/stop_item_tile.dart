@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/stop.dart';
+import 'package:stadtnavi_core/base/otp/models/stop.dart';
 
 class StopItemTile extends StatelessWidget {
   final Stop stop;

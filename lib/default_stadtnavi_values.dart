@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
+import 'package:stadtnavi_core/base/otp/providers/stadtnavi_otp/stadtnavi_otp_preferences.dart';
+import 'package:stadtnavi_core/base/otp/providers/stadtnavi_otp/stadtnavi_otp_provider.dart';
 import 'package:stadtnavi_core/base/pages/about/about.dart';
 import 'package:stadtnavi_core/base/pages/feedback/feedback.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/global_alerts_cubit/global_alerts_cubit.dart';
@@ -65,6 +67,11 @@ abstract class DefaultStadtnaviValues {
     required List<String> alertsFeedIds,
     List<BlocProvider>? extraBlocs,
   }) {
+    final preferences = StadtnaviOtpPreferences();
+    final provider = StadtnaviOtpProvider(
+      otpEndpoint: otpGraphqlEndpoint,
+      preferences: preferences,
+    );
     return [
       BlocProvider<RouteTransportsCubit>(
         create: (context) => RouteTransportsCubit(otpGraphqlEndpoint),
@@ -78,17 +85,13 @@ abstract class DefaultStadtnaviValues {
         create: (context) => MapConfigurationCubit(mapConfiguration),
       ),
       BlocProvider<MapRouteCubit>(
-        create: (context) => MapRouteCubit(
-          otpGraphqlEndpoint,
-        ),
+        create: (context) => MapRouteCubit(provider),
       ),
       BlocProvider<MapModesCubit>(
-        create: (context) => MapModesCubit(
-          otpGraphqlEndpoint,
-        ),
+        create: (context) => MapModesCubit(provider),
       ),
       BlocProvider<SettingFetchCubit>(
-        create: (context) => SettingFetchCubit(isDateReset: true),
+        create: (context) => SettingFetchCubit(preferences: preferences),
       ),
       BlocProvider<CustomLayersCubit>(
         create: (context) => CustomLayersCubit(layersContainer),

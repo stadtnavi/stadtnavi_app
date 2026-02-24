@@ -3,7 +3,8 @@ import 'package:intl/intl.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_marker_modal/time_table_tab/date_day_picker.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/pattern.dart';
+import 'package:stadtnavi_core/base/otp/models/pattern.dart';
+import 'package:stadtnavi_core/base/otp/models/stop.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 
 import '../../stop_feature_model.dart';
@@ -49,7 +50,7 @@ class _TimeTableScreenState extends State<TimeTableScreen>
       if (mounted) {
         setState(() {
           pattern = value.stoptimesForServiceDate?[0].pattern;
-          stoptimesByDay = value.stoptimesByDay;
+          stoptimesByDay = _buildStoptimesByDay(value);
           loading = false;
         });
       }
@@ -61,6 +62,35 @@ class _TimeTableScreenState extends State<TimeTableScreen>
         });
       }
     });
+  }
+
+  Map<String, List<TimeTableStop>> _buildStoptimesByDay(Stop stop) {
+    final Map<String, List<TimeTableStop>> result = {};
+    final stoptimesForServiceDate = stop.stoptimesForServiceDate;
+    if (stoptimesForServiceDate == null) return result;
+    for (final sip in stoptimesForServiceDate) {
+      final stoptimes = sip.stoptimes;
+      if (stoptimes == null) continue;
+      for (final st in stoptimes) {
+        final mode = getTransportMode(
+          mode: sip.pattern?.route?.mode?.name ?? '',
+        );
+        final entry = TimeTableStop(
+          id: sip.pattern?.route?.gtfsId,
+          name: sip.pattern?.route?.shortName,
+          headsign: st.headsign ?? sip.pattern?.headsign,
+          longName: sip.pattern?.route?.longName,
+          serviceDay: st.serviceDay,
+          scheduledDeparture: st.scheduledDeparture,
+          isCanceled: st.canceled,
+          mode: mode,
+        );
+        final key = entry.hourTime;
+        result.putIfAbsent(key, () => []);
+        result[key]!.add(entry);
+      }
+    }
+    return result;
   }
 
   @override

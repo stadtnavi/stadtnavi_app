@@ -4,24 +4,11 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_parks_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/car_sharing/carsharing_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/cifs/cifs_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/scooter/scooter_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_layer.dart';
-
-import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
-
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:stadtnavi_core/base/custom_layers/config/pbf_layer_registry.dart';
+import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
+import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 
 import 'image_provider.dart';
 
@@ -133,69 +120,13 @@ base class CancellableNetworkTileProvider extends TileProvider {
 
   Future<void> _fetchPBF(TileCoordinates coords) async {
     final types = context.read<CustomLayersCubit>().getActiveLayersType();
-    final mapLayersFiltered = [
-      if (types.contains(CityBikesLayer))
-        CityBikesLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(StopsLayer))
-        StopsLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(ParkingLayer))
-        ParkingLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(MapPoiLayer))
-        MapPoiLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(BikeParkLayer))
-        BikeParkLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(RoadworksLayer))
-        RoadworksLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(WeatherLayer))
-        WeatherLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(ChargingLayer))
-        ChargingLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(CarSharingLayer))
-        CarSharingLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        ),
-      if (types.contains(ScooterLayer))
-        ScooterLayer.fetchPBF(
-          coords.z.toInt(),
-          coords.x.toInt(),
-          coords.y.toInt(),
-        )
-    ];
-    await Future.wait(mapLayersFiltered).catchError((error) {
+    final futures = PbfLayerRegistry.fetchActiveLayers(
+      types,
+      coords.z.toInt(),
+      coords.x.toInt(),
+      coords.y.toInt(),
+    );
+    await Future.wait(futures).catchError((error) {
       log("$error");
       return [];
     });

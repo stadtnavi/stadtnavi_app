@@ -1,4 +1,4 @@
-import 'bike_parks_enum.dart';
+import 'cifs_enum.dart';
 
 const String _point = """
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 600.995 600.995">

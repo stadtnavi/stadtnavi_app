@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stops_icon.dart';
-import 'package:stadtnavi_core/base/models/othermodel/enums/mode.dart';
+import 'package:stadtnavi_core/base/otp/models/enums/mode.dart';
 import 'package:stadtnavi_core/base/pages/home/services/global_alerts/models/icons.dart';
 import "package:url_launcher/url_launcher.dart";
 import 'package:intl/intl.dart';

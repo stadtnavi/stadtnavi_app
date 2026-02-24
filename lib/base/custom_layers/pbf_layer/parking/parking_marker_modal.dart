@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_icons.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/widgets/opening_time_table.dart';
-import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/icons.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';

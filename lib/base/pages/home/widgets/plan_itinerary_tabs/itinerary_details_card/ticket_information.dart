@@ -4,7 +4,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:stadtnavi_core/base/models/othermodel/fare_component.dart';
+import 'package:stadtnavi_core/base/otp/models/fare_component.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
 import 'package:stadtnavi_core/base/models/utils/fare_utils.dart';
 import 'package:stadtnavi_core/base/models/utils/geo_utils.dart';

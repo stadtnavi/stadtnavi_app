@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/widgets/alert_card.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
-import 'package:stadtnavi_core/base/models/othermodel/alert.dart';
+import 'package:stadtnavi_core/base/otp/models/alert.dart';
 import 'package:stadtnavi_core/base/models/utils/alert_utils.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 

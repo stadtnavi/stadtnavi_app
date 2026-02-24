@@ -9,24 +9,35 @@ import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
-import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
-import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/markers_repository.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/sorted_list.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pbf_point_layer.dart';
 import 'package:stadtnavi_core/consts.dart';
 
 import 'scooter_feature_model.dart';
 import 'scooter_marker_modal.dart';
 
-class ScooterLayer extends CustomLayer {
-  final MapLayerCategory mapCategory;
+class ScooterLayer extends PbfPointLayer<ScooterFeature> {
+  ScooterLayer(super.mapCategory, super.weight);
 
-  ScooterLayer(this.mapCategory, int weight) : super(mapCategory.code, weight);
-  Marker buildMarker({
-    required ScooterFeature element,
-    required double markerSize,
+  @override
+  SortedList<ScooterFeature> get repository =>
+      MapMarkersRepositoryContainer.scooterFeature;
+
+  @override
+  String get pbfPath => "/otp/routers/default/vectorTiles/rentalVehicles";
+
+  @override
+  ScooterFeature? parseFeature(GeoJsonPoint? geoJson) =>
+      ScooterFeature.fromGeoJsonPoint(geoJson);
+
+  @override
+  Marker buildFeatureMarker(
+    ScooterFeature element,
+    double markerSize, {
     bool isSelected = false,
   }) {
     final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
@@ -56,9 +67,9 @@ class ScooterLayer extends CustomLayer {
           child: GestureDetector(
             onTap: () {
               final panelCubit = context.read<PanelCubit>();
-              final selectedMarker = buildMarker(
-                element: element,
-                markerSize: markerSize,
+              final selectedMarker = buildFeatureMarker(
+                element,
+                markerSize,
                 isSelected: true,
               );
               panelCubit.setPanel(
@@ -133,53 +144,6 @@ class ScooterLayer extends CustomLayer {
     return Color(int.parse('0x$hex'));
   }
 
-  List<ScooterFeature> _cachedParkingMarkers = [];
-  int _lastParkingZoom = -1;
-  int _lastParkingItemsLength = -1;
-
-  List<ScooterFeature> _getMarkers(int zoom) {
-    final itemsLength =
-        MapMarkersRepositoryContainer.carSharingFeature.items.length;
-
-    if (zoom == _lastParkingZoom && itemsLength == _lastParkingItemsLength) {
-      return _cachedParkingMarkers;
-    }
-
-    _lastParkingZoom = zoom;
-    _lastParkingItemsLength = itemsLength;
-    _cachedParkingMarkers =
-        MapMarkersRepositoryContainer.scooterFeature.items.where((element) {
-      final targetMapLayerCategory =
-          MapLayerCategory.findCategoryWithProperties(
-        mapCategory,
-        mapCategory.code,
-      );
-      final layerMinZoom =
-          targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
-      return layerMinZoom < zoom;
-    }).toList();
-
-    return _cachedParkingMarkers;
-  }
-
-  @override
-  List<Marker>? buildClusterMarkers(int zoom) {
-    return _getMarkers(zoom)
-        .map((element) => buildMarker(
-            element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-        .toList();
-  }
-
-  @override
-  Widget buildMarkerLayer(int zoom) {
-    return MarkerLayer(
-      markers: _getMarkers(zoom)
-          .map((element) => buildMarker(
-              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-          .toList(),
-    );
-  }
-
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
@@ -206,24 +170,4 @@ class ScooterLayer extends CustomLayer {
       }
     }
   }
-
-  @override
-  String name(BuildContext context) {
-    final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? mapCategory.en : mapCategory.de;
-  }
-
-  @override
-  Widget icon(BuildContext context) {
-    final icon = mapCategory.properties?.iconSvgMenu ??
-        mapCategory.categories.first.properties?.iconSvgMenu;
-    if (icon != null) return SvgPicture.string(icon);
-    return const Icon(
-      Icons.error,
-      color: Colors.blue,
-    );
-  }
-
-  @override
-  bool isDefaultOn() => mapCategory.isDefaultOn();
 }

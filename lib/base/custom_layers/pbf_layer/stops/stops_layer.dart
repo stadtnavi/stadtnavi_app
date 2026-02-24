@@ -8,24 +8,42 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
-import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
-import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/markers_repository.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/sorted_list.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pbf_point_layer.dart';
 import 'package:stadtnavi_core/consts.dart';
 
 import 'stop_feature_model.dart';
 import 'stop_marker_modal/stop_marker_modal.dart';
 
-class StopsLayer extends CustomLayer {
-  final MapLayerCategory mapCategory;
+class StopsLayer extends PbfPointLayer<StopFeature> {
+  StopsLayer(super.mapCategory, super.weight);
 
-  StopsLayer(this.mapCategory, int weight) : super(mapCategory.code, weight);
-  Marker buildMarker({
-    required StopFeature element,
-    required double markerSize,
+  @override
+  SortedList<StopFeature> get repository =>
+      MapMarkersRepositoryContainer.stopFeature;
+
+  @override
+  String get pbfPath => "/otp/routers/default/vectorTiles/stops";
+
+  @override
+  StopFeature? parseFeature(GeoJsonPoint? geoJson) =>
+      StopFeature.fromGeoJsonPoint(geoJson);
+
+  @override
+  int get defaultMinZoom => 13;
+
+  @override
+  bool filterFeature(StopFeature element, int zoom) =>
+      element.type.toLowerCase() == mapCategory.code;
+
+  @override
+  Marker buildFeatureMarker(
+    StopFeature element,
+    double markerSize, {
     bool isSelected = false,
   }) {
     final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
@@ -53,9 +71,9 @@ class StopsLayer extends CustomLayer {
           child: GestureDetector(
             onTap: () {
               final panelCubit = context.read<PanelCubit>();
-              final selectedMarker = buildMarker(
-                element: element,
-                markerSize: markerSize,
+              final selectedMarker = buildFeatureMarker(
+                element,
+                markerSize,
                 isSelected: true,
               );
               panelCubit.setPanel(
@@ -95,54 +113,6 @@ class StopsLayer extends CustomLayer {
     );
   }
 
-  List<StopFeature> _cachedStopMarkers = [];
-  int _lastStopZoom = -1;
-  int _lastStopItemsLength = -1;
-
-  List<StopFeature> _getMarkers(int zoom) {
-    final itemsLength = MapMarkersRepositoryContainer.stopFeature.items.length;
-
-    if (zoom == _lastStopZoom && itemsLength == _lastStopItemsLength) {
-      return _cachedStopMarkers;
-    }
-
-    _lastStopZoom = zoom;
-    _lastStopItemsLength = itemsLength;
-
-    _cachedStopMarkers = MapMarkersRepositoryContainer.stopFeature.items
-        .where((element) => element.type.toLowerCase() == mapCategory.code)
-        .where((element) {
-      final targetMapLayerCategory =
-          MapLayerCategory.findCategoryWithProperties(
-        mapCategory,
-        element.type.toLowerCase(),
-      );
-      final layerMinZoom =
-          targetMapLayerCategory?.properties?.layerMinZoom ?? 13;
-      return layerMinZoom < zoom;
-    }).toList();
-
-    return _cachedStopMarkers;
-  }
-
-  @override
-  List<Marker>? buildClusterMarkers(int zoom) {
-    return _getMarkers(zoom)
-        .map((element) => buildMarker(
-            element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-        .toList();
-  }
-
-  @override
-  Widget buildMarkerLayer(int zoom) {
-    return MarkerLayer(
-      markers: _getMarkers(zoom)
-          .map((element) => buildMarker(
-              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-          .toList(),
-    );
-  }
-
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: 'https',
@@ -170,25 +140,4 @@ class StopsLayer extends CustomLayer {
       }
     }
   }
-
-  @override
-  String name(BuildContext context) {
-    final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? mapCategory.en : mapCategory.de;
-  }
-
-  @override
-  Widget icon(BuildContext context) {
-    final icon = mapCategory.properties?.iconSvgMenu ??
-        mapCategory.categories.first.properties?.iconSvgMenu;
-
-    if (icon != null) return SvgPicture.string(icon);
-    return const Icon(
-      Icons.error,
-      color: Colors.orange,
-    );
-  }
-
-  @override
-  bool isDefaultOn() => mapCategory.isDefaultOn();
 }

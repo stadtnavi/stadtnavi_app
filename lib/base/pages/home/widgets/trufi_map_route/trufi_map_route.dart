@@ -181,8 +181,9 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
             .fetchModesPlans(
           from: mapRouteState.fromPlace!,
           to: mapRouteState.toPlace!,
-          advancedOptions: settingFetchState,
           localeName: languageCode,
+          dateTime: settingFetchState.date,
+          arriveBy: settingFetchState.arriveBy,
         )
             .then(
           (voids) {
@@ -192,8 +193,9 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
           },
         );
         await mapRouteCubit.fetchPlan(
-          advancedOptions: settingFetchState,
           localeName: languageCode,
+          dateTime: settingFetchState.date,
+          arriveBy: settingFetchState.arriveBy,
         );
       },
       onFinish: (_) {

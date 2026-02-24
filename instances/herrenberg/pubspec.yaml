@@ -43,6 +43,8 @@ dependencies:
 
 dependency_overrides:
   web: ^1.0.0
+  intl: any
+  skeletonizer: ^2.1.3
   
 dev_dependencies:
   flutter_test:

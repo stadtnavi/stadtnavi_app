@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_screen/route_stops_screen.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/stoptime.dart';
+import 'package:stadtnavi_core/base/otp/models/enums/mode.dart';
+import 'package:stadtnavi_core/base/otp/models/stoptime.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
@@ -56,7 +57,7 @@ class CustomStopTile extends StatelessWidget {
                         routeShortName: stopTime.trip?.route?.shortName ?? '',
                         routeGtfsId: stopTime.trip?.route?.gtfsId ?? '',
                         patternCode: stopTime.trip?.pattern?.code ?? '',
-                        transportMode: stopTime.trip?.route?.mode,
+                        transportMode: getTransportMode(mode: stopTime.trip?.route?.mode?.name ?? ''),
                       ),
                     ),
                   ),

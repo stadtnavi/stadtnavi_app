@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/enums/alert_cause_type.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/enums/alert_effect_type.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/enums/alert_severity_level_type.dart';
+import 'package:stadtnavi_core/base/otp/models/enums/alert_cause_type.dart';
+import 'package:stadtnavi_core/base/otp/models/enums/alert_effect_type.dart';
+import 'package:stadtnavi_core/base/otp/models/enums/alert_severity_level_type.dart';
 
 class GlobalAlertEntity extends Equatable {
   final AlertCauseType? alertCause;

@@ -3,16 +3,16 @@ import 'dart:async';
 import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
 import 'package:intl/intl.dart';
-import 'package:stadtnavi_core/base/models/othermodel/route.dart';
+import 'package:stadtnavi_core/base/otp/models/route.dart';
 import 'package:stadtnavi_core/configuration/graphql_client.dart';
 import 'package:trufi_core/base/utils/graphql_client/graphql_utils.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybike_data_fetch.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_data_fetch.dart';
-import 'package:stadtnavi_core/base/custom_layers/services/models_otp/bike_rental_station.dart';
+import 'package:stadtnavi_core/base/otp/models/bike_rental_station.dart';
 // import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybike_data_fetch.dart';
 // import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_data_fetch.dart';
-import 'package:stadtnavi_core/base/models/othermodel/vehicle_parking.dart';
+import 'package:stadtnavi_core/base/otp/models/vehicle_parking.dart';
 import 'package:stadtnavi_core/consts.dart';
 
 import 'graphql_operation/fragment/pattern_fragments.dart' as pattern_fragments;
@@ -23,8 +23,8 @@ import 'graphql_operation/queries/stops_queries.dart' as stops_queries;
 import 'graphql_operation/queries/alerts_queries.dart' as stops_alerts_queries;
 import 'graphql_operation/fragment/alerts_fragments.dart'
     as stops_alerts_fragments;
-import 'models_otp/pattern.dart';
-import 'models_otp/stop.dart';
+import 'package:stadtnavi_core/base/otp/models/pattern.dart';
+import 'package:stadtnavi_core/base/otp/models/stop.dart';
 
 class RouteAlertData {
   final RouteOtp route;

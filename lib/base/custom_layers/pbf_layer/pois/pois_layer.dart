@@ -8,23 +8,65 @@ import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
 import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
-import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:vector_tile/vector_tile.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
-import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/markers_repository.dart';
+import 'package:stadtnavi_core/base/custom_layers/data/sorted_list.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pbf_point_layer.dart';
 import 'poi_feature_model.dart';
 import 'poi_marker_modal.dart';
 
-class MapPoiLayer extends CustomLayer {
-  final MapLayerCategory mapCategory;
+class MapPoiLayer extends PbfPointLayer<PoiFeature> {
+  MapPoiLayer(super.mapCategory, super.weight);
 
-  MapPoiLayer(this.mapCategory, int weight) : super(mapCategory.code, weight);
+  @override
+  SortedList<PoiFeature> get repository =>
+      MapMarkersRepositoryContainer.poiFeatures;
 
-  Marker buildMarker({
-    required PoiFeature element,
-    required double markerSize,
+  /// Not used directly — MapPoiLayer uses a custom URL in fetchPBF.
+  @override
+  String get pbfPath => "";
+
+  @override
+  PoiFeature? parseFeature(GeoJsonPoint? geoJson) =>
+      PoiFeature.fromGeoJsonPoint(geoJson);
+
+  @override
+  List<PoiFeature> getMarkers(int zoom) {
+    final itemsLength = repository.items.length;
+
+    if (zoom == _lastZoom && itemsLength == _lastItemsLength) {
+      return _cachedPoiMarkers;
+    }
+
+    _lastZoom = zoom;
+    _lastItemsLength = itemsLength;
+
+    _cachedPoiMarkers = repository.items
+        .where((element) => mapCategory.code == element.category2)
+        .where((element) {
+      final targetMapLayerCategory =
+          MapLayerCategory.findCategoryWithProperties(
+        mapCategory,
+        element.category3,
+      );
+      final layerMinZoom =
+          targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
+      return layerMinZoom < zoom;
+    }).toList();
+
+    return _cachedPoiMarkers;
+  }
+
+  List<PoiFeature> _cachedPoiMarkers = [];
+  int _lastZoom = -1;
+  int _lastItemsLength = -1;
+
+  @override
+  Marker buildFeatureMarker(
+    PoiFeature element,
+    double markerSize, {
     bool isSelected = false,
   }) {
     final targetMapLayerCategory = MapLayerCategory.findCategoryWithProperties(
@@ -45,7 +87,6 @@ class MapPoiLayer extends CustomLayer {
         return MarkerTileContainer(
           menuBuilder: (_) {
             return MarkerTileListItem(
-              // element: element,
               icon: svgIcon != null
                   ? SvgPicture.string(
                       svgIcon,
@@ -61,9 +102,9 @@ class MapPoiLayer extends CustomLayer {
           child: GestureDetector(
             onTap: () {
               final panelCubit = context.read<PanelCubit>();
-              final selectedMarker = buildMarker(
-                element: element,
-                markerSize: markerSize,
+              final selectedMarker = buildFeatureMarker(
+                element,
+                markerSize,
                 isSelected: true,
               );
               panelCubit.setPanel(
@@ -106,54 +147,6 @@ class MapPoiLayer extends CustomLayer {
     );
   }
 
-  List<PoiFeature> _cachedMarkers = [];
-  int _lastZoom = -1;
-  int _lastItemsLength = -1;
-
-  List<PoiFeature> _getMarkers(int zoom) {
-    final itemsLength = MapMarkersRepositoryContainer.poiFeatures.items.length;
-
-    if (zoom == _lastZoom && itemsLength == _lastItemsLength) {
-      return _cachedMarkers;
-    }
-
-    _lastZoom = zoom;
-    _lastItemsLength = itemsLength;
-
-    _cachedMarkers = MapMarkersRepositoryContainer.poiFeatures.items
-        .where((element) => mapCategory.code == element.category2)
-        .where((element) {
-      final targetMapLayerCategory =
-          MapLayerCategory.findCategoryWithProperties(
-        mapCategory,
-        element.category3,
-      );
-      final layerMinZoom =
-          targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
-      return layerMinZoom < zoom;
-    }).toList();
-
-    return _cachedMarkers;
-  }
-
-  @override
-  List<Marker>? buildClusterMarkers(int zoom) {
-    return _getMarkers(zoom)
-        .map((element) => buildMarker(
-            element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-        .toList();
-  }
-
-  @override
-  Widget buildMarkerLayer(int zoom) {
-    return MarkerLayer(
-      markers: _getMarkers(zoom)
-          .map((element) => buildMarker(
-              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-          .toList(),
-    );
-  }
-
   static Future<void> fetchPBF(int z, int x, int y) async {
     final uri = Uri(
       scheme: "https",
@@ -174,9 +167,6 @@ class MapPoiLayer extends CustomLayer {
           final PoiFeature? pointFeature = PoiFeature.fromGeoJsonPoint(geojson);
           if (pointFeature != null) {
             MapMarkersRepositoryContainer.poiFeatures.add(pointFeature);
-            // final pbfLayer =
-            //     StaticTileLayers.poisLayers[pointFeature.category2];
-            // pbfLayer?.addMarker(pointFeature);
           }
         } else {
           throw Exception(
@@ -185,27 +175,6 @@ class MapPoiLayer extends CustomLayer {
       }
     }
   }
-
-  @override
-  String name(BuildContext context) {
-    final localeName = TrufiBaseLocalization.of(context).localeName;
-    return localeName == "en" ? mapCategory.en : mapCategory.de;
-  }
-
-  @override
-  Widget icon(BuildContext context) {
-    final icon = mapCategory.properties?.iconSvgMenu ??
-        mapCategory.categories.first.properties?.iconSvgMenu;
-
-    if (icon != null) return SvgPicture.string(icon);
-    return const Icon(
-      Icons.error,
-      color: Colors.green,
-    );
-  }
-
-  @override
-  bool isDefaultOn() => mapCategory.isDefaultOn();
 }
 
 Color fromStringToColor(String? colorString) {

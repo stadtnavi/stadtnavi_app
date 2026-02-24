@@ -5,7 +5,7 @@ import 'package:stadtnavi_core/configuration/graphql_client.dart';
 import 'package:vector_tile/vector_tile.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
-import 'package:stadtnavi_core/base/models/othermodel/vehicle_parking.dart';
+import 'package:stadtnavi_core/base/otp/models/vehicle_parking.dart';
 import 'package:stadtnavi_core/consts.dart';
 
 import 'park_queries.dart' as pattern_query;
