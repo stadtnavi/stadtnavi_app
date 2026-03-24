@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart'
+    hide TrufiMapController, MapConfigurationCubit, cachedFirstFetch;
 
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_screen/bottom_stops_detail.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/route_stops_screen/route_disruptions_alerts_screen.dart';
@@ -12,6 +13,8 @@ import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/crop_button.
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/utils/trufi_map_utils.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/maps/markers/marker_configuration.dart'
+    as stadtnavi_markers;
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
@@ -46,7 +49,6 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   bool loading = true;
   String? fetchError;
 
-  final LatLngBounds? _selectedBounds = null;
   bool needsCameraUpdate = true;
   int indexNextDay = -1;
   @override
@@ -71,6 +73,8 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
   Widget build(BuildContext context) {
     final localization = TrufiBaseLocalization.of(context);
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
+    final markers = mapConfiguratiom.markersConfiguration
+        as stadtnavi_markers.MarkerConfiguration;
     final languageCode = Localizations.localeOf(context).languageCode;
     return Scaffold(
       appBar: AppBar(
@@ -98,31 +102,40 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                   StadtnaviMap(
                     trufiMapController: _trufiMapController,
                     layerOptionsBuilder: (context) => [
-                      PolylineLayer(
-                        polylines: [
-                          Polyline(
-                            points: routePoints,
+                      TrufiLayer(
+                        id: 'route_polyline',
+                        lines: [
+                          TrufiLine(
+                            id: 'route_line',
+                            position: routePoints,
                             color: patternOtp?.route?.color != null
                                 ? Color(int.tryParse(
                                     "0xFF${patternOtp!.route!.color}")!)
                                 : patternOtp?.route?.mode?.color ?? Colors.grey,
-                            strokeWidth: 6.0,
+                            lineWidth: 6.0,
                           ),
                         ],
+                        layerLevel: 10,
                       ),
-                      MarkerLayer(
+                      TrufiLayer(
+                        id: 'transfer_markers',
                         markers: [
-                          ...stopsLocations.map((e) => buildTransferMarker(e))
+                          ...stopsLocations
+                              .map((e) => buildTransferTrufiMarker(e))
                         ],
+                        layerLevel: 11,
                       ),
-                      MarkerLayer(markers: [
-                        if (stopsLocations.isNotEmpty)
-                          mapConfiguratiom.markersConfiguration
-                              .buildFromMarker(stopsLocations[0]),
-                        if (stopsLocations.length > 1)
-                          mapConfiguratiom.markersConfiguration.buildToMarker(
-                              stopsLocations[stopsLocations.length - 1]),
-                      ]),
+                      TrufiLayer(
+                        id: 'from_to_markers',
+                        markers: [
+                          if (stopsLocations.isNotEmpty)
+                            markers.buildFromTrufiMarker(stopsLocations[0]),
+                          if (stopsLocations.length > 1)
+                            markers.buildToTrufiMarker(
+                                stopsLocations[stopsLocations.length - 1]),
+                        ],
+                        layerLevel: 12,
+                      ),
                     ],
                     onPositionChanged: _handleOnMapPositionChanged,
                     floatingActionButtons: Column(
@@ -167,7 +180,6 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
                               _trufiMapController.move(
                                 center: point,
                                 zoom: 16,
-                                tickerProvider: this,
                               );
                             },
                           ),
@@ -209,7 +221,6 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
               [];
           stopsLocations = value.stops?.map((e) {
                 final point = LatLng(e.lat ?? 0, e.lon ?? 0);
-                _selectedBounds?.extend(point);
                 return point;
               }).toList() ??
               [];
@@ -230,14 +241,18 @@ class _RoutesStopScreenState extends State<RoutesStopScreen>
     _trufiMapController.moveCurrentBounds(tickerProvider: this);
   }
 
-  void _handleOnMapPositionChanged(
-    MapCamera mapCamera,
-    bool hasGesture,
-  ) {
-    if (_trufiMapController.selectedBounds != null) {
+  void _handleOnMapPositionChanged(TrufiCameraPosition camera) {
+    if (_trufiMapController.selectedBounds != null &&
+        camera.visibleRegion != null) {
+      final visible = camera.visibleRegion!;
+      final selected = _trufiMapController.selectedBounds!;
+      final containsBounds =
+          visible.southWest.latitude <= selected.southWest.latitude &&
+          visible.southWest.longitude <= selected.southWest.longitude &&
+          visible.northEast.latitude >= selected.northEast.latitude &&
+          visible.northEast.longitude >= selected.northEast.longitude;
       _cropButtonKey.currentState?.setVisible(
-        visible: !mapCamera.visibleBounds
-            .containsBounds(_trufiMapController.selectedBounds!),
+        visible: !containsBounds,
       );
     }
   }

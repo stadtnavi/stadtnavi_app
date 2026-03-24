@@ -87,7 +87,7 @@ class StadtnaviApp extends StatelessWidget {
         mapConfiguration: MapConfiguration(
           center: center,onlineMaxZoom: 20,
           onlineZoom: onlineZoom ?? 13,
-          markersConfiguration: const CustomMarkerConfiguration(),
+          markersConfiguration: CustomMarkerConfiguration(),
           mapAttributionBuilder: stadtNaviAttributionBuilder,
           co2EmmissionUrl: co2EmmissionUrl,
         ),

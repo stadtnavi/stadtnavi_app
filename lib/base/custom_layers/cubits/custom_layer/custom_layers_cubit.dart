@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
-import 'package:flutter_map/flutter_map.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart';
 import 'custom_layer_local_storage.dart';
 part 'custom_layers_state.dart';
 
@@ -29,7 +29,6 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
     for (final CustomLayerContainer layerContainer in layersContainer) {
       for (final CustomLayer layer in layerContainer.layers) {
         layer.onRefresh = () {
-          // TODO: improve state refresh
           final tempLayers = state.layers;
           emit(state.copyWith(layers: []));
           emit(state.copyWith(layers: tempLayers));
@@ -49,21 +48,6 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
   }) {
     final Map<String, bool> tempMap = Map.from(state.layersStatus);
     tempMap[customLayer.id] = newState;
-    // switch (customLayer.id) {
-    //   case 'Bicycle Network Space':
-    //     StaticTileLayers.bicycleNetworkLayer.load();
-    //     break;
-    //   case 'Parking Zones':
-    //     StaticTileLayers.parkingZonesLayer.load();
-    //     break;
-    //   default:
-    // }
-    // LayerIds.values.forEach(((id) {
-    //   if (id.enumString == customLayer.id) {
-    //     (customLayer as Layer).load();
-    //   }
-    // }));
-
     emit(state.copyWith(layersStatus: tempMap));
     _localStorage.save(state.layersStatus);
   }
@@ -90,65 +74,22 @@ class CustomLayersCubit extends Cubit<CustomLayersState> {
     _localStorage.save(state.layersStatus);
   }
 
-  List<Marker> markers(
-    int zoom,
-  ) {
-    List<CustomLayer> listSort = state.layers
+  /// Build TrufiLayers from all active custom layers at the given zoom.
+  List<TrufiLayer> buildTrufiLayers(int zoom) {
+    if (zoom <= 12) return [];
+
+    final activeLayers = state.layers
         .where((element) => state.layersStatus[element.id] ?? false)
-        .toList();
+        .toList()
+      ..sort((a, b) => a.weight.compareTo(b.weight));
 
-    listSort.sort((a, b) => a.weight.compareTo(b.weight));
-    final allList = listSort.map((element) {
-      return element.buildClusterMarkers(zoom);
+    return activeLayers.map((layer) {
+      return TrufiLayer(
+        id: layer.id,
+        markers: layer.buildTrufiMarkers(zoom),
+        lines: layer.buildTrufiLines(zoom),
+        layerLevel: layer.weight,
+      );
     }).toList();
-    return allList.expand((list) => list ?? <Marker>[]).toList();
-  }
-
-  List<Widget> activeCustomLayers(
-    int zoom,
-    List<Widget> layersMid, {
-    required Widget layersUnderMid,
-    String? showLayerById,
-  }) {
-    List<CustomLayer> listSort = state.layers;
-    if (showLayerById != null) {
-      listSort =
-          listSort.where((element) => element.id == showLayerById).toList();
-    } else {
-      listSort = state.layers
-          .where((element) => state.layersStatus[element.id] ?? false)
-          .toList();
-    }
-
-    listSort.sort((a, b) => a.weight.compareTo(b.weight));
-
-    List<Widget> listPriority = [];
-    Widget? layer;
-    for (CustomLayer customL in listSort) {
-      layer = customL.buildOverlapLayer(zoom);
-      if (layer != null) {
-        listPriority.add(layer);
-      }
-    }
-
-    List<Widget> listBackground = [];
-    Widget? layerBackground;
-    for (CustomLayer customL in listSort) {
-      layerBackground = customL.buildAreaLayer(zoom);
-      if (layerBackground != null) {
-        listBackground.add(layerBackground);
-      }
-    }
-    return zoom > 12
-        ? [
-            ...listBackground,
-            ...layersMid,
-            ...listSort
-                .map((element) => element.buildMarkerLayer(zoom))
-                .toList(),
-            layersUnderMid,
-            ...listPriority,
-          ]
-        : layersMid;
   }
 }

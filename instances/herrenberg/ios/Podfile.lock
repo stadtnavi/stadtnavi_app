@@ -91,6 +91,10 @@ PODS:
     - GoogleUtilities/Privacy
   - in_app_review (2.0.0):
     - Flutter
+  - MapLibre (6.19.1)
+  - maplibre_gl (0.25.0):
+    - Flutter
+    - MapLibre (= 6.19.1)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -127,6 +131,7 @@ DEPENDENCIES:
   - flutter_compass (from `.symlinks/plugins/flutter_compass/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/darwin`)
   - in_app_review (from `.symlinks/plugins/in_app_review/ios`)
+  - maplibre_gl (from `.symlinks/plugins/maplibre_gl/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - rive_common (from `.symlinks/plugins/rive_common/ios`)
@@ -147,6 +152,7 @@ SPEC REPOS:
     - FirebaseMessaging
     - GoogleDataTransport
     - GoogleUtilities
+    - MapLibre
     - nanopb
     - PromisesObjC
 
@@ -169,6 +175,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geolocator_apple/darwin"
   in_app_review:
     :path: ".symlinks/plugins/in_app_review/ios"
+  maplibre_gl:
+    :path: ".symlinks/plugins/maplibre_gl/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -199,12 +207,14 @@ SPEC CHECKSUMS:
   FirebaseInAppMessaging: 3f96b5715f1e2dffdb4189300f8054b2d7059a5e
   FirebaseInstallations: 9980995bdd06ec8081dfb6ab364162bdd64245c3
   FirebaseMessaging: 2b9f56aa4ed286e1f0ce2ee1d413aabb8f9f5cb9
-  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
   flutter_compass: b236ab69b61545cce89fd58527f401a7587d5cc1
   geolocator_apple: ab36aa0e8b7d7a2d7639b3b4e48308394e8cef5e
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
   in_app_review: 5596fe56fab799e8edb3561c03d053363ab13457
+  MapLibre: 7f24faba45439f80ccb0f83393c29fa32cb81952
+  maplibre_gl: a2114567cbd1065866614fbd34dfb75ab782aaa2
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564

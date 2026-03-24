@@ -217,7 +217,6 @@ class _CustomItineraryState extends State<CustomItinerary>
               moveInMap: (latLng, {zoom}) => widget.trufiMapController.move(
                 center: latLng,
                 zoom: zoom ?? 15,
-                tickerProvider: this,
               ),
             ),
           ),

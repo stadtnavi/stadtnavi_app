@@ -1,16 +1,14 @@
 import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart'
+    hide TrufiMapController, MapConfigurationCubit, cachedFirstFetch, SortedList;
 import 'geojson_marker_modal.dart';
 import 'geojson_marker_model.dart';
 import 'dart:convert';
@@ -81,21 +79,20 @@ class GeojsonLayer extends CustomLayer {
   }
 
   @override
-  Widget? buildAreaLayer(int? zoom) {
-    return PolylineLayer(
-      polylines: polylines
-          .map(
-            (path) => Polyline(
-              points: path.coordinates,
-              color: Color(int.parse(path.color.replaceFirst('#', '0xFF'))),
-              strokeWidth: path.weight,
-            ),
-          )
-          .toList(),
-    );
+  List<TrufiLine> buildTrufiLines(int zoom) {
+    return polylines
+        .map(
+          (path) => TrufiLine(
+            id: 'geojson_line_${path.hashCode}',
+            position: path.coordinates,
+            color: Color(int.parse(path.color.replaceFirst('#', '0xFF'))),
+            lineWidth: path.weight,
+          ),
+        )
+        .toList();
   }
 
-  Marker buildMarker({
+  TrufiMarker _buildTrufiMarker({
     required GeojsonMarker element,
     required double markerSize,
     bool isSelected = false,
@@ -104,82 +101,41 @@ class GeojsonLayer extends CustomLayer {
       mapCategory,
       mapCategory.code,
     );
-    final svgIcon =element.svgIcon?? targetMapLayerCategory?.properties?.iconSvg;
+    final svgIcon = element.svgIcon ?? targetMapLayerCategory?.properties?.iconSvg;
     final lastMarkerSize = markerSize + (isSelected ? 6 : 0);
-    return Marker(
-      key: Key("$id:${element.id}:${element.name}:${element.address}"),
-      height: lastMarkerSize,
-      width: lastMarkerSize,
-      point: element.position,
+    return TrufiMarker(
+      id: "$id:${element.id}:${element.name}:${element.address}",
+      position: element.position,
+      size: Size(lastMarkerSize, lastMarkerSize),
       alignment: Alignment.center,
-      child: Builder(builder: (context) {
-        final languageCode = Localizations.localeOf(context).languageCode;
-        final isEnglishCode = languageCode == 'en';
-        return MarkerTileContainer(
-          menuBuilder: (_) {
-            return MarkerTileListItem(
-              // element: element,
-              icon: svgIcon != null
-                  ? SvgPicture.string(
-                      svgIcon,
-                    )
-                  : const Icon(Icons.error),
-              name: element.name ??
-                  (isEnglishCode
-                      ? targetMapLayerCategory?.en
-                      : targetMapLayerCategory?.de) ??
-                  "",
-            );
-          },
-          child: GestureDetector(
-            onTap: () {
-              final panelCubit = context.read<PanelCubit>();
-              final selectedMarker = buildMarker(
-                element: element,
-                markerSize: markerSize,
-                isSelected: true,
-              );
-              panelCubit.setPanel(
-                CustomMarkerPanel(
-                  panel: (
-                    context,
-                    onFetchPlan, {
-                    isOnlyDestination,
-                  }) =>
-                      GeojsonMarkerModal(
-                    icon: svgIcon != null
-                        ? SvgPicture.string(
-                            svgIcon,
-                          )
-                        : const Icon(Icons.error),
-                    element: element,
-                    onFetchPlan: onFetchPlan,
-                  ),
-                  position: element.position,
-                  minSize: 50,
-                ),
-                selectedMarker: selectedMarker,
-              );
-            },
-            child: Container(
-              padding: isSelected ? const EdgeInsets.all(1) : null,
-              decoration: isSelected
-                  ? BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 2,
-                      ),
-                    )
-                  : null,
-              child: svgIcon != null
-                  ? SvgPicture.string(svgIcon)
-                  : const Icon(Icons.error),
-            ),
-          ),
+      imageCacheKey: isSelected
+          ? 'geojson_selected_${mapCategory.code}_${element.id}'
+          : 'geojson_${mapCategory.code}_${element.id}',
+      buildPanel: (context) {
+        return GeojsonMarkerModal(
+          icon: svgIcon != null
+              ? SvgPicture.string(svgIcon)
+              : const Icon(Icons.error),
+          element: element,
+          onFetchPlan: () {},
         );
-      }),
+      },
+      widget: Container(
+        padding: isSelected ? const EdgeInsets.all(1) : null,
+        decoration: isSelected
+            ? BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.green,
+                  width: 2,
+                ),
+              )
+            : null,
+        child: svgIcon != null
+            ? SvgPicture.string(svgIcon)
+            : const Icon(Icons.error),
+      ),
     );
   }
 
@@ -213,21 +169,11 @@ class GeojsonLayer extends CustomLayer {
   }
 
   @override
-  List<Marker>? buildClusterMarkers(int zoom) {
+  List<TrufiMarker> buildTrufiMarkers(int zoom) {
     return _getMarkers(zoom)
-        .map((element) => buildMarker(
+        .map((element) => _buildTrufiMarker(
             element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
         .toList();
-  }
-
-  @override
-  Widget buildMarkerLayer(int zoom) {
-    return MarkerLayer(
-      markers: _getMarkers(zoom)
-          .map((element) => buildMarker(
-              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-          .toList(),
-    );
   }
 
   @override

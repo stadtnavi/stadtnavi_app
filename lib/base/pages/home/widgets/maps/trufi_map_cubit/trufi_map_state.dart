@@ -2,43 +2,38 @@ part of 'trufi_map_cubit.dart';
 
 @immutable
 class TrufiMapState extends Equatable {
-  final MarkerLayer? unselectedMarkersLayer;
-  final PolylineLayer? unselectedPolylinesLayer;
-  final MarkerLayer? selectedMarkersLayer;
-  final PolylineLayer? selectedPolylinesLayer;
+  final List<TrufiMarker> unselectedMarkers;
+  final List<TrufiLine> unselectedLines;
+  final List<TrufiMarker> selectedMarkers;
+  final List<TrufiLine> selectedLines;
 
   const TrufiMapState({
-    this.unselectedMarkersLayer,
-    this.unselectedPolylinesLayer,
-    this.selectedMarkersLayer,
-    this.selectedPolylinesLayer,
+    this.unselectedMarkers = const [],
+    this.unselectedLines = const [],
+    this.selectedMarkers = const [],
+    this.selectedLines = const [],
   });
 
   TrufiMapState copyWith({
-    MarkerLayer? fromMarkerLayer,
-    MarkerLayer? toMarkerLayer,
-    MarkerLayer? unselectedMarkersLayer,
-    PolylineLayer? unselectedPolylinesLayer,
-    MarkerLayer? selectedMarkersLayer,
-    PolylineLayer? selectedPolylinesLayer,
+    List<TrufiMarker>? unselectedMarkers,
+    List<TrufiLine>? unselectedLines,
+    List<TrufiMarker>? selectedMarkers,
+    List<TrufiLine>? selectedLines,
   }) {
     return TrufiMapState(
-      unselectedMarkersLayer:
-          unselectedMarkersLayer ?? this.unselectedMarkersLayer,
-      unselectedPolylinesLayer:
-          unselectedPolylinesLayer ?? this.unselectedPolylinesLayer,
-      selectedMarkersLayer: selectedMarkersLayer ?? this.selectedMarkersLayer,
-      selectedPolylinesLayer:
-          selectedPolylinesLayer ?? this.selectedPolylinesLayer,
+      unselectedMarkers: unselectedMarkers ?? this.unselectedMarkers,
+      unselectedLines: unselectedLines ?? this.unselectedLines,
+      selectedMarkers: selectedMarkers ?? this.selectedMarkers,
+      selectedLines: selectedLines ?? this.selectedLines,
     );
   }
 
   @override
   List<Object?> get props => [
-        unselectedMarkersLayer,
-        unselectedPolylinesLayer,
-        selectedMarkersLayer,
-        selectedPolylinesLayer,
+        unselectedMarkers,
+        unselectedLines,
+        selectedMarkers,
+        selectedLines,
       ];
 
   @override

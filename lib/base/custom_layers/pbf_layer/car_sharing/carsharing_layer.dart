@@ -2,17 +2,15 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
-import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:stadtnavi_core/configuration/config_default/config_default.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart'
+    hide MapConfigurationCubit, cachedFirstFetch;
 import 'package:vector_tile/vector_tile.dart';
 
-import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
 import 'package:stadtnavi_core/consts.dart';
@@ -25,7 +23,8 @@ class CarSharingLayer extends CustomLayer {
 
   CarSharingLayer(this.mapCategory, int weight)
       : super(mapCategory.code, weight);
-  Marker buildMarker({
+
+  TrufiMarker _buildTrufiMarker({
     required CarSharingFeature element,
     required double markerSize,
     bool isSelected = false,
@@ -45,116 +44,81 @@ class CarSharingLayer extends CustomLayer {
       circleColor = Colors.green;
     }
     final lastMarkerSize = markerSize + 5 + (isSelected ? 6 : 0);
-    return Marker(
-      key: Key("$id:${element.id}"),
-      height: lastMarkerSize,
-      width: lastMarkerSize,
-      point: element.position,
+    return TrufiMarker(
+      id: "$id:${element.id}",
+      position: element.position,
+      size: Size(lastMarkerSize, lastMarkerSize),
       alignment: Alignment.center,
-      child: Builder(builder: (context) {
-        return MarkerTileContainer(
-          menuBuilder: (_) => MarkerTileListItem(
-            name: element.name ?? "",
-            icon: svgIcon != null
-                ? SvgPicture.string(
-                    ConfigDefault.value.cityBike
-                            .operators?[element.network?.operator]?.iconCode ??
-                        "",
+      imageCacheKey: isSelected
+          ? 'carsharing_selected_${element.network?.operator}_$vehiclesAvailable'
+          : 'carsharing_${element.network?.operator}_$vehiclesAvailable',
+      buildPanel: (context) {
+        return CarSharingMarkerModal(
+          element: element,
+          onFetchPlan: () {},
+          targetMapLayerCategory: targetMapLayerCategory,
+        );
+      },
+      widget: Stack(
+        children: [
+          Container(
+            margin: EdgeInsets.only(
+              right: markerSize / 5,
+              top: markerSize / 5,
+            ),
+            padding: isSelected ? const EdgeInsets.all(1) : null,
+            decoration: isSelected
+                ? BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.green,
+                      width: 2,
+                    ),
+                  )
+                : null,
+            child: svgIcon != null
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(50),
+                    child: SvgPicture.string(
+                      svgIcon,
+                      colorFilter: ColorFilter.mode(
+                        hexToColor(
+                          ConfigDefault
+                                  .value
+                                  .cityBike
+                                  .operators?[element.network?.operator]
+                                  ?.colors?['background'] ??
+                              "#FF000000",
+                        ),
+                        BlendMode.color,
+                      ),
+                    ),
                   )
                 : const Icon(Icons.error),
           ),
-          child: GestureDetector(
-            onTap: () {
-              final panelCubit = context.read<PanelCubit>();
-              final selectedMarker = buildMarker(
-                element: element,
-                markerSize: markerSize,
-                isSelected: true,
-              );
-              panelCubit.setPanel(
-                CustomMarkerPanel(
-                  panel: (
-                    context,
-                    onFetchPlan, {
-                    isOnlyDestination,
-                  }) =>
-                      CarSharingMarkerModal(
-                    element: element,
-                    onFetchPlan: onFetchPlan,
-                    targetMapLayerCategory: targetMapLayerCategory,
-                  ),
-                  position: element.position,
-                  minSize: 50,
+          Positioned(
+            right: 0,
+            top: 0,
+            child: Container(
+              padding: EdgeInsets.all(2.5),
+              decoration: BoxDecoration(
+                color: circleColor,
+                border: Border.all(color: Colors.white, width: 1),
+                shape: BoxShape.circle,
+              ),
+              child: Text(
+                '$vehiclesAvailable',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
                 ),
-                selectedMarker: selectedMarker,
-              );
-            },
-            child: Stack(
-              children: [
-                Container(
-                  // color: Colors.red,
-                  margin: EdgeInsets.only(
-                    right: markerSize / 5,
-                    top: markerSize / 5,
-                  ),
-                  padding: isSelected ? const EdgeInsets.all(1) : null,
-                  decoration: isSelected
-                      ? BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: Theme.of(context).colorScheme.primary,
-                            width: 2,
-                          ),
-                        )
-                      : null,
-                  child: svgIcon != null
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: SvgPicture.string(
-                            svgIcon,
-                            colorFilter: ColorFilter.mode(
-                              hexToColor(
-                                ConfigDefault
-                                        .value
-                                        .cityBike
-                                        .operators?[element.network?.operator]
-                                        ?.colors?['background'] ??
-                                    "#FF000000",
-                              ),
-                              BlendMode.color,
-                            ),
-                          ),
-                        )
-                      : const Icon(Icons.error),
-                ),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: Container(
-                    padding: EdgeInsets.all(2.5),
-                    // width: markerSize/ 1.5,
-                    // height: markerSize/ 1.5,
-                    decoration: BoxDecoration(
-                      color: circleColor,
-                      border: Border.all(color: Colors.white, width: 1),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      '$vehiclesAvailable',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        );
-      }),
+        ],
+      ),
     );
   }
 
@@ -213,21 +177,11 @@ class CarSharingLayer extends CustomLayer {
   }
 
   @override
-  List<Marker>? buildClusterMarkers(int zoom) {
+  List<TrufiMarker> buildTrufiMarkers(int zoom) {
     return _getMarkers(zoom)
-        .map((element) => buildMarker(
+        .map((element) => _buildTrufiMarker(
             element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
         .toList();
-  }
-
-  @override
-  Widget buildMarkerLayer(int zoom) {
-    return MarkerLayer(
-      markers: _getMarkers(zoom)
-          .map((element) => buildMarker(
-              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-          .toList(),
-    );
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {

@@ -2,16 +2,14 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
-import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart'
+    hide MapConfigurationCubit, cachedFirstFetch;
 import 'package:vector_tile/vector_tile.dart';
 
-import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/weather/weather_marker_modal.dart';
@@ -23,7 +21,7 @@ class WeatherLayer extends CustomLayer {
 
   WeatherLayer(this.mapCategory, int weight) : super(mapCategory.code, weight);
 
-  Marker buildMarker({
+  TrufiMarker _buildTrufiMarker({
     required WeatherFeature element,
     required double markerSize,
     bool isSelected = false,
@@ -34,69 +32,37 @@ class WeatherLayer extends CustomLayer {
     );
     final svgIcon = targetMapLayerCategory?.properties?.iconSvg;
     final lastMarkerSize = markerSize + (isSelected ? 6 : 0);
-    return Marker(
-      key: Key("$id:${element.address}"),
-      height: lastMarkerSize,
-      width: lastMarkerSize,
-      point: element.position,
+    return TrufiMarker(
+      id: "$id:${element.address}",
+      position: element.position,
+      size: Size(lastMarkerSize, lastMarkerSize),
       alignment: Alignment.center,
-      child: Builder(builder: (context) {
-        return MarkerTileContainer(
-          menuBuilder: (_) => MarkerTileListItem(
-            name: element.address,
-            icon: svgIcon != null
-                ? SvgPicture.string(
-                    svgIcon,
-                  )
-                : const Icon(Icons.error),
-          ),
-          child: GestureDetector(
-            onTap: () {
-              final panelCubit = context.read<PanelCubit>();
-              final selectedMarker = buildMarker(
-                element: element,
-                markerSize: markerSize,
-                isSelected: true,
-              );
-              panelCubit.setPanel(
-                CustomMarkerPanel(
-                  panel: (
-                    context,
-                    onFetchPlan, {
-                    isOnlyDestination,
-                  }) =>
-                      ParkingMarkerModal(
-                    parkingFeature: element,
-                    onFetchPlan: onFetchPlan,
-                    icon: svgIcon != null
-                        ? SvgPicture.string(
-                            svgIcon,
-                          )
-                        : const Icon(Icons.error),
-                  ),
-                  position: element.position,
-                  minSize: 50,
-                ),
-                selectedMarker: selectedMarker,
-              );
-            },
-            child: Container(
-              padding: isSelected ? const EdgeInsets.all(1) : null,
-              decoration: isSelected
-                  ? BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 2,
-                      ),
-                    )
-                  : null,
-              child: SvgPicture.string(svgIcon ?? ''),
-            ),
-          ),
+      imageCacheKey: isSelected
+          ? 'weather_selected_${mapCategory.code}_${element.address}'
+          : 'weather_${mapCategory.code}_${element.address}',
+      buildPanel: (context) {
+        return ParkingMarkerModal(
+          parkingFeature: element,
+          onFetchPlan: () {},
+          icon: svgIcon != null
+              ? SvgPicture.string(svgIcon)
+              : const Icon(Icons.error),
         );
-      }),
+      },
+      widget: Container(
+        padding: isSelected ? const EdgeInsets.all(1) : null,
+        decoration: isSelected
+            ? BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.green,
+                  width: 2,
+                ),
+              )
+            : null,
+        child: SvgPicture.string(svgIcon ?? ''),
+      ),
     );
   }
 
@@ -131,21 +97,11 @@ class WeatherLayer extends CustomLayer {
   }
 
   @override
-  List<Marker>? buildClusterMarkers(int zoom) {
+  List<TrufiMarker> buildTrufiMarkers(int zoom) {
     return _getMarkers(zoom)
-        .map((element) => buildMarker(
+        .map((element) => _buildTrufiMarker(
             element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
         .toList();
-  }
-
-  @override
-  Widget buildMarkerLayer(int zoom) {
-    return MarkerLayer(
-      markers: _getMarkers(zoom)
-          .map((element) => buildMarker(
-              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-          .toList(),
-    );
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {

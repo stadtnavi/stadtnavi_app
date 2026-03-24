@@ -1,34 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart'
+    hide TrufiMapController, MapConfigurationCubit, MapTypeButton;
 
 import 'package:stadtnavi_core/base/custom_layers/cubits/custom_layer/custom_layers_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
-import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
-import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/map_legend.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/map_type_button.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/your_location_button.dart';
-import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
-import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart'
+    as cubit;
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
-import 'package:trufi_core/base/blocs/map_tile_provider/map_tile_provider_cubit.dart';
 import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
-import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
+import 'package:stadtnavi_core/base/custom_layers/map_layers/cancellable_network.dart';
 
-typedef LayerOptionsBuilder = List<Widget> Function(BuildContext context);
+typedef LayerOptionsBuilder = List<TrufiLayer> Function(BuildContext context);
 typedef MoveInMap = void Function(LatLng latlng, {double? zoom});
 
 class StadtnaviMap extends StatefulWidget {
-  final TrufiMapController trufiMapController;
+  final cubit.TrufiMapController trufiMapController;
   final LayerOptionsBuilder layerOptionsBuilder;
   final Widget? floatingActionButtons;
-  final TapCallback? onTap;
-  final LongPressCallback? onLongPress;
-  final PositionCallback? onPositionChanged;
+  final void Function(LatLng)? onTap;
+  final void Function(LatLng)? onLongPress;
+  final void Function(TrufiCameraPosition)? onPositionChanged;
   final bool showMapTypeButton;
   final String? showLayerById;
   final bool enableCurrentLocation;
@@ -51,189 +48,115 @@ class StadtnaviMap extends StatefulWidget {
 
 class _StadtnaviMapState extends State<StadtnaviMap> {
   int mapZoom = 0;
+  final _pbfFetcher = PbfTileFetcher();
+
+  // Current map style
+  String _currentStyle =
+      'https://tiles-eu.stadtnavi.eu/styles/streets/style.json';
+
   @override
   Widget build(BuildContext context) {
-    final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
+    final mapConfig = context.read<MapConfigurationCubit>().state;
     final customLayersCubit = context.watch<CustomLayersCubit>();
-    final currentMapType = context.watch<MapTileProviderCubit>().state;
     final panelCubit = context.watch<PanelCubit>();
-    final localizationST = StadtnaviBaseLocalization.of(context);
+
+    // Build custom layers as TrufiLayers
+    final customTrufiLayers = customLayersCubit.buildTrufiLayers(mapZoom);
+
+    // Build additional layers from the builder
+    final additionalLayers = widget.layerOptionsBuilder(context);
+
+    // Build selected marker layer
+    final selectedMarkerLayer = panelCubit.state.selectedMarker != null
+        ? [
+            TrufiLayer(
+              id: 'selected_marker',
+              markers: [panelCubit.state.selectedMarker!],
+              layerLevel: 999,
+            ),
+          ]
+        : <TrufiLayer>[];
+
+    // Build current location marker
+    final locationLayers = <TrufiLayer>[];
+    if (widget.enableCurrentLocation) {
+      final currentLocation = GPSLocationProvider().myLocation;
+      if (currentLocation != null) {
+        locationLayers.add(
+          TrufiLayer(
+            id: 'my_location',
+            markers: [
+              TrufiMarker(
+                id: 'my_location',
+                position: currentLocation,
+                size: const Size(20, 20),
+                imageCacheKey: 'my_location_dot',
+                allowOverlap: true,
+                layerLevel: 998,
+                widget: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
+                ),
+              ),
+            ],
+            layerLevel: 998,
+          ),
+        );
+      }
+    }
+
+    final allLayers = [
+      ...additionalLayers,
+      ...customTrufiLayers,
+      ...locationLayers,
+      ...selectedMarkerLayer,
+    ];
+
     return Stack(
       children: [
-        StreamBuilder<LatLng?>(
-            initialData: null,
-            stream: GPSLocationProvider().streamLocation,
-            builder: (context, snapshot) {
-              final currentLocation = snapshot.data;
-              return FlutterMap(
-                mapController: widget.trufiMapController.mapController,
-                options: MapOptions(
-                  interactionOptions: InteractionOptions(
-                    flags: InteractiveFlag.drag |
-                        InteractiveFlag.flingAnimation |
-                        InteractiveFlag.pinchMove |
-                        InteractiveFlag.pinchZoom |
-                        InteractiveFlag.doubleTapZoom,
-                  ),
-                  minZoom: mapConfiguratiom.onlineMinZoom,
-                  maxZoom: mapConfiguratiom.onlineMaxZoom,
-                  initialZoom: mapConfiguratiom.onlineZoom,
-                  onTap: widget.onTap,
-                  onLongPress: widget.onLongPress,
-                  initialCenter: mapConfiguratiom.center,
-                  onMapReady: () async {
-                    if (!widget.trufiMapController.readyCompleter.isCompleted) {
-                      widget.trufiMapController.readyCompleter.complete();
-                    }
-                    final originalCenter =
-                        widget.trufiMapController.mapController.camera.center;
-                    final originalZoom =
-                        widget.trufiMapController.mapController.camera.zoom;
-
-                    widget.trufiMapController.mapController
-                        .move(originalCenter, originalZoom + 0.0001);
-
-                    await Future.delayed(Duration(milliseconds: 50));
-
-                    widget.trufiMapController.mapController
-                        .move(originalCenter, originalZoom);
-                  },
-                  onPositionChanged: (
-                    MapCamera position,
-                    bool hasGesture,
-                  ) {
-                    if (widget.onPositionChanged != null) {
-                      Future.delayed(Duration.zero, () {
-                        widget.onPositionChanged!(position, hasGesture);
-                      });
-                    }
-                    // fix render issue
-                    Future.delayed(Duration.zero, () {
-                      final int zoom = position.zoom.round();
-                      if (mapZoom != zoom) {
-                        setState(() => mapZoom = zoom);
-                      }
-                    });
-                  },
+        TrufiMap(
+          styleString: _currentStyle,
+          initialCamera: TrufiCameraPosition(
+            target: mapConfig.center,
+            zoom: mapConfig.onlineZoom,
+          ),
+          controller: widget.trufiMapController.mapController,
+          onCameraChanged: (cam) {
+            final int zoom = cam.zoom.round();
+            if (mapZoom != zoom) {
+              setState(() => mapZoom = zoom);
+            }
+            widget.onPositionChanged?.call(cam);
+            _pbfFetcher.onCameraChanged(cam, context);
+            if (!widget.trufiMapController.readyCompleter.isCompleted) {
+              widget.trufiMapController.readyCompleter.complete();
+            }
+          },
+          onMapClick: (latLng) {
+            // Try to pick a marker first
+            final picked = widget.trufiMapController.mapController
+                .pickNearestMarkerAt(latLng, hitboxPx: 30);
+            if (picked != null && picked.buildPanel != null) {
+              final panelCubit = context.read<PanelCubit>();
+              panelCubit.setPanel(
+                CustomMarkerPanel(
+                  panel: (ctx, onFetchPlan, {isOnlyDestination}) =>
+                      picked.buildPanel!(ctx),
+                  position: picked.position,
+                  minSize: 130,
                 ),
-                children: [
-                  ...currentMapType.currentMapTileProvider
-                      .buildTileLayerOptions(context),
-                  ...customLayersCubit.activeCustomLayers(
-                    mapZoom,
-                    [
-                      ...widget.layerOptionsBuilder(context),
-                    ],
-                    layersUnderMid: MarkerClusterLayerWidget(
-                      options: MarkerClusterLayerOptions(
-                        builder: (context, markers) {
-                          return Container();
-                          // return Container(
-                          //   color: Colors.transparent,
-                          //   child: Container(
-                          //     decoration: BoxDecoration(
-                          //       // borderRadius: BorderRadius.circular(20),
-                          //       color: Colors.transparent,
-                          //       border: Border.all(
-                          //         color: Colors.black,
-                          //         width: 2,
-                          //       ),
-                          //     ),
-                          //     child: Center(
-                          //       child: Text(
-                          //         markers.length.toString(),
-                          //         style: const TextStyle(color: Colors.black),
-                          //       ),
-                          //     ),
-                          //   ),
-                          // );
-                        },
-                        alignment: Alignment.center,
-                        maxClusterRadius: CustomLayer.getClusterSize(mapZoom),
-                        size: CustomLayer.getMarkerClusterSize(mapZoom),
-                        centerMarkerOnClick: false,
-                        zoomToBoundsOnClick: false,
-                        // disableClusteringAtZoom: 15,
-                        spiderfyCluster: false,
-                        showPolygon: false,
-                        markers: customLayersCubit.markers(mapZoom),
-                        onClusterTap: (onClusterTap) {
-                          showTrufiDialog<void>(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (buildcontext) {
-                              return AlertDialog(
-                                titlePadding:
-                                    EdgeInsets.fromLTRB(16, 16, 16, 0),
-                                contentPadding:
-                                    EdgeInsets.fromLTRB(16, 16, 16, 8),
-                                insetPadding: EdgeInsets.zero,
-                                iconPadding: EdgeInsets.zero,
-                                title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      localizationST.selectStop(
-                                          onClusterTap.markers.length),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      icon: const Icon(
-                                        Icons.close,
-                                        size: 30,
-                                      ),
-                                      splashRadius: 25,
-                                    ),
-                                  ],
-                                ),
-                                content: Container(
-                                  width: 300,
-                                  height: 350,
-                                  child: ListView.builder(
-                                    itemCount: onClusterTap.markers.length,
-                                    itemBuilder: (context, index) {
-                                      final key =
-                                          onClusterTap.markers[index].key;
-                                      return key != null
-                                          ? Column(
-                                              children: [
-                                                ShowOverlappingData(
-                                                  keyData: key,
-                                                  markerNode: onClusterTap
-                                                      .markers[index],
-                                                ),
-                                                const Divider(
-                                                  height: 5,
-                                                  color: Colors.grey,
-                                                )
-                                              ],
-                                            )
-                                          : Container();
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    showLayerById: widget.showLayerById,
-                  ),
-                  if (widget.enableCurrentLocation)
-                    mapConfiguratiom.markersConfiguration
-                        .buildYourLocationMarkerLayerOptions(currentLocation),
-                  // Selected marker overlay - pintado encima de todo
-                  if (panelCubit.state.selectedMarker != null)
-                    MarkerLayer(
-                      markers: [panelCubit.state.selectedMarker!],
-                    ),
-                ],
+                selectedMarker: picked,
               );
-            }),
+            } else {
+              widget.onTap?.call(latLng);
+            }
+          },
+          onMapLongClick: widget.onLongPress,
+          layers: allLayers,
+        ),
         if (widget.showMapTypeButton)
           const Positioned(
             top: 16.0,
@@ -260,9 +183,15 @@ class _StadtnaviMapState extends State<StadtnaviMap> {
         Positioned(
           bottom: 10,
           left: 10,
-          child: mapConfiguratiom.mapAttributionBuilder!(context),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+            color: Colors.white.withValues(alpha: 0.7),
+            child: const Text(
+              '© OpenStreetMap, OpenMapTiles',
+              style: TextStyle(fontSize: 10),
+            ),
+          ),
         ),
-        // if()
         const Positioned(
           top: 59.5,
           right: 15.0,

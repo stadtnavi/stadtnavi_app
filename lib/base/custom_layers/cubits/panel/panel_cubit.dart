@@ -1,14 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart';
 part 'panel_state.dart';
 
 class PanelCubit extends Cubit<PanelState> {
   PanelCubit() : super(const PanelState());
-  void setPanel(CustomMarkerPanel panel, {Marker? selectedMarker}) {
-    // emit(const PanelState());
+  void setPanel(CustomMarkerPanel panel, {TrufiMarker? selectedMarker}) {
     Future.delayed(
       const Duration(milliseconds: 0),
       () => emit(

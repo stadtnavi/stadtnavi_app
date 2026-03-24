@@ -1,65 +1,68 @@
 import 'dart:math';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:stadtnavi_core/base/models/plan_entity.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart';
 
 import 'package:trufi_core/base/models/enums/transport_mode.dart';
 
 class PolylineWithMarkers {
-  PolylineWithMarkers(this.polyline, this.markers);
+  PolylineWithMarkers(this.line, this.markers);
 
-  final Polyline polyline;
-  final List<Marker> markers;
+  final TrufiLine line;
+  final List<TrufiMarker> markers;
 }
 
 PlanItinerary? itineraryForPoint(
     Map<PlanItinerary, List<PolylineWithMarkers>> itineraries,
-    List<Polyline> polylines,
+    List<TrufiLine> lines,
     LatLng point) {
-  return _itineraryForPolyline(itineraries, _polylineHitTest(polylines, point));
+  return _itineraryForLine(itineraries, _lineHitTest(lines, point));
 }
 
-PlanItinerary? _itineraryForPolyline(
+PlanItinerary? _itineraryForLine(
     Map<PlanItinerary, List<PolylineWithMarkers>> itineraries,
-    Polyline? polyline) {
-  final entry = _itineraryEntryForPolyline(itineraries, polyline);
+    TrufiLine? line) {
+  final entry = _itineraryEntryForLine(itineraries, line);
   return entry?.key;
 }
 
-MapEntry<PlanItinerary, List<PolylineWithMarkers>>? _itineraryEntryForPolyline(
+MapEntry<PlanItinerary, List<PolylineWithMarkers>>? _itineraryEntryForLine(
   Map<PlanItinerary, List<PolylineWithMarkers>> itineraries,
-  Polyline? polyline,
+  TrufiLine? line,
 ) {
+  if (line == null) return null;
   return itineraries.entries.firstWhereOrNull((pair) {
     return null !=
         pair.value.firstWhereOrNull(
-          (pwm) => pwm.polyline == polyline,
+          (pwm) => pwm.line.id == line.id,
         );
   });
 }
 
-Polyline? _polylineHitTest(List<Polyline> polylines, LatLng point) {
-  Polyline? minPolyline;
+TrufiLine? _lineHitTest(List<TrufiLine> lines, LatLng point) {
+  TrufiLine? minLine;
   double minDist = double.maxFinite;
-  for (final Polyline p in polylines) {
-    for (int i = 0; i < p.points.length - 1; i++) {
-      final double dist = distToSegment(point, p.points[i], p.points[i + 1]);
+  for (final TrufiLine l in lines) {
+    for (int i = 0; i < l.position.length - 1; i++) {
+      final double dist = distToSegment(point, l.position[i], l.position[i + 1]);
       if (dist < minDist) {
         minDist = dist;
-        minPolyline = p;
+        minLine = l;
       }
     }
   }
-  return minPolyline;
+  return minLine;
 }
 
-Marker buildTransferMarker(LatLng point) {
-  return Marker(
-    point: point,
-    alignment: Alignment.center,
-    child: Transform.scale(
+TrufiMarker buildTransferTrufiMarker(LatLng point) {
+  return TrufiMarker(
+    id: 'transfer_${point.latitude}_${point.longitude}',
+    position: point,
+    size: const Size(20, 20),
+    imageCacheKey: 'transfer_marker',
+    widget: Transform.scale(
       scale: 0.4,
       child: Container(
         decoration: BoxDecoration(
@@ -72,7 +75,7 @@ Marker buildTransferMarker(LatLng point) {
   );
 }
 
-Marker buildTransportMarker(
+TrufiMarker buildTransportTrufiMarker(
   LatLng point,
   Color color,
   PlanItineraryLeg leg, {
@@ -80,59 +83,57 @@ Marker buildTransportMarker(
   bool showIcon = true,
   bool showText = true,
 }) {
-  return Marker(
-    width: 50.0,
-    point: point,
-    alignment: Alignment.center,
-    child: GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(4.0),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-        ),
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: Row(
-            children: [
-              if (showIcon)
-                SizedBox(
-                  height: 28,
-                  width: 28,
-                  child: leg.transportMode.getImage(color: Colors.white),
-                ),
-              if (showText)
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 4),
-                  child: Text(
-                    leg.route?.shortName ?? leg.headSign,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                    ),
+  return TrufiMarker(
+    id: 'transport_${point.latitude}_${point.longitude}_${leg.hashCode}',
+    position: point,
+    size: const Size(50, 30),
+    widget: Container(
+      padding: const EdgeInsets.all(4.0),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Row(
+          children: [
+            if (showIcon)
+              SizedBox(
+                height: 28,
+                width: 28,
+                child: leg.transportMode.getImage(color: Colors.white),
+              ),
+            if (showText)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4),
+                child: Text(
+                  leg.route?.shortName ?? leg.headSign,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
                   ),
-                )
-            ],
-          ),
+                ),
+              )
+          ],
         ),
       ),
     ),
   );
 }
 
-Marker buildMarker(
+TrufiMarker buildTrufiMarker(
   LatLng point,
   IconData iconData,
   Alignment alignment,
   Color color, {
   Decoration? decoration,
 }) {
-  return Marker(
-    point: point,
+  return TrufiMarker(
+    id: 'marker_${point.latitude}_${point.longitude}_${iconData.codePoint}',
+    position: point,
     alignment: alignment,
-    child: Container(
+    widget: Container(
       decoration: decoration,
       child: Icon(iconData, color: color),
     ),

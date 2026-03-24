@@ -153,7 +153,6 @@ class _BottomSheetItinerariesState extends State<BottomSheetItineraries>
               moveInMap: (latLng, {zoom}) => widget.trufiMapController.move(
                 center: latLng,
                 zoom: zoom ?? 15.0,
-                tickerProvider: this,
               ),
             ),
           ),

@@ -2,16 +2,15 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
-import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart'
+    hide TrufiMapController, MapConfigurationCubit, cachedFirstFetch;
 import 'dart:typed_data';
 import 'package:gtfs_realtime_bindings/gtfs_realtime_bindings.dart';
 import 'live_bus_icons.dart';
@@ -103,7 +102,7 @@ class LiveBusLayer extends CustomLayer {
     }
   }
 
-  Marker buildMarker({
+  TrufiMarker _buildTrufiMarker({
     required LiveBusFeature element,
     required double markerSize,
     required int zoom,
@@ -114,89 +113,77 @@ class LiveBusLayer extends CustomLayer {
       element.mode.toLowerCase(),
     );
     final layerMinZoom = targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
-    if (layerMinZoom >=zoom) {
-      return CustomLayer.buildDot(
-        point: element.position,
-        color: fromStringToColor(element.color),
+    if (layerMinZoom >= zoom) {
+      // Small dot marker for low zoom
+      return TrufiMarker(
+        id: "$id:dot:${element.id}",
+        position: element.position,
+        size: const Size(8, 8),
+        imageCacheKey: 'live_bus_dot_${element.color}',
+        widget: Container(
+          decoration: BoxDecoration(
+            color: fromStringToColor(element.color),
+            shape: BoxShape.circle,
+          ),
+        ),
       );
     }
     final lastMarkerSize = markerSize + (isSelected ? 6 : 0);
-    return Marker(
-      height: lastMarkerSize,
-      width: lastMarkerSize,
-      point: element.position,
+    return TrufiMarker(
+      id: "$id:${element.id}",
+      position: element.position,
+      size: Size(lastMarkerSize, lastMarkerSize),
       alignment: Alignment.center,
-      child: Builder(builder: (context) {
-        return GestureDetector(
-            onTap: () {
-              onLiveBusStateChangeContainer = OnLiveBusStateChangeContainer(
-                element.id,
-                () {
-                  onLiveBusStateChangeContainer = null;
-                },
-              );
-              final panelCubit = context.read<PanelCubit>();
-              final selectedMarker = buildMarker(
-                element: element,
-                markerSize: markerSize,
-                zoom: zoom,
-                isSelected: true,
-              );
-              panelCubit.setPanel(
-                CustomMarkerPanel(
-                  panel: (
-                    context,
-                    onFetchPlan, {
-                    isOnlyDestination,
-                  }) =>
-                      LiveBusMarkerModal(
-                    mainElement: element,
-                    onLiveBusStateChangeContainer:
-                        onLiveBusStateChangeContainer,
-                  ),
-                  position: element.position,
-                  minSize: 50,
+      imageCacheKey: isSelected
+          ? 'live_bus_selected_${element.name}_${element.color}'
+          : 'live_bus_${element.name}_${element.color}',
+      buildPanel: (context) {
+        onLiveBusStateChangeContainer = OnLiveBusStateChangeContainer(
+          element.id,
+          () {
+            onLiveBusStateChangeContainer = null;
+          },
+        );
+        return LiveBusMarkerModal(
+          mainElement: element,
+          onLiveBusStateChangeContainer: onLiveBusStateChangeContainer,
+        );
+      },
+      widget: Stack(
+        children: [
+          if (element.bearing != null)
+            Transform.rotate(
+              angle: element.bearing! * pi / 180,
+              child: SvgPicture.string("""
+                          <svg version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                              <path fill="red" d="M50 0L32.4 14.08A40 40 0 0 0 10 50a40 40 0 0 0 40 40 40 40 0 0 0 40-40 40 40 0 0 0-22.398-35.918L50 0z" />
+                          </svg>
+                        """),
+            ),
+          Container(
+            padding: isSelected ? const EdgeInsets.all(1) : null,
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(markerSize),
+                border: isSelected
+                    ? Border.all(
+                        color: Colors.green,
+                        width: 2,
+                      )
+                    : Border.all(color: fromStringToColor(element.color))),
+            child: Center(
+              child: Text(
+                element.name,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: markerSize / element.name.length,
+                  color: fromStringToColor(element.color),
                 ),
-                selectedMarker: selectedMarker,
-              );
-            },
-            child: Stack(
-              children: [
-                if (element.bearing != null)
-                  Transform.rotate(
-                    angle: element.bearing! * pi / 180,
-                    child: SvgPicture.string("""
-                                <svg version="1.1" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill="red" d="M50 0L32.4 14.08A40 40 0 0 0 10 50a40 40 0 0 0 40 40 40 40 0 0 0 40-40 40 40 0 0 0-22.398-35.918L50 0z" />
-                                </svg>
-                              """),
-                  ),
-                Container(
-                  // margin: EdgeInsets.all(markerSize / 10),
-                  padding: isSelected ? const EdgeInsets.all(1) : null,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(markerSize),
-                      border: isSelected
-                          ? Border.all(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 2,
-                            )
-                          : Border.all(color: fromStringToColor(element.color))),
-                  child: Center(
-                    child: Text(
-                      element.name,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: markerSize / element.name.length,
-                        color: fromStringToColor(element.color),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ));
-      }),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -204,29 +191,18 @@ class LiveBusLayer extends CustomLayer {
     return _pbfMarkers.values.toList();
   }
 
-  // @override
-  // List<Marker>? buildClusterMarkers(int zoom) {
-  //   return _getMarkers(zoom)
-  //       .map((element) => buildMarker(
-  //           element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-  //       .toList();
-  // }
-
   @override
-  Widget buildMarkerLayer(int zoom) {
-    return MarkerLayer(
-      markers: zoom > CustomLayer.minRenderMarkers
-          ? _getMarkers(zoom)
-              .map(
-                (element) => buildMarker(
-                  element: element,
-                  markerSize: CustomLayer.getMarkerSize(zoom),
-                  zoom: zoom,
-                ),
-              )
-              .toList()
-          : [],
-    );
+  List<TrufiMarker> buildTrufiMarkers(int zoom) {
+    if (zoom <= CustomLayer.minRenderMarkers) return [];
+    return _getMarkers(zoom)
+        .map(
+          (element) => _buildTrufiMarker(
+            element: element,
+            markerSize: CustomLayer.getMarkerSize(zoom),
+            zoom: zoom,
+          ),
+        )
+        .toList();
   }
 
   @override

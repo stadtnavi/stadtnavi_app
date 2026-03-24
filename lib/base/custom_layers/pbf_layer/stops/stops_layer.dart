@@ -2,16 +2,14 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
-import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart'
+    hide MapConfigurationCubit, cachedFirstFetch;
 import 'package:vector_tile/vector_tile.dart';
 
-import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
 import 'package:stadtnavi_core/consts.dart';
@@ -23,7 +21,8 @@ class StopsLayer extends CustomLayer {
   final MapLayerCategory mapCategory;
 
   StopsLayer(this.mapCategory, int weight) : super(mapCategory.code, weight);
-  Marker buildMarker({
+
+  TrufiMarker _buildTrufiMarker({
     required StopFeature element,
     required double markerSize,
     bool isSelected = false,
@@ -34,64 +33,34 @@ class StopsLayer extends CustomLayer {
     );
     final svgIcon = targetMapLayerCategory?.properties?.iconSvgMenu;
     final lastMarkerSize = markerSize + (isSelected ? 6 : 0);
-    return Marker(
-      key: Key("$id:${element.gtfsId}"),
-      height: lastMarkerSize,
-      width: lastMarkerSize,
-      point: element.position,
+    return TrufiMarker(
+      id: "$id:${element.gtfsId}",
+      position: element.position,
+      size: Size(lastMarkerSize, lastMarkerSize),
       alignment: Alignment.topCenter,
-      child: Builder(builder: (context) {
-        return MarkerTileContainer(
-          menuBuilder: (_) => MarkerTileListItem(
-            name: element.name ?? "",
-            icon: svgIcon != null
-                ? SvgPicture.string(
-                    svgIcon,
-                  )
-                : const Icon(Icons.error),
-          ),
-          child: GestureDetector(
-            onTap: () {
-              final panelCubit = context.read<PanelCubit>();
-              final selectedMarker = buildMarker(
-                element: element,
-                markerSize: markerSize,
-                isSelected: true,
-              );
-              panelCubit.setPanel(
-                CustomMarkerPanel(
-                  panel: (
-                    context,
-                    _, {
-                    isOnlyDestination,
-                  }) =>
-                      StopMarkerModal(
-                    category: mapCategory,
-                    stopFeature: element,
-                  ),
-                  position: element.position,
-                  minSize: 130,
-                ),
-                selectedMarker: selectedMarker,
-              );
-            },
-            child: Container(
-              padding: isSelected ? const EdgeInsets.all(1) : null,
-              decoration: isSelected
-                  ? BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 2,
-                      ),
-                    )
-                  : null,
-              child: SvgPicture.string(svgIcon ?? ''),
-            ),
-          ),
+      imageCacheKey: isSelected
+          ? 'stop_selected_${element.type}'
+          : 'stop_${element.type}',
+      buildPanel: (context) {
+        return StopMarkerModal(
+          category: mapCategory,
+          stopFeature: element,
         );
-      }),
+      },
+      widget: Container(
+        padding: isSelected ? const EdgeInsets.all(1) : null,
+        decoration: isSelected
+            ? BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: Colors.green,
+                  width: 2,
+                ),
+              )
+            : null,
+        child: SvgPicture.string(svgIcon ?? ''),
+      ),
     );
   }
 
@@ -99,7 +68,7 @@ class StopsLayer extends CustomLayer {
   int _lastStopZoom = -1;
   int _lastStopItemsLength = -1;
 
-  List<StopFeature> _getMarkers(int zoom) {
+  List<StopFeature> _getFeatures(int zoom) {
     final itemsLength = MapMarkersRepositoryContainer.stopFeature.items.length;
 
     if (zoom == _lastStopZoom && itemsLength == _lastStopItemsLength) {
@@ -126,21 +95,11 @@ class StopsLayer extends CustomLayer {
   }
 
   @override
-  List<Marker>? buildClusterMarkers(int zoom) {
-    return _getMarkers(zoom)
-        .map((element) => buildMarker(
+  List<TrufiMarker> buildTrufiMarkers(int zoom) {
+    return _getFeatures(zoom)
+        .map((element) => _buildTrufiMarker(
             element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
         .toList();
-  }
-
-  @override
-  Widget buildMarkerLayer(int zoom) {
-    return MarkerLayer(
-      markers: _getMarkers(zoom)
-          .map((element) => buildMarker(
-              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-          .toList(),
-    );
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {

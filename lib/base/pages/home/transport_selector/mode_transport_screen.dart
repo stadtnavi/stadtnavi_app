@@ -103,7 +103,6 @@ class _ModeTransportScreen extends State<ModeTransportScreen>
           from: mapRouteState.fromPlace!,
           to: mapRouteState.toPlace!,
           selectedItinerary: mapModesState.selectedItinerary!,
-          tickerProvider: this,
           showAllItineraries: mapModesState.showAllItineraries,
           onTap: (p1) {
             mapModesCubit.selectItinerary(p1);

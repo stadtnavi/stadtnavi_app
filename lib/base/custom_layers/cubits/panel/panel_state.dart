@@ -4,7 +4,7 @@ class PanelState extends Equatable {
   final CustomMarkerPanel? panel;
   final CustomMarkerPanel? modeTransportPanel;
   final bool isTransportPanel;
-  final Marker? selectedMarker;
+  final TrufiMarker? selectedMarker;
 
   const PanelState({
     this.panel,
@@ -17,7 +17,7 @@ class PanelState extends Equatable {
     CustomMarkerPanel? panel,
     CustomMarkerPanel? modeTransportPanel,
     bool? isTransportPanel,
-    Marker? selectedMarker,
+    TrufiMarker? selectedMarker,
   }) {
     return PanelState(
       panel: panel ?? this.panel,

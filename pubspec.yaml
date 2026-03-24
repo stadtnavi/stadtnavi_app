@@ -6,27 +6,28 @@ version: 3.29.3
 publish_to: "none"
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.10.0
   flutter: ">=1.17.0"
 
 dependencies:
   flutter:
     sdk: flutter
   maps_toolkit: ^3.1.0
-  skeletonizer: ^1.4.3
+  skeletonizer: ^2.0.0
   trufi_core:
     git:
       url: https://github.com/trufi-association/trufi-core.git
       ref: 3.29.3-stadtnavi-lts
-  # trufi_core: 
-  #   path: ../trufi-core
   firebase_core: ^3.13.0
   firebase_messaging: ^15.2.5
   firebase_in_app_messaging: ^0.8.1+5
   firebase_app_installations: ^0.3.2+5
   back_button_interceptor: ^8.0.4
   flutter_map_marker_cluster: ^1.4.0
-  vector_tile: ^2.0.0
+  vector_tile: ^3.0.0
+  maplibre_gl: ^0.25.0
+  trufi_core_maps:
+    path: ../trufi-core/packages/trufi_core_maps
   rive: ^0.13.20
   matomo_tracker: ^6.0.0
   flutter_compass: ^0.8.1
@@ -36,6 +37,11 @@ dependencies:
   gtfs_realtime_bindings: ^1.1.0
   graphql: ^5.2.0
   dio: ^5.8.0+1
+
+dependency_overrides:
+  intl: ^0.20.2
+  package_info_plus: ^9.0.0
+  protobuf: ^5.1.0
 
 dev_dependencies:
   flutter_test:

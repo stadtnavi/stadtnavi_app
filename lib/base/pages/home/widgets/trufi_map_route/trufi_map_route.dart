@@ -2,18 +2,21 @@ import 'dart:async';
 import 'package:async_executor/async_executor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart'
+    hide TrufiMapController, MapConfigurationCubit, cachedFirstFetch;
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/payload_data_plan/setting_fetch_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/transport_selector/map_modes_cubit/map_modes_cubit.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/stadtnavi_map.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/maps/trufi_map_cubit/trufi_map_cubit.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/maps/markers/marker_configuration.dart'
+    as stadtnavi_markers;
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/load_location.dart';
+import 'package:stadtnavi_core/base/pages/home/widgets/maps/buttons/crop_button.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
-import 'package:trufi_core/base/widgets/maps/buttons/crop_button.dart';
 import 'package:trufi_core/base/widgets/screen/screen_helpers.dart';
 
 class TrufiMapRoute extends StatefulWidget {
@@ -36,12 +39,14 @@ class TrufiMapRoute extends StatefulWidget {
 class _TrufiMapModeState extends State<TrufiMapRoute>
     with TickerProviderStateMixin {
   final _cropButtonKey = GlobalKey<CropButtonState>();
-  Marker? tempMarker;
+  TrufiMarker? tempMarker;
 
   @override
   Widget build(BuildContext context) {
     final mapRouteState = context.read<MapRouteCubit>().state;
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
+    final markers = mapConfiguratiom.markersConfiguration
+        as stadtnavi_markers.MarkerConfiguration;
     return Stack(
       children: [
         BlocBuilder<TrufiMapController, TrufiMapState>(
@@ -50,34 +55,48 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
             return StadtnaviMap(
               trufiMapController: widget.trufiMapController,
               layerOptionsBuilder: (context) => [
-                if (state.unselectedPolylinesLayer != null)
-                  state.unselectedPolylinesLayer!,
-                if (state.unselectedMarkersLayer != null)
-                  state.unselectedMarkersLayer!,
-                if (state.selectedPolylinesLayer != null)
-                  state.selectedPolylinesLayer!,
-                if (state.selectedMarkersLayer != null)
-                  state.selectedMarkersLayer!,
-                MarkerLayer(markers: [
-                  if (mapRouteState.fromPlace != null)
-                    mapConfiguratiom.markersConfiguration
-                        .buildFromMarker(mapRouteState.fromPlace!.latLng),
-                  if (mapRouteState.toPlace != null)
-                    mapConfiguratiom.markersConfiguration
-                        .buildToMarker(mapRouteState.toPlace!.latLng),
-                  if (tempMarker != null) tempMarker!,
-                ]),
+                if (state.unselectedLines.isNotEmpty)
+                  TrufiLayer(
+                    id: 'unselected_lines',
+                    lines: state.unselectedLines,
+                    layerLevel: 10,
+                  ),
+                if (state.unselectedMarkers.isNotEmpty)
+                  TrufiLayer(
+                    id: 'unselected_markers',
+                    markers: state.unselectedMarkers,
+                    layerLevel: 11,
+                  ),
+                if (state.selectedLines.isNotEmpty)
+                  TrufiLayer(
+                    id: 'selected_lines',
+                    lines: state.selectedLines,
+                    layerLevel: 12,
+                  ),
+                if (state.selectedMarkers.isNotEmpty)
+                  TrufiLayer(
+                    id: 'selected_markers',
+                    markers: state.selectedMarkers,
+                    layerLevel: 13,
+                  ),
+                TrufiLayer(
+                  id: 'from_to_markers',
+                  markers: [
+                    if (mapRouteState.fromPlace != null)
+                      markers
+                          .buildFromTrufiMarker(mapRouteState.fromPlace!.latLng),
+                    if (mapRouteState.toPlace != null)
+                      markers
+                          .buildToTrufiMarker(mapRouteState.toPlace!.latLng),
+                    if (tempMarker != null) tempMarker!,
+                  ],
+                  layerLevel: 14,
+                ),
               ],
-              onTap: (_, point) {
+              onTap: (point) {
                 onMapPress(context, point);
-                // if (widget.trufiMapController.state.unselectedPolylinesLayer !=
-                //     null) {
-                //   _handleOnMapTap(context, point);
-                // } else {
-                //   onMapPress(context, point);
-                // }
               },
-              onLongPress: (_, point) => onLongMapPress(context, point),
+              onLongPress: (point) => onLongMapPress(context, point),
               onPositionChanged: _handleOnMapPositionChanged,
               floatingActionButtons: Column(
                 children: [
@@ -99,40 +118,34 @@ class _TrufiMapModeState extends State<TrufiMapRoute>
     widget.trufiMapController.moveCurrentBounds(tickerProvider: this);
   }
 
-  void _handleOnMapPositionChanged(
-    MapCamera mapCamera,
-    bool hasGesture,
-  ) {
-    if (widget.trufiMapController.selectedBounds != null) {
+  void _handleOnMapPositionChanged(TrufiCameraPosition camera) {
+    if (widget.trufiMapController.selectedBounds != null &&
+        camera.visibleRegion != null) {
+      final visible = camera.visibleRegion!;
+      final selected = widget.trufiMapController.selectedBounds!;
+      final containsBounds =
+          visible.southWest.latitude <= selected.southWest.latitude &&
+          visible.southWest.longitude <= selected.southWest.longitude &&
+          visible.northEast.latitude >= selected.northEast.latitude &&
+          visible.northEast.longitude >= selected.northEast.longitude;
       _cropButtonKey.currentState?.setVisible(
-        visible: !mapCamera.visibleBounds
-            .containsBounds(widget.trufiMapController.selectedBounds!),
+        visible: !containsBounds,
       );
     }
   }
 
-  // void _handleOnMapTap(BuildContext context, LatLng point) {
-  //   final PlanItinerary? tappedItinerary = itineraryForPoint(
-  //       widget.trufiMapController.itineraries,
-  //       widget.trufiMapController.state.unselectedPolylinesLayer!.polylines,
-  //       point);
-  //   if (tappedItinerary != null) {
-  //     context.read<MapRouteCubit>().selectItinerary(tappedItinerary);
-  //   }
-  // }
-
   void onLongMapPress(BuildContext context, LatLng location) {
     final mapConfiguratiom = context.read<MapConfigurationCubit>().state;
+    final markers = mapConfiguratiom.markersConfiguration
+        as stadtnavi_markers.MarkerConfiguration;
     final panelCubit = context.read<PanelCubit>();
     panelCubit.cleanPanel();
     setState(() {
-      tempMarker =
-          mapConfiguratiom.markersConfiguration.buildToMarker(location);
+      tempMarker = markers.buildToTrufiMarker(location);
     });
     widget.trufiMapController.move(
       center: location,
       zoom: mapConfiguratiom.chooseLocationZoom,
-      tickerProvider: this,
     );
     _showBottomMarkerModal(
       context: context,

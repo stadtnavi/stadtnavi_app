@@ -2,17 +2,14 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/custom_layers/map_layers/cached_first_fetch.dart';
-import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/city_bike_feature_tile.dart';
-import 'package:stadtnavi_core/base/custom_layers/marker_tile_container.dart';
 import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
+import 'package:trufi_core_maps/trufi_core_maps.dart'
+    hide MapConfigurationCubit, cachedFirstFetch;
 import 'package:vector_tile/vector_tile.dart';
 
-import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_core/base/custom_layers/static_layer.dart';
@@ -24,124 +21,91 @@ import 'citybikes_enum.dart';
 
 class CityBikesLayer extends CustomLayer {
   final MapLayerCategory mapCategory;
-  // final Map<String, CityBikeFeature> _pbfMarkers = {};
-
-  // Map<String, CityBikeFeature> get data => _pbfMarkers;
 
   CityBikesLayer(this.mapCategory, int weight)
       : super(mapCategory.code, weight);
-  // void addMarker(CityBikeFeature pointFeature) {
-  //   if (_pbfMarkers[pointFeature.id] == null) {
-  //     _pbfMarkers[pointFeature.id] = pointFeature;
-  //     refresh();
-  //   }
-  // }
-  Marker buildMarker({
+
+  TrufiMarker _buildTrufiMarker({
     required CityBikeFeature element,
     required double markerSize,
     bool isSelected = false,
   }) {
     final lastMarkerSize = markerSize + 5 + (isSelected ? 6 : 0);
-    return Marker(
-      key: Key("$id:${element.id}"),
-      height: lastMarkerSize,
-      width: lastMarkerSize,
-      point: element.position,
+    return TrufiMarker(
+      id: "$id:${element.id}",
+      position: element.position,
+      size: Size(lastMarkerSize, lastMarkerSize),
       alignment: Alignment.topCenter,
-      child: Builder(builder: (context) {
-        return MarkerTileContainer(
-          menuBuilder: (_) => CityBikeFeatureTile(
-            element: element,
-          ),
-          child: GestureDetector(
-            onTap: () {
-              final panelCubit = context.read<PanelCubit>();
-              final selectedMarker = buildMarker(
+      imageCacheKey: isSelected
+          ? 'citybike_selected_${element.type}_${element.extraInfo?.bikesAvailable}'
+          : 'citybike_${element.type}_${element.extraInfo?.bikesAvailable}',
+      buildPanel: (context) {
+        return element.id == "cargobike-herrenberg"
+            ? CargoBikeMarkerModal(
                 element: element,
-                markerSize: markerSize,
-                isSelected: true,
+                onFetchPlan: () {},
+              )
+            : CitybikeMarkerModal(
+                element: element,
+                onFetchPlan: () {},
               );
-              panelCubit.setPanel(
-                CustomMarkerPanel(
-                  panel: (
-                    context,
-                    onFetchPlan, {
-                    isOnlyDestination,
-                  }) =>
-                      element.id == "cargobike-herrenberg"
-                          ? CargoBikeMarkerModal(
-                              element: element,
-                              onFetchPlan: onFetchPlan,
-                            )
-                          : CitybikeMarkerModal(
-                              element: element,
-                              onFetchPlan: onFetchPlan,
-                            ),
-                  position: element.position,
-                  minSize: 50,
-                ),
-                selectedMarker: selectedMarker,
-              );
-            },
-            child: SharingMarkerUpdater(
-              element: element,
-              addMarker: forceAddMarker,
-              child: Stack(
-                children: [
-                  Container(
-                    height: markerSize,
-                    width: markerSize,
-                    margin: EdgeInsets.only(top: markerSize / 5),
-                    padding: isSelected ? const EdgeInsets.all(1) : null,
-                    decoration: isSelected
-                        ? BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 2,
-                            ),
-                          )
-                        : null,
-                    child: element.type?.imageStop,
-                  ),
-                  if (element.extraInfo?.bikesAvailable != null &&
-                      element.extraInfo!.bikesAvailable! >= 0 &&
-                      element.type != CityBikeLayerIds.carSharing)
-                    Positioned(
-                      right: markerSize / 5,
-                      child: Container(
-                        height: markerSize / 1.7,
-                        width: markerSize / 1.7,
-                        decoration: BoxDecoration(
-                          color: element.id == "cargobike-herrenberg" ||
-                                  element.extraInfo!.bikesAvailable! == 0
-                              ? Colors.red
-                              : element.extraInfo!.bikesAvailable! > 4
-                                  ? const Color(0xff448A54)
-                                  : Colors.orange,
-                          borderRadius: BorderRadius.circular(100),
-                          border: Border.all(
-                            color: Colors.white,
-                          ),
-                        ),
-                        child: Center(
-                          child: Text(
-                            "${element.extraInfo!.bikesAvailable}",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: markerSize / 2.5,
-                            ),
-                          ),
-                        ),
+      },
+      widget: SharingMarkerUpdater(
+        element: element,
+        addMarker: forceAddMarker,
+        child: Stack(
+          children: [
+            Container(
+              height: markerSize,
+              width: markerSize,
+              margin: EdgeInsets.only(top: markerSize / 5),
+              padding: isSelected ? const EdgeInsets.all(1) : null,
+              decoration: isSelected
+                  ? BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.green,
+                        width: 2,
                       ),
                     )
-                ],
-              ),
+                  : null,
+              child: element.type?.imageStop,
             ),
-          ),
-        );
-      }),
+            if (element.extraInfo?.bikesAvailable != null &&
+                element.extraInfo!.bikesAvailable! >= 0 &&
+                element.type != CityBikeLayerIds.carSharing)
+              Positioned(
+                right: markerSize / 5,
+                child: Container(
+                  height: markerSize / 1.7,
+                  width: markerSize / 1.7,
+                  decoration: BoxDecoration(
+                    color: element.id == "cargobike-herrenberg" ||
+                            element.extraInfo!.bikesAvailable! == 0
+                        ? Colors.red
+                        : element.extraInfo!.bikesAvailable! > 4
+                            ? const Color(0xff448A54)
+                            : Colors.orange,
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(
+                      color: Colors.white,
+                    ),
+                  ),
+                  child: Center(
+                    child: Text(
+                      "${element.extraInfo!.bikesAvailable}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: markerSize / 2.5,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+          ],
+        ),
+      ),
     );
   }
 
@@ -161,7 +125,8 @@ class CityBikesLayer extends CustomLayer {
     final itemsLength =
         MapMarkersRepositoryContainer.cityBikeFeature.items.length;
 
-    if (zoom == _lastCityBikeZoom && itemsLength == _lastCityBikeItemsLength) {
+    if (zoom == _lastCityBikeZoom &&
+        itemsLength == _lastCityBikeItemsLength) {
       return _cachedCityBikeMarkers;
     }
 
@@ -183,21 +148,11 @@ class CityBikesLayer extends CustomLayer {
   }
 
   @override
-  List<Marker>? buildClusterMarkers(int zoom) {
+  List<TrufiMarker> buildTrufiMarkers(int zoom) {
     return _getMarkers(zoom)
-        .map((element) => buildMarker(
+        .map((element) => _buildTrufiMarker(
             element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
         .toList();
-  }
-
-  @override
-  Widget buildMarkerLayer(int zoom) {
-    return MarkerLayer(
-      markers: _getMarkers(zoom)
-          .map((element) => buildMarker(
-              element: element, markerSize: CustomLayer.getMarkerSize(zoom)))
-          .toList(),
-    );
   }
 
   static Future<void> fetchPBF(int z, int x, int y) async {

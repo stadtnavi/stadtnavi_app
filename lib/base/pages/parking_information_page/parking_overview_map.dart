@@ -48,7 +48,6 @@ class _ParkingOverviewMapState extends State<ParkingOverviewMap>
           () => trufiMapController.move(
             center: panelCubit.state.panel!.position,
             zoom: 17,
-            tickerProvider: this,
           ),
         );
       }
@@ -88,11 +87,10 @@ class _ParkingOverviewMapState extends State<ParkingOverviewMap>
                             showMapTypeButton: false,
                             showLayerById: 'parkAndRide',
                             layerOptionsBuilder: (context) => [],
-                            onTap: (_, point) {
+                            onTap: (point) {
                               trufiMapController.move(
                                 center: point,
                                 zoom: mapConfiguration.chooseLocationZoom,
-                                tickerProvider: this,
                               );
                             },
                           );

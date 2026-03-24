@@ -107,8 +107,7 @@ class _HomePageState extends State<HomePage>
       if (panelCubit.state.panel != null) {
         trufiMapController.move(
           center: panelCubit.state.panel!.position,
-          zoom: trufiMapController.mapController.camera.zoom,
-          tickerProvider: this,
+          zoom: trufiMapController.mapController.cameraPosition?.zoom ?? 14,
         );
       }
     });
@@ -137,7 +136,6 @@ class _HomePageState extends State<HomePage>
                 trufiMapController.move(
                   center: fromPlace.latLng,
                   zoom: mapConfiguratiom.chooseLocationZoom,
-                  tickerProvider: this,
                 );
                 _callFetchPlan(context);
               },
@@ -155,7 +153,6 @@ class _HomePageState extends State<HomePage>
                 trufiMapController.move(
                   center: toPlace.latLng,
                   zoom: mapConfiguratiom.chooseLocationZoom,
-                  tickerProvider: this,
                 );
                 _callFetchPlan(context);
               },

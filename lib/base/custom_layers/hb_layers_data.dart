@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
 import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/live_bus/live_bus_layer.dart';
@@ -228,11 +227,6 @@ class MapLayerCategory {
 
 class UndefinedMapLayer extends CustomLayer {
   UndefinedMapLayer() : super("UndefinedMapLayer", 1);
-
-  @override
-  Widget buildMarkerLayer(int zoom) {
-    return const Icon(Icons.error, color: Colors.red);
-  }
 
   @override
   Widget icon(BuildContext context) {

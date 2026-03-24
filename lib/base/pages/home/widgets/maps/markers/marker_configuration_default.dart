@@ -13,50 +13,38 @@ class DefaultMarkerConfiguration implements MarkerConfiguration {
   Widget get yourLocationMarker => const MyLocationMarker();
 
   @override
-  Marker buildFromMarker(LatLng point) {
-    return Marker(
-      point: point,
-      width: 24.0,
-      height: 24.0,
+  TrufiMarker buildFromTrufiMarker(LatLng point) {
+    return TrufiMarker(
+      id: 'from_marker_${point.latitude}_${point.longitude}',
+      position: point,
+      size: const Size(24, 24),
       alignment: Alignment.center,
-      child: fromMarker,
+      imageCacheKey: 'default_from_marker',
+      widget: fromMarker,
     );
   }
 
   @override
-  Marker buildToMarker(LatLng point) {
-    return Marker(
-      point: point,
+  TrufiMarker buildToTrufiMarker(LatLng point) {
+    return TrufiMarker(
+      id: 'to_marker_${point.latitude}_${point.longitude}',
+      position: point,
+      size: const Size(30, 30),
       alignment: Alignment.topCenter,
-      child: toMarker,
+      imageCacheKey: 'default_to_marker',
+      widget: toMarker,
     );
   }
 
   @override
-  Marker buildYourLocationMarker(LatLng? point) {
-    return (point != null)
-        ? Marker(
-            width: 50.0,
-            height: 50.0,
-            point: point,
-            alignment: Alignment.center,
-            child: const MyLocationMarker(),
-          )
-        : Marker(width: 0, height: 0, point: LatLng(0, 0), child: Container());
-  }
-
-  @override
-  MarkerLayer buildFromMarkerLayerOptions(LatLng point) {
-    return MarkerLayer(markers: [buildFromMarker(point)]);
-  }
-
-  @override
-  MarkerLayer buildToMarkerLayerOptions(LatLng point) {
-    return MarkerLayer(markers: [buildToMarker(point)]);
-  }
-
-  @override
-  MarkerLayer buildYourLocationMarkerLayerOptions(LatLng? point) {
-    return MarkerLayer(markers: [buildYourLocationMarker(point)]);
+  TrufiMarker buildYourLocationTrufiMarker(LatLng point) {
+    return TrufiMarker(
+      id: 'your_location_marker',
+      position: point,
+      size: const Size(50, 50),
+      alignment: Alignment.center,
+      imageCacheKey: 'default_your_location_marker',
+      widget: const MyLocationMarker(),
+    );
   }
 }
