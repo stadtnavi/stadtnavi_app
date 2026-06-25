@@ -184,30 +184,34 @@ class CarSharingLayer extends CustomLayer {
 // cargo_bicycle -> "BICYCLE,CARGO_BICYCLE"
 // bicycle -> "BICYCLE";"BICYCLE,SCOOTER"
     _cachedParkingMarkers =
-        MapMarkersRepositoryContainer.carSharingFeature.items.where((element) {
-      if (element.formFactors == null) return false;
-
-      switch (mapCategory.code) {
-        case "car":
-          return element.formFactors == "BICYCLE,CAR";
-        case "cargo_bicycle":
-          return element.formFactors == "BICYCLE,CARGO_BICYCLE";
-        case "bicycle":
-          return element.formFactors == "BICYCLE" ||
-              element.formFactors == "BICYCLE,SCOOTER";
-        default:
-          return false;
-      }
-    }).where((element) {
-      final targetMapLayerCategory =
-          MapLayerCategory.findCategoryWithProperties(
-        mapCategory,
-        mapCategory.code,
-      );
-      final layerMinZoom =
-          targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
-      return layerMinZoom < zoom;
-    }).toList();
+        MapMarkersRepositoryContainer.carSharingFeature.items
+            .where((element) {
+              if (element.formFactors == null) return false;
+              switch (mapCategory.code) {
+                case "car":
+                  return element.formFactors == "BICYCLE,CAR" ||
+                      element.formFactors == "CAR";
+                case "cargo_bicycle":
+                  return element.formFactors == "BICYCLE,CARGO_BICYCLE" ||
+                      element.formFactors == "CARGO_BICYCLE";
+                case "bicycle":
+                  return element.formFactors == "BICYCLE" ||
+                      element.formFactors == "BICYCLE,SCOOTER";
+                default:
+                  return false;
+              }
+            })
+            .where((element) {
+              final targetMapLayerCategory =
+                  MapLayerCategory.findCategoryWithProperties(
+                    mapCategory,
+                    mapCategory.code,
+                  );
+              final layerMinZoom =
+                  targetMapLayerCategory?.properties?.layerMinZoom ?? 15;
+              return layerMinZoom < zoom;
+            })
+            .toList();
 
     return _cachedParkingMarkers;
   }
