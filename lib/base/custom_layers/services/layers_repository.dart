@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:gql/language.dart';
 import 'package:graphql/client.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/poi_feature_model.dart';
 import 'package:stadtnavi_core/base/models/othermodel/route.dart';
 import 'package:stadtnavi_core/configuration/graphql_client.dart';
 import 'package:trufi_core/base/utils/graphql_client/graphql_utils.dart';
@@ -240,6 +244,70 @@ class LayersRepository {
         parkingResult.data!['vehicleParking'] as Map<String, dynamic>);
 
     return VehicleParkingDataFetch.fromVehicleParking(parkingData);
+  }
+
+  static Future<PoiFeature> fetchPoi({
+    required String osmId,
+    required String category,
+    required LatLng position,
+  }) async {
+    final uri = Uri.parse(
+      '${ApiConfig().featureDetailsUrl}/collections/public.pois/items.json',
+    ).replace(
+      queryParameters: {
+        'osm_id': osmId,
+        'category3': category,
+      },
+    );
+    final response = await http.get(uri);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load POI: ${response.statusCode}');
+    }
+    final body = jsonDecode(utf8.decode(response.bodyBytes));
+    final features = body is Map<String, dynamic> ? body['features'] : null;
+    if (features is! List || features.isEmpty) {
+      throw Exception('POI not found');
+    }
+    final feature = features.first;
+    if (feature is! Map || feature['properties'] is! Map) {
+      throw Exception('Invalid POI response');
+    }
+    final properties = Map<String, dynamic>.from(
+      feature['properties'] as Map,
+    );
+    String? stringValue(String key) => properties[key]?.toString();
+    bool? boolValue(String key) =>
+        properties[key] is bool ? properties[key] as bool : null;
+
+    return PoiFeature(
+      geoJsonPoint: null,
+      id: stringValue('id') ?? '',
+      osmId: stringValue('osm_id') ?? osmId,
+      address: stringValue('address'),
+      brand: stringValue('brand'),
+      category1: stringValue('category1') ?? category,
+      category2: stringValue('category2') ?? category,
+      category3: stringValue('category3') ?? category,
+      changingTable: stringValue('changing_table'),
+      cuisine: stringValue('cuisine'),
+      dog: stringValue('dog'),
+      drinkingWater: boolValue('drinking_water'),
+      email: stringValue('email'),
+      fee: boolValue('fee'),
+      fuel: stringValue('fuel'),
+      internetAccess: stringValue('internet_access'),
+      name: stringValue('name'),
+      openingHours: stringValue('opening_hours'),
+      operatorName: stringValue('operator'),
+      osmType: stringValue('osm_type'),
+      outdoorSeating: stringValue('outdoor_seating'),
+      phone: stringValue('phone'),
+      sauna: stringValue('sauna'),
+      swimmingPool: stringValue('swimming_pool'),
+      website: stringValue('website'),
+      wheelchair: stringValue('wheelchair'),
+      position: position,
+    );
   }
 }
 

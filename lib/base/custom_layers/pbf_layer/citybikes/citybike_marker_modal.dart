@@ -7,6 +7,7 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_web_url.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -158,6 +159,9 @@ class _CitybikeMarkerModalState extends State<CitybikeMarkerModal> {
                       ),
                     CustomLocationSelector(
                       onFetchPlan: widget.onFetchPlan,
+                      shareDeepLink: StadtnaviRentalStationDeepLink(
+                        cityBikeDataFetch!.stationId ?? widget.element.id,
+                      ),
                       locationData: LocationDetail(
                         cityBikeDataFetch!.name ?? "",
                         "",
@@ -381,6 +385,8 @@ class _CargobikeMarkerModalState extends State<CargoBikeMarkerModal> {
           const Divider(),
           CustomLocationSelector(
             onFetchPlan: widget.onFetchPlan,
+            shareDeepLink:
+                StadtnaviRentalStationDeepLink(widget.element.id),
             locationData: LocationDetail(
               cityBikeDataFetch!.name,
               "",

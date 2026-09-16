@@ -13,8 +13,17 @@ class PanelCubit extends Cubit<PanelState> {
       const Duration(milliseconds: 0),
       () => emit(
         state.isTransportPanel
-            ? state.copyWith(modeTransportPanel: panel, selectedMarker: selectedMarker)
-            : state.copyWith(panel: panel, selectedMarker: selectedMarker),
+            ? PanelState(
+                panel: state.panel,
+                modeTransportPanel: panel,
+                isTransportPanel: true,
+                selectedMarker: selectedMarker,
+              )
+            : PanelState(
+                panel: panel,
+                modeTransportPanel: state.modeTransportPanel,
+                selectedMarker: selectedMarker,
+              ),
       ),
     );
   }

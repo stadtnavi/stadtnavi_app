@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
 import 'package:stadtnavi_core/deep_links/stadtnavi_deep_link_scope.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_web_url.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/pages/saved_places/search_locations_cubit/search_locations_cubit.dart';
@@ -13,11 +14,13 @@ class CustomLocationSelector extends StatelessWidget {
     required this.locationData,
     required this.onFetchPlan,
     this.isOnlyDestination = false,
+    this.shareDeepLink,
   }) : super(key: key);
 
   final LocationDetail locationData;
   final void Function() onFetchPlan;
   final bool isOnlyDestination;
+  final StadtnaviDeepLink? shareDeepLink;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -96,12 +99,18 @@ class CustomLocationSelector extends StatelessWidget {
                   ? 'Share location'
                   : 'Ort teilen',
               onPressed: () {
-                final uri = webUrl.locationUri(
-                  label: locationData.description.isNotEmpty
-                      ? locationData.description
-                      : locationData.street,
-                  latitude: locationData.position.latitude,
-                  longitude: locationData.position.longitude,
+                final label = locationData.description.isNotEmpty
+                    ? locationData.description
+                    : locationData.street;
+                final uri = webUrl.uriFor(
+                  shareDeepLink ??
+                      StadtnaviLocationDeepLink(
+                        StadtnaviLinkLocation(
+                          label: label,
+                          latitude: locationData.position.latitude,
+                          longitude: locationData.position.longitude,
+                        ),
+                      ),
                 );
                 final renderBox =
                     buttonContext.findRenderObject() as RenderBox?;

@@ -8,6 +8,7 @@ import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:stadtnavi_core/base/models/enums/enums_plan/icons/other_icons.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_web_url.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 
 import 'poi_feature_model.dart';
@@ -234,6 +235,15 @@ class PoiMarkerModal extends StatelessWidget {
           ),
         CustomLocationSelector(
           onFetchPlan: onFetchPlan,
+          shareDeepLink: StadtnaviPoiDeepLink(
+            category: element.category3,
+            osmId: element.osmId,
+            location: StadtnaviLinkLocation(
+              label: element.name ?? '',
+              latitude: element.position.latitude,
+              longitude: element.position.longitude,
+            ),
+          ),
           locationData: LocationDetail(
             element.name ?? "",
             "",

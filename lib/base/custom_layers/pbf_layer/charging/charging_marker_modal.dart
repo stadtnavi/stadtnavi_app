@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_web_url.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -277,6 +278,14 @@ class _ChargingMarkerModalState extends State<ChargingMarkerModal> {
                 const SizedBox(height: 8),
                 CustomLocationSelector(
                   onFetchPlan: widget.onFetchPlan,
+                  shareDeepLink: StadtnaviChargingStationDeepLink(
+                    stationId: widget.element.id,
+                    location: StadtnaviLinkLocation(
+                      label: chargingItem?.name ?? widget.element.name ?? '',
+                      latitude: widget.element.position.latitude,
+                      longitude: widget.element.position.longitude,
+                    ),
+                  ),
                   locationData: LocationDetail(
                     chargingItem?.name ?? "",
                     "",

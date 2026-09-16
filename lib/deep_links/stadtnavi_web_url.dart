@@ -49,6 +49,28 @@ final class StadtnaviRentalStationDeepLink extends StadtnaviDeepLink {
   final String id;
 }
 
+final class StadtnaviPoiDeepLink extends StadtnaviDeepLink {
+  const StadtnaviPoiDeepLink({
+    required this.category,
+    required this.osmId,
+    required this.location,
+  });
+
+  final String category;
+  final String osmId;
+  final StadtnaviLinkLocation location;
+}
+
+final class StadtnaviChargingStationDeepLink extends StadtnaviDeepLink {
+  const StadtnaviChargingStationDeepLink({
+    required this.stationId,
+    required this.location,
+  });
+
+  final String stationId;
+  final StadtnaviLinkLocation location;
+}
+
 final class StadtnaviParkingDeepLink extends StadtnaviDeepLink {
   const StadtnaviParkingDeepLink({
     required this.id,
@@ -113,12 +135,71 @@ class StadtnaviWebUrl {
     required String label,
     required double latitude,
     required double longitude,
-  }) {
-    if (!_validCoordinates(latitude, longitude)) {
-      throw ArgumentError('Invalid coordinates: $latitude,$longitude');
+  }) => uriFor(
+    StadtnaviLocationDeepLink(
+      StadtnaviLinkLocation(
+        label: label,
+        latitude: latitude,
+        longitude: longitude,
+      ),
+    ),
+  );
+
+  /// Generates the canonical digitransit-ui URL for a native destination.
+  Uri uriFor(StadtnaviDeepLink deepLink) {
+    switch (deepLink) {
+      case StadtnaviLocationDeepLink(:final location):
+        _validateLocation(location);
+        return _routeUri([
+          '-',
+          '${location.label.trim()}::${location.latitude},${location.longitude}',
+        ]);
+      case StadtnaviJourneyDeepLink(:final from, :final to):
+        _validateLocation(from);
+        _validateLocation(to);
+        return _routeUri([
+          'reiseplan',
+          '${from.label.trim()}::${from.latitude},${from.longitude}',
+          '${to.label.trim()}::${to.latitude},${to.longitude}',
+        ]);
+      case StadtnaviStopDeepLink(:final id):
+        return _entityUri('haltestellen', id);
+      case StadtnaviRentalStationDeepLink(:final id):
+        return _entityUri('station', id);
+      case StadtnaviParkingDeepLink(:final id, :final isBicycleParking):
+        return _entityUri(
+          isBicycleParking ? 'fahrradparkplaetze' : 'parkplaetze',
+          id,
+        );
+      case StadtnaviPoiDeepLink(:final category, :final osmId, :final location):
+        _validateLocation(location);
+        return _routeUri(
+          ['pois', category],
+          queryParameters: {
+            'lat': '${location.latitude}',
+            'lng': '${location.longitude}',
+            'name': location.label,
+            'osmId': osmId,
+          },
+        );
+      case StadtnaviChargingStationDeepLink(:final stationId, :final location):
+        _validateLocation(location);
+        return _routeUri(
+          ['ladestationen'],
+          queryParameters: {
+            'lat': '${location.latitude}',
+            'lng': '${location.longitude}',
+            'name': location.label,
+            'stationId': stationId,
+          },
+        );
+      case StadtnaviAddressDeepLink():
+        throw ArgumentError.value(
+          deepLink,
+          'deepLink',
+          'Unresolved addresses do not have a canonical web URL',
+        );
     }
-    final endpoint = '${label.trim()}::$latitude,$longitude';
-    return baseUri.resolve('-/${Uri.encodeComponent(endpoint)}');
   }
 
   StadtnaviDeepLink? parse(Uri uri) {
@@ -187,7 +268,25 @@ class StadtnaviWebUrl {
           return null;
         }
         final location = _parseQueryLocation(uri, fallbackLabel: segments[1]);
-        return location == null ? null : StadtnaviLocationDeepLink(location);
+        return location == null
+            ? null
+            : StadtnaviPoiDeepLink(
+              category: segments[1],
+              osmId: osmId,
+              location: location,
+            );
+      }
+
+      if (segments.length == 1 && segments.first == 'ladestationen') {
+        final stationId = uri.queryParameters['stationId'];
+        final location = _parseQueryLocation(uri);
+        if (stationId == null || stationId.isEmpty || location == null) {
+          return null;
+        }
+        return StadtnaviChargingStationDeepLink(
+          stationId: stationId,
+          location: location,
+        );
       }
 
       if (segments.length == 1 && _coordinatePaths.contains(segments.first)) {
@@ -278,6 +377,33 @@ class StadtnaviWebUrl {
       latitude <= 90 &&
       longitude >= -180 &&
       longitude <= 180;
+
+  static void _validateLocation(StadtnaviLinkLocation location) {
+    if (!_validCoordinates(location.latitude, location.longitude)) {
+      throw ArgumentError(
+        'Invalid coordinates: ${location.latitude},${location.longitude}',
+      );
+    }
+  }
+
+  Uri _entityUri(String path, String id) {
+    if (id.trim().isEmpty) {
+      throw ArgumentError.value(id, 'id', 'An entity ID is required');
+    }
+    return _routeUri([path, id]);
+  }
+
+  Uri _routeUri(
+    List<String> pathSegments, {
+    Map<String, String>? queryParameters,
+  }) {
+    final path = pathSegments.map(Uri.encodeComponent).join('/');
+    final query =
+        queryParameters == null
+            ? ''
+            : '?${Uri(queryParameters: queryParameters).query}';
+    return baseUri.resolve('$path$query');
+  }
 
   static Uri _normalizeBaseUri(Uri baseUri) {
     if (baseUri.scheme.toLowerCase() != 'https' || baseUri.host.isEmpty) {

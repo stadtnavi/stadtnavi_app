@@ -6,15 +6,22 @@ import 'package:matomo_tracker/matomo_tracker.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/custom_layers/cubits/panel/panel_cubit.dart';
+import 'package:stadtnavi_core/base/custom_layers/custom_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/hb_layers_data.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_park_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/bike_parks_enum.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/bike_parks/citybike_marker_modal.dart'
     as bike_parking;
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybike_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybike_marker_modal.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybikes_layer.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_feature_model.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/charging/charging_marker_modal.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parking_marker_modal.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/parking/parkings_enum.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/poi_marker_modal.dart';
+import 'package:stadtnavi_core/base/custom_layers/pbf_layer/pois/pois_layer.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_feature_model.dart';
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/stops/stop_marker_modal/stop_marker_modal_base.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
@@ -72,6 +79,7 @@ class _HomePageState extends State<HomePage>
         TraceableClientMixin {
   final TrufiMapController trufiMapController = TrufiMapController();
   String? _lastProcessedDeepLinkRequest;
+  int _deepLinkGeneration = 0;
 
   @override
   void initState() {
@@ -116,8 +124,9 @@ class _HomePageState extends State<HomePage>
         deepLinkRequest != null &&
         deepLinkRequest != _lastProcessedDeepLinkRequest) {
       _lastProcessedDeepLinkRequest = deepLinkRequest;
+      final generation = ++_deepLinkGeneration;
       try {
-        await _handleDeepLink(deepLink);
+        await _handleDeepLink(deepLink, generation);
       } catch (error, stackTrace) {
         debugPrint('Could not open stadtnavi deep link: $error');
         debugPrintStack(stackTrace: stackTrace);
@@ -132,23 +141,30 @@ class _HomePageState extends State<HomePage>
     }
   }
 
-  Future<void> _handleDeepLink(StadtnaviDeepLink deepLink) async {
+  Future<void> _handleDeepLink(
+    StadtnaviDeepLink deepLink,
+    int generation,
+  ) async {
     if (deepLink is StadtnaviLocationDeepLink) {
-      await _showLocation(deepLink.location);
+      await _showLocation(deepLink.location, generation: generation);
     } else if (deepLink is StadtnaviAddressDeepLink) {
-      await _showAddress(deepLink.query);
+      await _showAddress(deepLink.query, generation);
     } else if (deepLink is StadtnaviJourneyDeepLink) {
-      await _showJourney(deepLink);
+      await _showJourney(deepLink, generation);
     } else if (deepLink is StadtnaviStopDeepLink) {
-      await _showStop(deepLink);
+      await _showStop(deepLink, generation);
     } else if (deepLink is StadtnaviRentalStationDeepLink) {
-      await _showRentalStation(deepLink);
+      await _showRentalStation(deepLink, generation);
     } else if (deepLink is StadtnaviParkingDeepLink) {
-      await _showParking(deepLink);
+      await _showParking(deepLink, generation);
+    } else if (deepLink is StadtnaviPoiDeepLink) {
+      await _showPoi(deepLink, generation);
+    } else if (deepLink is StadtnaviChargingStationDeepLink) {
+      await _showChargingStation(deepLink, generation);
     }
   }
 
-  Future<void> _showAddress(String query) async {
+  Future<void> _showAddress(String query, int generation) async {
     if (!mounted) return;
     final localization = TrufiBaseLocalization.of(context);
     final searchLocationsCubit = context.read<SearchLocationsCubit>();
@@ -158,7 +174,7 @@ class _HomePageState extends State<HomePage>
         query,
         lang: Localizations.localeOf(context).languageCode,
       );
-      if (!mounted) return;
+      if (!mounted || generation != _deepLinkGeneration) return;
 
       TrufiLocation? resolvedLocation;
       for (final result in results ?? const <TrufiPlace>[]) {
@@ -189,9 +205,10 @@ class _HomePageState extends State<HomePage>
           latitude: resolvedLocation.latitude,
           longitude: resolvedLocation.longitude,
         ),
+        generation: generation,
       );
     } catch (_) {
-      if (mounted) {
+      if (mounted && generation == _deepLinkGeneration) {
         _showIncomingLocationError(localization.errorNoConnectServer);
       }
     }
@@ -203,8 +220,14 @@ class _HomePageState extends State<HomePage>
       ..showSnackBar(SnackBar(content: Text(message)));
   }
 
-  Future<void> _showLocation(StadtnaviLinkLocation location) async {
-    if (!mounted) return;
+  Future<void> _showLocation(
+    StadtnaviLinkLocation location, {
+    int? generation,
+  }) async {
+    if (!mounted ||
+        (generation != null && generation != _deepLinkGeneration)) {
+      return;
+    }
     final position = LatLng(location.latitude, location.longitude);
     context.read<PanelCubit>().setPanel(
           CustomMarkerPanel(
@@ -217,10 +240,13 @@ class _HomePageState extends State<HomePage>
             minSize: 130,
           ),
         );
-    await _focusMap(position);
+    await _focusMap(position, generation: generation);
   }
 
-  Future<void> _showJourney(StadtnaviJourneyDeepLink deepLink) async {
+  Future<void> _showJourney(
+    StadtnaviJourneyDeepLink deepLink,
+    int generation,
+  ) async {
     if (!mounted) return;
     final mapRouteCubit = context.read<MapRouteCubit>();
     final panelCubit = context.read<PanelCubit>();
@@ -232,17 +258,26 @@ class _HomePageState extends State<HomePage>
     await mapRouteCubit.reset();
     await mapRouteCubit.setFromPlace(from);
     await mapRouteCubit.setToPlace(to);
+    if (!mounted || generation != _deepLinkGeneration) return;
     searchLocationsCubit.insertHistoryPlace(from);
     searchLocationsCubit.insertHistoryPlace(to);
-    await _focusMap(to.latLng);
-    if (mounted) {
+    await _focusMap(to.latLng, generation: generation);
+    if (mounted && generation == _deepLinkGeneration) {
       await _callFetchPlan(context);
     }
   }
 
-  Future<void> _showStop(StadtnaviStopDeepLink deepLink) async {
+  Future<void> _showStop(
+    StadtnaviStopDeepLink deepLink,
+    int generation,
+  ) async {
     final stop = await LayersRepository.fetchStopCached(deepLink.id);
-    if (!mounted || stop.lat == null || stop.lon == null) return;
+    if (!mounted ||
+        generation != _deepLinkGeneration ||
+        stop.lat == null ||
+        stop.lon == null) {
+      return;
+    }
     final position = LatLng(stop.lat!, stop.lon!);
     final stopFeature = StopFeature(
       code: stop.code,
@@ -264,14 +299,20 @@ class _HomePageState extends State<HomePage>
             minSize: 130,
           ),
         );
-    await _focusMap(position);
+    await _focusMap(position, generation: generation);
   }
 
   Future<void> _showRentalStation(
     StadtnaviRentalStationDeepLink deepLink,
+    int generation,
   ) async {
     final station = await LayersRepository.fetchCityBikesData(deepLink.id);
-    if (!mounted || station.lat == null || station.lon == null) return;
+    if (!mounted ||
+        generation != _deepLinkGeneration ||
+        station.lat == null ||
+        station.lon == null) {
+      return;
+    }
     final position = LatLng(station.lat!, station.lon!);
     final feature = CityBikeFeature(
       geoJsonPoint: null,
@@ -280,25 +321,52 @@ class _HomePageState extends State<HomePage>
       position: position,
       extraInfo: station,
     );
+    final selectedMarker = CityBikesLayer(
+      MapLayerCategory(
+        code: station.firstNetwork?.name ?? 'station',
+        en: '',
+        de: '',
+        categories: const [],
+      ),
+      3,
+    ).buildMarker(
+      element: feature,
+      markerSize: CustomLayer.getMarkerSize(
+        context
+            .read<MapConfigurationCubit>()
+            .state
+            .chooseLocationZoom
+            .round(),
+      ),
+      isSelected: true,
+    );
     context.read<PanelCubit>().setPanel(
           CustomMarkerPanel(
             panel: (context, onFetchPlan, {isOnlyDestination}) =>
-                CitybikeMarkerModal(element: feature, onFetchPlan: onFetchPlan),
+                CitybikeMarkerModal(
+              key: ValueKey(deepLink.id),
+              element: feature,
+              onFetchPlan: onFetchPlan,
+            ),
             position: position,
             minSize: 50,
           ),
+          selectedMarker: selectedMarker,
         );
-    await _focusMap(position);
+    await _focusMap(position, generation: generation);
   }
 
-  Future<void> _showParking(StadtnaviParkingDeepLink deepLink) async {
+  Future<void> _showParking(
+    StadtnaviParkingDeepLink deepLink,
+    int generation,
+  ) async {
     try {
       final parking = await LayersRepository.fetchPark(deepLink.id);
-      if (!mounted) return;
+      if (!mounted || generation != _deepLinkGeneration) return;
       if (parking.lat == null || parking.lon == null) {
         final fallback = deepLink.fallbackLocation;
         if (fallback != null) {
-          await _showLocation(fallback);
+          await _showLocation(fallback, generation: generation);
         }
         return;
       }
@@ -370,12 +438,110 @@ class _HomePageState extends State<HomePage>
               ),
             );
       }
-      await _focusMap(position);
+      await _focusMap(position, generation: generation);
     } catch (_) {
+      if (!mounted || generation != _deepLinkGeneration) return;
       final fallback = deepLink.fallbackLocation;
       if (fallback == null) rethrow;
-      await _showLocation(fallback);
+      await _showLocation(fallback, generation: generation);
     }
+  }
+
+  Future<void> _showPoi(
+    StadtnaviPoiDeepLink deepLink,
+    int generation,
+  ) async {
+    try {
+      final position = LatLng(
+        deepLink.location.latitude,
+        deepLink.location.longitude,
+      );
+      final poi = await LayersRepository.fetchPoi(
+        osmId: deepLink.osmId,
+        category: deepLink.category,
+        position: position,
+      );
+      if (!mounted || generation != _deepLinkGeneration) return;
+      final mapCategory = HBLayerData.findCategoryRecursively(
+        HBLayerData.categories,
+        poi.category2,
+      );
+      final category = mapCategory == null
+          ? HBLayerData.findCategoryRecursively(
+              HBLayerData.categories,
+              deepLink.category,
+            )
+          : MapLayerCategory.findCategoryWithProperties(
+              mapCategory,
+              poi.category3,
+            );
+      final markerCategory = mapCategory ?? category;
+      final selectedMarker = markerCategory == null
+          ? null
+          : MapPoiLayer(markerCategory, 3).buildMarker(
+              element: poi,
+              markerSize: CustomLayer.getMarkerSize(
+                context
+                    .read<MapConfigurationCubit>()
+                    .state
+                    .chooseLocationZoom
+                    .round(),
+              ),
+              isSelected: true,
+            );
+      context.read<PanelCubit>().setPanel(
+            CustomMarkerPanel(
+              panel: (context, onFetchPlan, {isOnlyDestination}) =>
+                  PoiMarkerModal(
+                element: poi,
+                onFetchPlan: onFetchPlan,
+                targetMapLayerCategory: category,
+              ),
+              position: position,
+              minSize: 50,
+            ),
+            selectedMarker: selectedMarker,
+          );
+      await _focusMap(position, generation: generation);
+    } catch (_) {
+      if (!mounted || generation != _deepLinkGeneration) return;
+      await _showLocation(deepLink.location, generation: generation);
+    }
+  }
+
+  Future<void> _showChargingStation(
+    StadtnaviChargingStationDeepLink deepLink,
+    int generation,
+  ) async {
+    if (!mounted || generation != _deepLinkGeneration) return;
+    final position = LatLng(
+      deepLink.location.latitude,
+      deepLink.location.longitude,
+    );
+    final feature = ChargingFeature(
+      geoJsonPoint: null,
+      id: deepLink.stationId,
+      name: deepLink.location.label,
+      capacity: null,
+      available: null,
+      tb: null,
+      capacityUnknown: null,
+      type: null,
+      position: position,
+    );
+    context.read<PanelCubit>().setPanel(
+          CustomMarkerPanel(
+            panel: (context, onFetchPlan, {isOnlyDestination}) =>
+                ChargingMarkerModal(
+              key: ValueKey(deepLink.stationId),
+              element: feature,
+              onFetchPlan: onFetchPlan,
+            ),
+            position: position,
+            minSize: 50,
+          ),
+        );
+    await _focusMap(position, generation: generation);
   }
 
   TrufiLocation _toTrufiLocation(StadtnaviLinkLocation location) =>
@@ -386,9 +552,15 @@ class _HomePageState extends State<HomePage>
         longitude: location.longitude,
       );
 
-  Future<void> _focusMap(LatLng position) async {
+  Future<void> _focusMap(
+    LatLng position, {
+    int? generation,
+  }) async {
     await trufiMapController.onReady;
-    if (!mounted) return;
+    if (!mounted ||
+        (generation != null && generation != _deepLinkGeneration)) {
+      return;
+    }
     final mapConfiguration = context.read<MapConfigurationCubit>().state;
     trufiMapController.move(
       center: position,

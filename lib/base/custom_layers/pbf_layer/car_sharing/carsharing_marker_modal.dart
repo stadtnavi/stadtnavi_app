@@ -8,6 +8,7 @@ import 'package:stadtnavi_core/base/custom_layers/pbf_layer/car_sharing/icon_net
 import 'package:stadtnavi_core/base/custom_layers/pbf_layer/citybikes/citybike_data_fetch.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_web_url.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
 import 'package:stadtnavi_core/base/translations/string_translation.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
@@ -201,6 +202,7 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
           Text(fetchError!, style: const TextStyle(color: Colors.red)),
         CustomLocationSelector(
           onFetchPlan: widget.onFetchPlan,
+          shareDeepLink: StadtnaviRentalStationDeepLink(_canonicalStationId),
           locationData: LocationDetail(
             widget.element.name ?? "",
             "",
@@ -218,7 +220,7 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
       loading = true;
     });
     await LayersRepository.fetchCityBikesData(
-          widget.element.id.split(":").skip(1).join(":"),
+          _canonicalStationId,
         )
         .then((value) {
           if (mounted) {
@@ -236,5 +238,17 @@ class _CarSharingMarkerModalState extends State<CarSharingMarkerModal> {
             });
           }
         });
+  }
+
+  String get _canonicalStationId {
+    final stationId = cityBikeDataFetch?.stationId;
+    if (stationId != null && stationId.trim().isNotEmpty) {
+      return stationId;
+    }
+    final networkId = widget.element.networkId;
+    final networkPrefix = networkId == null ? null : '$networkId:';
+    return networkPrefix != null && widget.element.id.startsWith(networkPrefix)
+        ? widget.element.id.substring(networkPrefix.length)
+        : widget.element.id;
   }
 }

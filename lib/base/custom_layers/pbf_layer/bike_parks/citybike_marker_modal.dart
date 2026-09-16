@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_web_url.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 
 import 'bike_park_feature_model.dart';
@@ -63,6 +64,10 @@ class CitybikeMarkerModal extends StatelessWidget {
         ),
         CustomLocationSelector(
           onFetchPlan: onFetchPlan,
+          shareDeepLink: StadtnaviParkingDeepLink(
+            id: element.id,
+            isBicycleParking: true,
+          ),
           locationData: LocationDetail(
             element.name ?? "",
             "",

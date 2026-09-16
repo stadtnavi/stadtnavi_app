@@ -33,6 +33,90 @@ void main() {
     });
   });
 
+  group('canonical entity URL generation', () {
+    test('generates and parses shared-mobility station URLs', () {
+      const destination = StadtnaviRentalStationDeepLink('SMT:Station:73');
+      final uri = webUrl.uriFor(destination);
+
+      expect(
+        uri.toString(),
+        'https://herrenberg.stadtnavi.de/station/SMT%3AStation%3A73',
+      );
+      final parsed = webUrl.parse(uri) as StadtnaviRentalStationDeepLink;
+      expect(parsed.id, destination.id);
+    });
+
+    test('generates and parses bicycle-parking URLs', () {
+      const destination = StadtnaviParkingDeepLink(
+        id: 'OSM:OsmNode/4441272931',
+        isBicycleParking: true,
+      );
+      final uri = webUrl.uriFor(destination);
+
+      expect(
+        uri.toString(),
+        'https://herrenberg.stadtnavi.de/fahrradparkplaetze/'
+        'OSM%3AOsmNode%2F4441272931',
+      );
+      final parsed = webUrl.parse(uri) as StadtnaviParkingDeepLink;
+      expect(parsed.id, destination.id);
+      expect(parsed.isBicycleParking, isTrue);
+    });
+
+    test('generates and parses charging-station URLs', () {
+      const destination = StadtnaviChargingStationDeepLink(
+        stationId: '310536',
+        location: StadtnaviLinkLocation(
+          label: 'Lautenschlagerstr. 3',
+          latitude: 48.78280015405272,
+          longitude: 9.180099740624428,
+        ),
+      );
+      final uri = webUrl.uriFor(destination);
+
+      expect(
+        uri.toString(),
+        'https://herrenberg.stadtnavi.de/ladestationen'
+        '?lat=48.78280015405272&lng=9.180099740624428'
+        '&name=Lautenschlagerstr.+3&stationId=310536',
+      );
+      final parsed = webUrl.parse(uri) as StadtnaviChargingStationDeepLink;
+      expect(parsed.stationId, destination.stationId);
+      expect(parsed.location.label, destination.location.label);
+      expect(parsed.location.latitude, destination.location.latitude);
+    });
+
+    test('generates canonical stop URLs', () {
+      final uri = webUrl.uriFor(
+        const StadtnaviStopDeepLink(id: 'hbg:de:08115:4802:0:4'),
+      );
+
+      expect(
+        uri.toString(),
+        'https://herrenberg.stadtnavi.de/haltestellen/'
+        'hbg%3Ade%3A08115%3A4802%3A0%3A4',
+      );
+    });
+
+    test('preserves POI identity through a canonical URL round trip', () {
+      const destination = StadtnaviPoiDeepLink(
+        category: 'restaurant',
+        osmId: '12345',
+        location: StadtnaviLinkLocation(
+          label: 'Café am Markt',
+          latitude: 48.5961,
+          longitude: 8.8704,
+        ),
+      );
+      final parsed =
+          webUrl.parse(webUrl.uriFor(destination)) as StadtnaviPoiDeepLink;
+
+      expect(parsed.category, destination.category);
+      expect(parsed.osmId, destination.osmId);
+      expect(parsed.location.label, destination.location.label);
+    });
+  });
+
   group('web URL parsing', () {
     test('parses a real digitransit journey URL', () {
       final link = webUrl.parse(
@@ -55,21 +139,24 @@ void main() {
           'https://herrenberg.stadtnavi.de/de/pois/restaurant'
           '?lat=48.5961&lng=8.8704&name=Gasthaus&osmId=12345',
         ),
-      ) as StadtnaviLocationDeepLink;
+      ) as StadtnaviPoiDeepLink;
 
+      expect(link.category, 'restaurant');
+      expect(link.osmId, '12345');
       expect(link.location.label, 'Gasthaus');
       expect(link.location.latitude, 48.5961);
       expect(link.location.longitude, 8.8704);
     });
 
-    test('parses coordinate-backed map entity URLs', () {
+    test('parses charging-station identity and location', () {
       final link = webUrl.parse(
         Uri.parse(
           'https://herrenberg.stadtnavi.de/ladestationen'
           '?stationId=charger-1&lat=48.59&lng=8.86&name=Lades%C3%A4ule',
         ),
-      ) as StadtnaviLocationDeepLink;
+      ) as StadtnaviChargingStationDeepLink;
 
+      expect(link.stationId, 'charger-1');
       expect(link.location.label, 'Ladesäule');
       expect(link.location.latitude, 48.59);
     });

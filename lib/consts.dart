@@ -20,6 +20,7 @@ class ApiConfig {
 
   String get openTripPlannerUrl => "https://$baseDomain/otp/gtfs/v1";
   String get faresURL => "https://$baseDomain/fares";
+  String get featureDetailsUrl => "https://featuredetails.stadtnavi.eu";
 
   String get carpoolOffers =>
       "https://dev.stadtnavi.eu/carpool-offers"; // For dev

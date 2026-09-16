@@ -7,6 +7,7 @@ import 'package:stadtnavi_core/base/pages/home/services/custom_search_location/i
 import 'package:stadtnavi_core/base/pages/home/widgets/trufi_map_route/custom_location_selector.dart';
 import 'package:stadtnavi_core/base/custom_layers/services/layers_repository.dart';
 import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_web_url.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -246,6 +247,10 @@ class ParkingMarkerModal extends StatelessWidget {
         CustomLocationSelector(
           onFetchPlan: onFetchPlan,
           isOnlyDestination: isOnlyDestination,
+          shareDeepLink: StadtnaviParkingDeepLink(
+            id: parkingFeature.id,
+            isBicycleParking: false,
+          ),
           locationData: LocationDetail(
             parkingFeature.name ?? "",
             "",
