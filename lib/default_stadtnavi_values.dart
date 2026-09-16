@@ -21,6 +21,7 @@ import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.da
 import 'package:stadtnavi_core/configuration/drawer/menu_items_stadtnavi.dart';
 import 'package:stadtnavi_core/configuration/trufi_drawer.dart';
 import 'package:stadtnavi_core/consts.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_web_url.dart';
 import 'package:stadtnavi_core/stadtnavi_screen_helper.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
@@ -116,6 +117,7 @@ abstract class DefaultStadtnaviValues {
   }
 
   static RouterDelegate<Object> routerDelegate({
+    required StadtnaviWebUrl webUrl,
     required String appName,
     required String cityName,
     WidgetBuilder? backgroundImageBuilder,
@@ -152,27 +154,33 @@ abstract class DefaultStadtnaviValues {
 
     return RoutemasterDelegate(
       routesBuilder: (routeContext) {
+        RouteSettings buildHomePage(RouteData route) {
+          final deepLink = webUrl.parse(Uri.parse(route.fullPath));
+          return StadtnaviNoAnimationPage(
+            restorationId: HomePage.route,
+            appLifecycleReactorHandler: appLifecycleReactorHandler,
+            child: HomePage(
+              deepLink: deepLink,
+              deepLinkRequest: deepLink == null ? null : route.fullPath,
+              asyncExecutor: asyncExecutor ?? AsyncExecutor(),
+              mapBuilder: (mapContext, trufiMapController) {
+                return TrufiMapRoute(
+                  trufiMapController: trufiMapController,
+                  asyncExecutor: asyncExecutor ?? AsyncExecutor(),
+                  extraFloatingMapButtons: extraFloatingMapButtons,
+                );
+              },
+              drawerBuilder: generateDrawer(HomePage.route),
+            ),
+          );
+        }
+
         return RouteMap(
           onUnknownRoute: (_) => const Redirect(HomePage.route),
           routes: {
-            HomePage.route: (route) => StadtnaviNoAnimationPage(
-                  restorationId: HomePage.route,
-                  appLifecycleReactorHandler: appLifecycleReactorHandler,
-                  child: HomePage(
-                    asyncExecutor: asyncExecutor ?? AsyncExecutor(),
-                    mapBuilder: (
-                      mapContext,
-                      trufiMapController,
-                    ) {
-                      return TrufiMapRoute(
-                        trufiMapController: trufiMapController,
-                        asyncExecutor: asyncExecutor ?? AsyncExecutor(),
-                        extraFloatingMapButtons: extraFloatingMapButtons,
-                      );
-                    },
-                    drawerBuilder: generateDrawer(HomePage.route),
-                  ),
-                ),
+            HomePage.route: buildHomePage,
+            for (final template in StadtnaviWebUrl.routeTemplates)
+              template: buildHomePage,
             SavedPlacesPage.route: (route) => StadtnaviNoAnimationPage(
                   child: SavedPlacesPage(
                     drawerBuilder: generateDrawer(SavedPlacesPage.route),

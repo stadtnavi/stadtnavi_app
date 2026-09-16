@@ -11,6 +11,9 @@ import 'package:stadtnavi_core/configuration/config_default/config_default/city_
 import 'package:stadtnavi_core/configuration/custom_async_executor.dart';
 import 'package:stadtnavi_core/configuration/custom_marker_configuration.dart';
 import 'package:stadtnavi_core/default_stadtnavi_values.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_deep_link_scope.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_route_information_parser.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_web_url.dart';
 import 'package:stadtnavi_core/stadtnavi_screen_helper.dart';
 
 import 'package:trufi_core/base/blocs/map_configuration/map_configuration_cubit.dart';
@@ -78,58 +81,65 @@ class StadtnaviApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CityBikeUtils.assertSharingIsInitialized(ConfigDefault.value);
-    return TrufiApp(
-      appNameTitle: appNameTitle,
-      trufiBaseTheme: trufiBaseTheme,
-      trufiLocalization: DefaultStadtnaviValues.trufiLocalization(),
-      blocProviders: DefaultStadtnaviValues.blocProviders(
-        otpGraphqlEndpoint: otpGraphqlEndpoint,
-        mapConfiguration: MapConfiguration(
-          center: center,onlineMaxZoom: 20,
-          onlineZoom: onlineZoom ?? 13,
-          markersConfiguration: const CustomMarkerConfiguration(),
-          mapAttributionBuilder: stadtNaviAttributionBuilder,
-          co2EmmissionUrl: co2EmmissionUrl,
+    final webUrl = StadtnaviWebUrl(Uri.parse(urlShareApp));
+    return StadtnaviDeepLinkScope(
+      webUrl: webUrl,
+      child: TrufiApp(
+        appNameTitle: appNameTitle,
+        trufiBaseTheme: trufiBaseTheme,
+        trufiLocalization: DefaultStadtnaviValues.trufiLocalization(),
+        blocProviders: DefaultStadtnaviValues.blocProviders(
+          otpGraphqlEndpoint: otpGraphqlEndpoint,
+          mapConfiguration: MapConfiguration(
+            center: center,onlineMaxZoom: 20,
+            onlineZoom: onlineZoom ?? 13,
+            markersConfiguration: const CustomMarkerConfiguration(),
+            mapAttributionBuilder: stadtNaviAttributionBuilder,
+            co2EmmissionUrl: co2EmmissionUrl,
+          ),
+          searchLocationRepository: OnlineSearchLocation(
+            queryParameters: searchLocationQueryParameters,
+          ),
+          layersContainer: layersContainer,
+          mapTileProviders: mapTileProviders ??
+              [
+                MapLayer(MapLayerIds.streets),
+                MapLayer(MapLayerIds.satellite),
+                MapLayer(MapLayerIds.bike),
+              ],
+          alertsFeedIds: alertsFeedIds,
+          extraBlocs: extraBlocs,
         ),
-        searchLocationRepository: OnlineSearchLocation(
-          queryParameters: searchLocationQueryParameters,
-        ),
-        layersContainer: layersContainer,
-        mapTileProviders: mapTileProviders ??
-            [
-              MapLayer(MapLayerIds.streets),
-              MapLayer(MapLayerIds.satellite),
-              MapLayer(MapLayerIds.bike),
-            ],
-        alertsFeedIds: alertsFeedIds,
-        extraBlocs: extraBlocs,
-      ),
-      trufiRouter: TrufiRouter(
-        routerDelegate: DefaultStadtnaviValues.routerDelegate(
-          appLifecycleReactorHandler: appLifecycleReactorHandler,
-          appName: appName,
-          cityName: cityName,
-          backgroundImageBuilder: (_) {
-            return Image.asset(
-              'assets/images/drawer-bg.jpg',
-              fit: BoxFit.cover,
-            );
-          },
-          urlFeedback: urlFeedback,
-          urlRepository: urlRepository,
-          urlShareApp: urlShareApp,
-          urlSocialMedia: urlSocialMedia,
-          urlImpressum: urlImpressum,
-          reportDefectsUri: reportDefectsUri,
-          asyncExecutor: customAsyncExecutor,
-          extraDrawerItems: extraDrawerItems,
-          extraRoutes: extraRoutes,
-          extraFloatingMapButtons: extraFloatingMapButtons,
+        trufiRouter: TrufiRouter(
+          routeInformationParser: StadtnaviRouteInformationParser(webUrl),
+          routerDelegate: DefaultStadtnaviValues.routerDelegate(
+            webUrl: webUrl,
+            appLifecycleReactorHandler: appLifecycleReactorHandler,
+            appName: appName,
+            cityName: cityName,
+            backgroundImageBuilder: (_) {
+              return Image.asset(
+                'assets/images/drawer-bg.jpg',
+                fit: BoxFit.cover,
+              );
+            },
+            urlFeedback: urlFeedback,
+            urlRepository: urlRepository,
+            urlShareApp: urlShareApp,
+            urlSocialMedia: urlSocialMedia,
+            urlImpressum: urlImpressum,
+            reportDefectsUri: reportDefectsUri,
+            asyncExecutor: customAsyncExecutor,
+            extraDrawerItems: extraDrawerItems,
+            extraRoutes: extraRoutes,
+            extraFloatingMapButtons: extraFloatingMapButtons,
+          ),
         ),
       ),
     );
   }
 }
+
 extension IterableExtensions<T> on Iterable<T> {
   T? firstWhereOrNull(bool Function(T) test) {
     for (var element in this) {

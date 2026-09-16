@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:stadtnavi_core/base/pages/home/cubits/map_route_cubit/map_route_cubit.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_deep_link_scope.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/pages/saved_places/search_locations_cubit/search_locations_cubit.dart';
 import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
@@ -22,6 +24,7 @@ class CustomLocationSelector extends StatelessWidget {
     final localization = TrufiBaseLocalization.of(context);
     final mapRouteCubit = context.read<MapRouteCubit>();
     final searchLocationsCubit = context.read<SearchLocationsCubit>();
+    final webUrl = StadtnaviDeepLinkScope.maybeOf(context);
     return Row(
       children: [
         const SizedBox(width: 10),
@@ -85,6 +88,37 @@ class CustomLocationSelector extends StatelessWidget {
                   ),
                 ),
         ),
+        if (webUrl != null) ...[
+          const SizedBox(width: 4),
+          Builder(
+            builder: (buttonContext) => IconButton(
+              tooltip: Localizations.localeOf(context).languageCode == 'en'
+                  ? 'Share location'
+                  : 'Ort teilen',
+              onPressed: () {
+                final uri = webUrl.locationUri(
+                  label: locationData.description.isNotEmpty
+                      ? locationData.description
+                      : locationData.street,
+                  latitude: locationData.position.latitude,
+                  longitude: locationData.position.longitude,
+                );
+                final renderBox =
+                    buttonContext.findRenderObject() as RenderBox?;
+                SharePlus.instance.share(
+                  ShareParams(
+                    uri: uri,
+                    subject: locationData.description,
+                    sharePositionOrigin: renderBox == null
+                        ? null
+                        : renderBox.localToGlobal(Offset.zero) & renderBox.size,
+                  ),
+                );
+              },
+              icon: const Icon(Icons.share_outlined),
+            ),
+          ),
+        ],
         const SizedBox(width: 10),
       ],
     );

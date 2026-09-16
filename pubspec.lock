@@ -910,7 +910,7 @@ packages:
     source: hosted
     version: "0.4.15"
   routemaster:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: routemaster
       sha256: b3b10b6ee31c741b453091e6b33323cc96631b19e4a14fc6069e9de056c7311c
@@ -926,7 +926,7 @@ packages:
     source: hosted
     version: "0.28.0"
   share_plus:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: share_plus
       sha256: b2961506569e28948d75ec346c28775bb111986bb69dc6a20754a457e3d97fa0

@@ -11,10 +11,12 @@ import 'package:trufi_core/base/pages/saved_places/search_locations_cubit/search
 class LoadLocation extends StatefulWidget {
   final LatLng location;
   final AsyncCallback onFetchPlan;
+  final String? preferredDescription;
   const LoadLocation({
     Key? key,
     required this.location,
     required this.onFetchPlan,
+    this.preferredDescription,
   }) : super(key: key);
   @override
   _LoadLocationState createState() => _LoadLocationState();
@@ -107,13 +109,22 @@ class _LoadLocationState extends State<LoadLocation> {
     final searchLocationsCubit = context.read<SearchLocationsCubit>();
     return searchLocationsCubit
         .reverseGeodecoding(
-      widget.location,
-      lang: Localizations.localeOf(context).languageCode,
-    )
-        .catchError(
-      (error) {
-        return LocationDetail("unknown place", "", widget.location);
-      },
-    );
+          widget.location,
+          lang: Localizations.localeOf(context).languageCode,
+        )
+        .then(
+          (location) => LocationDetail(
+            widget.preferredDescription ?? location.description,
+            location.street,
+            widget.location,
+          ),
+        )
+        .catchError((error) {
+      return LocationDetail(
+        widget.preferredDescription ?? "unknown place",
+        "",
+        widget.location,
+      );
+    });
   }
 }
