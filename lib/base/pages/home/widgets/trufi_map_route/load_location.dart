@@ -26,12 +26,23 @@ class _LoadLocationState extends State<LoadLocation> {
   bool loading = true;
   String? fetchError;
   LocationDetail? locationData;
+  int _loadGeneration = 0;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((duration) {
       loadData();
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant LoadLocation oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.location != widget.location ||
+        oldWidget.preferredDescription != widget.preferredDescription) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => loadData());
+    }
   }
 
   @override
@@ -84,19 +95,20 @@ class _LoadLocationState extends State<LoadLocation> {
 
   Future<void> loadData() async {
     if (!mounted) return;
+    final loadGeneration = ++_loadGeneration;
     setState(() {
       fetchError = null;
       loading = true;
     });
     await _fetchData().then((value) {
-      if (mounted) {
+      if (mounted && loadGeneration == _loadGeneration) {
         setState(() {
           locationData = value;
           loading = false;
         });
       }
     }).catchError((error) {
-      if (mounted) {
+      if (mounted && loadGeneration == _loadGeneration) {
         setState(() {
           fetchError = "$error";
           loading = false;
@@ -107,23 +119,25 @@ class _LoadLocationState extends State<LoadLocation> {
 
   Future<LocationDetail> _fetchData() async {
     final searchLocationsCubit = context.read<SearchLocationsCubit>();
+    final location = widget.location;
+    final preferredDescription = widget.preferredDescription;
     return searchLocationsCubit
         .reverseGeodecoding(
-          widget.location,
+          location,
           lang: Localizations.localeOf(context).languageCode,
         )
         .then(
-          (location) => LocationDetail(
-            widget.preferredDescription ?? location.description,
-            location.street,
-            widget.location,
+          (result) => LocationDetail(
+            preferredDescription ?? result.description,
+            result.street,
+            location,
           ),
         )
         .catchError((error) {
       return LocationDetail(
-        widget.preferredDescription ?? "unknown place",
+        preferredDescription ?? "unknown place",
         "",
-        widget.location,
+        location,
       );
     });
   }

@@ -21,6 +21,8 @@ import 'package:stadtnavi_core/base/translations/stadtnavi_base_localizations.da
 import 'package:stadtnavi_core/configuration/drawer/menu_items_stadtnavi.dart';
 import 'package:stadtnavi_core/configuration/trufi_drawer.dart';
 import 'package:stadtnavi_core/consts.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_geo_uri.dart';
+import 'package:stadtnavi_core/deep_links/stadtnavi_route_information_parser.dart';
 import 'package:stadtnavi_core/deep_links/stadtnavi_web_url.dart';
 import 'package:stadtnavi_core/stadtnavi_screen_helper.dart';
 
@@ -155,13 +157,27 @@ abstract class DefaultStadtnaviValues {
     return RoutemasterDelegate(
       routesBuilder: (routeContext) {
         RouteSettings buildHomePage(RouteData route) {
-          final deepLink = webUrl.parse(Uri.parse(route.fullPath));
+          final routeUri = Uri.parse(route.fullPath);
+          final incomingGeoUri = routeUri.queryParameters[
+            StadtnaviRouteInformationParser.incomingGeoUriParameter
+          ];
+          StadtnaviDeepLink? deepLink;
+          if (incomingGeoUri == null) {
+            deepLink = webUrl.parse(routeUri);
+          } else {
+            final parsedGeoUri = Uri.tryParse(incomingGeoUri);
+            deepLink = parsedGeoUri == null
+                ? null
+                : const StadtnaviGeoUri().parse(parsedGeoUri);
+          }
           return StadtnaviNoAnimationPage(
             restorationId: HomePage.route,
             appLifecycleReactorHandler: appLifecycleReactorHandler,
             child: HomePage(
               deepLink: deepLink,
-              deepLinkRequest: deepLink == null ? null : route.fullPath,
+              deepLinkRequest: deepLink == null
+                  ? null
+                  : incomingGeoUri ?? route.fullPath,
               asyncExecutor: asyncExecutor ?? AsyncExecutor(),
               mapBuilder: (mapContext, trufiMapController) {
                 return TrufiMapRoute(

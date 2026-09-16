@@ -35,6 +35,7 @@ import 'package:trufi_core/base/blocs/providers/gps_location_provider.dart';
 import 'package:trufi_core/base/blocs/theme/theme_cubit.dart';
 import 'package:trufi_core/base/models/trufi_place.dart';
 import 'package:trufi_core/base/pages/saved_places/search_locations_cubit/search_locations_cubit.dart';
+import 'package:trufi_core/base/translations/trufi_base_localizations.dart';
 import 'package:trufi_core/base/widgets/custom_scrollable_container.dart';
 
 typedef MapRouteBuilder = Widget Function(
@@ -134,6 +135,8 @@ class _HomePageState extends State<HomePage>
   Future<void> _handleDeepLink(StadtnaviDeepLink deepLink) async {
     if (deepLink is StadtnaviLocationDeepLink) {
       await _showLocation(deepLink.location);
+    } else if (deepLink is StadtnaviAddressDeepLink) {
+      await _showAddress(deepLink.query);
     } else if (deepLink is StadtnaviJourneyDeepLink) {
       await _showJourney(deepLink);
     } else if (deepLink is StadtnaviStopDeepLink) {
@@ -143,6 +146,61 @@ class _HomePageState extends State<HomePage>
     } else if (deepLink is StadtnaviParkingDeepLink) {
       await _showParking(deepLink);
     }
+  }
+
+  Future<void> _showAddress(String query) async {
+    if (!mounted) return;
+    final localization = TrufiBaseLocalization.of(context);
+    final searchLocationsCubit = context.read<SearchLocationsCubit>();
+
+    try {
+      final results = await searchLocationsCubit.fetchLocations(
+        query,
+        lang: Localizations.localeOf(context).languageCode,
+      );
+      if (!mounted) return;
+
+      TrufiLocation? resolvedLocation;
+      for (final result in results ?? const <TrufiPlace>[]) {
+        if (result is TrufiLocation &&
+            result.latitude.isFinite &&
+            result.longitude.isFinite &&
+            result.latitude >= -90 &&
+            result.latitude <= 90 &&
+            result.longitude >= -180 &&
+            result.longitude <= 180 &&
+            (result.latitude != 0 || result.longitude != 0)) {
+          resolvedLocation = result;
+          break;
+        }
+      }
+
+      if (resolvedLocation == null) {
+        _showIncomingLocationError(localization.commonNoResults);
+        return;
+      }
+
+      await _showLocation(
+        StadtnaviLinkLocation(
+          label:
+              resolvedLocation.description.trim().isEmpty
+                  ? query
+                  : resolvedLocation.description,
+          latitude: resolvedLocation.latitude,
+          longitude: resolvedLocation.longitude,
+        ),
+      );
+    } catch (_) {
+      if (mounted) {
+        _showIncomingLocationError(localization.errorNoConnectServer);
+      }
+    }
+  }
+
+  void _showIncomingLocationError(String message) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(message)));
   }
 
   Future<void> _showLocation(StadtnaviLinkLocation location) async {

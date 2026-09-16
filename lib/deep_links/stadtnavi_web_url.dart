@@ -22,6 +22,13 @@ final class StadtnaviLocationDeepLink extends StadtnaviDeepLink {
   final StadtnaviLinkLocation location;
 }
 
+/// An unresolved address received from an external map intent.
+final class StadtnaviAddressDeepLink extends StadtnaviDeepLink {
+  const StadtnaviAddressDeepLink(this.query);
+
+  final String query;
+}
+
 final class StadtnaviJourneyDeepLink extends StadtnaviDeepLink {
   const StadtnaviJourneyDeepLink({required this.from, required this.to});
 
