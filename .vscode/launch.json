@@ -1,0 +1,85 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "stadtnavi_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "stadtnavi_app (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "stadtnavi_app (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "herrenberg",
+            "cwd": "instances/herrenberg",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "herrenberg (profile mode)",
+            "cwd": "instances/herrenberg",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "herrenberg (release mode)",
+            "cwd": "instances/herrenberg",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "ludwigsburg",
+            "cwd": "instances/ludwigsburg",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ludwigsburg (profile mode)",
+            "cwd": "instances/ludwigsburg",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ludwigsburg (release mode)",
+            "cwd": "instances/ludwigsburg",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "trufi_core",
+            "cwd": "packages/trufi_core",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "trufi_core (profile mode)",
+            "cwd": "packages/trufi_core",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "trufi_core (release mode)",
+            "cwd": "packages/trufi_core",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

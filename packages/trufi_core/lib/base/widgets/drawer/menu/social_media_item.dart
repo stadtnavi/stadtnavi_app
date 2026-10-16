@@ -129,16 +129,11 @@ TrufiMenuItem defaultSocialMedia(UrlSocialMedia defaultUrls) {
       buildIcon: (context) => const Icon(Icons.share),
       name: (context) {
         return DropdownButton<SocialMediaItem>(
-          icon: Row(
-            children: [
-              Text(
-                TrufiBaseLocalization.of(context).menuSocialMedia,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const Icon(Icons.arrow_drop_down),
-            ],
+          isExpanded: true,
+          hint: Text(
+            TrufiBaseLocalization.of(context).menuSocialMedia,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
-          selectedItemBuilder: (_) => [],
           underline: Container(),
           onChanged: (SocialMediaItem? value) {
             value?.onClick(context, true);

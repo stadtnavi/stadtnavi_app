@@ -37,6 +37,9 @@ Future<void> initHiveForFlutter({
     if (subDir != null) {
       path = join(path, subDir);
     }
+    // graphql 5.2.4 uses hive_ce internally, while the application boxes still
+    // use hive. Both backends need their storage path initialized.
+    Hive.init(path);
     HiveStore.init(onPath: path);
   }
   // TODO remove this part in the future

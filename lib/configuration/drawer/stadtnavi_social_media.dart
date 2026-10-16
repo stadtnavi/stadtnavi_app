@@ -11,18 +11,13 @@ TrufiMenuItem stadtNaviSocialMedia(UrlSocialMedia defaultUrls) {
       buildIcon: (context) => const Icon(Icons.rss_feed),
       name: (context) {
         return DropdownButton<SocialMediaItem>(
-          icon: Row(
-            children: [
-              Text(
-                TrufiBaseLocalization.of(context).menuSocialMedia,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
-              const Icon(Icons.arrow_drop_down),
-            ],
+          isExpanded: true,
+          hint: Text(
+            TrufiBaseLocalization.of(context).menuSocialMedia,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                ),
           ),
-          selectedItemBuilder: (_) => [],
           underline: Container(),
           onChanged: (SocialMediaItem? value) {
             value?.onClick(context, true);
